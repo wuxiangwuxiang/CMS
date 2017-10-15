@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdu.mapping.TestMapping">
+	<resultMap type="com.qdu.pojo.Test" id="TestResult">
+		<id property="studentId" column="StudentId" />
+		<result property="studentPassword" column="StudentPassword" />
+		<result property="studentName" column="StudentName" />
+	</resultMap>
+
+	<select id="selectFromTestById" resultMap="TestResult"
+		parameterType="int">
+		select * from Test where StudentId = #{studentId}
+	</select>
+</mapper>
