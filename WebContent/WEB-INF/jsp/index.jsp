@@ -3,46 +3,95 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<link rel="shortcut icon" type="image/x-icon" href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link type="text/css" rel="stylesheet" href="<%=request.getContextPath()%>/css/bootstrap.min.css">
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-3.2.0.min.js"></script>
-<title>首页</title>
- <script type="text/javascript">
-	 $(document).ready(function () {
-		 $('#gotoCreateTeacher').click(function() {
-			$('#getTheTeacher').toggle();
+<script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#lll').click(function() {
+			$('#loginForm').toggle();
 		});
-	 });
-	function change(id) {
-		var id = document.getElementById(id).value;
-		alert(id);
-	}
-	</script>
+		$('#sss').click(function() {
+			$('#studentForm').show();
+			$('#teacherForm').hide();
+		});
+		$('#ttt').click(function() {
+			$('#studentForm').hide();
+			$('#teacherForm').show();
+		});
+	});
+</script>
 </head>
-<body>
-	<h1>你好，罗网</h1>
-	<a href="http://blog.csdn.net/juinh">个人博客</a><br/>
-	<a href="<%=request.getContextPath()%>/anna/exchange.do">拦截模板</a><br/><br/>
-	<a href="#">学生登录</a><br/>
-	<a href="<%=request.getContextPath()%>/student/addStudent.do" target="_blank">学生注册</a><br/><br/>
-	<a href="<%=request.getContextPath()%>/teacher/forTeacherLogin.do" target="_blank">教师登录</a><br/>
-	<a id="gotoCreateTeacher" href="#">创建教师账号</a><br/>
-	<form action="<%=request.getContextPath()%>/student/selectStudentTemById.do">
-	查询：<input type="text" name="studentRoNo"/>
-	<input type="submit" value="提交"/>
-	</form>
-	
-	
-	<form id="getTheTeacher" style="display: none;" 
-	action="<%=request.getContextPath()%>/teacher/insertTeacher.do" method="post">
-		手机：<input type="text" name="teacherMobile"><br/> 
-		邮箱：<input type="text" name="teacherEmail"><br/> 
-		密码：<input type="password" name="teacherPassword"><br/> 
-		名字：<input id="teacherName" type="text" name="teacherName" onchange="change(this.id)"><br /> 
-		性别：<input type="text" name="teacherGender"><br/> 
-		课程：<input type="text" name="teacherSubject"><br/> 
-			<input type="submit" value="提交" />
-	</form>
-	
+
+<body
+	style="background-image: url('../lib/backimg.jpg'); background-repeat: no-repeat; background-size: 100%">
+
+
+	<div style="width: 100%; height: 850px;">
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">CMS</a>
+			</div>
+
+			<div id="navbar" class="navbar-collapse collapse">
+
+				<div id="loginForm"
+					style="width: 30%; higth: 100%; margin-top: 170px; background-color: white; position: fixed; margin-left: 320px; display: none;">
+					<a href="#" id="sss"
+						style="float: left; text-decoration: none; width: 50%; text-align: center; color: white; background-color: green; font-size: 28px;">学生登录</a>
+					<a href="#" id="ttt"
+						style="float: left; text-decoration: none; width: 50%; text-align: center; color: white; background-color: blue; font-size: 28px;">教师登录</a>
+					<form id="studentForm"
+						action="<%=request.getContextPath()%>/student/studentLogin.do"
+						method="post" style="text-align: center; font-size: 20px;">
+						<br><br>
+						<br>
+						<br> 学号:<input name="studentRoNo" type="text" /><br />
+						<br /> 密码:<input name="studentPassword" type="password" /><br />
+						<br /> <input type="submit" value="登录" /> <a href="<%=request.getContextPath()%>/student/addStudent.do" target="_blank"
+							style="margin-left: 30px">去注册>></a>
+					</form>
+					<form id="teacherForm"
+						action="<%=request.getContextPath()%>/teacher/teacherLogin.do"
+						method="post"
+						style="text-align: center; font-size: 20px; display: none;">
+						<br>
+						<br>
+						<br> 手机:<input name="teacherId" type="text" /><br />
+						<br /> 密码:<input name="password" type="password" /><br />
+						<br /> <input type="submit" value="提交" /> <a href="#"
+							style="margin-left: 30px">去注册>></a>
+					</form>
+					<br> <br>
+					<br>
+					<br>
+					<br>
+				</div>
+				<form class="navbar-form navbar-right">
+					<a href="#" id="lll" type="submit" class="btn btn-primary">登录</a>
+				</form>
+			</div>
+		</div>
+		</nav>
+
+
+		<div class="jumbotron"
+			style="background-color: rgba(0, 0, 0, 0.5); height: 100%;">
+			<div class="container"></div>
+
+
+		</div>
+	</div>
+
 </body>
 </html>

@@ -30,7 +30,7 @@
 	style="background-image: url('lib/backimg.jpg'); background-repeat: no-repeat; background-size: 100%">
 
 
-	<div style="width: 100%; height: 850px;">
+	<div style="width: 100%; height: 830px;">
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
