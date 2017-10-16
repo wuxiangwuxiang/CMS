@@ -30,7 +30,7 @@
 	style="background-image: url('lib/backimg.jpg'); background-repeat: no-repeat; background-size: 100%">
 
 
-	<div style="width: 100%; height: 1200px; z-index: 1">
+	<div style="width: 100%; height: 850px;">
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
@@ -47,7 +47,7 @@
 			<div id="navbar" class="navbar-collapse collapse">
 
 				<div id="loginForm"
-					style="width: 30%; higth: 100%; margin-top: 270px; background-color: white; position: fixed; margin-left: 270px; display: none;">
+					style="width: 30%; higth: 100%; margin-top: 170px; background-color: white; position: fixed; margin-left: 320px; display: none;">
 					<a href="#" id="sss"
 						style="float: left; text-decoration: none; width: 50%; text-align: center; color: white; background-color: green; font-size: 28px;">学生登录</a>
 					<a href="#" id="ttt"
@@ -55,7 +55,7 @@
 					<form id="studentForm"
 						action="<%=request.getContextPath()%>/student/studentLogin.do"
 						method="post" style="text-align: center; font-size: 20px;">
-						<br>
+						<br><br>
 						<br>
 						<br> 学号:<input name="studentRoNo" type="text" /><br />
 						<br /> 密码:<input name="studentPassword" type="password" /><br />
@@ -80,17 +80,14 @@
 				</div>
 				<form class="navbar-form navbar-right">
 					<a href="#" id="lll" type="submit" class="btn btn-primary">登录</a>
-					<!-- btn btn-success   style="background-color: #005AB5"-->
 				</form>
 			</div>
-			<!--/.navbar-collapse -->
 		</div>
 		</nav>
 
 
-		<!-- Main jumbotron for a primary marketing message or call to action -->
 		<div class="jumbotron"
-			style="background-color: rgba(0, 0, 0, 0.5); height: 100%; z-index: 1">
+			style="background-color: rgba(0, 0, 0, 0.5); height: 100%;">
 			<div class="container"></div>
 
 
