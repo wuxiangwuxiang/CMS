@@ -26,6 +26,10 @@ public class TeacherController {
 		return "teacherLogin";
 	}
 	
+		@RequestMapping(value = "/forTeacherRegister.do")
+	public String forTeacherRegister() {
+		return "addTeacher";
+	}
 	@RequestMapping(value="/teacherLogin.do")
 	public String teacherLogin(HttpServletRequest request,ModelMap map){
 		String id = request.getParameter("teacherId");
