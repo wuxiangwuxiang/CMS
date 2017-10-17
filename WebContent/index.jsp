@@ -17,10 +17,14 @@
 			$('#loginForm').toggle();
 		});
 		$('#sss').click(function() {
+			$('#sss').css("background-color", "rgba(0,0,0,0.3)");
+			$('#ttt').css("background-color", "rgba(0,0,0,0)");
 			$('#studentForm').show();
 			$('#teacherForm').hide();
 		});
 		$('#ttt').click(function() {
+			$('#sss').css("background-color", "rgba(0,0,0,0)");
+			$('#ttt').css("background-color", "rgba(0,0,0,0.3)");
 			$('#studentForm').hide();
 			$('#teacherForm').show();
 		});
@@ -51,7 +55,7 @@
 				<div id="loginForm"
 					style="width: 30%; higth: 100%; margin-top: 170px; background-color: rgba(0, 0, 0, 0.1); position: fixed; margin-left: 320px; display: none;">
 					<a href="#" id="sss" class="alogin"
-						style="float: left; text-decoration: none; color: white; font-size: 28px; ">学生登录</a>
+						style="float: left; text-decoration: none; color: white; font-size: 28px; background-color: rgba(0,0,0,0.3); ">学生登录</a>
 					<a href="#" id="ttt" class="alogin"
 						style="float: left; text-decoration: none; color: white; font-size: 28px;">教师登录</a>
 					<form id="studentForm"
@@ -65,7 +69,7 @@
 							value="登录" /> <br>
 						<br>
 						<a href="<%=request.getContextPath()%>/student/addStudent.do"
-							target="_blank" style="margin-left: 400px">去注册>></a>
+							target="_blank" style="margin-left: 300px">去注册>></a>
 					</form>
 					<form id="teacherForm"
 						action="<%=request.getContextPath()%>/teacher/teacherLogin.do"
@@ -79,7 +83,7 @@
 							<br><br>
 							 <a
 							href="<%=request.getContextPath()%>/teacher/forTeacherRegister.do"
-							style="margin-left: 400px" >去注册>></a>
+							style="margin-left: 300px" >去注册>></a>
 					</form>
 					<br> <br> <br> <br> <br>
 				</div>
