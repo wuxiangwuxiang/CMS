@@ -82,12 +82,12 @@ public class Student {
 	public void setClazz(Clazz clazz) {
 		this.clazz = clazz;
 	}
-	@Override
-	public String toString() {
-		return "Student [studentRoNo=" + studentRoNo + ", studentPassword=" + studentPassword + ", studentMobile="
-				+ studentMobile + ", studentEmail=" + studentEmail + ", studentName=" + studentName + ", studentGender="
-				+ studentGender + ", studentPhoto=" + studentPhoto + ", teacher=" + teacher + ", course=" + course
-				+ ", clazz=" + clazz + ", studentInfo=" + studentInfo + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Student [studentRoNo=" + studentRoNo + ", studentPassword=" + studentPassword + ", studentMobile="
+//				+ studentMobile + ", studentEmail=" + studentEmail + ", studentName=" + studentName + ", studentGender="
+//				+ studentGender + ", studentPhoto=" + studentPhoto + ", teacher=" + teacher + ", course=" + course
+//				+ ", clazz=" + clazz + ", studentInfo=" + studentInfo + "]";
+//	}
 	
 }

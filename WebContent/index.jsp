@@ -7,8 +7,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet" href="css/mycss.css">
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#lll').click(function() {
@@ -27,10 +29,10 @@
 </head>
 
 <body
-	style="background-image: url('lib/backimg.jpg'); background-repeat: no-repeat; background-size: 100%">
+	style="background-image: url('lib/backimg1.jpg'); background-repeat: no-repeat; background-size: cover;">
 
 
-	<div style="width: 100%; height: 830px;">
+	<div style="width: 100%; height: 1000px">
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
@@ -47,36 +49,39 @@
 			<div id="navbar" class="navbar-collapse collapse">
 
 				<div id="loginForm"
-					style="width: 30%; higth: 100%; margin-top: 170px; background-color: white; position: fixed; margin-left: 320px; display: none;">
-					<a href="#" id="sss"
-						style="float: left; text-decoration: none; width: 50%; text-align: center; color: white; background-color: green; font-size: 28px;">学生登录</a>
-					<a href="#" id="ttt"
-						style="float: left; text-decoration: none; width: 50%; text-align: center; color: white; background-color: blue; font-size: 28px;">教师登录</a>
+					style="width: 30%; higth: 100%; margin-top: 170px; background-color: rgba(0, 0, 0, 0.1); position: fixed; margin-left: 320px; display: none;">
+					<a href="#" id="sss" class="alogin"
+						style="float: left; text-decoration: none; color: white; font-size: 28px; ">学生登录</a>
+					<a href="#" id="ttt" class="alogin"
+						style="float: left; text-decoration: none; color: white; font-size: 28px;">教师登录</a>
 					<form id="studentForm"
 						action="<%=request.getContextPath()%>/student/studentLogin.do"
 						method="post" style="text-align: center; font-size: 20px;">
-						<br><br>
+						<br> <br> <br> <br> <span style="color: white">学号:</span>><input
+							name="studentRoNo" type="text" /><br /> <br /> <span
+							style="color: white">密码:</span>><input name="studentPassword"
+							type="password" /><br /> <br /> <input
+							class="btn btn-primary btn-lg" style="width: 150px" type="submit"
+							value="登录" /> <br>
 						<br>
-						<br> 学号:<input name="studentRoNo" type="text" /><br />
-						<br /> 密码:<input name="studentPassword" type="password" /><br />
-						<br /> <input type="submit" value="登录" /> <a href="<%=request.getContextPath()%>/student/addStudent.do" target="_blank"
-							style="margin-left: 30px">去注册>></a>
+						<a href="<%=request.getContextPath()%>/student/addStudent.do"
+							target="_blank" style="margin-left: 400px">去注册>></a>
 					</form>
 					<form id="teacherForm"
 						action="<%=request.getContextPath()%>/teacher/teacherLogin.do"
 						method="post"
 						style="text-align: center; font-size: 20px; display: none;">
-						<br>
-						<br>
-						<br> 手机:<input name="teacherId" type="text" /><br />
-						<br /> 密码:<input name="password" type="password" /><br />
-						<br /> <input type="submit" value="提交" /> <a href="#"
-							style="margin-left: 30px">去注册>></a>
+						<br> <br> <br> <br> <span style="color: white">手机:</span>><input
+							name="teacherId" type="text" /><br /> <br /> <span
+							style="color: white">密码:</span>><input name="password"
+							type="password" /><br /> <br /> <input class="btn btn-primary btn-lg" style="width: 150px" type="submit"
+							value="登录" />
+							<br><br>
+							 <a
+							href="<%=request.getContextPath()%>/teacher/forTeacherRegister.do"
+							style="margin-left: 400px" >去注册>></a>
 					</form>
-					<br> <br>
-					<br>
-					<br>
-					<br>
+					<br> <br> <br> <br> <br>
 				</div>
 				<form class="navbar-form navbar-right">
 					<a href="#" id="lll" type="submit" class="btn btn-primary">登录</a>
@@ -86,11 +91,9 @@
 		</nav>
 
 
-		<div class="jumbotron"
-			style="background-color: rgba(0, 0, 0, 0.5); height: 100%;">
+		<div
+			style="background-color: rgba(0, 0, 0, 0.5); height: 100%; background-size: cover;">
 			<div class="container"></div>
-
-
 		</div>
 	</div>
 

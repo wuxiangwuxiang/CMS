@@ -1,6 +1,7 @@
 package com.qdu.daoimpl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -38,6 +39,18 @@ public class CourseDaoImpl implements CourseDao {
 		map.put("courseId", courseId);
 		map.put("qrImg", qrImg);
 		SqlSessionFactory.openSession().update(statement, map);
+	}
+
+	@Override
+	public List<Course> selectCourseByTeacher(String teacherMobile) {
+		String statement = "com.qdu.mapping.CourseMapping.selectCourseList";
+		return SqlSessionFactory.openSession().selectList(statement, teacherMobile);
+	}
+
+	@Override
+	public Course selectCourseById(int courseId) {
+		String statement = "com.qdu.mapping.CourseMapping.selectCourseById";
+		return SqlSessionFactory.openSession().selectOne(statement, courseId);
 	}
 
 }

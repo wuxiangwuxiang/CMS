@@ -24,7 +24,6 @@
 </head>
 <body>
 <h1>${teacher.teacherName}老师</h1><br/>
-
 <a id="createCourse" href="#">新建课程</a><br/>
 
 <form id="courseShow" style="display: none;" action="<%=request.getContextPath()%>/course/insertCourse.do" method="post">
@@ -47,21 +46,39 @@
   <table border="1" style="width:50%;line-height: 3em; margin-left: 10em; margin-top: 5em; background: #cccccc">
             <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
                 <th style="width:4em">课程名称</th>
-                <th>二维码</th>
-                <th>班级信息</th>
+                <th>二维码信息</th>
+                <th>学年</th>
+                <th>班级</th>
+                <th colspan="3">操作</th>
             </tr>
             <c:choose>
-            <c:when test="${! empty teacher.course}">
-            <c:forEach items="${teacher.course}" var="r">
+            <c:when test="${! empty courses}">
+            <c:forEach items="${courses}" var="r">
                 <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                    <td><a  href="#">${r.courseName}</a></td>
-                    <td><a id="${r.qrImg}" onclick="showQrImg(this.id)" href="#">获取</a></td>
+                    <td><a href="#">${r.courseName}</a></td>
+                    <td style="text-align: center;"><a id="${r.qrImg}" onclick="showQrImg(this.id)" href="#">获取</a></td>
+                    <td style="text-align: center;">${r.currentYear}</td>
+                    <td style="text-align: center;">
+                    <c:choose>
+                    <c:when test="${! empty r.clazz}">
+                    <c:forEach items="${r.clazz}" var="c">
+                     <a href="#">${c.clazzName}</a>
+                     <br/>
+                    </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                    <a >（空）</a>
+                    </c:otherwise>
+                    </c:choose>
+                    </td>
                     <td><a href="<%=request.getContextPath()%>/clazz/forInsertClazz.do">查看</a></td>
+                    <td><a href="#">修改</a></td>
+                    <td><a href="#">删除</a></td>
                 </tr>
             </c:forEach>
                 </c:when>
             <c:otherwise>
-                <tr><td colspan="1">暂无课程</td></tr>
+                <tr><td colspan="1">（空）</td></tr>
             </c:otherwise>
                 </c:choose>
         </table>

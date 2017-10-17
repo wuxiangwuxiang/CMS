@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+.alogin{
+	background-color:rgba(0,0,0,0);
+	width: 50%;
+	text-align: center;
+}
+
+.alogin:hover{
+	background-color: rgba(0,0,0,0.1);
+	text-decoration: none;
+}
+
+.alogin:focus{
+	background-color: rgba(0,0,0,0.1);
+}
+
+.alogin:active {
+	background-color: rgba(0,0,0,0.1);
+}

@@ -47,11 +47,11 @@ public class StudentInfo {
 	public void setAbsenteeism(int absenteeism) {
 		this.absenteeism = absenteeism;
 	}
-	@Override
-	public String toString() {
-		return "StudentInfo [studentInfoId=" + studentInfoId + ", students=" + students + ", courses=" + courses
-				+ ", comeLate=" + comeLate + ", leaveEarlier=" + leaveEarlier + ", absenteeism=" + absenteeism + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "StudentInfo [studentInfoId=" + studentInfoId + ", students=" + students + ", courses=" + courses
+//				+ ", comeLate=" + comeLate + ", leaveEarlier=" + leaveEarlier + ", absenteeism=" + absenteeism + "]";
+//	}
 	
 	
 }

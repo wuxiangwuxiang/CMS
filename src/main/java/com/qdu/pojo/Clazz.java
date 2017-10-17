@@ -9,7 +9,7 @@ public class Clazz {
 	private int currentYear;
 	private Teacher teacher;
 	private Course course;
-	private List<Student> students;
+	private List<Student> student;
 	public int getClazzId() {
 		return clazzId;
 	}
@@ -41,18 +41,16 @@ public class Clazz {
 		this.course = course;
 	}
 	public List<Student> getStudents() {
-		return students;
+		return student;
 	}
 	public void setStudents(List<Student> students) {
-		this.students = students;
+		this.student = students;
 	}
 	@Override
 	public String toString() {
 		return "Clazz [clazzId=" + clazzId + ", clazzName=" + clazzName + ", currentYear=" + currentYear + ", teacher="
-				+ teacher + ", course=" + course + ", students=" + students + "]";
+				+ teacher + ", course=" + course + ", student=" + student + "]";
 	}
-	
-	
-	
+
 
 }

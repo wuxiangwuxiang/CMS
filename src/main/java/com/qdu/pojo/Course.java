@@ -125,12 +125,12 @@ public class Course {
 	}
 
 	
-	public List<Clazz> getClazzs() {
+	public List<Clazz> getClazz() {
 		return clazz;
 	}
 
-	public void setClazzs(List<Clazz> clazzs) {
-		this.clazz = clazzs;
+	public void setClazz(List<Clazz> clazz) {
+		this.clazz = clazz;
 	}
 
 	@Override
@@ -140,6 +140,8 @@ public class Course {
 				+ ", currentYear=" + currentYear + ", schoolTem=" + schoolTem + ", qrImg=" + qrImg + ", student="
 				+ student + ", clazz=" + clazz + ", teacher=" + teacher + ", studentInfo=" + studentInfo + "]";
 	}
+
+
 
 	
 

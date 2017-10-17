@@ -21,10 +21,9 @@ public class LoginController {
 		String id = request.getParameter("id");
 		String password = request.getParameter("password");
 		Test test = testServiceImpl.selectTestById(Integer.parseInt(id));
-		System.out.println(test);
 		if (test != null) {
 			if (test.getStudentPassword().equals(password)) {
-				System.out.println(request.getContextPath());
+//				System.out.println(request.getContextPath());
 				map.addAttribute("name", test.getStudentName());
 				// session的id存一下
 				request.getSession().setAttribute("studentId", id);

@@ -11,7 +11,6 @@ public class Teacher {
 	private String teacherSubject;
 	private List<Student> student;
 	private List<Course> course;
-	private List<Clazz> clazz;
 	public String getTeacherMobile() {
 		return teacherMobile;
 	}
@@ -62,19 +61,6 @@ public class Teacher {
 	public void setCourse(List<Course> course) {
 		this.course = course;
 	}
-	public List<Clazz> getClazzs() {
-		return clazz;
-	}
-	public void setClazzs(List<Clazz> clazzs) {
-		this.clazz = clazzs;
-	}
-	@Override
-	public String toString() {
-		return "Teacher [teacherMobile=" + teacherMobile + ", teacherEmail=" + teacherEmail + ", teacherPassword="
-				+ teacherPassword + ", teacherName=" + teacherName + ", teacherGender=" + teacherGender
-				+ ", teacherSubject=" + teacherSubject + ", student=" + student + ", course=" + course + ", clazzs="
-				+ clazz + "]";
-	}
-	
+
 	
 }

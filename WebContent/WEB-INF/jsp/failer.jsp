@@ -7,6 +7,6 @@
 <title>失败</title>
 </head>
 <body>
-	<h1>查找失败</h1>
+	<h1>请检查输入信息</h1>
 </body>
 </html>

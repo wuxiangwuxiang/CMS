@@ -77,18 +77,13 @@
 			</association>
 		</collection>
 		
-		<collection property="clazz" ofType="com.qdu.pojo.Clazz"
-			javaType="ArrayList" column="TeacherMobile"
-			select="com.qdu.mapping.ClazzMapping.selectClazzByTeacherMobile">
-			<id property="clazzId" column="ClazzId" />
-			<result property="clazzName" column="ClazzName" />
-			<result property="currentYear" column="CurrentYear" />
-		</collection>
+		
 	</resultMap>
 	<select id="selectTeacherByEmail" resultMap="TeacherResult">
-		select * from
+		SELECT * from 
 		Teacher where TeacherMobile = #{teacherMobile}
 	</select>
+
 
 	<insert id="insertTeacher" parameterType="com.qdu.pojo.Teacher">
 		insert into
