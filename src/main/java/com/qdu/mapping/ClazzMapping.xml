@@ -191,7 +191,7 @@
 				</collection>
 			</association>
 		</collection>
-	</resultMap>
+	</resultMap> 
 
 	<select id="selectClazzByCourse" resultMap="ClazzResult" parameterType="ArrayList">
 		select * from Clazz c,Course o where

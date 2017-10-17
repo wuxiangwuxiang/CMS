@@ -35,7 +35,7 @@ public class Clazz {
 		this.teacher = teacher;
 	}
 	public Course getCourse() {
-		return course;
+		return course; 
 	}
 	public void setCourse(Course course) {
 		this.course = course;

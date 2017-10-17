@@ -21,7 +21,7 @@ public class Student {
 	
 	public String getStudentPassword() {
 		return studentPassword;
-	}
+	} 
 	public void setStudentPassword(String studentPassword) {
 		this.studentPassword = studentPassword;
 	}

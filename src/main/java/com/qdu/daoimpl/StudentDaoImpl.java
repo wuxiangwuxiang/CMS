@@ -8,7 +8,7 @@ import com.qdu.dao.StudentDao;
 import com.qdu.pojo.Student;
 @Repository
 public class StudentDaoImpl implements StudentDao{
-	@Autowired 
+	@Autowired  
 	SqlSessionFactory sessionFactory;
 	
 	@Override

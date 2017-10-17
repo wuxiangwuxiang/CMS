@@ -7,5 +7,5 @@ public interface TeacherService {
 public void insertTeacher(Teacher teacher);
 		
 	public Teacher selectTeacherByEmail(String teacherMobile);
-
+ 
 }

@@ -8,7 +8,7 @@ public interface TestService {
 	public Test selectTestById(int id);
 	
 	public void insertTeacher(Teacher teacher);
-	
+	 
 	public Teacher selectTeacherByEmail(String teacherMobile);
 	
 }

@@ -7,5 +7,5 @@ public interface StudentDao {
 	public void insertStudentByNo(Student student);
 	
 	public Student selectStudentByNo(String studentRoNo);
-
+ 
 }

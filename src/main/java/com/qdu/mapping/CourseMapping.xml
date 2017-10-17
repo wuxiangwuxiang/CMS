@@ -145,7 +145,7 @@
 	<select id="selectCourseById" resultMap="CourseResult">
 		select * from
 		Course where CourseId  = #{courseId})
-	</select>
+	</select> 
 
 	<select id="selectCourseList" parameterType="ArrayList"
 		resultMap="CourseResult">

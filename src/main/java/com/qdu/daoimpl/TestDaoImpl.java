@@ -12,7 +12,7 @@ import com.qdu.pojo.Test;
 @Repository
 public class TestDaoImpl implements TestDao{
 	@Autowired SqlSessionFactory sessionFactory;
-	
+	 
 	@Override
 	public Test getTestById(int id) {
 		String statement = "com.qdu.mapping.TestMapping.selectFromTestById";

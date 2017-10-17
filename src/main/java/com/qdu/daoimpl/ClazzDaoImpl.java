@@ -32,7 +32,7 @@ public class ClazzDaoImpl implements ClazzDao{
 		map.put("teacherMobile", teacherMobile);
 		map.put("currentYear", currentYear);
 		return sqlSessionFactory.openSession().selectOne(statement, map);
-	}
+	} 
 
 	@Override
 	public void updateClazzOfCourseId(int clazzId, int courseId) {

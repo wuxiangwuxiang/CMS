@@ -32,7 +32,7 @@ public class CourseDaoImpl implements CourseDao {
         return SqlSessionFactory.openSession().selectOne(statement, map);
 	}
 
-	@Override
+	@Override 
 	public void updateQrImg(int courseId,String qrImg) {
 		Map<String,Object> map = new HashMap<>();
 		String statement = "com.qdu.mapping.CourseMapping.updateQrImg";

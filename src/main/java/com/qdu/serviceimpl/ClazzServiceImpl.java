@@ -15,7 +15,7 @@ import com.qdu.service.ClazzService;
 @Service
 public class ClazzServiceImpl implements ClazzService{
 
-	@Autowired
+	@Autowired 
 	private ClazzDao clazzDaoImpl;
 	@Override
 	public void insertClazz(Clazz clazz) {

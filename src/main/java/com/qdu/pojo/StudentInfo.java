@@ -4,7 +4,7 @@ import java.util.List;
 
 //学生考勤信息类
 public class StudentInfo {
-
+ 
 	private int studentInfoId;
 	private List<Student> students;
 	private List<Course> courses;

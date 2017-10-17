@@ -11,7 +11,7 @@ import com.qdu.service.TestService;
 
 @Controller
 public class LoginController {
-
+ 
 	@Autowired
 	private TestService testServiceImpl;
 

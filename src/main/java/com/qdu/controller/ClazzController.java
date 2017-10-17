@@ -10,7 +10,7 @@ import com.qdu.service.ClazzService;
 @Controller
 @RequestMapping(value = "/clazz")
 public class ClazzController {
-
+ 
 	@Autowired
 	private ClazzService clazzServiceImpl;
 	

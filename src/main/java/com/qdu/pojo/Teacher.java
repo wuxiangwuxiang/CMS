@@ -53,7 +53,7 @@ public class Teacher {
 	}
 	public void setStudent(List<Student> student) {
 		this.student = student;
-	}
+	} 
 	
 	public List<Course> getCourse() {
 		return course;

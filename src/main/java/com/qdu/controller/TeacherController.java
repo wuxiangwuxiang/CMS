@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.qdu.pojo.Course;
+import com.qdu.pojo.Course; 
 import com.qdu.pojo.Teacher;
 import com.qdu.service.ClazzService;
 import com.qdu.service.CourseService;

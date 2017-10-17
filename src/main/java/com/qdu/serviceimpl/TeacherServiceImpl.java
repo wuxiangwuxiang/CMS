@@ -14,7 +14,7 @@ public class TeacherServiceImpl implements TeacherService{
 
 	@Autowired
 	private TeacherDao teacherDaoImpl;
-	
+	 
 	@Override
 	public void insertTeacher(Teacher teacher) {
 		teacherDaoImpl.insertTeacher(teacher);

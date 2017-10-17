@@ -10,5 +10,5 @@ public interface TestDao{
 	
 	public void insertTeacher(Teacher teacher);
 	
-
+ 
 }

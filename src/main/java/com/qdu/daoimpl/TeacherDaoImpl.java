@@ -16,7 +16,7 @@ public class TeacherDaoImpl implements TeacherDao{
 	public void insertTeacher(Teacher teacher) {
 		String statement = "com.qdu.mapping.TeacherMapping.insertTeacher";
 		sessionFactory.openSession().insert(statement,teacher);
-	}
+	} 
 
 
 	@Override

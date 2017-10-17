@@ -11,7 +11,7 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#lll').click(function() {
-			$('#loginForm').toggle();
+			$('#loginForm').toggle(); 
 		});
 		$('#sss').click(function() {
 			$('#studentForm').show();
@@ -88,8 +88,6 @@
 		<div class="jumbotron"
 			style="background-color: rgba(0, 0, 0, 0.5); height: 100%;">
 			<div class="container"></div>
-
-
 		</div>
 	</div>
 

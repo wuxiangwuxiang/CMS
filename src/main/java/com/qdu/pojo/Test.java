@@ -1,4 +1,4 @@
-package com.qdu.pojo;
+package com.qdu.pojo; 
 
 public class Test {
 	private int studentId;

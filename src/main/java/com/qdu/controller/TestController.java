@@ -11,7 +11,7 @@ import com.qdu.service.TestService;
 @Controller
 @RequestMapping(value="/anna")
 public class TestController {
-	
+	 
 	@Autowired
 	private TestService testServiceImpl;
 	

@@ -132,7 +132,7 @@ public class Course {
 	public void setClazz(List<Clazz> clazz) {
 		this.clazz = clazz;
 	}
-
+ 
 	@Override
 	public String toString() {
 		return "Course [courseId=" + courseId + ", courseName=" + courseName + ", courseType=" + courseType

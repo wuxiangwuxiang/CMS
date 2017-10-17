@@ -5,7 +5,7 @@ import java.util.List;
 import com.qdu.pojo.Clazz;
 
 public interface ClazzService {
-
+ 
 	public void insertClazz(Clazz clazz);
 	
 	public Clazz selectClazzByAll(String clazzName, String teacherMobile, int currentYear);

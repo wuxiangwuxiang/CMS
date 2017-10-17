@@ -42,7 +42,7 @@ public class CourseController {
 		String qrImg = tQr.createQR(request);
 		//获取刚刚插入的课程
 		Course course2 = courseServiceImpl.selectIdFromCourse(courseName, teacher.getTeacherMobile());
-		//更新班级信息
+		//更新班级信息 
 		//String clazzName = request.getParameter("clazzName");
 		//Clazz clazz2 = clazzServiceImpl.selectClazzByAll(clazzName, teacher.getTeacherMobile(), Integer.parseInt(current));
 		//clazzServiceImpl.updateClazzOfCourseId(clazz2.getClazzId(), course2.getCourseId());

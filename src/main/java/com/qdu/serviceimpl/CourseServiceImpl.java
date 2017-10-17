@@ -27,7 +27,7 @@ public class CourseServiceImpl implements CourseService{
 	@Override
 	public void updateQrImg(int courseId,String qrImg) {
 		courseDaoImpl.updateQrImg(courseId, qrImg);
-	}
+	} 
 	@Override
 	public List<Course> selectCourseByTeacher(String teacherMobile) {
 		return courseDaoImpl.selectCourseByTeacher(teacherMobile);
