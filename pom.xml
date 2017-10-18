@@ -20,6 +20,12 @@
 			<artifactId>core</artifactId>
 			<version>3.3.0</version>
 		</dependency>
+		<!-- 短信验证码 -->
+		<dependency>
+			<groupId>commons-httpclient</groupId>
+			<artifactId>commons-httpclient</artifactId>
+			<version>3.1</version>
+		</dependency>
 		<!-- C标签 -->
 		<dependency>
 			<groupId>jstl</groupId>

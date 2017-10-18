@@ -72,7 +72,7 @@
                     </c:choose>
                     </td>
                     <td><a href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">查看</a></td>
-                    <td><a href="#">修改</a></td>
+                    <td><a href="<%=request.getContextPath()%>/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a></td>
                     <td><a href="#">删除</a></td>
                 </tr>
             </c:forEach>

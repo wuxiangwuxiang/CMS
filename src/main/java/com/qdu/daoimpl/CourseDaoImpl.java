@@ -53,4 +53,10 @@ public class CourseDaoImpl implements CourseDao {
 		return SqlSessionFactory.openSession().selectOne(statement, courseId);
 	}
 
+	@Override
+	public void updateCourse(Course course) {
+		String statement = "com.qdu.mapping.CourseMapping.updateCourse";
+		SqlSessionFactory.openSession().update(statement, course);
+	}
+
 }

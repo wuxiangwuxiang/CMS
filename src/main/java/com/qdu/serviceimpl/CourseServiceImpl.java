@@ -36,5 +36,9 @@ public class CourseServiceImpl implements CourseService{
 	public Course selectCourseById(int courseId) {
 		return courseDaoImpl.selectCourseById(courseId);
 	}
+	@Override
+	public void updateCourse(Course course) {
+		courseDaoImpl.updateCourse(course);
+	}
 
 }

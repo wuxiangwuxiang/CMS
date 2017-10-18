@@ -98,36 +98,36 @@
 			javaType="ArrayList" column="CourseId"
 			select="com.qdu.mapping.ClazzMapping.selectClazzByCourse">
 			<id property="clazzId" column="ClazzId" />
-		<result property="clazzName" column="ClazzName" />
-		<result property="currentYear" column="CurrentYear" />
-		
-		<!-- 学生表 -->
-		<collection property="student" ofType="com.qdu.pojo.Student"
-			javaType="ArrayList" column="ClazzId"
-			select="com.qdu.mapping.StudentMapping.selectStudentByClazzId">
-			<id property="studentRoNo" column="StudentRoNo" />
-		<result property="studentPassword" column="StudentPassword" />
-		<result property="studentMobile" column="StudentMobile" />
-		<result property="studentEmail" column="StudentEmail" />
-		<result property="studentName" column="StudentName" />
-		<result property="studentGender" column="StudentGender" />
-		<result property="studentPhoto" column="StudentPhoto" />
+			<result property="clazzName" column="ClazzName" />
+			<result property="currentYear" column="CurrentYear" />
 
-		<association property="teacher" javaType="com.qdu.pojo.Teacher">
-			<id property="teacherMobile" column="TeacherMobile" />
-			<result property="teacherEmail" column="TeacherEmail" />
-			<result property="teacherPassword" column="TeacherPassword" />
-			<result property="teacherName" column="TeacherName" />
-			<result property="teacherGender" column="TeacherGender" />
-			<result property="teacherSubject" column="TeacherSubject" />
-		</association>
+			<!-- 学生表 -->
+			<collection property="student" ofType="com.qdu.pojo.Student"
+				javaType="ArrayList" column="ClazzId"
+				select="com.qdu.mapping.StudentMapping.selectStudentByClazzId">
+				<id property="studentRoNo" column="StudentRoNo" />
+				<result property="studentPassword" column="StudentPassword" />
+				<result property="studentMobile" column="StudentMobile" />
+				<result property="studentEmail" column="StudentEmail" />
+				<result property="studentName" column="StudentName" />
+				<result property="studentGender" column="StudentGender" />
+				<result property="studentPhoto" column="StudentPhoto" />
 
-		<association property="studentInfo" javaType="com.qdu.pojo.StudentInfo">
-			<id property="studentInfoId" column="StudentInfoId" />
-			<result property="comeLate" column="ComeLate" />
-			<result property="leaveEarlier" column="LeaveEarlier" />
-			<result property="absenteeism" column="Absenteeism" />
-		</association>
+				<association property="teacher" javaType="com.qdu.pojo.Teacher">
+					<id property="teacherMobile" column="TeacherMobile" />
+					<result property="teacherEmail" column="TeacherEmail" />
+					<result property="teacherPassword" column="TeacherPassword" />
+					<result property="teacherName" column="TeacherName" />
+					<result property="teacherGender" column="TeacherGender" />
+					<result property="teacherSubject" column="TeacherSubject" />
+				</association>
+
+				<association property="studentInfo" javaType="com.qdu.pojo.StudentInfo">
+					<id property="studentInfoId" column="StudentInfoId" />
+					<result property="comeLate" column="ComeLate" />
+					<result property="leaveEarlier" column="LeaveEarlier" />
+					<result property="absenteeism" column="Absenteeism" />
+				</association>
 			</collection>
 		</collection>
 	</resultMap>
@@ -141,22 +141,23 @@
 		where
 		TeacherMobile = #{teacherMobile})
 	</select>
-	
+
 	<select id="selectCourseById" resultMap="CourseResult">
 		select * from
-		Course where CourseId  = #{courseId}
-	</select> 
+		Course
+		where CourseId = #{courseId}
+	</select>
 
 	<select id="selectCourseList" parameterType="ArrayList"
 		resultMap="CourseResult">
-        SELECT * from 
+		SELECT * from
 		Course c JOIN Teacher t LEFT JOIN Clazz a
-         ON c.CourseId = a.CourseId 
-         AND c.TeacherMobile = #{teacherMobile}
-         ORDER BY c.CourseId DESC
+		ON c.CourseId = a.CourseId
+		AND c.TeacherMobile = #{teacherMobile}
+		ORDER BY c.CourseId DESC
 	</select>
-	
-	
+
+
 
 	<select id="selectCourseByStudentInfoId" resultMap="CourseResult">
 		select * from
@@ -185,4 +186,19 @@
 		#{qrImg}
 		where CourseId = #{courseId}
 	</update>
+
+	<update id="updateCourse" parameterType="int">
+		update Course set
+		CourseName = #{courseName},
+		CourseType = #{courseType},
+		ClassCapacity =
+		#{classCapacity},
+		StartTime = #{startTime},
+		EndTime = #{endTime},
+		CurrentYear = #{currentYear},
+		SchoolTem = #{schoolTem}
+		where CourseId =
+		${courseId}
+	</update>
 </mapper>
+

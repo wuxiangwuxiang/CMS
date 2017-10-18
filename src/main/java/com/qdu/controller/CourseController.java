@@ -42,11 +42,11 @@ public class CourseController {
 		Course course2 = courseServiceImpl.selectIdFromCourse(courseName, teacher.getTeacherMobile());
 		int courseId = course2.getCourseId();
 		String teacherMobile = teacher.getTeacherMobile();
-		System.out.println("$%$%$$%"+teacherMobile);
+		System.out.println("$%$%$$%" + teacherMobile);
 		System.out.println("courseId: " + courseId);
-		String text = "http://192.168.11.229:8080/ClassManageSys/qr.jsp?teacherMobile=" + teacherMobile + "&courseId=" + courseId
-				+ "&courseName=" + courseName.replaceAll("\\+", "%2B") + "&teacherName=" + teacherName + "&currentTime="
-				+ current + "&tem=" + tem;
+		String text = "http://192.168.11.229:8080/ClassManageSys/qr.jsp?teacherMobile=" + teacherMobile + "&courseId="
+				+ courseId + "&courseName=" + courseName.replaceAll("\\+", "%2B") + "&teacherName=" + teacherName
+				+ "&currentTime=" + current + "&tem=" + tem;
 		testQR tQr = new testQR(text, courseName, teacherName);
 		// 获取二维码图片名称
 		String qrImg = tQr.createQR(request);
@@ -90,4 +90,37 @@ public class CourseController {
 		return "clazzInfo";
 	}
 
+	@RequestMapping(value = "/forChangeCousrInfo.do")
+	public String forChangeCousrInfo(int courseId, ModelMap map) {
+		Course course = courseServiceImpl.selectCourseById(courseId);
+		map.put("course", course);
+		return "changeCourse";
+	}
+
+	@RequestMapping(value = "/changeCourse.do")
+	public String changeCourse(Course course, ModelMap map,HttpServletRequest request) throws Exception {
+		System.out.println(request.getParameter("courseId"));
+		courseServiceImpl.updateCourse(course);
+		String rono = request.getParameter("teacherMobile");
+		System.out.println("rono:" + rono);
+		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(rono);
+		String courseName = request.getParameter("courseName");
+		String teacherName = teacher.getTeacherName();
+		System.out.println("老师：" + teacherName);
+		String current = request.getParameter("currentYear");
+		String tem = request.getParameter("schoolTem");
+		int courseId = Integer.parseInt(request.getParameter("courseId"));
+		String teacherMobile = teacher.getTeacherMobile();
+		String text = "http://192.168.11.229:8080/ClassManageSys/qr.jsp?teacherMobile=" + teacherMobile + "&courseId="
+				+ courseId + "&courseName=" + courseName.replaceAll("\\+", "%2B") + "&teacherName=" + teacherName
+				+ "&currentTime=" + current + "&tem=" + tem;
+		testQR tQr = new testQR(text, courseName, teacherName);
+		String qrImg = tQr.createQR(request);
+		courseServiceImpl.updateQrImg(courseId, qrImg);
+		Teacher teacher2 = teacherServiceImpl.selectTeacherByEmail(rono);
+		List<Course> courses = courseServiceImpl.selectCourseByTeacher(rono);
+		map.addAttribute("courses", courses);
+		map.addAttribute("teacher", teacher2);
+		return "teacherPage";
+	}
 }

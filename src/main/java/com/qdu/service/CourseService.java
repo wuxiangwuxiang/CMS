@@ -15,5 +15,7 @@ public interface CourseService {
 	public List<Course> selectCourseByTeacher(String teacherMobile);
 	
 	public Course selectCourseById(int courseId);
+	
+	public void updateCourse(Course course);
 
 }
