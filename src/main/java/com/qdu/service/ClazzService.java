@@ -3,6 +3,7 @@ package com.qdu.service;
 import java.util.List;
 
 import com.qdu.pojo.Clazz;
+import com.qdu.pojo.Student;
 
 public interface ClazzService {
  
@@ -13,4 +14,5 @@ public interface ClazzService {
 	public void updateClazzOfCourseId(int clazzId, int courseId);
 	
 	public List<Clazz> selectClazzByCourse(int courseId);
+	
 	}

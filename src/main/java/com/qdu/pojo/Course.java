@@ -133,13 +133,13 @@ public class Course {
 		this.clazz = clazz;
 	}
  
-	@Override
-	public String toString() {
-		return "Course [courseId=" + courseId + ", courseName=" + courseName + ", courseType=" + courseType
-				+ ", classCapacity=" + classCapacity + ", startTime=" + startTime + ", endTime=" + endTime
-				+ ", currentYear=" + currentYear + ", schoolTem=" + schoolTem + ", qrImg=" + qrImg + ", student="
-				+ student + ", clazz=" + clazz + ", teacher=" + teacher + ", studentInfo=" + studentInfo + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "Course [courseId=" + courseId + ", courseName=" + courseName + ", courseType=" + courseType
+//				+ ", classCapacity=" + classCapacity + ", startTime=" + startTime + ", endTime=" + endTime
+//				+ ", currentYear=" + currentYear + ", schoolTem=" + schoolTem + ", qrImg=" + qrImg + ", student="
+//				+ student + ", clazz=" + clazz + ", teacher=" + teacher + ", studentInfo=" + studentInfo + "]";
+//	}
 
 
 

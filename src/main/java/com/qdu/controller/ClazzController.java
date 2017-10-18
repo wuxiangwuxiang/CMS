@@ -15,7 +15,7 @@ public class ClazzController {
 	private ClazzService clazzServiceImpl;
 	
 	@RequestMapping(value = "/forInsertClazz.do")
-	public String forInsertClazz(){
+	public String forInsertClazz(int courseId,ModelMap map){
 		return "clazzInfo";
 	}
 	

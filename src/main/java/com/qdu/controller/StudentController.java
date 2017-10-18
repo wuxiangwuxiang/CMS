@@ -1,6 +1,8 @@
 package com.qdu.controller;
 
 import java.io.File;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,6 +47,14 @@ public class StudentController {
 	@RequestMapping(value = "/waitForRegister.do")
 	public String waitForRegister() {
 		return "waitForRegister";
+	}
+	
+	//通过clazz找student
+	@RequestMapping(value = "/selectStudentByClazzId.do")
+	public String selectStudentByClazzId(int clazzId,ModelMap map){
+		List<Student> students = studentServiceImpl.selectStudentByClazzId(clazzId);
+		map.put("student", students);
+		return "studentInfo";
 	}
 
 	// 查找临时表学生信息

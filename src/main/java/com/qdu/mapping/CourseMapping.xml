@@ -144,7 +144,7 @@
 	
 	<select id="selectCourseById" resultMap="CourseResult">
 		select * from
-		Course where CourseId  = #{courseId})
+		Course where CourseId  = #{courseId}
 	</select> 
 
 	<select id="selectCourseList" parameterType="ArrayList"
@@ -169,8 +169,7 @@
 	<select id="selectIdFromCourse" resultMap="CourseResult"
 		parameterType="HashMap">
 		select * from Course where CourseName = #{courseName}
-		And TeacherMobile =
-		#{teacherMobile}
+		And TeacherMobile = #{teacherMobile}
 	</select>
 
 

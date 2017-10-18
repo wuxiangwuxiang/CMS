@@ -21,14 +21,17 @@ import com.qdu.service.TeacherService;
 @Controller
 @RequestMapping(value = "/course")
 public class CourseController {
-	
-	@Autowired CourseService courseServiceImpl;
-	@Autowired TeacherService teacherServiceImpl;
-	@Autowired ClazzService clazzServiceImpl;
-	
-	//教师插入课程
+
+	@Autowired
+	CourseService courseServiceImpl;
+	@Autowired
+	TeacherService teacherServiceImpl;
+	@Autowired
+	ClazzService clazzServiceImpl;
+
+	// 教师插入课程
 	@RequestMapping(value = "/insertCourse.do", method = RequestMethod.POST)
-	public String insertCourse(Course course,Clazz clazz,ModelMap map,HttpServletRequest request) throws Exception{
+	public String insertCourse(Course course, Clazz clazz, ModelMap map, HttpServletRequest request) throws Exception {
 		courseServiceImpl.insertCourse(course);
 		String rono = request.getParameter("teacher.teacherMobile");
 		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(rono);
@@ -36,26 +39,55 @@ public class CourseController {
 		String teacherName = teacher.getTeacherName();
 		String current = request.getParameter("currentYear");
 		String tem = request.getParameter("schoolTem");
-		String text = "http://192.168.11.229:8080/ClassManageSys/qr.jsp?courseName=" + courseName.replaceAll("\\+", "%2B") + "&teacherName=" + teacherName + "&currentTime=" + current + "&tem=" + tem;
-		testQR tQr = new testQR(text,courseName,teacherName);
-		//获取二维码图片名称
-		String qrImg = tQr.createQR(request);
-		//获取刚刚插入的课程
 		Course course2 = courseServiceImpl.selectIdFromCourse(courseName, teacher.getTeacherMobile());
-		//更新班级信息 
-		//String clazzName = request.getParameter("clazzName");
-		//Clazz clazz2 = clazzServiceImpl.selectClazzByAll(clazzName, teacher.getTeacherMobile(), Integer.parseInt(current));
-		//clazzServiceImpl.updateClazzOfCourseId(clazz2.getClazzId(), course2.getCourseId());
-		//以更新的方式插入二维码图片信息回数据库
-		courseServiceImpl.updateQrImg(course2.getCourseId(),qrImg);
+		int courseId = course2.getCourseId();
+		String teacherMobile = teacher.getTeacherMobile();
+		System.out.println("$%$%$$%"+teacherMobile);
+		System.out.println("courseId: " + courseId);
+		String text = "http://192.168.11.229:8080/ClassManageSys/qr.jsp?teacherMobile=" + teacherMobile + "&courseId=" + courseId
+				+ "&courseName=" + courseName.replaceAll("\\+", "%2B") + "&teacherName=" + teacherName + "&currentTime="
+				+ current + "&tem=" + tem;
+		testQR tQr = new testQR(text, courseName, teacherName);
+		// 获取二维码图片名称
+		String qrImg = tQr.createQR(request);
+		// 获取刚刚插入的课程
+		// 更新班级信息
+		// String clazzName = request.getParameter("clazzName");
+		// Clazz clazz2 = clazzServiceImpl.selectClazzByAll(clazzName,
+		// teacher.getTeacherMobile(), Integer.parseInt(current));
+		// clazzServiceImpl.updateClazzOfCourseId(clazz2.getClazzId(),
+		// course2.getCourseId());
+		// 以更新的方式插入二维码图片信息回数据库
+		courseServiceImpl.updateQrImg(course2.getCourseId(), qrImg);
 		System.out.println(qrImg);
-		//返回教师页
+		// 返回教师页
 		Teacher teacher2 = teacherServiceImpl.selectTeacherByEmail(rono);
-		List<Course> courses  = courseServiceImpl.selectCourseByTeacher(teacher2.getTeacherMobile());
+		List<Course> courses = courseServiceImpl.selectCourseByTeacher(teacher2.getTeacherMobile());
 		map.addAttribute("courses", courses);
-		map.addAttribute("teacher", teacher2);		
+		map.addAttribute("teacher", teacher2);
 		return "teacherPage";
 	}
-	
+
+	@RequestMapping(value = "/createQrNew.do")
+	public String createQrNew(ModelMap map, HttpServletRequest request) {
+		System.out.println("进入");
+		String teacherMobile = request.getParameter("teacherMobile");
+		int courseId = Integer.parseInt(request.getParameter("courseId"));
+		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
+		Course course = courseServiceImpl.selectCourseById(courseId);
+		List<Clazz> clazzs = clazzServiceImpl.selectClazzByCourse(courseId);
+		map.put("course", course);
+		map.put("teacher", teacher);
+		map.put("clazz", clazzs);
+		return "qrStudent";
+	}
+
+	@RequestMapping(value = "/forsearchClazz.do")
+	public String forInsertClazz(int courseId, ModelMap map) {
+		Course course = courseServiceImpl.selectCourseById(courseId);
+		System.out.println(course.getCourseName());
+		map.put("course", course);
+		return "clazzInfo";
+	}
 
 }

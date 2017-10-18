@@ -1,5 +1,7 @@
 package com.qdu.serviceimpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,5 +23,15 @@ public class StudentServiceImpl implements StudentService{
 	@Override
 	public Student selectStudentByNo(String studentRoNo) {
 		return studentDaoImpl.selectStudentByNo(studentRoNo);
+	}
+
+	@Override
+	public List<Student> selectStudentByClazzId(int clazzId) {
+		return studentDaoImpl.selectStudentByClazzId(clazzId);
+	}
+
+	@Override
+	public void updateStudentOfClazzId(String studentRoNo, int clazzId) {
+		studentDaoImpl.updateStudentOfClazzId(studentRoNo, clazzId);
 	}
 }

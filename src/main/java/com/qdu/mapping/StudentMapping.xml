@@ -111,8 +111,10 @@
 	</select>
 	<select id="selectStudentByTeacher" resultMap="StudentResult">
 		select * from
-		Student where StudentRoNo in(select StudentRoNo from Teacher where
-		TeacherMobile = #{teacherMobile})
+		Student s,Teacher t where 
+		s.TeacherMobile = t.TeacherMobile
+		and
+		t.TeacherMobile = #{teacherMobile}
 	</select>
 	<select id="selectStudentByStudentInfoId" resultMap="StudentResult">
 		select *
@@ -122,9 +124,9 @@
 	</select>
 	
 	<select id="selectStudentByClazzId" resultMap="StudentResult">
-	select * from Student where StudentRoNo in(select StudentRoNo from
-		Clazz
-		where ClazzId = #{clazzId});
+	select * from Student s,Clazz c where s.ClazzId = c.ClazzId 
+	and c.ClazzId = #{clazzId} 
+
 	</select>
 
 	<select id="selectStudentByNo" resultMap="StudentResult">
@@ -137,5 +139,11 @@
 		Student(StudentRoNo,StudentPassword,StudentMobile,StudentEmail,StudentName,StudentGender,StudentPhoto)
 		values(#{studentRoNo},#{studentPassword},#{studentMobile},#{studentEmail},#{studentName},#{studentGender},#{studentPhoto})
 	</insert>
+	
+	<update id="updateStudentOfClazzId" parameterType="HashMap">
+	update Student set
+	ClazzId = #{clazzId}
+	where StudentRoNo = #{studentRoNo}
+	</update>
 
 </mapper>

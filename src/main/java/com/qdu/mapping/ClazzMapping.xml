@@ -198,7 +198,7 @@
 		c.CourseId = o.CourseId
 		AND o.CourseId = #{courseId}
 	</select>
-
+	
 	<select id="selectClazzByAll" resultMap="ClazzResult"
 		parameterType="HashMap">
 		select * from Clazz where ClazzName = #{clazzName} AND

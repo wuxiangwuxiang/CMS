@@ -7,7 +7,7 @@ public class StudentInfo {
  
 	private int studentInfoId;
 	private List<Student> students;
-	private List<Course> courses;
+	private List<Course> course;
 	private int comeLate;
 	private int leaveEarlier;
 	private int absenteeism;
@@ -22,12 +22,6 @@ public class StudentInfo {
 	}
 	public void setStudents(List<Student> students) {
 		this.students = students;
-	}
-	public List<Course> getCourses() {
-		return courses;
-	}
-	public void setCourses(List<Course> courses) {
-		this.courses = courses;
 	}
 	public int getComeLate() {
 		return comeLate;
@@ -47,11 +41,17 @@ public class StudentInfo {
 	public void setAbsenteeism(int absenteeism) {
 		this.absenteeism = absenteeism;
 	}
-//	@Override
-//	public String toString() {
-//		return "StudentInfo [studentInfoId=" + studentInfoId + ", students=" + students + ", courses=" + courses
-//				+ ", comeLate=" + comeLate + ", leaveEarlier=" + leaveEarlier + ", absenteeism=" + absenteeism + "]";
-//	}
-	
+	public List<Course> getCourse() {
+		return course;
+	}
+	public void setCourse(List<Course> course) {
+		this.course = course;
+	}
+	@Override
+	public String toString() {
+		return "StudentInfo [studentInfoId=" + studentInfoId + ", students=" + students + ", course=" + course
+				+ ", comeLate=" + comeLate + ", leaveEarlier=" + leaveEarlier + ", absenteeism=" + absenteeism + "]";
+	}
+
 	
 }

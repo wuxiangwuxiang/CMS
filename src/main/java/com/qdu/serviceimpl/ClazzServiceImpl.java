@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.qdu.dao.ClazzDao;
 import com.qdu.daoimpl.CourseDaoImpl;
 import com.qdu.pojo.Clazz;
+import com.qdu.pojo.Student;
 import com.qdu.service.ClazzService;
 
 @Transactional

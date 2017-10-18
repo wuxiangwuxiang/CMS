@@ -48,7 +48,7 @@
 			</association>
 		</collection>
 
-		<collection property="coueses" ofType="com.qdu.pojo.Course"
+		<collection property="course" ofType="com.qdu.pojo.Course"
 			javaType="ArrayList" column="StudentInfoId"
 			select="com.qdu.mapping.CourseMapping.selectCourseByStudentInfoId">
 			<id property="courseId" column="CourseId" />
@@ -98,6 +98,12 @@
 		Course
 		where CourseId = #{courseId})
 	</select>
-
+	
+	
+	<insert id="insertStudentInfo" parameterType="HashMap">
+	insert into 
+	StudentInfo(StudentRoNo,CourseId) 
+	values(#{studentRoNo},#{courseId})
+	</insert>
 
 </mapper>
