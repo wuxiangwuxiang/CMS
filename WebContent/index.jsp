@@ -17,14 +17,14 @@
 			$('#loginForm').toggle();
 		});
 		$('#sss').click(function() {
-			$('#sss').css("background-color", "rgba(0,0,0,0.3)");
+			$('#sss').css("background-color", "rgba(0,0,0,1)");
 			$('#ttt').css("background-color", "rgba(0,0,0,0)");
 			$('#studentForm').show();
 			$('#teacherForm').hide();
 		});
 		$('#ttt').click(function() {
 			$('#sss').css("background-color", "rgba(0,0,0,0)");
-			$('#ttt').css("background-color", "rgba(0,0,0,0.3)");
+			$('#ttt').css("background-color", "rgba(0,0,0,1)");
 			$('#studentForm').hide();
 			$('#teacherForm').show();
 		});
@@ -33,7 +33,7 @@
 </head>
 
 <body
-	style="background-image: url('lib/backimg1.jpg'); background-repeat: no-repeat; background-size: cover;">
+	style="background-image: url('lib/timg (1).jpg'); background-repeat: no-repeat; background-size: cover;">
 
 
 	<div style="width: 100%; height: 1000px">
@@ -53,9 +53,9 @@
 			<div id="navbar" class="navbar-collapse collapse">
 
 				<div id="loginForm"
-					style="width: 30%; higth: 100%; margin-top: 170px; background-color: rgba(0, 0, 0, 0.1); position: fixed; margin-left: 320px; display: none;">
+					style="width: 30%; higth: 100%; margin-top: 170px; background-color:rgba(0, 0, 0, 0.7); position: fixed; margin-left: 320px; display: none;">
 					<a href="#" id="sss" class="alogin"
-						style="float: left; text-decoration: none; color: white; font-size: 28px; background-color: rgba(0,0,0,0.3); ">学生登录</a>
+						style=" float: left; text-decoration: none; color: white; font-size: 28px; background-color: rgba(0,0,0,1); ">学生登录</a>
 					<a href="#" id="ttt" class="alogin"
 						style="float: left; text-decoration: none; color: white; font-size: 28px;">教师登录</a>
 					<form id="studentForm"
@@ -96,7 +96,7 @@
 
 
 		<div
-			style="background-color: rgba(0, 0, 0, 0.5); height: 100%; background-size: cover;">
+			style="background-color: rgba(0, 0, 0, 0.6); height: 100%; background-size: cover;">
 			<div class="container"></div>
 		</div>
 	</div>
