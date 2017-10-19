@@ -10,8 +10,12 @@
 <title>教师门户</title>
  <script type="text/javascript">
 	 $(document).ready(function () {
+		 var tem;
 		 $('#createCourse').click(function() {
 			$('#courseShow').toggle();
+		});
+		 $('#false').click(function() {
+			$('#torf').hide();
 		});
 	 });
 	 function showQrImg(id) {
@@ -20,9 +24,49 @@
 		     imgPre.style.display = "block";
 		     imgPre.src = url;
 		}
+	 function forDeleteThis(courseId) {
+		 var courseId = courseId;
+		 tem = courseId;
+		 document.getElementById("torf").style.display = "block";
+	}
+	 function deleteThis() {
+		 var Id = tem;
+		 lookApplyPeople(Id); 
+	}
+	 
+	 
+	  function lookApplyPeople(courseId) {
+          $.ajax({
+              type: "GET",
+              data: {
+                  "courseId": courseId
+              },
+              contentType: "application/json; charset=utf-8",
+              async: true,
+              url: "http://localhost:8080/ClassManageSys/course/deleteCourseById.do",
+//              beforeSend:function(){$("#href").html("等待..");},
+              success: function (data) {
+            	  document.getElementById("abs"+tem).style.display = "none";
+              },
+              error: function (data) {
+                  alert("出错了！");
+              },
+              dataType: "json",
+          });
+          document.getElementById("torf").style.display = "none";
+      }
 	</script>
 </head>
 <body>
+
+<div id="torf" style="width: 180px; height: 150px; position: fixed; top: 200px;margin-left: 45%;
+  background-color:white;border: solid;border-color: #C0C0C0; display: none;">
+        <h3 style="color: red;text-align: center;">确定删除？</h3> 
+        <a id="delete" onclick="deleteThis()" href="#" style="float: left; margin-left:30px;margin-top: 30px;">删除</a>
+        <a id="false" href="#" style="float: left; margin-left:60px;margin-top: 30px;">取消</a>
+        </div>
+
+
 <h1>${teacher.teacherName}老师</h1><br/>
 <a id="createCourse" href="#">新建课程</a><br/>
 
@@ -54,7 +98,7 @@
             <c:choose>
             <c:when test="${! empty courses}">
             <c:forEach items="${courses}" var="r">
-                <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
+                <tr id = "abs${r.courseId}" onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
                     <td><a href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">${r.courseName}</a></td>
                     <td style="text-align: center;"><a id="${r.qrImg}" onclick="showQrImg(this.id)" href="#">获取</a></td>
                     <td style="text-align: center;">${r.currentYear}</td>
@@ -73,7 +117,7 @@
                     </td>
                     <td><a href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">查看</a></td>
                     <td><a href="<%=request.getContextPath()%>/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a></td>
-                    <td><a href="<%=request.getContextPath()%>/course/deleteCourseById.do?courseId=${r.courseId}">删除</a></td>
+                    <td><a id="${r.courseId}" onclick="forDeleteThis(this.id)" href="#">删除</a></td>
                 </tr>
             </c:forEach>
                 </c:when>
@@ -86,5 +130,7 @@
         <div>
         <img id="target" style="width: 150px; height: 140px;" alt="课程二维码" src=""/>
         </div>
+        
+        
 </body>
 </html>

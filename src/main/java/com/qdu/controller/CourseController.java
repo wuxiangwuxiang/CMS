@@ -1,6 +1,8 @@
 package com.qdu.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.qdu.pojo.Clazz;
 import com.qdu.pojo.Course;
@@ -123,19 +126,32 @@ public class CourseController {
 		return "teacherPage";
 	}
 	
+//	@RequestMapping(value = "/deleteCourseById.do")
+//	public String deleteCourseById(int courseId,ModelMap map){
+//		Course course = courseServiceImpl.selectCourseById(courseId);
+//		studentInfoServiceImpl.deleteStudentInfoByCourse(courseId);
+//		List<Clazz> clazzs = clazzServiceImpl.clazzListByClazzId(courseId);
+//		for(Clazz clazz : clazzs){
+//			clazzServiceImpl.updateClazzByCourseId(clazz.getClazzId());
+//		}
+//		courseServiceImpl.deleteCourseById(courseId);
+//		Teacher teacher = course.getTeacher();
+//		List<Course> courses  = courseServiceImpl.selectCourseByTeacher(teacher.getTeacherMobile());
+//		map.addAttribute("courses", courses);
+//		map.put("teacher", teacher);
+//		return "teacherPage";
+//	}
 	@RequestMapping(value = "/deleteCourseById.do")
-	public String deleteCourseById(int courseId,ModelMap map){
-		Course course = courseServiceImpl.selectCourseById(courseId);
+    public @ResponseBody Map<String, Object> messageTarget(int courseId) {
 		studentInfoServiceImpl.deleteStudentInfoByCourse(courseId);
 		List<Clazz> clazzs = clazzServiceImpl.clazzListByClazzId(courseId);
 		for(Clazz clazz : clazzs){
 			clazzServiceImpl.updateClazzByCourseId(clazz.getClazzId());
 		}
 		courseServiceImpl.deleteCourseById(courseId);
-		Teacher teacher = course.getTeacher();
-		List<Course> courses  = courseServiceImpl.selectCourseByTeacher(teacher.getTeacherMobile());
-		map.addAttribute("courses", courses);
-		map.put("teacher", teacher);
-		return "teacherPage";
-	}
+        Map<String, Object> userMap = new HashMap<String, Object>();
+        userMap.put("messages", "删除成功");
+        System.out.println("删除成功啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊");
+        return userMap;
+    }
 }
