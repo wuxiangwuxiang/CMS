@@ -19,29 +19,6 @@
 			<result property="teacherName" column="TeacherName" />
 			<result property="teacherGender" column="TeacherGender" />
 			<result property="teacherSubject" column="TeacherSubject" />
-
-			<collection property="student" ofType="com.qdu.pojo.Student"
-				javaType="ArrayList" column="CourseName"
-				select="com.qdu.mapping.StudentMapping.selectStudentByTeacher">
-				<id property="studentRoNo" column="StudentRoNo" />
-				<result property="studentPassword" column="StudentPassword" />
-				<result property="studentMobile" column="StudentMobile" />
-				<result property="studentEmail" column="StudentEmail" />
-				<result property="studentName" column="StudentName" />
-				<result property="studentGender" column="StudentGender" />
-				<result property="studentPhoto" column="StudentPhoto" />
-				<association property="course" javaType="com.qdu.pojo.Course">
-					<id property="courseId" column="CourseId" />
-					<result property="courseName" column="CourseName" />
-					<result property="courseType" column="CourseType" />
-					<result property="classCapacity" column="ClassCapacity" />
-					<result property="startTime" column="StartTime" />
-					<result property="endTime" column="EndTime" />
-					<result property="currentYear" column="CurrentYear" />
-					<result property="schoolTem" column="SchoolTem" />
-					<result property="qrImg" column="QrImg" />
-				</association>
-			</collection>
 		</association>
 
 		<collection property="studentInfo" ofType="com.qdu.pojo.StudentInfo"
@@ -71,26 +48,6 @@
 					<result property="teacherSubject" column="TeacherSubject" />
 				</association>
 			</collection>
-		</collection>
-
-		<collection property="student" ofType="com.qdu.pojo.Student"
-			javaType="ArrayList" column="CourseId"
-			select="com.qdu.mapping.StudentMapping.selectStudentByCourse">
-			<id property="studentRoNo" column="StudentRoNo" />
-			<result property="studentPassword" column="StudentPassword" />
-			<result property="studentMobile" column="StudentMobile" />
-			<result property="studentEmail" column="StudentEmail" />
-			<result property="studentName" column="StudentName" />
-			<result property="studentGender" column="StudentGender" />
-			<result property="studentPhoto" column="StudentPhoto" />
-			<association property="teacher" javaType="com.qdu.pojo.Teacher">
-				<id property="teacherMobile" column="TeacherMobile" />
-				<result property="teacherEmail" column="TeacherEmail" />
-				<result property="teacherPassword" column="TeacherPassword" />
-				<result property="teacherName" column="TeacherName" />
-				<result property="teacherGender" column="TeacherGender" />
-				<result property="teacherSubject" column="TeacherSubject" />
-			</association>
 		</collection>
 
 		<!-- 班级表 -->
@@ -150,10 +107,8 @@
 
 	<select id="selectCourseList" parameterType="ArrayList"
 		resultMap="CourseResult">
-		SELECT * from
-		Course c JOIN Teacher t LEFT JOIN Clazz a
-		ON c.CourseId = a.CourseId
-		AND c.TeacherMobile = #{teacherMobile}
+		SELECT * from Teacher t JOIN course c ON t.TeacherMobile = c.TeacherMobile 
+		AND t.TeacherMobile = #{teacherMobile}
 		ORDER BY c.CourseId DESC
 	</select>
 
@@ -200,5 +155,9 @@
 		where CourseId =
 		${courseId}
 	</update>
+	
+	<delete id="deleteCourseById" parameterType = "int">
+	delete from Course where CourseId = #{courseId}
+	</delete>
 </mapper>
 

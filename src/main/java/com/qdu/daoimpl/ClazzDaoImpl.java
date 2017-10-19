@@ -48,5 +48,17 @@ public class ClazzDaoImpl implements ClazzDao{
 		String statement = "com.qdu.mapping.ClazzMapping.selectClazzByCourse";
 		return sqlSessionFactory.openSession().selectList(statement, courseId);
 	}
+
+	@Override
+	public List<Clazz> clazzListByClazzId(int courseId) {
+		String statement = "com.qdu.mapping.ClazzMapping.clazzListByClazzId";
+		return sqlSessionFactory.openSession().selectList(statement, courseId);
+	}
+
+	@Override
+	public void updateClazzByCourseId(int clazzId) {
+		String statement = "com.qdu.mapping.ClazzMapping.updateClazzByCourseId";
+		sqlSessionFactory.openSession().update(statement, clazzId);
+	}
 	
 }

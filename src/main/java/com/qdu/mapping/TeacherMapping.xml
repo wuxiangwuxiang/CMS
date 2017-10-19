@@ -53,29 +53,6 @@
 			</collection>
 
 		</collection>
-
-		<collection property="student" ofType="com.qdu.pojo.Student"
-			javaType="ArrayList" column="CourseName"
-			select="com.qdu.mapping.StudentMapping.selectStudentByTeacher">
-			<id property="studentRoNo" column="StudentRoNo" />
-			<result property="studentPassword" column="StudentPassword" />
-			<result property="studentMobile" column="StudentMobile" />
-			<result property="studentEmail" column="StudentEmail" />
-			<result property="studentName" column="StudentName" />
-			<result property="studentGender" column="StudentGender" />
-			<result property="studentPhoto" column="StudentPhoto" />
-			<association property="course" javaType="com.qdu.pojo.Course">
-				<id property="courseId" column="CourseId" />
-				<result property="courseName" column="CourseName" />
-				<result property="courseType" column="CourseType" />
-				<result property="classCapacity" column="ClassCapacity" />
-				<result property="startTime" column="StartTime" />
-				<result property="endTime" column="EndTime" />
-				<result property="currentYear" column="CurrentYear" />
-				<result property="schoolTem" column="SchoolTem" />
-				<result property="qrImg" column="QrImg" />
-			</association>
-		</collection>
 		
 		
 	</resultMap>

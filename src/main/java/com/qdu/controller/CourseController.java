@@ -16,18 +16,17 @@ import com.qdu.pojo.Teacher;
 import com.qdu.qr.testQR;
 import com.qdu.service.ClazzService;
 import com.qdu.service.CourseService;
+import com.qdu.service.StudentInfoService;
 import com.qdu.service.TeacherService;
 
 @Controller
 @RequestMapping(value = "/course")
 public class CourseController {
 
-	@Autowired
-	CourseService courseServiceImpl;
-	@Autowired
-	TeacherService teacherServiceImpl;
-	@Autowired
-	ClazzService clazzServiceImpl;
+	@Autowired CourseService courseServiceImpl;
+	@Autowired TeacherService teacherServiceImpl;
+	@Autowired ClazzService clazzServiceImpl;
+	@Autowired StudentInfoService studentInfoServiceImpl;
 
 	// 教师插入课程
 	@RequestMapping(value = "/insertCourse.do", method = RequestMethod.POST)
@@ -121,6 +120,22 @@ public class CourseController {
 		List<Course> courses = courseServiceImpl.selectCourseByTeacher(rono);
 		map.addAttribute("courses", courses);
 		map.addAttribute("teacher", teacher2);
+		return "teacherPage";
+	}
+	
+	@RequestMapping(value = "/deleteCourseById.do")
+	public String deleteCourseById(int courseId,ModelMap map){
+		Course course = courseServiceImpl.selectCourseById(courseId);
+		studentInfoServiceImpl.deleteStudentInfoByCourse(courseId);
+		List<Clazz> clazzs = clazzServiceImpl.clazzListByClazzId(courseId);
+		for(Clazz clazz : clazzs){
+			clazzServiceImpl.updateClazzByCourseId(clazz.getClazzId());
+		}
+		courseServiceImpl.deleteCourseById(courseId);
+		Teacher teacher = course.getTeacher();
+		List<Course> courses  = courseServiceImpl.selectCourseByTeacher(teacher.getTeacherMobile());
+		map.addAttribute("courses", courses);
+		map.put("teacher", teacher);
 		return "teacherPage";
 	}
 }

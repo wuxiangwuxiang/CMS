@@ -17,7 +17,6 @@ public class Course {
 	private int currentYear;
 	private String schoolTem;
 	private String qrImg;
-	private List<Student> student;
 	private List<Clazz> clazz;
 	private Teacher teacher;
 	private List<StudentInfo> studentInfo;
@@ -97,14 +96,6 @@ public class Course {
 
 	public void setSchoolTem(String schoolTem) {
 		this.schoolTem = schoolTem;
-	}
-
-	public List<Student> getStudent() {
-		return student;
-	}
-
-	public void setStudent(List<Student> student) {
-		this.student = student;
 	}
 
 	public Teacher getTeacher() {

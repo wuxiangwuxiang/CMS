@@ -105,5 +105,9 @@
 	StudentInfo(StudentRoNo,CourseId) 
 	values(#{studentRoNo},#{courseId})
 	</insert>
+	
+	<delete id="deleteStudentInfoByCourse" parameterType="int">
+	delete from StudentInfo where CourseId = #{clazzId}
+	</delete>
 
 </mapper>

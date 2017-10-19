@@ -34,5 +34,13 @@ public class ClazzServiceImpl implements ClazzService{
 	public List<Clazz> selectClazzByCourse(int courseId) {
 		return clazzDaoImpl.selectClazzByCourse(courseId);
 	}
+	@Override
+	public List<Clazz> clazzListByClazzId(int courseId) {
+		return clazzDaoImpl.selectClazzByCourse(courseId);
+	}
+	@Override
+	public void updateClazzByCourseId(int clazzId) {
+		clazzDaoImpl.updateClazzByCourseId(clazzId);
+	}
 
 }

@@ -8,8 +8,6 @@ public class Student {
 	private String studentName;
 	private String studentGender;
 	private String studentPhoto;
-	private Teacher teacher;
-	private Course course;
 	private Clazz clazz;
 	private StudentInfo studentInfo;
 	public String getStudentRoNo() {
@@ -56,19 +54,7 @@ public class Student {
 	public void setStudentPhoto(String studentPhoto) {
 		this.studentPhoto = studentPhoto;
 	}
-	public Teacher getTeacher() {
-		return teacher;
-	}
-	public void setTeacher(Teacher teacher) {
-		this.teacher = teacher;
-	}
-	public Course getCourse() {
-		return course;
-	}
-	public void setCourse(Course course) {
-		this.course = course;
-	}
-	
+
 	public StudentInfo getStudentInfo() {
 		return studentInfo;
 	}

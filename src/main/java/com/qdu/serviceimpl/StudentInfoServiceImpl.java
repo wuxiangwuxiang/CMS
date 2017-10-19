@@ -17,6 +17,11 @@ public class StudentInfoServiceImpl implements StudentInfoService{
 	public void insertStudentInfo(String studentRoNo,int courseId) {
 		studentInfoDaoImpl.insertStudentInfo(studentRoNo,courseId);
 	}
+
+	@Override
+	public void deleteStudentInfoByCourse(int courseId) {		
+		studentInfoDaoImpl.deleteStudentInfoByCourse(courseId);
+	}
 	
 
 }

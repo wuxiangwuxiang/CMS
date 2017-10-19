@@ -9,7 +9,6 @@ public class Teacher {
 	private String teacherName;
 	private String teacherGender;
 	private String teacherSubject;
-	private List<Student> student;
 	private List<Course> course;
 	public String getTeacherMobile() {
 		return teacherMobile;
@@ -48,13 +47,7 @@ public class Teacher {
 	public void setTeacherSubject(String teacherSubject) {
 		this.teacherSubject = teacherSubject;
 	}
-	public List<Student> getStudent() {
-		return student;
-	}
-	public void setStudent(List<Student> student) {
-		this.student = student;
-	} 
-	
+
 	public List<Course> getCourse() {
 		return course;
 	}

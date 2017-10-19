@@ -17,5 +17,7 @@ public interface CourseService {
 	public Course selectCourseById(int courseId);
 	
 	public void updateCourse(Course course);
+	
+	public void deleteCourseById(int courseId);
 
 }

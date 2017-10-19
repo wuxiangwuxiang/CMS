@@ -59,4 +59,10 @@ public class CourseDaoImpl implements CourseDao {
 		SqlSessionFactory.openSession().update(statement, course);
 	}
 
+	@Override
+	public void deleteCourseById(int courseId) {
+		String statement = "com.qdu.mapping.CourseMapping.deleteCourseById";
+		SqlSessionFactory.openSession().delete(statement, courseId);
+	}
+
 }

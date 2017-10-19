@@ -15,4 +15,8 @@ public interface ClazzService {
 	
 	public List<Clazz> selectClazzByCourse(int courseId);
 	
+	public List<Clazz> clazzListByClazzId(int courseId);
+	
+	public void updateClazzByCourseId(int clazzId);
+	
 	}

@@ -55,7 +55,7 @@
             <c:when test="${! empty courses}">
             <c:forEach items="${courses}" var="r">
                 <tr onmouseover="this.style.backgroundColor = '#ffff66';" onmouseout="this.style.backgroundColor = '#d4e3e5';">
-                    <td><a href="#">${r.courseName}</a></td>
+                    <td><a href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">${r.courseName}</a></td>
                     <td style="text-align: center;"><a id="${r.qrImg}" onclick="showQrImg(this.id)" href="#">获取</a></td>
                     <td style="text-align: center;">${r.currentYear}</td>
                     <td style="text-align: center;">
@@ -73,7 +73,7 @@
                     </td>
                     <td><a href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">查看</a></td>
                     <td><a href="<%=request.getContextPath()%>/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a></td>
-                    <td><a href="#">删除</a></td>
+                    <td><a href="<%=request.getContextPath()%>/course/deleteCourseById.do?courseId=${r.courseId}">删除</a></td>
                 </tr>
             </c:forEach>
                 </c:when>
