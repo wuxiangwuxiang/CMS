@@ -167,8 +167,8 @@
 	</select>
 
 	<insert id="insertClazz" parameterType="com.qdu.pojo.Clazz">
-		insert into Clazz(ClazzName,CurrentYear,CourseId,TeacherMobile)
-		values(#{clazzName},#{currentYear},#{course.courseId},#{teacher.teacherMobile})
+		insert into Clazz(ClazzName,CurrentYear,CourseId)
+		values(#{clazzName},#{currentYear},#{course.courseId})
 	</insert>
 
 	<update id="updateClazzOfCourseId" parameterType="HashMap">

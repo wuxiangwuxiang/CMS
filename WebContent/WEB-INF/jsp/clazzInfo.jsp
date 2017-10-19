@@ -11,6 +11,7 @@
 
 	<h3>课程：${course.courseName}</h3>
 	<input type="text" value="${course.courseId}" style="display: none;" />
+	<a href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a>
 	<table  border="1">
 		<tr>
 			<th>班级</th>
@@ -34,7 +35,7 @@
 				</c:forEach>
 			</c:when>
 			<c:otherwise>
-				<h3>(空)</h3>
+				<a>(空)</a>
 			</c:otherwise>
 		</c:choose>
 	</table>
