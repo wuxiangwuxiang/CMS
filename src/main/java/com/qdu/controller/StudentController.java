@@ -75,13 +75,14 @@ public class StudentController {
 		return "addStudent";
 	}
 
-	// ajax添加学生
+	// 添加学生
 	@RequestMapping(value = "/insertStudent.do", method = RequestMethod.POST)
 	public String insertTemporary(HttpServletRequest request, @RequestParam("file") MultipartFile file, ModelMap map,
 			Student student) {
 		String path = request.getSession().getServletContext().getRealPath("/") + "studentPhoto";
 		System.out.println(path);
 		String fileName = file.getOriginalFilename();
+		System.out.println(fileName);
 		File targetFile = new File(path, fileName);
 		if (!targetFile.exists()) {
 			targetFile.mkdirs();
