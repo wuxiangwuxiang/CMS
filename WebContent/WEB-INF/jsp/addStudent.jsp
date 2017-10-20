@@ -79,7 +79,7 @@
 
 
 	<div
-		style="background-color: white; margin-left: 25%; margin-right: 25%; margin-top: 8%; padding-left: 250px; padding-right: 250px; padding-top: 50px; padding-bottom: 50px;">
+		style="background-color: white; margin-left: 20%; margin-right: 20%; padding-left: 250px; padding-right: 250px; padding-top: 8%; padding-bottom: 50px;">
 		<form class="layui-form layui-form-pane" action="" value="studentForm">
 			<div class="layui-form-item">
 				<label class="layui-form-label" for="id">学号</label>
@@ -180,29 +180,5 @@
 			});
 		});
 	</script>
-
-
-
-
-	<!-- 	<div> -->
-	<!-- 		<form id="uploadForm" -->
-	<%-- 			action="<%=request.getContextPath()%>/student/insertStudent.do" --%>
-	<!-- 			enctype="multipart/form-data" method="post"> -->
-	<!-- 			学号：<input type="text" name="studentRoNo"><br /> 密码：<input -->
-	<!-- 				type="password" name="studentPassword" /><br /> 手机：<input -->
-	<!-- 				type="text" name="studentMobile"><br /> 邮箱：<input -->
-	<!-- 				type="text" name="studentEmail"><br /> 名字：<input -->
-	<!-- 				type="text" name="studentName"><br /> 性别：<input type="text" -->
-	<!-- 				name="studentGender"><br /> -->
-	<!-- 				 照片：<input type="file" name="file" id="uploadFile" style="display: none;" onchange="preImg(this.id, 'imgPre','tct');" /> -->
-	<!-- 				<input type="button" value="上传图片" onclick="uploadFile.click()"/><br />  -->
-	<!-- 				<input id="tct" type="text" name="studentPhoto" value="" -->
-	<!-- 				style="display: none" />  -->
-	<!-- 			<img alt="请上传一寸照片" style="width: 100px; height: 140px" id="imgPre" -->
-	<!-- 				src=""> -->
-	<!-- 				<input type="submit" value="提交" /><br /> -->
-	<!-- 		</form> -->
-
-	<!-- 	</div> -->
 </body>
 </html>
