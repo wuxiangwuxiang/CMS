@@ -53,9 +53,9 @@
 			<div id="navbar" class="navbar-collapse collapse">
 
 				<div id="loginForm"
-					style="width: 30%; higth: 100%; margin-top: 170px; background-color:rgba(0, 0, 0, 0.7); position: fixed; margin-left: 320px; display: none;">
+					style="width: 30%; higth: 100%; margin-top: 170px; background-color: rgba(0, 0, 0, 0.7); position: fixed; margin-left: 320px; display: none;">
 					<a href="#" id="sss" class="alogin"
-						style=" float: left; text-decoration: none; color: white; font-size: 28px; background-color: rgba(0,0,0,1); ">学生登录</a>
+						style="float: left; text-decoration: none; color: white; font-size: 28px; background-color: rgba(0, 0, 0, 1);">学生登录</a>
 					<a href="#" id="ttt" class="alogin"
 						style="float: left; text-decoration: none; color: white; font-size: 28px;">教师登录</a>
 					<form id="studentForm"
@@ -66,9 +66,8 @@
 							style="color: white">密码:</span>><input name="studentPassword"
 							type="password" /><br /> <br /> <input
 							class="btn btn-primary btn-lg" style="width: 150px" type="submit"
-							value="登录" /> <br>
-						<br>
-						<a href="<%=request.getContextPath()%>/student/addStudent.do"
+							value="登录" /> <br> <br> <a
+							href="<%=request.getContextPath()%>/student/addStudent.do"
 							target="_blank" style="margin-left: 300px">去注册>></a>
 					</form>
 					<form id="teacherForm"
@@ -78,12 +77,11 @@
 						<br> <br> <br> <br> <span style="color: white">手机:</span>><input
 							name="teacherId" type="text" /><br /> <br /> <span
 							style="color: white">密码:</span>><input name="password"
-							type="password" /><br /> <br /> <input class="btn btn-primary btn-lg" style="width: 150px" type="submit"
-							value="登录" />
-							<br><br>
-							 <a
+							type="password" /><br /> <br /> <input
+							class="btn btn-primary btn-lg" style="width: 150px" type="submit"
+							value="登录" /> <br> <br> <a
 							href="<%=request.getContextPath()%>/teacher/forTeacherRegister.do"
-							style="margin-left: 300px" >去注册>></a>
+							style="margin-left: 300px">去注册>></a>
 					</form>
 					<br> <br> <br> <br> <br>
 				</div>
@@ -99,6 +97,23 @@
 			style="background-color: rgba(0, 0, 0, 0.6); height: 100%; background-size: cover;">
 			<div class="container"></div>
 		</div>
+         
+         
+         
+         <div style="background-color: #222; height: 100px">
+            <div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">copyright by CMS team</a>
+         </div>
+
+
+
 	</div>
 
 </body>
