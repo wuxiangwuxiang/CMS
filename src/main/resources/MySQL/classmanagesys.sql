@@ -61,7 +61,7 @@ StudentName VARCHAR(6) NOT NULL,
 StudentGender VARCHAR(2),
 StudentPhoto VARCHAR(30),
 ClazzId INT,
-FOREIGN KEY(ClazzId) REFERENCES Clazz(ClazzId)
+FOREIGN KEY(ClazzId) REFERENCES Clazz(ClazzId) 
 )delimiter    
 create trigger tri_delete before delete on Clazz  
 for each row  
