@@ -131,7 +131,7 @@
 				<div class="layui-input-block">
 					<input type="radio" name="studentGender" value="男" title="男"
 						checked> 
-						<input type="radio" name="sex"
+						<input type="radio" name="studentGender"
 						value="女" title="女">
 				</div>
 			</div>
@@ -146,7 +146,7 @@
 					<input id="tct" type="text" name="studentPhoto" value=""
 						style="display: none" />
 						<button style="float: left;margin-left: 34%; width:100px" type="reset" class="layui-btn layui-btn-primary">重置</button>
-				        <br/><br/><br/><button style="margin-left: 0;" class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+				        <br/><br/><br/><button style="margin-left: 0;" class="layui-btn" lay-submit lay-filter="formDemo">现在注册</button>
 				</div>
 				
 				<!--  <div class="layui-upload-list" style="float: left;">
@@ -171,8 +171,39 @@
 			//监听提交
 			form.on('submit(formDemo)', function(data) {
 				layer.msg(JSON.stringify(data.field));
-				return true;
+				var id = $('#id').val();
+				if (trySubmit(id)) {
+					return true;
+				} else {
+					alert("用户已存在!");
+					return false;
+				}
 			});
+			
+			function trySubmit(id) {
+				var studentRoNo = id;
+				  var result = false;
+				$.ajax({
+		              type: "GET",
+		              data: {
+		                  "studentRoNo": studentRoNo
+		              },
+		              contentType: "application/json; charset=utf-8",
+		              async: false,
+		              dataType: "json",
+		              url: "http://localhost:8080/ClassManageSys/student/confirmExitsStudent.do",
+//		              beforeSend:function(){$("#href").html("等待..");},
+		              success: function (data) {
+		            	  if(data.result == true){
+		            		  result = true;
+		            	  }
+		              },
+		              error: function (data) {
+		            	  
+		              }
+		          });
+				  return result;
+			}
 
 			form.verify({
 				idvalidate:[/^[\d]{10,20}$/,'学号必须是10到20位数字'],

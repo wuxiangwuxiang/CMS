@@ -19,7 +19,9 @@
 		 $('#false').click(function() {
 			$('#torf').hide();
 		});
+
 	 });
+	
 	 function showQrImg(id) {
 		     var url = "/ClassManageSys/qrImg/" + id + ".gif";
 		     var imgPre = document.getElementById("target");
@@ -85,6 +87,11 @@
              dataType: "json",
          });
       }
+	 //跳转到班级页面，post
+	  function aClick(clazzId) {
+		  document.getElementById("asd"+clazzId).submit()
+      }
+
 	</script>
 </head>
 <body>
@@ -150,8 +157,12 @@
 						<td style="text-align: center;"><c:choose>
 								<c:when test="${! empty r.clazz}">
 									<c:forEach items="${r.clazz}" var="c">
-										<a href="#">${c.clazzName}</a>
-										<br />
+									<form id="asd${c.clazzId}" action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do" method="post">
+									<input name="clazzId" style="display: none;" value="${c.clazzId}"/>
+									<a id="${c.clazzId}" onclick="aClick(this.id)"
+							href="#">${c.clazzName}</a>
+									</form>
+										<br/>
 									</c:forEach>
 								</c:when>
 								<c:otherwise>

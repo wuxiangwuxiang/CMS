@@ -15,7 +15,7 @@
 		<th>性别</th>
 		<th>联系方式</th>
 		<th>照片</th>
-		<th colspan="2">操作</th>
+		<th colspan="1">操作</th>
 		</tr>
 		<c:choose>
 			<c:when test="${! empty student}">
@@ -26,8 +26,7 @@
 				<td>${s.studentGender}</td>
 				<td>${s.studentMobile}</td>
 				<td><img style="width: 60px; height: 80px" alt="${s.studentPhoto}" src="/ClassManageSys/studentPhoto/${s.studentPhoto}"/></td>
-				<td><a href="#">修改</a></td>
-				<td><a href="#">删除</a></td>
+				<td><a href="#">移出</a></td>
 				</tr>
 				</c:forEach>
 			</c:when>

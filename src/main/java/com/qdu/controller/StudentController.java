@@ -1,7 +1,9 @@
 package com.qdu.controller;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import com.qdu.pojo.Student;
 import com.qdu.service.StudentService;
@@ -48,10 +51,25 @@ public class StudentController {
 	public String waitForRegister() {
 		return "waitForRegister";
 	}
+	//ajax验证学号是否已经存在
+	@RequestMapping(value = "/confirmExitsStudent.do")
+	public @ResponseBody Map<String, Object> confirmExitsStudent(String studentRoNo) {
+		System.out.println(studentRoNo);
+		Map<String, Object> map = new HashMap<>();
+		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
+		if(student == null){
+			System.out.println("用户不存在可以插入");
+			map.put("result", true);
+		}else {
+			map.put("result", false);
+		}
+		return map;
+	}
 	
 	//通过clazz找student
-	@RequestMapping(value = "/selectStudentByClazzId.do")
+	@RequestMapping(value = "/selectStudentByClazzId.do",method = RequestMethod.POST)
 	public String selectStudentByClazzId(int clazzId,ModelMap map){
+		System.out.println(clazzId);
 		List<Student> students = studentServiceImpl.selectStudentByClazzId(clazzId);
 		map.put("student", students);
 		return "studentInfo";
