@@ -38,8 +38,6 @@ public class TeacherController {
 		if(teacher != null){
 		if(id.equals(teacher.getTeacherMobile()) && password.equals(teacher.getTeacherPassword())){
 			map.addAttribute("teacher",teacher);
-			System.out.println("....1"+clazzServiceImpl.selectClazzByCourse(1));
-			System.out.println("....2"+clazzServiceImpl.selectClazzByCourse(2));
 			List<Course> courses  = courseServiceImpl.selectCourseByTeacher(teacher.getTeacherMobile());
 			map.addAttribute("courses", courses);
 			// session的id存一下

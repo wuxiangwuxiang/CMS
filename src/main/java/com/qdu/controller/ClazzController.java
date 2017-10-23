@@ -1,13 +1,19 @@
 package com.qdu.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.qdu.pojo.Clazz;
 import com.qdu.pojo.Course;
+import com.qdu.pojo.Teacher;
 import com.qdu.service.ClazzService;
 import com.qdu.service.CourseService;
 
@@ -41,5 +47,23 @@ public class ClazzController {
 		Course course = courseServiceImpl.selectCourseById(courseId);
 		map.put("course", course);
 		return "clazzInfo";
+	}
+	
+	@RequestMapping(value="/changeClazzByAjax.do")
+	public @ResponseBody Map<String, Object>
+	changeClazzByAjax(int clazzId,String clazzName){
+		System.out.println("欢迎");
+		System.out.println(clazzId);
+		System.out.println(clazzName);
+		Clazz clazz = clazzServiceImpl.selectClazzById(clazzId);
+		Map<String, Object> map = new HashMap<>();
+		if(clazz != null){
+			clazz.setClazzName(clazzName);
+			clazzServiceImpl.updateClazzByClazzId(clazzId, clazzName);
+			map.put("message", "修改成功");
+		}else {
+			map.put("message", "修改失败，可能是学期发生了改变");
+		}
+		return map;
 	}
 }

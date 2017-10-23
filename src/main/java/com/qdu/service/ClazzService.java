@@ -19,4 +19,8 @@ public interface ClazzService {
 	
 	public void updateClazzByCourseId(int clazzId);
 	
+	public void updateClazzByClazzId(int clazzId,String clazzName);
+	
+	public Clazz selectClazzById(int clazzId);
+	
 	}

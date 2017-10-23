@@ -113,7 +113,17 @@ public class StudentController {
 		}
 		studentServiceImpl.insertStudentByNo(student);
 		System.out.println("学生注册成功");
+		map.put("student", student);
+		System.out.println(student.getStudentGender());
 		return "waitForRegister";
 	}
+	
+	//注册后跳转到首页
+		@RequestMapping(value="/exchangeStudent.do")
+		public String exchangeStudent(String studentRoNo,ModelMap map){
+			Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
+			map.put("student", student);
+			return "index";
+		}
 
 }

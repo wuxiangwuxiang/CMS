@@ -60,5 +60,20 @@ public class ClazzDaoImpl implements ClazzDao{
 		String statement = "com.qdu.mapping.ClazzMapping.updateClazzByCourseId";
 		sqlSessionFactory.openSession().update(statement, clazzId);
 	}
+
+	@Override
+	public void updateClazzByClazzId(int clazzId,String clazzName) {
+		Map<String, Object> map =new HashMap<String, Object>();
+		map.put("clazzId", clazzId);
+		map.put("clazzName", clazzName);
+		String statement = "com.qdu.mapping.ClazzMapping.updateClazzByClazzId";
+		sqlSessionFactory.openSession().update(statement, map);
+	}
+
+	@Override
+	public Clazz selectClazzById(int clazzId) {
+		String statement = "com.qdu.mapping.ClazzMapping.selectClazzById";
+		return sqlSessionFactory.openSession().selectOne(statement, clazzId);
+	}
 	
 }

@@ -7,11 +7,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>等待审核..</title>
-    </head>
-    <body>
-        <h1>注册信息已提交，信息审核通知三个工作日内将发送至您的邮箱，请注意查收..</h1>
-    </body>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="refresh" content="3;URL=http://localhost:8080/ClassManageSys/student/exchangeStudent.do?studentRoNo=${student.studentRoNo}">
+<link rel="shortcut icon" type="image/x-icon"
+	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
+<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-3.2.0.min.js"></script>
+<script type="text/javascript">
+</script>
+<title>等待跳转..</title>
+</head>
+<body onload="shownum()">
+	<h1>注册成功，<span id="time">3</span>s后自动跳转..</h1>
+</body>
 </html>

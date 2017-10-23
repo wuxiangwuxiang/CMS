@@ -5,7 +5,43 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="shortcut icon" type="image/x-icon"
+	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/jquery-3.2.0.min.js"></script>
 <title>班级信息</title>
+<script type="text/javascript">
+function aClick(clazzId) {
+	  document.getElementById("asd"+clazzId).submit()
+}
+function changeWhenClick(clazzId) {
+	 var clazzIdpre = clazzId.substring(3, );
+	 document.getElementById("preclazzId").value = clazzIdpre;
+	$('#clazzForm').toggle();	
+}
+
+function saveChange() {
+	 $.ajax({
+         type: "GET",
+         data: {
+        	 "clazzId": $('#preclazzId').val(),
+        	 "clazzName": $('#preclazzName').val()
+         },
+         contentType: "application/json; charset=utf-8",
+         dataType: "json",
+         async: false,
+         url: "http://localhost:8080/ClassManageSys/clazz/changeClazzByAjax.do",
+         success: function (data) {
+        	 alert(data.message);
+        	 window.location.reload();
+         },
+         error: function (data) {
+             alert("修改失败！");
+         },
+     });
+}
+
+</script>
 </head>
 <body>
 
@@ -27,8 +63,14 @@
 						<td>${c.clazzName}</td>
 						<td>${c.currentYear}</td>
 						<td></td>
-						<td><a href="<%=request.getContextPath()%>/student/selectStudentByClazzId.do?clazzId=${c.clazzId}">查看</a></td>
-						<td><a href="#">修改</a></td>
+						<td>
+						<form id="asd${c.clazzId}" action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do" method="post">
+									<input name="clazzId" style="display: none;" value="${c.clazzId}"/>
+									<a id="${c.clazzId}" onclick="aClick(this.id)"
+							href="#">查看</a>
+									</form>
+									</td>
+						<td><a id="zxc${c.clazzId}" onclick="changeWhenClick(this.id)" href="#">修改</a></td>
 						<td><a href="#">删除</a></td>
 					</tr>
 					<br />
@@ -39,6 +81,12 @@
 			</c:otherwise>
 		</c:choose>
 	</table>
-
+	<br/><br/>
+<form id="clazzForm" style="display: none">
+<input type="text" id="courseId" name="courseId" value="${course.courseId}"/><br/>
+<input type="text" id="preclazzId" name="preclazzId"><br/>
+班级名称：<input type="text" id="preclazzName" name="preclazzName"><br/>
+<input onclick="saveChange()" type="button" value="提交修改"/>
+</form>
 </body>
 </html>
