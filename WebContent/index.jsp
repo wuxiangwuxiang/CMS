@@ -28,6 +28,78 @@
 			$('#studentForm').hide();
 			$('#teacherForm').show();
 		});
+		//改变studentRoNo时通过ajax去后台查询是否数据库中存在此学号，存在即开放密码
+		$('#studentRono').change(function whenChange() {
+			var studentRono = $('#studentRono').val();
+			if(trySubmit(studentRono)){
+				alert("学号不存在，请先注册！");
+				$('#stpw').attr("disabled","disabled"); 
+				$('#stu').attr("disabled","disabled"); 
+			}else {
+				$('#stpw').removeAttr("disabled");
+				$('#stu').removeAttr("disabled");
+			}
+		});
+		
+		function trySubmit(studentRono) {
+			var result = false;
+			$.ajax({
+	              type: "GET",
+	              data: {
+	                  "studentRoNo": studentRono
+	              },
+	              contentType: "application/json; charset=utf-8",
+	              async: false,
+	              dataType: "json",
+	              url: "http://localhost:8080/ClassManageSys/student/confirmExitsStudent.do",
+//	              beforeSend:function(){$("#href").html("等待..");},
+	              success: function (data) {
+	            	  if(data.result == true){
+	            		  result = true;
+	            	  }
+	              },
+	              error: function (data) {
+	            	  
+	              }
+	          });
+			  return result;
+		}
+		
+		$('#teacherMobile').change(function whenChange() {
+			var teacherMobile = $('#teacherMobile').val();
+			if(tryLogin(teacherMobile)){
+				alert("账号不存在，请先注册！");
+				$('#tcpw').attr("disabled","disabled"); 
+				$('#tea').attr("disabled","disabled"); 
+			}else {
+				$('#tcpw').removeAttr("disabled");
+				$('#tea').removeAttr("disabled");
+			}
+		});
+		
+		function tryLogin(teacherMobile) {
+			  var result = false;
+			$.ajax({
+	              type: "GET",
+	              data: {
+	                  "teacherMobile": teacherMobile
+	              },
+	              contentType: "application/json; charset=utf-8",
+	              async: false,
+	              dataType: "json",
+	              url: "http://localhost:8080/ClassManageSys/teacher/confirmExitsTeacher.do",
+//	              beforeSend:function(){$("#href").html("等待..");},
+	              success: function (data) {
+	            	  if(data.result == true){
+	            		  result = true;
+	            	  }
+	              },
+	              error: function (data) {
+	            	  
+	              }
+	          });
+			  return result;
+		}
 	});
 </script>
 </head>
@@ -62,9 +134,9 @@
 						action="<%=request.getContextPath()%>/student/studentLogin.do"
 						method="post" style="text-align: center; font-size: 20px;">
 						<br> <br> <br> <br> <span style="color: white">学号:</span>><input
-							name="studentRoNo" type="text" /><br /> <br /> <span
-							style="color: white">密码:</span>><input name="studentPassword"
-							type="password" /><br /> <br /> <input
+							name="studentRoNo" id="studentRono" type="text" /><br /> <br /> <span
+							style="color: white">密码:</span>><input name="studentPassword" id="stpw"
+							type="password" disabled="disabled" /><br /> <br /> <input id="stu"
 							class="btn btn-primary btn-lg" style="width: 150px" type="submit"
 							value="登录" /> <br> <br> <a
 							href="<%=request.getContextPath()%>/student/addStudent.do"
@@ -75,9 +147,9 @@
 						method="post"
 						style="text-align: center; font-size: 20px; display: none;">
 						<br> <br> <br> <br> <span style="color: white">手机:</span>><input
-							name="teacherId" type="text" /><br /> <br /> <span
-							style="color: white">密码:</span>><input name="password"
-							type="password" /><br /> <br /> <input
+							name="teacherId" id="teacherMobile" type="text" /><br /> <br /> <span
+							style="color: white">密码:</span>><input name="password" id="tcpw"
+							type="password" /><br /> <br /> <input id="tea" 
 							class="btn btn-primary btn-lg" style="width: 150px" type="submit"
 							value="登录" /> <br> <br> <a
 							href="<%=request.getContextPath()%>/teacher/forTeacherRegister.do"
