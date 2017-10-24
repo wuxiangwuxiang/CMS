@@ -17,7 +17,7 @@ public class StudentInfoController {
 	
 	@Autowired StudentInfoService studentInfoServiceImpl;
 	@Autowired StudentService studentServiceImpl;
-	
+	//插入学生——课程    中间表
 	@RequestMapping(value = "/insertStudentInfo.do")
 	public String insertStudentInfo(StudentInfo studentInfo,HttpServletRequest request){
 		String studentRoNo = request.getParameter("studentRoNo");

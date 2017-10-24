@@ -23,23 +23,25 @@ public class ClazzController {
  
 	@Autowired private ClazzService clazzServiceImpl;
 	@Autowired private CourseService courseServiceImpl;
-	
+	//插入班级准备
 	@RequestMapping(value = "/forInsertClazz.do")
 	public String forInsertClazz(int courseId,ModelMap map){
 		return "clazzInfo";
 	}
-	
+	//插入班级
 	@RequestMapping(value = "/insertClazz.do")
 	public String insertClazz(ModelMap map,Clazz clazz){
 		clazzServiceImpl.insertClazz(clazz);
 		return "clazzInfo";
 	}
+	//添加课程准备
 	@RequestMapping(value = "/forAddClazz.do")
 	public String forAddClazz(int courseId,ModelMap map){
 		Course course = courseServiceImpl.selectCourseById(courseId);
 		map.put("course", course);
 		return "addClazz";
 	}
+	//添加课程
 	@RequestMapping(value = "/addClazz.do")
 	public String addClazz(Clazz clazz,ModelMap map,HttpServletRequest request){
 		clazzServiceImpl.insertClazz(clazz);
@@ -48,7 +50,7 @@ public class ClazzController {
 		map.put("course", course);
 		return "clazzInfo";
 	}
-	
+	//修改班级信息
 	@RequestMapping(value="/changeClazzByAjax.do")
 	public @ResponseBody Map<String, Object>
 	changeClazzByAjax(int clazzId,String clazzName){

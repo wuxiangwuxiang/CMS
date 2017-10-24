@@ -25,40 +25,11 @@
 
 
 <script type="text/javascript">
-	function getPath(obj) {
-		if (obj) {
-			if (window.navigator.userAgent.indexOf("MSIE") >= 1) {
-				obj.select();
-				return document.selection.createRange().text;
-			} else if (window.navigator.userAgent.indexOf("Firefox") >= 1) {
-				if (obj.files) {
-					return obj.files.item(0).getAsDataURL();
-				}
-				return obj.value;
-			}
-			return obj.value;
-		}
-	}
+	
 	/** 
 	 * 将本地图片 显示到浏览器上 
 	 */
-	function getFileUrl(sourceId) {
-		var url;
-		url = window.URL
-				.createObjectURL(document.getElementById(sourceId).files
-						.item(0));
-		return url;
-	}
-	function preImg(sourceId, targetId, tct) {
-
-		var fileName = document.getElementById(sourceId).value;
-		var fileNamePlus = fileName.substr(12);
-		var url = getFileUrl(sourceId);
-		var imgPre = document.getElementById(targetId);
-		imgPre.style.display = "block";
-		imgPre.src = url;
-		document.getElementById(tct).value = fileNamePlus;
-	}
+	
 </script>
 
 
@@ -89,8 +60,8 @@
 		style="heigh: 300px; background-color: white; margin-left: 19%; margin-right: 20%; padding-left: 10%; padding-right: 10%; padding-top: 8%; padding-bottom: 500px;">
 		<form style="float: left; width: 80%;"
 			class="layui-form layui-form-pane"
-			action="<%=request.getContextPath()%>/student/insertStudent.do"
-			enctype="multipart/form-data" method="post">
+			action="<%=request.getContextPath()%>/teacher/insertTeacher.do"
+			 method="post">
 			<div class="layui-form-item">
 				<label class="layui-form-label" for="mobile">手机</label>
 				<div class="layui-input-block">
@@ -144,11 +115,11 @@
 
 
 			<div class="layui-form-item">
-				<label class="layui-form-label">选择框</label>
+				<label class="layui-form-label">选择课程</label>
 				<div class="layui-input-block">
 					<select name="teacherSubject" lay-verify="required">
-						<option value=""></option>
-						<option value="0" selected>离散数学</option>
+						<option value="" selected>请选择</option>
+						<option value="0">离散数学</option>
 						<option value="1">大学英语</option>
 						<option value="2">计算机网络</option>
 						<option value="3">C语言程序设计</option>
@@ -160,19 +131,13 @@
 			</div>
 
 
-			<div style="background-color: blue;">
-				<div style="height: 60px; width: 300px; float: left;">
-					<input type="file" name="file" id="uploadFile"
-						style="display: none;" onchange="preImg(this.id, 'imgPre','tct');" />
-					<button class="layui-btn" type="button"
-						onclick="uploadFile.click()" style="float: left;">上传照片</button>
-					<input id="tct" type="text" name="studentPhoto" value=""
-						style="display: none" />
-					<button style="float: left; margin-left: 34%; width: 100px"
+			<div style="background-color: white;">
+				<div style="height: 60px; width: 300px;">
+						<button style="margin-left: 14%;" class="layui-btn" lay-submit
+						lay-filter="formDemo">点击注册</button>
+						<button style=" margin-left: 14%; width: 100px"
 						type="reset" class="layui-btn layui-btn-primary">重置</button>
 					<br /> <br /> <br />
-					<button style="margin-left: 0;" class="layui-btn" lay-submit
-						lay-filter="formDemo">点我注册</button>
 				</div>
 
 				<!--  <div class="layui-upload-list" style="float: left;">
@@ -183,12 +148,7 @@
 			<br /> <br /> <br />
 			<!-- <button type="reset" class="layui-btn layui-btn-primary">重置</button> -->
 		</form>
-		<div class="layui-upload-list"
-			style="width: 100px; heigh: 120px; float: left; margin-left: 10px">
-			<img class="layui-upload-img" src=""
-				style="width: 100px; heigh: 120px;" id="imgPre">
-			<p id="demoText"></p>
-		</div>
+		
 
 	</div>
 
@@ -202,11 +162,11 @@
 			//监听提交
 			form.on('submit(formDemo)', function(data) {
 				layer.msg(JSON.stringify(data.field));
-				var id = $('#id').val();
-				if (trySubmit(id)) {
+				var mobile = $('#mobile').val();
+				if (trySubmit(mobile)) {
 					return true;
 				} else {
-					alert("用户已存在!");
+					alert("注册失败，手机号已注册!");
 					return false;
 				}
 			});
@@ -214,17 +174,35 @@
 			form.verify({
 				pass : [/^[\w]{6,16}$/, '密码必须6到16位的数字,字母或下划线']
 			});
-
-		});
-			
+		});	
+		
+		function trySubmit(mobile) {
+			  var result = false;
+			$.ajax({
+	              type: "GET",
+	              data: {
+	                  "teacherMobile": mobile
+	              },
+	              contentType: "application/json; charset=utf-8",
+	              async: false,
+	              dataType: "json",
+	              url: "http://localhost:8080/ClassManageSys/teacher/confirmExitsTeacher.do",
+//	              beforeSend:function(){$("#href").html("等待..");},
+	              success: function (data) {
+	            	  if(data.result == true){
+	            		  result = true;
+	            	  }
+	              },
+	              error: function (data) {
+	            	  
+	              }
+	          });
+			  return result;
+		}
+		
 	</script>
 
-
-
-
-
-
-	<form action="<%=request.getContextPath()%>/teacher//insertTeacher.do"
+	<!--<form action="/teacher//insertTeacher.do"
 		method="post">
 		手机：<input type="text" name="teacherMobile"><br /> 邮箱：<input
 			type="text" name="teacherEmail"><br /> 密码：<input
@@ -233,6 +211,6 @@
 			onchange="change(this.id)"><br /> 性别：<input type="text"
 			name="teacherGender"><br /> 课程：<input type="text"
 			name="teacherSubject"><br /> <input type="submit" value="提交" />
-	</form>
+	</form>-->
 </body>
 </html>

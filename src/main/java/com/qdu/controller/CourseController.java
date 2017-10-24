@@ -70,7 +70,7 @@ public class CourseController {
 		userMap.put("message", "添加成功");
 		return userMap;
 	}
-	
+	//二维码扫描后
 	@RequestMapping(value = "/createQrNew.do")
 	public String createQrNew(ModelMap map, HttpServletRequest request) {
 		System.out.println("进入");
@@ -84,7 +84,7 @@ public class CourseController {
 		map.put("clazz", clazzs);
 		return "qrStudent";
 	}
-
+    //查询课程通过id
 	@RequestMapping(value = "/forsearchClazz.do")
 	public String forInsertClazz(int courseId, ModelMap map) {
 		Course course = courseServiceImpl.selectCourseById(courseId);
@@ -92,14 +92,14 @@ public class CourseController {
 		map.put("course", course);
 		return "clazzInfo";
 	}
-
+    //修改课程信息准备
 	@RequestMapping(value = "/forChangeCousrInfo.do")
 	public String forChangeCousrInfo(int courseId, ModelMap map) {
 		Course course = courseServiceImpl.selectCourseById(courseId);
 		map.put("course", course);
 		return "changeCourse";
 	}
-
+    //修改课程信息
 	@RequestMapping(value = "/changeCourse.do")
 	public String changeCourse(Course course, ModelMap map, HttpServletRequest request) throws Exception {
 		courseServiceImpl.updateCourse(course);
@@ -123,7 +123,7 @@ public class CourseController {
 		map.addAttribute("teacher", teacher2);
 		return "teacherPage";
 	}
-
+    //删除课程信息通过id
 	@RequestMapping(value = "/deleteCourseById.do")
 	public @ResponseBody Map<String, Object> messageTarget(int courseId) {
 		studentInfoServiceImpl.deleteStudentInfoByCourse(courseId);
