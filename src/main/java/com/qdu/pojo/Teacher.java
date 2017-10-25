@@ -1,8 +1,9 @@
 package com.qdu.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Teacher {
+public class Teacher implements Serializable{
 	private String teacherMobile;
 	private String teacherEmail;
 	private String teacherPassword;

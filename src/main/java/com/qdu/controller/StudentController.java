@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Student;
 import com.qdu.service.StudentService;
 
@@ -24,21 +26,24 @@ public class StudentController {
 	private StudentService studentServiceImpl;
 
 	// 学生登录准备
-	@RequestMapping(value = "/forStudentLogin.do")
-	public String selectStudentByNo() {
-		return "studentLogin";
-	}
+//	@RequestMapping(value = "/forStudentLogin.do")
+//	public String selectStudentByNo() {
+//		return "studentLogin";
+//	}
 
 	// 学生登录
 	@RequestMapping(value = "/studentLogin.do")
+	@SystemLog(module="学生登录",methods="日志管理-登录")
 	public String studentLogin(HttpServletRequest request, ModelMap map) {
 		String studentRoNo = request.getParameter("studentRoNo");
 		String password = request.getParameter("studentPassword");
+		System.out.println("正经登陆");
 		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
 		if(student != null){
 			if(password.equals(student.getStudentPassword())){
 				map.addAttribute("student", student);
 				// session的id存一下
+				request.getSession().setAttribute("studentId", null);
 				request.getSession().setAttribute("studentId", studentRoNo);
 				return "index";
 			}
@@ -54,7 +59,7 @@ public class StudentController {
 	//ajax验证学号是否已经存在
 	@RequestMapping(value = "/confirmExitsStudent.do")
 	public @ResponseBody Map<String, Object> confirmExitsStudent(String studentRoNo) {
-		System.out.println(studentRoNo);
+		System.out.println("ajax探测用户学号是否存在"+studentRoNo);
 		Map<String, Object> map = new HashMap<>();
 		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
 		if(student == null){

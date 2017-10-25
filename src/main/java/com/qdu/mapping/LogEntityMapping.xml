@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdu.mapping.LogEntityMapping">
+	<resultMap type="com.qdu.pojo.LogEntity" id="LogEntityResult">
+		<id property="logId " column="LogId " />
+		<result property="userId" column="UserId" />
+		<result property="module" column="Module" />
+		<result property="method" column="Method" />
+		<result property="reponseTime" column="ReponseTime" />
+		<result property="ip" column="Ip" />
+		<result property="date" column="Date" />
+		<result property="commite" column="Commite" />
+	</resultMap>
+
+	<select id="selectLogByUserId" resultMap="LogEntityResult">
+		select * from LogEntity where UserId = #{userId} order by LogId desc
+	</select>
+
+    <insert id="insertLogEntity" parameterType="com.qdu.pojo.LogEntity">
+     insert into 
+     LogEntity(UserId,Module,Method,ReponseTime,Ip,Date,Commite) 
+        values(#{userId},#{module},#{method},#{reponseTime},#{ip},#{date},#{commite})
+    </insert>
+	
+</mapper>
+

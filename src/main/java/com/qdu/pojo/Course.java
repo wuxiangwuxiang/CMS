@@ -1,11 +1,12 @@
 package com.qdu.pojo;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class Course {
+public class Course implements Serializable{
 	private int courseId;
 	private String courseName;
 	private String courseType;

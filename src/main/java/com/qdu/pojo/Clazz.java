@@ -1,8 +1,9 @@
 package com.qdu.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Clazz {
+public class Clazz implements Serializable{
 	
 	private int clazzId;
 	private String clazzName;

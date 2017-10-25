@@ -1,9 +1,10 @@
 package com.qdu.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
 //学生考勤信息类
-public class StudentInfo {
+public class StudentInfo implements Serializable{
  
 	private int studentInfoId;
 	private List<Student> students;
