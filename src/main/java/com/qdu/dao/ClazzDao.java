@@ -21,4 +21,6 @@ public interface ClazzDao {
 	public void updateClazzByClazzId(int clazzId,String clazzName);
 	
 	public Clazz selectClazzById(int clazzId);
+	
+	public void deleteClazzById(int clazzId);
 }

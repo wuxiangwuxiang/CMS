@@ -157,7 +157,7 @@
 						<td style="text-align: center;"><c:choose>
 								<c:when test="${! empty r.clazz}">
 									<c:forEach items="${r.clazz}" var="c">
-									<form id="asd${c.clazzId}" action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do" method="post">
+									<form style="margin-top: 0; margin-bottom: 0;" id="asd${c.clazzId}" action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do" method="post">
 									<input name="clazzId" style="display: none;" value="${c.clazzId}"/>
 									<a id="${c.clazzId}" onclick="aClick(this.id)"
 							href="#">${c.clazzName}</a>
@@ -169,8 +169,8 @@
 									<a>（空）</a>
 								</c:otherwise>
 							</c:choose></td>
-						<td><a
-							href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">查看</a></td>
+						<td style="text-align: center;"><a
+							href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">查看/签到</a></td>
 						<td><a
 							href="<%=request.getContextPath()%>/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a></td>
 						<td><a id="${r.courseId}" onclick="forDeleteThis(this.id)"

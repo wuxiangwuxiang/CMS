@@ -62,7 +62,7 @@ public class TeacherController {
 		Map<String, Object> map = new HashMap<>();
 	    Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
 		if(teacher == null){
-			System.out.println("老师不存在可以插入");
+			System.out.println("老师不存在");
 			map.put("result", true);
 		}else {
 			map.put("result", false);

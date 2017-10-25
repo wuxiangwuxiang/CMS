@@ -52,7 +52,6 @@
 	              async: false,
 	              dataType: "json",
 	              url: "http://localhost:8080/ClassManageSys/student/confirmExitsStudent.do",
-//	              beforeSend:function(){$("#href").html("等待..");},
 	              success: function (data) {
 	            	  if(data.result == true){
 	            		  result = true;

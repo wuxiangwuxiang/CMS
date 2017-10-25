@@ -58,7 +58,7 @@ public class StudentController {
 		Map<String, Object> map = new HashMap<>();
 		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
 		if(student == null){
-			System.out.println("用户不存在可以插入");
+			System.out.println("用户不存在");
 			map.put("result", true);
 		}else {
 			map.put("result", false);

@@ -40,6 +40,27 @@ function saveChange() {
          },
      });
 }
+//ajax删除clazz,本质上是修改clazz的外键courseId为null
+function deleteClazzByAjax(clazzid) {
+	var clazzId = clazzid.substring(3,);
+	 $.ajax({
+         type: "GET",
+         data: {
+        	 "clazzId": clazzId
+         },
+         contentType: "application/json; charset=utf-8",
+         dataType: "json",
+         async: false,
+         url: "http://localhost:8080/ClassManageSys/clazz/deleteClazzById.do",
+         success: function (data) {
+        	 alert(data.message);
+        	 window.location.reload();
+         },
+         error: function (data) {
+             alert("删除失败！");
+         },
+     });
+}
 
 </script>
 </head>
@@ -71,7 +92,7 @@ function saveChange() {
 									</form>
 									</td>
 						<td><a id="zxc${c.clazzId}" onclick="changeWhenClick(this.id)" href="#">修改</a></td>
-						<td><a href="#">删除</a></td>
+						<td><a id="del${c.clazzId}" onclick="deleteClazzByAjax(this.id)" href="#">删除</a></td>
 					</tr>
 					<br />
 				</c:forEach>

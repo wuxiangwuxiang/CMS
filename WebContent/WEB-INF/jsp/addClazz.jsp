@@ -7,7 +7,7 @@
 <title>添加课程</title>
 </head>
 <body>
-<form action="<%=request.getContextPath()%>/clazz/addClazz.do">
+<form action="<%=request.getContextPath()%>/clazz/addClazz.do" method="post">
 班级名称：<input type="text" name="clazzName"><br/>
 当前学年：<input type="text" name="currentYear"><br/>
 <input type="text" name="course.courseId" value="${course.courseId}"><br/>

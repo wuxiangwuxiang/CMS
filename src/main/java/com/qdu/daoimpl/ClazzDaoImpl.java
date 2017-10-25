@@ -75,5 +75,11 @@ public class ClazzDaoImpl implements ClazzDao{
 		String statement = "com.qdu.mapping.ClazzMapping.selectClazzById";
 		return sqlSessionFactory.openSession().selectOne(statement, clazzId);
 	}
+
+	@Override
+	public void deleteClazzById(int clazzId) {
+		String statement = "com.qdu.mapping.ClazzMapping.deleteClazzById";
+		sqlSessionFactory.openSession().delete(statement, clazzId);
+	}
 	
 }

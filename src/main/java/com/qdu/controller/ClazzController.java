@@ -42,7 +42,7 @@ public class ClazzController {
 		return "addClazz";
 	}
 	//添加课程
-	@RequestMapping(value = "/addClazz.do")
+	@RequestMapping(value = "/addClazz.do",method = RequestMethod.POST)
 	public String addClazz(Clazz clazz,ModelMap map,HttpServletRequest request){
 		clazzServiceImpl.insertClazz(clazz);
 		int courseId = Integer.parseInt(request.getParameter("course.courseId"));
@@ -68,4 +68,13 @@ public class ClazzController {
 		}
 		return map;
 	}
+	//删除Clazz及旗下的student
+	@RequestMapping(value = "/deleteClazzById.do")
+	public @ResponseBody Map<String, Object> deleteClazzById(int clazzId){
+		clazzServiceImpl.updateClazzByCourseId(clazzId);
+		Map<String, Object> map = new HashMap<>();
+		map.put("message", "删除成功");
+		return map;
+	}
+	
 }
