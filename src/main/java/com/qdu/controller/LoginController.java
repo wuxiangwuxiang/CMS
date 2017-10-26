@@ -26,7 +26,7 @@ public class LoginController {
 //				System.out.println(request.getContextPath());
 				map.addAttribute("name", test.getStudentName());
 				// session的id存一下
-				request.getSession().setAttribute("studentId", id);
+				request.getSession().setAttribute("UserId", id);
 				return "index";
 			} else
 				return "failer";

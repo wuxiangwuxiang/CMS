@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Student;
 import com.qdu.pojo.StudentInfo;
 import com.qdu.service.StudentInfoService;
@@ -17,7 +18,9 @@ public class StudentInfoController {
 	
 	@Autowired StudentInfoService studentInfoServiceImpl;
 	@Autowired StudentService studentServiceImpl;
-	//插入学生——课程    中间表
+	
+	//添加学生——课程    中间表
+	@SystemLog(module="添加学生——课程    中间表",methods="日志管理-中间表")
 	@RequestMapping(value = "/insertStudentInfo.do")
 	public String insertStudentInfo(StudentInfo studentInfo,HttpServletRequest request){
 		String studentRoNo = request.getParameter("studentRoNo");

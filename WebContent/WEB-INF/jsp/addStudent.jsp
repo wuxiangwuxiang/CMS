@@ -191,7 +191,7 @@
 		              contentType: "application/json; charset=utf-8",
 		              async: false,
 		              dataType: "json",
-		              url: "http://localhost:8080/ClassManageSys/student/confirmExitsStudent.do",
+		              url: "<%=request.getContextPath() %>/student/confirmExitsStudent.do",
 //		              beforeSend:function(){$("#href").html("等待..");},
 		              success: function (data) {
 		            	  if(data.result == true){

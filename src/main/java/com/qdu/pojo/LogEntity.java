@@ -1,6 +1,8 @@
 package com.qdu.pojo;
 
-public class LogEntity {
+import java.io.Serializable;
+
+public class LogEntity implements Serializable{
 	private int logId;
 	private String userId;//登录账号
 	private String module;//执行的模块

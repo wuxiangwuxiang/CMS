@@ -51,7 +51,7 @@ function deleteClazzByAjax(clazzid) {
          contentType: "application/json; charset=utf-8",
          dataType: "json",
          async: false,
-         url: "http://localhost:8080/ClassManageSys/clazz/deleteClazzById.do",
+         url: "<%=request.getContextPath() %>/clazz/deleteClazzById.do",
          success: function (data) {
         	 alert(data.message);
         	 window.location.reload();

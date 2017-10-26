@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.qdu.dao.LogEntityDao;
+import com.qdu.pojo.Admin;
 import com.qdu.pojo.LogEntity;
 import com.qdu.service.LogEntityService;
 
@@ -24,6 +25,11 @@ public class LogEntityServiceImpl implements LogEntityService{
 	@Override 
 	public List<LogEntity> selectLog() {
 		return logEntityDaoImpl.selectLog();
+	}
+
+	@Override
+	public Admin selectAdminById(String adminId) {
+		return logEntityDaoImpl.selectAdminById(adminId);
 	}
 
 }

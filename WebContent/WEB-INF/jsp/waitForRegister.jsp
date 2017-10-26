@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="refresh" content="3;URL=http://localhost:8080/ClassManageSys/student/exchangeStudent.do?studentRoNo=${student.studentRoNo}">
+<meta http-equiv="refresh" content="3;URL=<%=request.getContextPath() %>/student/exchangeStudent.do?studentRoNo=${student.studentRoNo}">
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
 <script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-3.2.0.min.js"></script>

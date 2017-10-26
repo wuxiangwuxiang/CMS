@@ -23,7 +23,7 @@ public class Fifter implements Filter {
 			throws IOException, ServletException {
 		// 获取用户信息
 		HttpServletRequest hsr = (HttpServletRequest) request;
-		if (hsr.getSession().getAttribute("studentId") != null) {
+		if (hsr.getSession().getAttribute("UserId") != null) {
 			// 如果有权限
 			chain.doFilter(request, response);
 		} else {

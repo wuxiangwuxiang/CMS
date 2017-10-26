@@ -47,7 +47,7 @@
               },
               contentType: "application/json; charset=utf-8",
               async: true,
-              url: "http://localhost:8080/ClassManageSys/course/deleteCourseById.do",
+              url: "<%=request.getContextPath() %>/course/deleteCourseById.do",
 //              beforeSend:function(){$("#href").html("等待..");},
               success: function (data) {
             	  document.getElementById("abs"+tem).style.display = "none";
@@ -75,14 +75,13 @@
              },
              contentType: "application/json; charset=utf-8",
              async: false,
-             url: "http://localhost:8080/ClassManageSys/course/insertCourse.do",
-//             beforeSend:function(){$("#href").html("等待..");},
+             url: "<%=request.getContextPath() %>/course/insertCourse.do",
              success: function (data) {
             	 alert(data.message);
             	 window.location.reload();
              },
              error: function (data) {
-                 alert("出错了！");
+                 alert("服务器异常");
              },
              dataType: "json",
          });
@@ -111,9 +110,7 @@
 	<a id="createCourse" href="#">新建课程</a>
 	<br />
 
-	<form id="courseShow" style="display: none;"
-		
-		method="post">
+	<form id="courseShow" style="display: none;">
 		课程名称：<input type="text" id="courseName" name="courseName" /><br /> 
 		<input type="text" id="teacherMobile" name="teacher.teacherMobile"
 			value="${teacher.teacherMobile}" style="display: none;" />

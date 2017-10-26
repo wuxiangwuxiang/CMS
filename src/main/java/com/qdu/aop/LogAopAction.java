@@ -33,7 +33,7 @@ public class LogAopAction {
     @Autowired private LogEntityService logEntityServiceImpl;
         
      //配置接入点
-     @Pointcut("execution(* com.qdu.controller.StudentController.studentLogin(..))")  
+     @Pointcut("execution(* com.qdu.controller.*.*(..))")  
      private void controllerAspect(){}//定义一个切入点
  
      @Around("controllerAspect()")
@@ -43,7 +43,7 @@ public class LogAopAction {
          LogEntity log = new LogEntity(); 
          //获取登录用户账户
          HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-         String name = (String) request.getSession().getAttribute("studentId");
+         String name = (String) request.getSession().getAttribute("UserId");
          log.setUserId(name);
          //获取系统时间
          String time = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());

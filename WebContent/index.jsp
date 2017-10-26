@@ -51,7 +51,7 @@
 	              contentType: "application/json; charset=utf-8",
 	              async: false,
 	              dataType: "json",
-	              url: "http://localhost:8080/ClassManageSys/student/confirmExitsStudent.do",
+	              url: "<%=request.getContextPath() %>/student/confirmExitsStudent.do",
 	              success: function (data) {
 	            	  if(data.result == true){
 	            		  result = true;
@@ -86,7 +86,7 @@
 	              contentType: "application/json; charset=utf-8",
 	              async: false,
 	              dataType: "json",
-	              url: "http://localhost:8080/ClassManageSys/teacher/confirmExitsTeacher.do",
+	              url: "<%=request.getContextPath() %>/teacher/confirmExitsTeacher.do",
 //	              beforeSend:function(){$("#href").html("等待..");},
 	              success: function (data) {
 	            	  if(data.result == true){

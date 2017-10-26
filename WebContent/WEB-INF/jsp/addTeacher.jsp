@@ -119,13 +119,13 @@
 				<div class="layui-input-block">
 					<select name="teacherSubject" lay-verify="required">
 						<option value="" selected>请选择</option>
-						<option value="0">离散数学</option>
-						<option value="1">大学英语</option>
-						<option value="2">计算机网络</option>
-						<option value="3">C语言程序设计</option>
-						<option value="4">数据结构</option>
-						<option value="5">数据挖掘</option>
-						<option value="6">高数</option>
+						<option value="离散数学">离散数学</option>
+						<option value="大学英语">大学英语</option>
+						<option value="计算机网络">计算机网络</option>
+						<option value="C语言程序设计">C语言程序设计</option>
+						<option value="数据结构">数据结构</option>
+						<option value="数据挖掘">数据挖掘</option>
+						<option value="高数">高数</option>
 					</select>
 				</div>
 			</div>
@@ -140,19 +140,10 @@
 					<br /> <br /> <br />
 				</div>
 
-				<!--  <div class="layui-upload-list" style="float: left;">
-					<img class="layui-upload-img" style="width: 140px; height: 140px; display: none;" id="imgPre">
-					<p id="demoText"></p>
-				</div>-->
 			</div>
 			<br /> <br /> <br />
-			<!-- <button type="reset" class="layui-btn layui-btn-primary">重置</button> -->
 		</form>
-		
-
 	</div>
-
-
 
 	<script>
 		//Demo
@@ -186,7 +177,7 @@
 	              contentType: "application/json; charset=utf-8",
 	              async: false,
 	              dataType: "json",
-	              url: "http://localhost:8080/ClassManageSys/teacher/confirmExitsTeacher.do",
+	              url: "<%=request.getContextPath() %>/teacher/confirmExitsTeacher.do",
 //	              beforeSend:function(){$("#href").html("等待..");},
 	              success: function (data) {
 	            	  if(data.result == true){
@@ -194,7 +185,7 @@
 	            	  }
 	              },
 	              error: function (data) {
-	            	  
+	            	  alert("服务器异常");
 	              }
 	          });
 			  return result;
@@ -202,15 +193,5 @@
 		
 	</script>
 
-	<!--<form action="/teacher//insertTeacher.do"
-		method="post">
-		手机：<input type="text" name="teacherMobile"><br /> 邮箱：<input
-			type="text" name="teacherEmail"><br /> 密码：<input
-			type="password" name="teacherPassword"><br /> 名字：<input
-			id="teacherName" type="text" name="teacherName"
-			onchange="change(this.id)"><br /> 性别：<input type="text"
-			name="teacherGender"><br /> 课程：<input type="text"
-			name="teacherSubject"><br /> <input type="submit" value="提交" />
-	</form>-->
 </body>
 </html>

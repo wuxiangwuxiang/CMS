@@ -43,8 +43,8 @@ public class StudentController {
 			if(password.equals(student.getStudentPassword())){
 				map.addAttribute("student", student);
 				// session的id存一下
-				request.getSession().setAttribute("studentId", null);
-				request.getSession().setAttribute("studentId", studentRoNo);
+				request.getSession().setAttribute("UserId", null);
+				request.getSession().setAttribute("UserId", studentRoNo);
 				return "index";
 			}
 		}
@@ -57,8 +57,9 @@ public class StudentController {
 		return "waitForRegister";
 	}
 	//ajax验证学号是否已经存在
+	@SystemLog(module="学生验证账号合法性",methods="日志管理-账号")
 	@RequestMapping(value = "/confirmExitsStudent.do")
-	public @ResponseBody Map<String, Object> confirmExitsStudent(String studentRoNo) {
+	public @ResponseBody Map<String, Object> confirmExitsStudent(HttpServletRequest request,String studentRoNo) {
 		System.out.println("ajax探测用户学号是否存在"+studentRoNo);
 		Map<String, Object> map = new HashMap<>();
 		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
@@ -68,6 +69,8 @@ public class StudentController {
 		}else {
 			map.put("result", false);
 		}
+		//request.getSession().setAttribute("UserId", null);
+		request.getSession().setAttribute("UserId", studentRoNo);
 		return map;
 	}
 	
@@ -98,8 +101,9 @@ public class StudentController {
 		return "addStudent";
 	}
 
-	// 添加学生
+	// 学生注册
 	@RequestMapping(value = "/insertStudent.do", method = RequestMethod.POST)
+	@SystemLog(module="学生注册",methods="日志管理-注册")
 	public String insertTemporary(HttpServletRequest request, @RequestParam("file") MultipartFile file, ModelMap map,
 			Student student) {
 		String path = request.getSession().getServletContext().getRealPath("/") + "studentPhoto";
@@ -118,12 +122,16 @@ public class StudentController {
 		}
 		studentServiceImpl.insertStudentByNo(student);
 		System.out.println("学生注册成功");
+		
 		map.put("student", student);
 		System.out.println(student.getStudentGender());
+		request.getSession().setAttribute("UserId", null);
+		request.getSession().setAttribute("UserId", student.getStudentRoNo());
 		return "waitForRegister";
 	}
 	
-	//注册后跳转到首页
+	    //注册后跳转到首页
+	    @SystemLog(module="跳转页面",methods="日志管理-注册成功跳转到首页")
 		@RequestMapping(value="/exchangeStudent.do")
 		public String exchangeStudent(String studentRoNo,ModelMap map){
 			Student student = studentServiceImpl.selectStudentByNo(studentRoNo);

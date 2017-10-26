@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Clazz;
 import com.qdu.pojo.Course;
 import com.qdu.pojo.Teacher;
@@ -23,12 +24,13 @@ public class ClazzController {
  
 	@Autowired private ClazzService clazzServiceImpl;
 	@Autowired private CourseService courseServiceImpl;
-	//插入班级准备
+	//添加班级准备
 	@RequestMapping(value = "/forInsertClazz.do")
 	public String forInsertClazz(int courseId,ModelMap map){
 		return "clazzInfo";
 	}
-	//插入班级
+	//添加班级
+	@SystemLog(module="添加班级",methods="日志管理-班级")
 	@RequestMapping(value = "/insertClazz.do")
 	public String insertClazz(ModelMap map,Clazz clazz){
 		clazzServiceImpl.insertClazz(clazz);
@@ -42,6 +44,7 @@ public class ClazzController {
 		return "addClazz";
 	}
 	//添加课程
+	@SystemLog(module="添加课程",methods="日志管理-课程")
 	@RequestMapping(value = "/addClazz.do",method = RequestMethod.POST)
 	public String addClazz(Clazz clazz,ModelMap map,HttpServletRequest request){
 		clazzServiceImpl.insertClazz(clazz);
@@ -51,6 +54,7 @@ public class ClazzController {
 		return "clazzInfo";
 	}
 	//修改班级信息
+	@SystemLog(module="修改班级信息",methods="日志管理-班级")
 	@RequestMapping(value="/changeClazzByAjax.do")
 	public @ResponseBody Map<String, Object>
 	changeClazzByAjax(int clazzId,String clazzName){
@@ -69,6 +73,7 @@ public class ClazzController {
 		return map;
 	}
 	//删除Clazz及旗下的student
+	@SystemLog(module="删除班级",methods="日志管理-班级")
 	@RequestMapping(value = "/deleteClazzById.do")
 	public @ResponseBody Map<String, Object> deleteClazzById(int clazzId){
 		clazzServiceImpl.updateClazzByCourseId(clazzId);

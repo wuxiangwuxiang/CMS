@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdu.mapping.AdminMapping">
+	<resultMap type="com.qdu.pojo.Admin" id="AdminResult">
+		<id property="adminId" column="AdminId" />
+		<result property="adminPassword" column="AdminPassword" />
+	</resultMap> 
+
+<select id="selectAdminById" resultMap="AdminResult">
+select * from Admin where AdminId = #{adminId}
+</select>
+	
+</mapper>

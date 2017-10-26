@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Clazz;
 import com.qdu.pojo.Course;
 import com.qdu.pojo.Teacher;
@@ -33,7 +35,8 @@ public class CourseController {
 	@Autowired
 	StudentInfoService studentInfoServiceImpl;
 
-	// 教师插入课程
+	// 教师添加课程
+	@SystemLog(module="添加课程",methods="日志管理-课程")
 	@RequestMapping(value = "/insertCourse.do")
 	public @ResponseBody Map<String, Object> insertCourse(String teacherMobile,String courseName,String courseType,String classCapacity,
 			@DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,@DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,String currentYear,String schoolTem, ModelMap map,
@@ -71,6 +74,7 @@ public class CourseController {
 		return userMap;
 	}
 	//二维码扫描后
+	@SystemLog(module="二维码被扫描",methods="日志管理-二维码")
 	@RequestMapping(value = "/createQrNew.do")
 	public String createQrNew(ModelMap map, HttpServletRequest request) {
 		System.out.println("进入");
@@ -85,6 +89,7 @@ public class CourseController {
 		return "qrStudent";
 	}
     //查询课程通过id
+	@SystemLog(module="查询课程",methods="日志管理-课程")
 	@RequestMapping(value = "/forsearchClazz.do")
 	public String forInsertClazz(int courseId, ModelMap map) {
 		Course course = courseServiceImpl.selectCourseById(courseId);
@@ -100,6 +105,7 @@ public class CourseController {
 		return "changeCourse";
 	}
     //修改课程信息
+	@SystemLog(module="修改课程",methods="日志管理-课程")
 	@RequestMapping(value = "/changeCourse.do")
 	public String changeCourse(Course course, ModelMap map, HttpServletRequest request) throws Exception {
 		courseServiceImpl.updateCourse(course);
@@ -124,6 +130,7 @@ public class CourseController {
 		return "teacherPage";
 	}
     //删除课程信息通过id
+	@SystemLog(module="删除课程",methods="日志管理-课程")
 	@RequestMapping(value = "/deleteCourseById.do")
 	public @ResponseBody Map<String, Object> messageTarget(int courseId) {
 		studentInfoServiceImpl.deleteStudentInfoByCourse(courseId);

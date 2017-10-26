@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.qdu.dao.LogEntityDao;
+import com.qdu.pojo.Admin;
 import com.qdu.pojo.LogEntity;
 
 @Repository
@@ -24,6 +25,12 @@ public class LogEntityDaoImpl implements LogEntityDao{
 	public List<LogEntity> selectLog() {
 		String statement = "com.qdu.mapping.LogEntityMapping.selectLog";
 		return sessionFactory.openSession().selectList(statement);
+	}
+
+	@Override
+	public Admin selectAdminById(String adminId) {
+		String statement = "com.qdu.mapping.AdminMapping.selectAdminById";
+		return sessionFactory.openSession().selectOne(statement, adminId);
 	}
 
 }
