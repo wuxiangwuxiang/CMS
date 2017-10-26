@@ -18,7 +18,7 @@ public class LogEntityDaoImpl implements LogEntityDao{
 	public void saveLog(LogEntity logEntity) {
 		String statement="com.qdu.mapping.LogEntityMapping.insertLogEntity";
 		sessionFactory.openSession().insert(statement,logEntity);
-	}
+	} 
 
 	@Override
 	public List<LogEntity> selectLog() {

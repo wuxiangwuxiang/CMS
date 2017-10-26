@@ -11,4 +11,4 @@ public interface LogEntityService {
 	public List<LogEntity> selectLog();
 
 }
- 
+  

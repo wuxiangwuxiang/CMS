@@ -15,7 +15,7 @@ import com.qdu.service.LogEntityService;
 public class LogEntityController {
 
 	@Autowired LogEntityService logEntityServiceImpl;
-	
+	 
 	@RequestMapping(value="/selectAllLog")
 	public String selectAllLog(ModelMap map) {
 		List<LogEntity> logEntities = logEntityServiceImpl.selectLog();

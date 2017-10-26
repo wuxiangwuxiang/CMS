@@ -11,7 +11,7 @@
 		<result property="date" column="Date" />
 		<result property="commite" column="Commite" />
 	</resultMap>
- 
+  
 	<select id="selectLogByUserId" resultMap="LogEntityResult">
 		select * from LogEntity where UserId = #{userId} order by LogId desc
 	</select>

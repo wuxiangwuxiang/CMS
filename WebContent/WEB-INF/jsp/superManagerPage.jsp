@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>超级管理员</title>
 </head>
-<body> 
+<body>  
 <h1>超管</h1>
 </body>
 </html> 

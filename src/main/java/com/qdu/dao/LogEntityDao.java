@@ -10,3 +10,4 @@ public interface LogEntityDao {
 	public List<LogEntity> selectLog();
 
 }
+ 

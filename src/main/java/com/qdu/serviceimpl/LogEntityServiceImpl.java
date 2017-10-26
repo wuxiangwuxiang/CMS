@@ -20,7 +20,7 @@ public class LogEntityServiceImpl implements LogEntityService{
 	public void saveLog(LogEntity logEntity) {
 		logEntityDaoImpl.saveLog(logEntity);
 	}
-
+ 
 	@Override 
 	public List<LogEntity> selectLog() {
 		return logEntityDaoImpl.selectLog();
