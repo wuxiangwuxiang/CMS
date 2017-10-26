@@ -15,6 +15,10 @@
 	<select id="selectLogByUserId" resultMap="LogEntityResult">
 		select * from LogEntity where UserId = #{userId} order by LogId desc
 	</select>
+	
+	<select id="selectLog" resultMap="LogEntityResult">
+	  select * from LogEntity order by LogId desc
+	</select>
 
     <insert id="insertLogEntity" parameterType="com.qdu.pojo.LogEntity">
      insert into 

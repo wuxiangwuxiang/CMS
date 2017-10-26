@@ -1,5 +1,7 @@
 package com.qdu.serviceimpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,11 @@ public class LogEntityServiceImpl implements LogEntityService{
 	@Override
 	public void saveLog(LogEntity logEntity) {
 		logEntityDaoImpl.saveLog(logEntity);
+	}
+
+	@Override
+	public List<LogEntity> selectLog() {
+		return logEntityDaoImpl.selectLog();
 	}
 
 }
