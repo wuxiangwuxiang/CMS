@@ -14,7 +14,7 @@ public class LogEntityDaoImpl implements LogEntityDao{
 
 	@Autowired private SqlSessionFactory sessionFactory;
 	
-	@Override
+	@Override 
 	public void saveLog(LogEntity logEntity) {
 		String statement="com.qdu.mapping.LogEntityMapping.insertLogEntity";
 		sessionFactory.openSession().insert(statement,logEntity);

@@ -21,5 +21,5 @@ public class LogEntityController {
 		List<LogEntity> logEntities = logEntityServiceImpl.selectLog();
 		map.put("logEntitys", logEntities);
 		return "superManagerPage";
-	}
+	} 
 }
