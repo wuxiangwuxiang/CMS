@@ -157,7 +157,7 @@
 					<br> <br> <br> <br> <br>
 				</div>
 				<form class="navbar-form navbar-right">
-					<a href="#" id="lll" type="submit" class="btn btn-primary">登录</a>
+					<a href="#" id="lll" type="submit" style="width: 100px;" class="btn btn-primary">登录</a>
 				</form>
 			</div>
 		</div>

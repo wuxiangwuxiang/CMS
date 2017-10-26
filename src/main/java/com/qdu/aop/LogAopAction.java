@@ -17,7 +17,15 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.qdu.pojo.LogEntity;
 import com.qdu.service.LogEntityService;
 import com.qdu.util.GetIp;
-
+//使用AOP完成学生登录日志记录，并保存到数据库中
+//步骤
+//1.数据库表创建
+//2.pojo类
+//3.映射文件-serviceImpl
+//4.spring配置文件<aop:aspectj-autoproxy/> 
+//5.创建切面类，包括切点及环绕通知（因为可以拿到参数）
+//6.创建自定义的注解，哪里需要把注解加到哪里
+//7.运行ok
 @Aspect
 @Component
 public class LogAopAction {
@@ -45,7 +53,6 @@ public class LogAopAction {
          log.setIp(ip);
         //方法通知前获取时间,为什么要记录这个时间呢？当然是用来计算模块执行时间的
          long start = System.currentTimeMillis();
-         System.out.println(start);
         // 拦截的实体类，就是当前正在执行的controller
         Object target = pjp.getTarget();
         // 拦截的方法名称。当前正在执行的方法

@@ -109,5 +109,7 @@ function deleteClazzByAjax(clazzid) {
 班级名称：<input type="text" id="preclazzName" name="preclazzName"><br/>
 <input onclick="saveChange()" type="button" value="提交修改"/>
 </form>
+<a href="#">发布公告</a><br/>
+<a href="#">上传资料</a><br/>
 </body>
 </html>

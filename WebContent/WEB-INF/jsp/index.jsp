@@ -52,7 +52,7 @@ $(document).ready(function() {
 			<div id="navbar" class="navbar-collapse collapse">
 
 				<form class="navbar-form navbar-right">
-					<a href="#" id="lll" type="submit" class="btn btn-primary">${student.studentName}</a>
+					<a href="#" id="lll" type="submit" style="width: 100px;" class="btn btn-primary">${student.studentName}</a>
 				</form>
 			</div>
 		</div>
