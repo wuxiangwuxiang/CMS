@@ -152,7 +152,7 @@
 
 			//监听提交
 			form.on('submit(formDemo)', function(data) {
-				layer.msg(JSON.stringify(data.field));
+				
 				var mobile = $('#mobile').val();
 				if (trySubmit(mobile)) {
 					return true;
