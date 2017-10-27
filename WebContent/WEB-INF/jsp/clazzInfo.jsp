@@ -66,10 +66,12 @@ function deleteClazzByAjax(clazzid) {
 </script>
 </head>
 <body>
-
+    <div style="width: 49%; heigh:600px; border:  solid;; border-color: red; float: left;">
 	<h3>课程：${course.courseName}</h3>
 	<input type="text" value="${course.courseId}" style="display: none;" />
-	<a href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a>
+	<a href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a><br/>
+	<a href="#">点名签到</a><br/>
+	
 	<table  border="1">
 		<tr>
 			<th>班级</th>
@@ -102,6 +104,9 @@ function deleteClazzByAjax(clazzid) {
 		</c:choose>
 	</table>
 	<br/><br/>
+	</div>
+	
+	<div style="width: 49%; heigh:600px; border:  solid;; border-color: red; float: left;">
 <form id="clazzForm" style="display: none">
 <input type="text" id="courseId" name="courseId" value="${course.courseId}"/><br/>
 <input type="text" id="preclazzId" name="preclazzId"><br/>
@@ -110,5 +115,10 @@ function deleteClazzByAjax(clazzid) {
 </form>
 <a href="#">发布公告</a><br/>
 <a href="#">上传资料</a><br/>
+
+<div style="width: 100%; height: 20%; border: solid;border-color: blue; text-align: center;">
+<img alt="签到二维码" src="">
+</div><br/>
+</div>
 </body>
 </html>
