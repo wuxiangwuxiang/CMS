@@ -170,6 +170,11 @@
 		parameterType="int">
 		select * from Clazz  where ClazzId = #{clazzId}
 	</select>
+	
+	<select id="selectCountOfStudentByClazz" parameterType="int" resultType="int">
+	select count(*) from Student s,Clazz c where c.ClazzId = #{clazzId} 
+    AND s.ClazzId = c.ClazzId
+	</select>
 
 	<insert id="insertClazz" parameterType="com.qdu.pojo.Clazz">
 		insert into Clazz(ClazzName,CurrentYear,CourseId)

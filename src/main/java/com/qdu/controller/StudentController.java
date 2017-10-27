@@ -16,24 +16,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.qdu.aop.SystemLog;
+import com.qdu.pojo.Clazz;
 import com.qdu.pojo.Student;
+import com.qdu.service.ClazzService;
 import com.qdu.service.StudentService;
 
 @Controller
 @RequestMapping(value = "/student")
 public class StudentController {
-	@Autowired
-	private StudentService studentServiceImpl;
-
-	// 学生登录准备
-//	@RequestMapping(value = "/forStudentLogin.do")
-//	public String selectStudentByNo() {
-//		return "studentLogin";
-//	}
+	@Autowired private StudentService studentServiceImpl;
+	@Autowired private ClazzService clazzServiceImpl;
 
 	// 学生登录
 	@RequestMapping(value = "/studentLogin.do")
-	@SystemLog(module="学生登录",methods="日志管理-登录")
+	@SystemLog(module="学生",methods="日志管理-登录")
 	public String studentLogin(HttpServletRequest request, ModelMap map) {
 		String studentRoNo = request.getParameter("studentRoNo");
 		String password = request.getParameter("studentPassword");
@@ -57,7 +53,7 @@ public class StudentController {
 		return "waitForRegister";
 	}
 	//ajax验证学号是否已经存在
-	@SystemLog(module="学生验证账号合法性",methods="日志管理-账号")
+	@SystemLog(module="学生",methods="日志管理-验证账号")
 	@RequestMapping(value = "/confirmExitsStudent.do")
 	public @ResponseBody Map<String, Object> confirmExitsStudent(HttpServletRequest request,String studentRoNo) {
 		System.out.println("ajax探测用户学号是否存在"+studentRoNo);
@@ -75,10 +71,16 @@ public class StudentController {
 	}
 	
 	//通过clazz找student
+	@SystemLog(module="教师",methods="日志管理-获取学生列表")
 	@RequestMapping(value = "/selectStudentByClazzId.do",method = RequestMethod.POST)
 	public String selectStudentByClazzId(int clazzId,ModelMap map){
 		System.out.println(clazzId);
 		List<Student> students = studentServiceImpl.selectStudentByClazzId(clazzId);
+		int count = clazzServiceImpl.selectCountOfStudentByClazz(clazzId);
+		System.out.println(count);
+		Clazz clazz = clazzServiceImpl.selectClazzById(clazzId);
+		map.put("clazz", clazz);
+		map.put("count", count);
 		map.put("student", students);
 		return "studentInfo";
 	}
@@ -103,7 +105,7 @@ public class StudentController {
 
 	// 学生注册
 	@RequestMapping(value = "/insertStudent.do", method = RequestMethod.POST)
-	@SystemLog(module="学生注册",methods="日志管理-注册")
+	@SystemLog(module="学生",methods="日志管理-注册")
 	public String insertTemporary(HttpServletRequest request, @RequestParam("file") MultipartFile file, ModelMap map,
 			Student student) {
 		String path = request.getSession().getServletContext().getRealPath("/") + "studentPhoto";
@@ -131,12 +133,13 @@ public class StudentController {
 	}
 	
 	    //注册后跳转到首页
-	    @SystemLog(module="跳转页面",methods="日志管理-注册成功跳转到首页")
+	    @SystemLog(module="学生",methods="日志管理-学生注册成功跳转到首页")
 		@RequestMapping(value="/exchangeStudent.do")
 		public String exchangeStudent(String studentRoNo,ModelMap map){
 			Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
 			map.put("student", student);
 			return "index";
 		}
+	   
 
 }

@@ -54,5 +54,9 @@ public class ClazzServiceImpl implements ClazzService{
 	public void deleteClazzById(int clazzId) {
 		clazzDaoImpl.deleteClazzById(clazzId);
 	}
+	@Override
+	public int selectCountOfStudentByClazz(int clazzId) {
+		return clazzDaoImpl.selectCountOfStudentByClazz(clazzId);
+	}
 
 }

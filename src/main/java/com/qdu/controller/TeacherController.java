@@ -38,7 +38,7 @@ public class TeacherController {
 		return "addTeacher";
 	}
 	//教师登录
-	@SystemLog(module="教师登录",methods="日志管理-登录")
+	@SystemLog(module="教师",methods="日志管理-登录")
 	@RequestMapping(value="/teacherLogin.do")
 	public String teacherLogin(HttpServletRequest request,ModelMap map){
 		String id = request.getParameter("teacherId");
@@ -58,7 +58,7 @@ public class TeacherController {
 		return "failer";
 	}
 	//教师头一次登录
-		@SystemLog(module="教师注册后登录",methods="日志管理-登录")
+		@SystemLog(module="教师",methods="日志管理-教师第一次登录")
 		@RequestMapping(value="/teacherFirstLogin.do")
 		public String teacherFirstLogin(HttpServletRequest request,ModelMap map,String teacherMobile){
 			Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
@@ -69,7 +69,7 @@ public class TeacherController {
 		}
 		
 	//ajax验证是否手机号已经注册过
-	@SystemLog(module="教师验证账号合法性",methods="日志管理-账号")
+	@SystemLog(module="教师",methods="日志管理-验证账号")
 	@RequestMapping(value = "/confirmExitsTeacher.do")
 	public @ResponseBody Map<String, Object> confirmExitsTeacher(HttpServletRequest request,String teacherMobile) {
 		System.out.println(teacherMobile);
@@ -86,7 +86,7 @@ public class TeacherController {
 		return map;
 	}
 	//教师注册
-	@SystemLog(module="教师注册",methods="日志管理-注册")
+	@SystemLog(module="教师",methods="日志管理-注册")
 	@RequestMapping(value = "/insertTeacher.do")
 	public String insertTeacher(Teacher teacher, ModelMap map, HttpServletRequest request) {
 		request.getSession().setAttribute("UserId", teacher.getTeacherMobile());

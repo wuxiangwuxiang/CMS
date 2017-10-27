@@ -30,7 +30,7 @@ public class ClazzController {
 		return "clazzInfo";
 	}
 	//添加班级
-	@SystemLog(module="添加班级",methods="日志管理-班级")
+	@SystemLog(module="教师",methods="日志管理-添加班级")
 	@RequestMapping(value = "/insertClazz.do")
 	public String insertClazz(ModelMap map,Clazz clazz){
 		clazzServiceImpl.insertClazz(clazz);
@@ -44,7 +44,7 @@ public class ClazzController {
 		return "addClazz";
 	}
 	//添加课程
-	@SystemLog(module="添加课程",methods="日志管理-课程")
+	@SystemLog(module="教师",methods="日志管理-添加课程")
 	@RequestMapping(value = "/addClazz.do",method = RequestMethod.POST)
 	public String addClazz(Clazz clazz,ModelMap map,HttpServletRequest request){
 		clazzServiceImpl.insertClazz(clazz);
@@ -54,7 +54,7 @@ public class ClazzController {
 		return "clazzInfo";
 	}
 	//修改班级信息
-	@SystemLog(module="修改班级信息",methods="日志管理-班级")
+	@SystemLog(module="教师",methods="日志管理-修改班级")
 	@RequestMapping(value="/changeClazzByAjax.do")
 	public @ResponseBody Map<String, Object>
 	changeClazzByAjax(int clazzId,String clazzName){
@@ -64,7 +64,7 @@ public class ClazzController {
 		Clazz clazz = clazzServiceImpl.selectClazzById(clazzId);
 		Map<String, Object> map = new HashMap<>();
 		if(clazz != null){
-			clazz.setClazzName(clazzName);
+//			clazz.setClazzName(clazzName);
 			clazzServiceImpl.updateClazzByClazzId(clazzId, clazzName);
 			map.put("message", "修改成功");
 		}else {
@@ -73,7 +73,7 @@ public class ClazzController {
 		return map;
 	}
 	//删除Clazz及旗下的student
-	@SystemLog(module="删除班级",methods="日志管理-班级")
+	@SystemLog(module="教师",methods="日志管理-删除班级")
 	@RequestMapping(value = "/deleteClazzById.do")
 	public @ResponseBody Map<String, Object> deleteClazzById(int clazzId){
 		clazzServiceImpl.updateClazzByCourseId(clazzId);

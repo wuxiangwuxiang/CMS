@@ -14,6 +14,7 @@
 function aClick(clazzId) {
 	  document.getElementById("asd"+clazzId).submit()
 }
+//修改班级信息
 function changeWhenClick(clazzId) {
 	 var clazzIdpre = clazzId.substring(3, );
 	 document.getElementById("preclazzId").value = clazzIdpre;
@@ -73,7 +74,6 @@ function deleteClazzByAjax(clazzid) {
 		<tr>
 			<th>班级</th>
 			<th>学年</th>
-			<th>人数</th>
 			<th colspan="3">操作</th>
 		</tr>
 
@@ -83,7 +83,6 @@ function deleteClazzByAjax(clazzid) {
 					<tr>
 						<td>${c.clazzName}</td>
 						<td>${c.currentYear}</td>
-						<td></td>
 						<td>
 						<form id="asd${c.clazzId}" action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do" method="post">
 									<input name="clazzId" style="display: none;" value="${c.clazzId}"/>

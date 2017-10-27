@@ -8,6 +8,8 @@
 <title>学生信息</title>
 </head>
 <body>
+<h3>${clazz.clazzName} 班</h3>
+<h3>人数：${count}</h3>
 	<table border="1">
 		<tr>
 		<th>学号</th>
@@ -15,7 +17,6 @@
 		<th>性别</th>
 		<th>联系方式</th>
 		<th>照片</th>
-		<th colspan="1">操作</th>
 		</tr>
 		<c:choose>
 			<c:when test="${! empty student}">
@@ -26,12 +27,11 @@
 				<td>${s.studentGender}</td>
 				<td>${s.studentMobile}</td>
 				<td><img style="width: 60px; height: 80px" alt="${s.studentPhoto}" src="/ClassManageSys/studentPhoto/${s.studentPhoto}"/></td>
-				<td><a href="#">移出</a></td>
 				</tr>
 				</c:forEach>
 			</c:when>
 			<c:otherwise>
-			<tr>(空)</tr>
+			<tr><a href="#">(空)</a></tr>
              </c:otherwise>
 		</c:choose>
 	</table>

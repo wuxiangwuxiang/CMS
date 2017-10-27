@@ -20,7 +20,7 @@ public class StudentInfoController {
 	@Autowired StudentService studentServiceImpl;
 	
 	//添加学生——课程    中间表
-	@SystemLog(module="添加学生——课程    中间表",methods="日志管理-中间表")
+	@SystemLog(module="中间表",methods="日志管理-添加中间表")
 	@RequestMapping(value = "/insertStudentInfo.do")
 	public String insertStudentInfo(StudentInfo studentInfo,HttpServletRequest request){
 		String studentRoNo = request.getParameter("studentRoNo");

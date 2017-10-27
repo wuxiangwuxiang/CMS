@@ -25,4 +25,6 @@ public interface ClazzService {
 	
 	public void deleteClazzById(int clazzId);
 	
+	public int selectCountOfStudentByClazz(int clazzId);
+	
 	}
