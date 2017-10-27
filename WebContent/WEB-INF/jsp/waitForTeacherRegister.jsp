@@ -9,15 +9,47 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="refresh" content="1;URL=<%=request.getContextPath() %>/teacher/teacherFirstLogin.do?teacherMobile=${teacher.teacherMobile}">
+<meta http-equiv="refresh"
+	content="2;URL=<%=request.getContextPath() %>/teacher/teacherFirstLogin.do?teacherMobile=${teacher.teacherMobile}">
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
-<script type="text/javascript" src="<%=request.getContextPath()%>/js/jquery-3.2.0.min.js"></script>
-<script type="text/javascript">
-</script>
+
+
+<script type="text/javascript"
+	src="<%=request.getContextPath()%>/js/jquery-3.2.1.min.js"></script>
+<link type="text/css" rel="stylesheet"
+	href="<%=request.getContextPath()%>/layui/css/layui.css">
+<script src="<%=request.getContextPath()%>/layui/layui.js "></script>
+
+
 <title>等待跳转..</title>
 </head>
-<body onload="shownum()">
-	<h1>注册成功，<span id="time">1</span>s后自动跳转..</h1>
+<body onload="shownum()" style="background-color: #393D49">
+	<div style="background-color: rgba(0, 0, 0, 0.1); margin: 10% 33% auto;height: 150px ;padding: 150px 10px 100px;">
+		<h1 style="color: #5FB878; font-size: 20px" >
+			注册成功，<span id="time">2</span>s后自动跳转...
+		</h1>
+		<div class="layui-progress layui-progress-big"  lay-filter="demo" lay-showPercent="true">
+			<div class="layui-progress-bar" lay-percent="0%"></div>
+		</div>
+	</div>
+
+	<script>
+		layui.use('element', function() {
+			var $ = layui.jquery, element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+			
+			var n =0,timer = setInterval(function() {
+				n=n+25;
+				if(n>100){
+					n=100;
+					clearInterval(timer);
+				}
+				element.progress('demo',n+'%');
+			},400)
+					
+		});
+	</script>
+
+
 </body>
 </html>
