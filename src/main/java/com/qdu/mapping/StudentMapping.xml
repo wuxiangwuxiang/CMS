@@ -12,6 +12,7 @@
 
 		<association property="studentInfo" javaType="com.qdu.pojo.StudentInfo">
 			<id property="studentInfoId" column="StudentInfoId" />
+			<result property="signIn" column="SignIn"/>
 			<result property="comeLate" column="ComeLate" />
 			<result property="leaveEarlier" column="LeaveEarlier" />
 			<result property="absenteeism" column="Absenteeism" />
@@ -56,12 +57,23 @@
 	<select id="selectStudentByClazzId" resultMap="StudentResult">
 	select * from Student s,Clazz c where s.ClazzId = c.ClazzId 
 	and c.ClazzId = #{clazzId} 
-
 	</select>
-
+	
+	<!-- 精确查询学生 -->
+	<select id="selectStudentByMany" resultMap="StudentResult">
+	SELECT * FROM Student s JOIN Clazz c JOIN Course cc ON s.ClazzId = c.ClazzId 
+	AND c.CourseId = cc.CourseId AND cc.CourseId = #{courseId}
+	</select>
+	
 	<select id="selectStudentByNo" resultMap="StudentResult">
 		select * from Student
 		where StudentRoNo = #{studentRoNo}
+	</select>
+	
+	<select id="selectStudentAndClazzByNo" parameterType = "String" resultMap="StudentResult">
+		select * from Student s,Clazz c
+		where s.ClazzId = c.ClazzId 
+		And  StudentRoNo = #{studentRoNo}
 	</select>
 
 	<insert id="insertStudentByNo" parameterType="com.qdu.pojo.Student">

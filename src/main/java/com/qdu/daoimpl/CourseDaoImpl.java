@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.qdu.dao.CourseDao;
 import com.qdu.pojo.Course;
+import com.qdu.pojo.Student;
 
 @Repository
 public class CourseDaoImpl implements CourseDao {
@@ -63,6 +64,12 @@ public class CourseDaoImpl implements CourseDao {
 	public void deleteCourseById(int courseId) {
 		String statement = "com.qdu.mapping.CourseMapping.deleteCourseById";
 		SqlSessionFactory.openSession().delete(statement, courseId);
+	}
+
+	@Override
+	public List<Student> selectStudentByMany(int courseId) {
+		String statement = "com.qdu.mapping.StudentMapping.selectStudentByMany";
+		return SqlSessionFactory.openSession().selectList(statement, courseId);
 	}
 
 }

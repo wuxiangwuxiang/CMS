@@ -9,6 +9,7 @@ public class StudentInfo implements Serializable{
 	private int studentInfoId;
 	private List<Student> students;
 	private List<Course> course;
+	private int signIn;
 	private int comeLate;
 	private int leaveEarlier;
 	private int absenteeism;
@@ -23,6 +24,13 @@ public class StudentInfo implements Serializable{
 	}
 	public void setStudents(List<Student> students) {
 		this.students = students;
+	}
+	
+	public int getSignIn() {
+		return signIn;
+	}
+	public void setSignIn(int signIn) {
+		this.signIn = signIn;
 	}
 	public int getComeLate() {
 		return comeLate;
@@ -51,8 +59,9 @@ public class StudentInfo implements Serializable{
 	@Override
 	public String toString() {
 		return "StudentInfo [studentInfoId=" + studentInfoId + ", students=" + students + ", course=" + course
-				+ ", comeLate=" + comeLate + ", leaveEarlier=" + leaveEarlier + ", absenteeism=" + absenteeism + "]";
+				+ ", signIn=" + signIn + ", comeLate=" + comeLate + ", leaveEarlier=" + leaveEarlier + ", absenteeism="
+				+ absenteeism + "]";
 	}
-
+	
 	
 }

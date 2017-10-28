@@ -3,6 +3,7 @@
 <mapper namespace="com.qdu.mapping.StudentInfoMapping">
 	<resultMap type="com.qdu.pojo.StudentInfo" id="StudentInfoResult">
 		<id property="studentInfoId" column="StudentInfoId" />
+		<result property="signIn" column="SignIn"/>
 		<result property="comeLate" column="ComeLate" />
 		<result property="leaveEarlier" column="LeaveEarlier" />
 		<result property="absenteeism" column="Absenteeism" />
@@ -99,6 +100,10 @@
 		where CourseId = #{courseId})
 	</select>
 	
+	<select id="selectStudentInfoByMany" parameterType="HashMap" resultMap="StudentInfoResult">
+	select * from StudentInfo where StudentRoNo = #{studentRoNo} And CourseId = #{courseId}
+	</select>
+	
 	
 	<insert id="insertStudentInfo" parameterType="HashMap">
 	insert into 
@@ -109,5 +114,11 @@
 	<delete id="deleteStudentInfoByCourse" parameterType="int">
 	delete from StudentInfo where CourseId = #{clazzId}
 	</delete>
+	
+	<update id="updateStudentInfoAboutSignIn" parameterType="HashMap">
+	update StudentInfo set
+	SignIn = #{signIn}
+	where StudentInfoId = #{studentInfoId}
+	</update>
 
 </mapper>

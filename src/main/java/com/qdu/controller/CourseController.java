@@ -1,5 +1,6 @@
 package com.qdu.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,7 @@ import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Clazz;
 import com.qdu.pojo.Course;
 import com.qdu.pojo.Teacher;
+import com.qdu.qr.SignInQr;
 import com.qdu.qr.testQR;
 import com.qdu.service.ClazzService;
 import com.qdu.service.CourseService;
@@ -60,7 +62,7 @@ public class CourseController {
 		Course course2 = courseServiceImpl.selectIdFromCourse(courseName, teacherMobile);
 		int courseId = course2.getCourseId();
 		System.out.println("courseId: " + courseId);
-		String text = "http://192.168.137.236:8080/ClassManageSys/qr.jsp?teacherMobile=" + teacherMobile + "&courseId="
+		String text = "http://192.168.11.229:8080/ClassManageSys/qr.jsp?teacherMobile=" + teacherMobile + "&courseId="
 				+ courseId + "&courseName=" + courseName.replaceAll("\\+", "%2B") + "&teacherName=" + teacherName
 				+ "&currentTime=" + current + "&tem=" + tem;
 		testQR tQr = new testQR(text, courseName, teacherName);
@@ -91,10 +93,12 @@ public class CourseController {
     //查询课程通过id
 	@SystemLog(module="教师",methods="日志管理-获取课程列表")
 	@RequestMapping(value = "/forsearchClazz.do")
-	public String forInsertClazz(int courseId, ModelMap map) {
+	public String forInsertClazz(int courseId,String teacherMobile, ModelMap map) {
 		Course course = courseServiceImpl.selectCourseById(courseId);
+		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
 		System.out.println(course.getCourseName());
 		map.put("course", course);
+		map.put("teacher", teacher);
 		return "clazzInfo";
 	}
     //修改课程信息准备
@@ -142,5 +146,30 @@ public class CourseController {
 		Map<String, Object> userMap = new HashMap<String, Object>();
 		userMap.put("messages", "删除成功");
 		return userMap;
+	}
+	//获取本课程本节课签到图片
+	@SystemLog(module="教师",methods="日志管理-获取签到二维码")
+	@RequestMapping(value = "/getQrImg.do")
+	@ResponseBody
+	public Map<String, Object> getQrImg(int courseId,String teacherMobile,HttpServletRequest request) throws Exception{
+		Course course = courseServiceImpl.selectCourseById(courseId);
+		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
+		String teacherName = teacher.getTeacherName();
+		System.out.println("courseId: "+courseId);
+		System.out.println(teacherName);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String currentTime = sdf.format(date);
+		System.out.println(currentTime);
+		String text = "http://192.168.11.229:8080/ClassManageSys/signIn.jsp?teacherName=" + teacherName + "&courseId="
+				+ courseId + "&courseName=" + course.getCourseName().replaceAll("\\+", "%2B") 
+				+ "&currentTime=" + currentTime;
+		 String time = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss").format(new Date());
+		SignInQr signInQr = new SignInQr(text, time, teacherName);
+		// 获取二维码图片名称
+		String url = signInQr.createQR(request);
+		Map<String, Object> map = new HashMap<>();
+		map.put("url", url);
+		return map;
 	}
 }

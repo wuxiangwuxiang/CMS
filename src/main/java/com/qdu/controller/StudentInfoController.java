@@ -29,7 +29,11 @@ public class StudentInfoController {
 		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
 		if(student!=null && password.equals(student.getStudentPassword())){
 			System.out.println("芝麻开门");
-			studentInfoServiceImpl.insertStudentInfo(studentRoNo,Integer.parseInt(courseId));
+			StudentInfo studentInfo2 = studentInfoServiceImpl.selectStudentInfoByMany(studentRoNo, Integer.parseInt(courseId));
+			if(studentInfo2 == null){
+				studentInfoServiceImpl.insertStudentInfo(studentRoNo,Integer.parseInt(courseId));
+			}
+			System.out.println(222);
 			int clazzId = Integer.parseInt(request.getParameter("clazzId"));
 			if(clazzId != 0){
 			studentServiceImpl.updateStudentOfClazzId(studentRoNo, clazzId);

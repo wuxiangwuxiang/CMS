@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdu.mapping.QrTemMapping">
+	<resultMap type="com.qdu.pojo.QrTem" id="QrTemResult">
+		<id property="qrTemId" column="QrTemId" />
+		<result property="courseId" column="CourseId" />
+		<result property="studentRoNo" column="StudentRoNo" />
+		<result property="qrTime" column="QrTime" />
+	</resultMap>
+  
+  <insert id="insertQrTem" parameterType="com.qdu.pojo.QrTem">
+  insert into QrTem(CourseId,StudentRoNo,QrTime) 
+  values(#{courseId},#{studentRoNo},#{qrTime})
+  </insert>
+  
+  <select id="selectQrTemByCourseIdAndTime" parameterType="HashMap" resultType="ArrayList" resultMap="QrTemResult">
+   select * from QrTem where CourseId = #{courseId} And QrTime = #{qrTime}
+  </select>
+	
+	<select id="selectTemQrById" resultMap="QrTemResult">
+	select * from QrTem where QrTemId = #{qrTemId}
+	</select>
+	
+	 <delete id="deleteTemQrById" parameterType="int">
+	delete from QrTem where QrTemId = #{qrTemId}
+	</delete>
+	
+</mapper>
+

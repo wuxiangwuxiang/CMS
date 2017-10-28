@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.qdu.dao.CourseDao;
 import com.qdu.pojo.Course;
+import com.qdu.pojo.Student;
 import com.qdu.service.CourseService;
 
 @Transactional
@@ -43,6 +44,10 @@ public class CourseServiceImpl implements CourseService{
 	@Override
 	public void deleteCourseById(int courseId) {
         courseDaoImpl.deleteCourseById(courseId);		
+	}
+	@Override
+	public List<Student> selectStudentByMany(int courseId) {
+		return courseDaoImpl.selectStudentByMany(courseId);
 	}
 	
 

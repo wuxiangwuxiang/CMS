@@ -41,4 +41,10 @@ public class StudentDaoImpl implements StudentDao{
 		sessionFactory.openSession().update(statement, map);
 	}
 
+	@Override
+	public Student selectStudentAndClazzByNo(String studentRoNo) {
+		String statement = "com.qdu.mapping.StudentMapping.selectStudentAndClazzByNo";
+		return sessionFactory.openSession().selectOne(statement, studentRoNo);
+	}
+
 }

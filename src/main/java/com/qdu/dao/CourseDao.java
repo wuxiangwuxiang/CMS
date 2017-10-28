@@ -3,6 +3,7 @@ package com.qdu.dao;
 import java.util.List;
 
 import com.qdu.pojo.Course;
+import com.qdu.pojo.Student;
 
 public interface CourseDao {
 	
@@ -19,5 +20,7 @@ public interface CourseDao {
 	public void updateCourse(Course course);
 	
 	public void deleteCourseById(int courseId);
+	
+	public List<Student> selectStudentByMany(int courseId);
 
 }

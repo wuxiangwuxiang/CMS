@@ -34,4 +34,9 @@ public class StudentServiceImpl implements StudentService{
 	public void updateStudentOfClazzId(String studentRoNo, int clazzId) {
 		studentDaoImpl.updateStudentOfClazzId(studentRoNo, clazzId);
 	}
+
+	@Override
+	public Student selectStudentAndClazzByNo(String studentRoNo) {
+		return studentDaoImpl.selectStudentAndClazzByNo(studentRoNo);
+	}
 }

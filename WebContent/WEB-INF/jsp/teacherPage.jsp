@@ -167,7 +167,7 @@
 								</c:otherwise>
 							</c:choose></td>
 						<td style="text-align: center;"><a
-							href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">查看/签到</a></td>
+							href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}&teacherMobile=${teacher.teacherMobile}">查看/签到</a></td>
 						<td><a
 							href="<%=request.getContextPath()%>/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a></td>
 						<td><a id="${r.courseId}" onclick="forDeleteThis(this.id)"

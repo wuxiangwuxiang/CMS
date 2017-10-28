@@ -13,5 +13,7 @@ public interface StudentService {
 	public List<Student> selectStudentByClazzId(int clazzId);
 	
 	public void updateStudentOfClazzId(String studentRoNo, int clazzId);
+	
+	public Student selectStudentAndClazzByNo(String studentRoNo);
 
 }

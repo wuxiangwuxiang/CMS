@@ -27,6 +27,7 @@
 				javaType="ArrayList" column="CourseName"
 				select="com.qdu.mapping.StudentInfoMapping.selectStudentInfoByCourse">
 				<id property="studentInfoId" column="StudentInfoId" />
+				<result property="signIn" column="SignIn"/>
 				<result property="comeLate" column="ComeLate" />
 				<result property="leaveEarlier" column="LeaveEarlier" />
 				<result property="absenteeism" column="Absenteeism" />

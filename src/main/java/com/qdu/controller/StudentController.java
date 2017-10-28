@@ -1,6 +1,10 @@
 package com.qdu.controller;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Clazz;
+import com.qdu.pojo.QrTem;
 import com.qdu.pojo.Student;
+import com.qdu.pojo.StudentInfo;
 import com.qdu.service.ClazzService;
+import com.qdu.service.CourseService;
+import com.qdu.service.QrTemService;
+import com.qdu.service.StudentInfoService;
 import com.qdu.service.StudentService;
 
 @Controller
@@ -26,6 +35,9 @@ import com.qdu.service.StudentService;
 public class StudentController {
 	@Autowired private StudentService studentServiceImpl;
 	@Autowired private ClazzService clazzServiceImpl;
+	@Autowired private QrTemService qrTemServiceImpl;
+	@Autowired private CourseService courseServiceImpl;
+	@Autowired private StudentInfoService studentInfoServiceImpl;
 
 	// 学生登录
 	@RequestMapping(value = "/studentLogin.do")
@@ -140,6 +152,94 @@ public class StudentController {
 			map.put("student", student);
 			return "index";
 		}
-	   
+	   //学生签到
+	    @RequestMapping(value = "/insertQrTem.do")
+	    @SystemLog(module="学生",methods="日志管理-学生签到")
+	    @ResponseBody
+	    public Map<String, Object> insertQrTem(HttpServletRequest request,String studentRoNo,
+			String password, int courseId, String qrTime) throws ParseException{
+	    	System.out.println("进入 ： insertQrTem.do");
+	    	request.getSession().setAttribute("UserId", studentRoNo);
+	    	Map<String, Object> map = new HashMap<>();
+	    	List<Student> students = courseServiceImpl.selectStudentByMany(courseId);
+	    	Boolean confirm = false;
+	    	for(Student student:students){
+	    		if(studentRoNo.equals(student.getStudentRoNo())){
+	    			confirm = true;
+	    		break;
+	    		}
+	    	}
+	    	Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
+	    	if(confirm == false){
+	    		Student student2 = studentServiceImpl.selectStudentByNo(studentRoNo);
+	    		if(student2 != null){
+	    			map.put("message", "您不在此课程内");
+	    		}else
+	    		map.put("message", "学号错误");
+	    	}else if(! password.equals(student.getStudentPassword())){
+	    		System.out.println(student.getStudentPassword());
+				map.put("message", "密码错误");
+			}else {
+				System.out.println(qrTime);
+				QrTem qrTem = new QrTem();
+				qrTem.setCourseId(courseId);
+				qrTem.setStudentRoNo(studentRoNo);
+				qrTem.setQrTime(qrTime);
+				qrTemServiceImpl.insertQrTem(qrTem);//插到临时表稍后删除
+				map.put("message", "签到成功！");
+				
+			}
+	    	return map;
+	    }
+	    //获取签到成功的学生列表
+	    @SystemLog(module="教师",methods="日志管理-获取签到列表")
+	    @RequestMapping(value = "/getTemStudent.do")
+	    @ResponseBody
+	    public Map<String, Object> getTemStudent(int courseId){
+	    	System.out.println("获取签到列表");
+	    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = new Date();
+			String currentTime = sdf.format(date);
+			Map<String, Object> map = new HashMap<>();
+			List<QrTem> qrTems = qrTemServiceImpl.selectQrTemByCourseIdAndTime(courseId, currentTime);
+			List<Student> students = new ArrayList<>();
+			if(qrTems != null){
+				System.out.println("hibaby");
+				for(QrTem qrTem : qrTems){
+					Student student = studentServiceImpl.selectStudentAndClazzByNo(qrTem.getStudentRoNo());
+					System.out.println(qrTem.getStudentRoNo());
+					students.add(student);
+				}
+			}else{
+				System.out.println("空");
+			}
+	    	map.put("students", students);
+	    	System.out.println(9999999);
+	    	return map;
+	    }
+	    //提交签到表
+	    @SystemLog(module="教师",methods="日志管理-提交签到列表")
+	    @RequestMapping(value = "/submitSignIn.do")
+	    @ResponseBody
+	    public Map<String, Object> submitSignIn(int courseId){
+	    	System.out.println("1234567890-0");
+	    	System.out.println(courseId);
+	    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = new Date();
+			String currentTime = sdf.format(date);
+	    	Map<String, Object> map = new HashMap<>();
+	    	List<QrTem> qrTems = qrTemServiceImpl.selectQrTemByCourseIdAndTime(courseId, currentTime);
+	    	for(QrTem qrTem : qrTems){
+	    		StudentInfo studentInfo = studentInfoServiceImpl.selectStudentInfoByMany(qrTem.getStudentRoNo(), courseId);
+				int tem = studentInfo.getSignIn();System.out.println(tem);
+				int x = tem+1;
+	    		studentInfoServiceImpl.updateStudentInfoAboutSignIn(studentInfo.getStudentInfoId(),x);
+	    	    qrTemServiceImpl.deleteTemQrById(qrTem.getQrTemId());
+	    	    System.out.println("id: " + qrTem.getQrTemId());
+	    	}
+	    	
+	    	map.put("message", "成功");
+	    	return map;
+	    }
 
 }

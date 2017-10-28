@@ -25,6 +25,7 @@
 			javaType="ArrayList" column="CourseId"
 			select="com.qdu.mapping.StudentInfoMapping.selectStudentInfoByCourse">
 			<id property="studentInfoId" column="StudentInfoId" />
+			<result property="signIn" column="SignIn"/>
 			<result property="comeLate" column="ComeLate" />
 			<result property="leaveEarlier" column="LeaveEarlier" />
 			<result property="absenteeism" column="Absenteeism" />
@@ -81,6 +82,7 @@
 
 				<association property="studentInfo" javaType="com.qdu.pojo.StudentInfo">
 					<id property="studentInfoId" column="StudentInfoId" />
+					<result property="signIn" column="SignIn"/>
 					<result property="comeLate" column="ComeLate" />
 					<result property="leaveEarlier" column="LeaveEarlier" />
 					<result property="absenteeism" column="Absenteeism" />

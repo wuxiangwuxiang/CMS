@@ -1,6 +1,7 @@
 package com.qdu.daoimpl;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,24 @@ public class StudentInfoImpl implements StudentInfoDao{
 	public void deleteStudentInfoByCourse(int courseId) {
 		String statement = "com.qdu.mapping.StudentInfoMapping.deleteStudentInfoByCourse";
 		sessionFactory.openSession().delete(statement, courseId);
+	}
+
+	@Override
+	public StudentInfo selectStudentInfoByMany(String studentRoNo, int courseId) {
+		String statement = "com.qdu.mapping.StudentInfoMapping.selectStudentInfoByMany";
+		Map<String, Object> map = new HashMap<>();
+		map.put("studentRoNo", studentRoNo);
+		map.put("courseId", courseId);
+		return sessionFactory.openSession().selectOne(statement, map);
+	}
+
+	@Override
+	public void updateStudentInfoAboutSignIn(int studentInfoId, int signIn) {
+		String statement = "com.qdu.mapping.StudentInfoMapping.updateStudentInfoAboutSignIn";
+		Map<String, Object> map = new HashMap<>();
+		map.put("studentInfoId", studentInfoId);
+		map.put("signIn", signIn);
+		sessionFactory.openSession().update(statement, map);
 	}
 
 }
