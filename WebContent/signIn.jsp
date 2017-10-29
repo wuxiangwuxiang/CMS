@@ -16,7 +16,8 @@ function confirmRoNo() {
         	 "studentRoNo": studentRoNo,
         	 "password":$('#password').val(),
         	 "courseId":$('#courseId').val(),
-        	 "qrTime":$('#qrTime').val()
+        	 "qrTime":$('#qrTime').val(),
+        	 "validateCode":$('#ValidateCode').val()
          },
          contentType: "application/json; charset=utf-8",
          dataType: "json",
@@ -48,6 +49,7 @@ function confirmRoNo() {
 				value="<%=request.getParameter("currentTime") %>" disabled="disabled"><br /> 
 				学号：<input id="confirm" type="text" name="studentRoNo"><br /> 
 				密码：<input id="password" type="password" name="studentPassword"><br />
+				验证码：<input type="text" id="ValidateCode"/><br/>
 			<input type="button" onclick="confirmRoNo()" value="立即签到" style="width: 50%">
 		</form>
 

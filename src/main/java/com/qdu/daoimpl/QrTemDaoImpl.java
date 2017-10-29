@@ -43,4 +43,13 @@ public class QrTemDaoImpl implements QrTemDao{
 		sqlSessionFactory.openSession().delete(statement, qrTemId);
 	}
 
+	@Override
+	public QrTem selectQrTemByStuNoAndCourseId(String studentRoNo, int courseId) {
+		String statement = "com.qdu.mapping.QrTemMapping.selectQrTemByStuNoAndCourseId";
+		Map<String, Object> map = new HashMap<>();
+		map.put("studentRoNo", studentRoNo);
+		map.put("courseId", courseId);
+		return sqlSessionFactory.openSession().selectOne(statement, map);
+	}
+
 }

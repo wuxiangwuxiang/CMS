@@ -29,6 +29,8 @@ import com.qdu.service.CourseService;
 import com.qdu.service.QrTemService;
 import com.qdu.service.StudentInfoService;
 import com.qdu.service.StudentService;
+import com.qdu.util.GlobalVariable;
+import com.qdu.util.VertifyCodeUtil;
 
 @Controller
 @RequestMapping(value = "/student")
@@ -157,7 +159,7 @@ public class StudentController {
 	    @SystemLog(module="学生",methods="日志管理-学生签到")
 	    @ResponseBody
 	    public Map<String, Object> insertQrTem(HttpServletRequest request,String studentRoNo,
-			String password, int courseId, String qrTime) throws ParseException{
+			String password, int courseId, String qrTime,int validateCode) throws ParseException{
 	    	System.out.println("进入 ： insertQrTem.do");
 	    	request.getSession().setAttribute("UserId", studentRoNo);
 	    	Map<String, Object> map = new HashMap<>();
@@ -180,14 +182,21 @@ public class StudentController {
 	    		System.out.println(student.getStudentPassword());
 				map.put("message", "密码错误");
 			}else {
-				System.out.println(qrTime);
+				QrTem tem = qrTemServiceImpl.selectQrTemByStuNoAndCourseId(studentRoNo, courseId);
+				if(tem != null){
+					map.put("message", "请勿重复签到");
+				}else{
+					if(GlobalVariable.returnCode() != validateCode){
+						map.put("message", "验证码有误");
+					}else{
 				QrTem qrTem = new QrTem();
 				qrTem.setCourseId(courseId);
 				qrTem.setStudentRoNo(studentRoNo);
 				qrTem.setQrTime(qrTime);
 				qrTemServiceImpl.insertQrTem(qrTem);//插到临时表稍后删除
 				map.put("message", "签到成功！");
-				
+					}
+				}
 			}
 	    	return map;
 	    }
@@ -204,7 +213,6 @@ public class StudentController {
 			List<QrTem> qrTems = qrTemServiceImpl.selectQrTemByCourseIdAndTime(courseId, currentTime);
 			List<Student> students = new ArrayList<>();
 			if(qrTems != null){
-				System.out.println("hibaby");
 				for(QrTem qrTem : qrTems){
 					Student student = studentServiceImpl.selectStudentAndClazzByNo(qrTem.getStudentRoNo());
 					System.out.println(qrTem.getStudentRoNo());
@@ -214,7 +222,6 @@ public class StudentController {
 				System.out.println("空");
 			}
 	    	map.put("students", students);
-	    	System.out.println(9999999);
 	    	return map;
 	    }
 	    //提交签到表
@@ -222,23 +229,38 @@ public class StudentController {
 	    @RequestMapping(value = "/submitSignIn.do")
 	    @ResponseBody
 	    public Map<String, Object> submitSignIn(int courseId){
-	    	System.out.println("1234567890-0");
-	    	System.out.println(courseId);
 	    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = new Date();
 			String currentTime = sdf.format(date);
 	    	Map<String, Object> map = new HashMap<>();
 	    	List<QrTem> qrTems = qrTemServiceImpl.selectQrTemByCourseIdAndTime(courseId, currentTime);
-	    	for(QrTem qrTem : qrTems){
-	    		StudentInfo studentInfo = studentInfoServiceImpl.selectStudentInfoByMany(qrTem.getStudentRoNo(), courseId);
-				int tem = studentInfo.getSignIn();System.out.println(tem);
-				int x = tem+1;
-	    		studentInfoServiceImpl.updateStudentInfoAboutSignIn(studentInfo.getStudentInfoId(),x);
-	    	    qrTemServiceImpl.deleteTemQrById(qrTem.getQrTemId());
-	    	    System.out.println("id: " + qrTem.getQrTemId());
+	    	if(qrTems.isEmpty()){
+	    		map.put("message", "暂无学生签到");
+	    	}else{
+	    		for(QrTem qrTem : qrTems){
+		    		StudentInfo studentInfo = studentInfoServiceImpl.selectStudentInfoByMany(qrTem.getStudentRoNo(), courseId);
+					int tem = studentInfo.getSignIn();
+					int x = tem+1;
+					//核心：跟新info表，成功+1
+		    		studentInfoServiceImpl.updateStudentInfoAboutSignIn(studentInfo.getStudentInfoId(),x);
+		    		//删除在QrTem表中的记录，等待下次签到
+		    	    qrTemServiceImpl.deleteTemQrById(qrTem.getQrTemId());
+		    	    System.out.println("id: " + qrTem.getQrTemId());
+		    	}
+		    	map.put("message", "成功");
 	    	}
-	    	
-	    	map.put("message", "成功");
+	    	return map;
+	    }
+	    //签到数字（util类获取四位随机数）
+	    @SystemLog(module="教师",methods="日志管理-获取签到数字")
+	    @RequestMapping(value = "/getVertifyCode.do")
+	    @ResponseBody
+	    public Map<String, Object> getVertifyCode(){
+	    	int code = VertifyCodeUtil.getVertifyCode();
+	    	GlobalVariable globalVariable = new GlobalVariable(code);
+	    	System.out.println(globalVariable.returnCode() + " ：寻人不知归处");
+	    	Map<String, Object> map = new HashMap<>();
+	    	map.put("code", code);
 	    	return map;
 	    }
 

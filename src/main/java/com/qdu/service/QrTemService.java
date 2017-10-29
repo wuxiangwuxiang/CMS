@@ -14,5 +14,7 @@ public interface QrTemService {
 	public QrTem selectTemQrById(int qrTemId);
 	
 	public void deleteTemQrById(int qrTemId);
+	
+	public QrTem selectQrTemByStuNoAndCourseId(String studentRoNo, int courseId);
 
 }

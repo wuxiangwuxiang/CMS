@@ -21,6 +21,10 @@
 	select * from QrTem where QrTemId = #{qrTemId}
 	</select>
 	
+	<select id="selectQrTemByStuNoAndCourseId" parameterType="HashMap" resultMap="QrTemResult">
+	select * from QrTem where StudentRoNo = #{studentRoNo} And CourseId = #{courseId}
+	</select>
+	
 	 <delete id="deleteTemQrById" parameterType="int">
 	delete from QrTem where QrTemId = #{qrTemId}
 	</delete>

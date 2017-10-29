@@ -20,7 +20,6 @@ function changeWhenClick(clazzId) {
 	 document.getElementById("preclazzId").value = clazzIdpre;
 	$('#clazzForm').toggle();	
 }
-
 function saveChange() {
 	 $.ajax({
          type: "GET",
@@ -62,7 +61,31 @@ function deleteClazzByAjax(clazzid) {
          },
      });
 }
-
+//隐藏正在滚动刷新的验证码
+function closeValidateCode() {
+	$("#validateCode").hide();
+}
+//二维码要用到的随机数
+function hello(){ 
+	 $.ajax({
+         type: "GET",
+         data: {
+         },
+         contentType: "application/json; charset=utf-8",
+         dataType: "json",
+         async: false,
+         url: "<%=request.getContextPath()%>/student/getVertifyCode.do",
+         success: function (data) {
+        	 $("#validateCode").html(data.code);
+        	 var t2 = window.setTimeout("hello()",7000);//7s后刷新随机数
+         },
+         error: function (data) {
+             alert("服务器异常！");
+         },
+     });
+	 window.setTimeout("closeValidateCode()",13000);
+	} 
+//显示签到二维码
 function showQrImg() {
 	 $.ajax({
          type: "GET",
@@ -82,6 +105,8 @@ function showQrImg() {
              imgPre.src = url;
              //5s刷新
              setInterval('YesConfirm()', 5000);
+             var t1 = window.setTimeout("hello()",10000); //10s后显示随机数
+            // window.clearTimeout(t1);//去掉定时器 
          },
          error: function (data) {
              alert("服务器异常！");
@@ -154,9 +179,10 @@ function submitSignIn() {
 		<input type="text" value="${course.courseId}" style="display: none;" />
 		<a
 			href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a><br />
-		<a id="qrHref" onclick="showQrImg()" href="#">点名签到</a><br /> 
-		<a href="#">补签</a><br /> 
-		<a href="#" onclick="submitSignIn()">提交签到表</a><br/>
+		<br/> 
+		<a id="qrHref" onclick="showQrImg()" href="#">点名签到</a><br/> <br/> 
+		<a href="#">补签</a><br /> <br/> 
+		<a href="#" onclick="submitSignIn()">提交签到表</a><br/><br/> 
 			<input type="text" id="cccourseId"
 			value="${course.courseId}" style="display: none;" /> <input
 			type="text" id="teacherMobile" value="${teacher.teacherMobile}"
@@ -211,6 +237,8 @@ function submitSignIn() {
 				onclick="saveChange()" type="button" value="提交修改" />
 		</form>
 		<a href="#">发布公告</a><br /> <a href="#">上传资料</a><br />
+		<div id="validateCode" style="width: 100%; height: 30px; font-size: 25px;
+		 text-align: center; border: solid;border-bottom-color: red;"></div>
 
 		<div
 			style="width: 100%; height: 20%; border: solid; border-color: blue; text-align: center;">
