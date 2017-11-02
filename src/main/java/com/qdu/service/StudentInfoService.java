@@ -1,5 +1,7 @@
 package com.qdu.service;
 
+import java.util.List;
+
 import com.qdu.pojo.StudentInfo;
 
 public interface StudentInfoService {
@@ -11,5 +13,9 @@ public interface StudentInfoService {
 	public StudentInfo selectStudentInfoByMany(String studentRoNo, int courseId);
 	
 	public void updateStudentInfoAboutSignIn(int studentInfoId, int signIn);
+	
+	public List<StudentInfo> selectInfoList(int courseId);
+	
+	public void updateStudentInfoAboutAbs(int studentInfoId, int absenteeism);
 	
 }

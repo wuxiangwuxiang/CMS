@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -212,7 +214,7 @@ public class StudentController {
 			Map<String, Object> map = new HashMap<>();
 			List<QrTem> qrTems = qrTemServiceImpl.selectQrTemByCourseIdAndTime(courseId, currentTime);
 			List<Student> students = new ArrayList<>();
-			if(qrTems != null){
+			if(qrTems != null && qrTems.size()!=0){
 				for(QrTem qrTem : qrTems){
 					Student student = studentServiceImpl.selectStudentAndClazzByNo(qrTem.getStudentRoNo());
 					System.out.println(qrTem.getStudentRoNo());
@@ -229,17 +231,24 @@ public class StudentController {
 	    @RequestMapping(value = "/submitSignIn.do")
 	    @ResponseBody
 	    public Map<String, Object> submitSignIn(int courseId){
+	    	System.out.println("提交签到表");
 	    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = new Date();
 			String currentTime = sdf.format(date);
 	    	Map<String, Object> map = new HashMap<>();
+	    	List<StudentInfo> studentInfos = studentInfoServiceImpl.selectInfoList(courseId);
+	    	Map<String, Integer> map2 = new HashMap<>();
+	    	for(StudentInfo studentInfo:studentInfos){
+	    		map2.put(studentInfo.getStudent().getStudentRoNo(), 0);
+	    	}
 	    	List<QrTem> qrTems = qrTemServiceImpl.selectQrTemByCourseIdAndTime(courseId, currentTime);
 	    	if(qrTems.isEmpty()){
 	    		map.put("message", "暂无学生签到");
 	    	}else{
 	    		for(QrTem qrTem : qrTems){
 		    		StudentInfo studentInfo = studentInfoServiceImpl.selectStudentInfoByMany(qrTem.getStudentRoNo(), courseId);
-					int tem = studentInfo.getSignIn();
+					map2.put(qrTem.getStudentRoNo(), 1);
+		    		int tem = studentInfo.getSignIn();
 					int x = tem+1;
 					//核心：跟新info表，成功+1
 		    		studentInfoServiceImpl.updateStudentInfoAboutSignIn(studentInfo.getStudentInfoId(),x);
@@ -247,6 +256,15 @@ public class StudentController {
 		    	    qrTemServiceImpl.deleteTemQrById(qrTem.getQrTemId());
 		    	    System.out.println("id: " + qrTem.getQrTemId());
 		    	}
+	    		//旷课不来的自动将旷课字段+1
+	    		for(String string:map2.keySet()){
+	    			if(map2.get(string) == 0){
+	    				StudentInfo studentInfo = studentInfoServiceImpl.selectStudentInfoByMany(string, courseId);
+	    				int tem = studentInfo.getAbsenteeism();
+	    				int x = tem+1;
+	    				studentInfoServiceImpl.updateStudentInfoAboutAbs(studentInfo.getStudentInfoId(),x);
+	    			}
+	    		}
 		    	map.put("message", "成功");
 	    	}
 	    	return map;

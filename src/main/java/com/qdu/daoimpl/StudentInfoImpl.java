@@ -1,6 +1,7 @@
 package com.qdu.daoimpl;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -46,6 +47,21 @@ public class StudentInfoImpl implements StudentInfoDao{
 		Map<String, Object> map = new HashMap<>();
 		map.put("studentInfoId", studentInfoId);
 		map.put("signIn", signIn);
+		sessionFactory.openSession().update(statement, map);
+	}
+
+	@Override
+	public List<StudentInfo> selectInfoList(int courseId) {
+		String statement = "com.qdu.mapping.StudentInfoMapping.selectInfoList";
+		return sessionFactory.openSession().selectList(statement, courseId);
+	}
+
+	@Override
+	public void updateStudentInfoAboutAbs(int studentInfoId, int absenteeism) {
+		String statement = "com.qdu.mapping.StudentInfoMapping.updateStudentInfoAboutAbs";
+		Map<String, Object> map = new HashMap<>();
+		map.put("studentInfoId", studentInfoId);
+		map.put("absenteeism", absenteeism);
 		sessionFactory.openSession().update(statement, map);
 	}
 

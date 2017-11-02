@@ -63,7 +63,6 @@ public final class RedisUtil {
         try {
             if (jedisPool != null) {
                 Jedis resource = jedisPool.getResource();
-                System.out.println("util内...");
                 return resource;
             } else {
                 return null;

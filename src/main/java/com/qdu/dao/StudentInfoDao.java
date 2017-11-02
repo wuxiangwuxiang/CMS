@@ -1,5 +1,7 @@
 package com.qdu.dao;
 
+import java.util.List;
+
 import com.qdu.pojo.StudentInfo;
 
 public interface StudentInfoDao {
@@ -11,5 +13,9 @@ public interface StudentInfoDao {
 	public StudentInfo selectStudentInfoByMany(String studentRoNo,int courseId);
 	
 	public void updateStudentInfoAboutSignIn(int studentInfoId,int signIn);
+	
+	public List<StudentInfo> selectInfoList(int courseId);
+	
+    public void updateStudentInfoAboutAbs(int studentInfoId,int absenteeism);
 
 }

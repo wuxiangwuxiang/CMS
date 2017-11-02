@@ -7,8 +7,8 @@ import java.util.List;
 public class StudentInfo implements Serializable{
  
 	private int studentInfoId;
-	private List<Student> students;
-	private List<Course> course;
+	private Student student;
+	private Course course;
 	private int signIn;
 	private int comeLate;
 	private int leaveEarlier;
@@ -19,13 +19,18 @@ public class StudentInfo implements Serializable{
 	public void setStudentInfoId(int studentInfoId) {
 		this.studentInfoId = studentInfoId;
 	}
-	public List<Student> getStudents() {
-		return students;
+	public Student getStudent() {
+		return student;
 	}
-	public void setStudents(List<Student> students) {
-		this.students = students;
+	public void setStudent(Student student) {
+		this.student = student;
 	}
-	
+	public Course getCourse() {
+		return course;
+	}
+	public void setCourse(Course course) {
+		this.course = course;
+	}
 	public int getSignIn() {
 		return signIn;
 	}
@@ -50,15 +55,9 @@ public class StudentInfo implements Serializable{
 	public void setAbsenteeism(int absenteeism) {
 		this.absenteeism = absenteeism;
 	}
-	public List<Course> getCourse() {
-		return course;
-	}
-	public void setCourse(List<Course> course) {
-		this.course = course;
-	}
 	@Override
 	public String toString() {
-		return "StudentInfo [studentInfoId=" + studentInfoId + ", students=" + students + ", course=" + course
+		return "StudentInfo [studentInfoId=" + studentInfoId + ", student=" + student + ", course=" + course
 				+ ", signIn=" + signIn + ", comeLate=" + comeLate + ", leaveEarlier=" + leaveEarlier + ", absenteeism="
 				+ absenteeism + "]";
 	}
