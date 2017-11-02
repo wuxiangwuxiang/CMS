@@ -6,15 +6,12 @@
 	id="WebApp_ID" version="3.0">
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:spring-mybatis.xml</param-value>
+		<param-value>classpath:spring-mybatis.xml,classpath:spring-redis.xml</param-value>
 	</context-param>
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
-
-
 	<!--spring配置文件路径 -->
 	<servlet>
 		<servlet-name>dispatcherServlet</servlet-name>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdu.mapping.StudentInfoMapping">
+	<cache type="com.qdu.cache.RedisCache"/>
 	<resultMap type="com.qdu.pojo.StudentInfo" id="StudentInfoResult">
 		<id property="studentInfoId" column="StudentInfoId" />
 		<result property="signIn" column="SignIn"/>
