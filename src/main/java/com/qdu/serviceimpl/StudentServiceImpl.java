@@ -39,4 +39,9 @@ public class StudentServiceImpl implements StudentService{
 	public Student selectStudentAndClazzByNo(String studentRoNo) {
 		return studentDaoImpl.selectStudentAndClazzByNo(studentRoNo);
 	}
+
+	@Override
+	public void updateStudentPassWord(String studentRoNo, String studentPassword) {
+		studentDaoImpl.updateStudentPassWord(studentRoNo, studentPassword);
+	}
 }

@@ -67,15 +67,15 @@ $(document).ready(function() {
          
          
          <div style="background-color: #222; height: 100px">
-            <div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
+            <div class="navbar-header" style="text-align: center;width: 100%;margin-top:2%;">
+				<!--  <button type="button" class="navbar-toggle collapsed"
 					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
 					aria-controls="navbar">
 					<span class="sr-only">Toggle navigation</span> <span
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">copyright by CMS team</a>
+				</button>-->
+				<a style="margin-left: 40%;" class="navbar-brand" href="#">copyright by CMS team</a>
          </div>
 
 

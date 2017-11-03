@@ -69,5 +69,11 @@
 		Teacher(TeacherMobile,TeacherEmail,TeacherPassword,TeacherName,TeacherGender,TeacherSubject)
 		values(#{teacherMobile},#{teacherEmail},#{teacherPassword},#{teacherName},#{teacherGender},#{teacherSubject});
 	</insert>
+	
+	<update id="updateTeacherPassWord" parameterType="HashMap">
+	update Teacher set
+	TeacherPassword = #{teacherPassword}
+	where TeacherMobile = #{teacherMobile}
+	</update>
 
 </mapper>

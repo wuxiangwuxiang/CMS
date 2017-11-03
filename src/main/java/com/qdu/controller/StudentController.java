@@ -81,11 +81,23 @@ public class StudentController {
 		}else {
 			map.put("result", false);
 		}
-		//request.getSession().setAttribute("UserId", null);
 		request.getSession().setAttribute("UserId", studentRoNo);
 		return map;
 	}
-	
+	//ajax验证学生密码是否正确
+	@SystemLog(module="学生",methods="日志管理-学生登录密码验证")
+	@ResponseBody
+	@RequestMapping(value = "/confirmStudentPassWord.do")
+	public Map<String, Object> confirmStudentPassWord(String studentRono,String password){
+		Map<String, Object> map = new HashMap<>();
+		Student student = studentServiceImpl.selectStudentByNo(studentRono);
+		if(student != null && password.equals(student.getStudentPassword())){
+			map.put("result", true);
+		}else {
+			map.put("result", false);
+		}
+		return map;
+	}
 	//通过clazz找student
 	@SystemLog(module="教师",methods="日志管理-获取学生列表")
 	@RequestMapping(value = "/selectStudentByClazzId.do",method = RequestMethod.POST)
@@ -156,6 +168,21 @@ public class StudentController {
 			map.put("student", student);
 			return "index";
 		}
+	    //学生更改密码
+	    @RequestMapping(value = "/updateStudentPassWord.do")
+	    @SystemLog(module="学生",methods="日志管理-更改密码")
+	    @ResponseBody
+	    public Map<String, Object> updateStudentPassWord(String studentRoNo,String password,String newPassword){
+	    	Map<String, Object> map = new HashMap<>();
+	    	Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
+	    	if(password.equals(student.getStudentPassword())){
+	    		studentServiceImpl.updateStudentPassWord(studentRoNo, newPassword);
+	    		map.put("result", true);
+	    	}else {
+	    		map.put("result", false);
+			}
+	    	return map;
+	    }
 	   //学生签到
 	    @RequestMapping(value = "/insertQrTem.do")
 	    @SystemLog(module="学生",methods="日志管理-学生签到")

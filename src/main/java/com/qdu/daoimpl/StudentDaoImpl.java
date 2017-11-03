@@ -2,6 +2,7 @@ package com.qdu.daoimpl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,15 @@ public class StudentDaoImpl implements StudentDao{
 	public Student selectStudentAndClazzByNo(String studentRoNo) {
 		String statement = "com.qdu.mapping.StudentMapping.selectStudentAndClazzByNo";
 		return sessionFactory.openSession().selectOne(statement, studentRoNo);
+	}
+
+	@Override
+	public void updateStudentPassWord(String studentRoNo, String studentPassword) {
+		String statement = "com.qdu.mapping.StudentMapping.updateStudentPassWord";
+		Map<String, Object> map = new HashMap<>();
+		map.put("studentRoNo", studentRoNo);
+		map.put("studentPassword", studentPassword);
+		sessionFactory.openSession().update(statement, map);
 	}
 
 }

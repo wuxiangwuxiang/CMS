@@ -15,5 +15,7 @@ public interface StudentService {
 	public void updateStudentOfClazzId(String studentRoNo, int clazzId);
 	
 	public Student selectStudentAndClazzByNo(String studentRoNo);
+	
+	public void updateStudentPassWord(String studentRoNo, String studentPassword);
 
 }

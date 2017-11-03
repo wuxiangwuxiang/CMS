@@ -99,6 +99,78 @@
 	          });
 			  return result;
 		}
+		//获取教师密码，进行后台比对
+		function getAnwser(password,teacherMobile) {
+			var result = false;
+			$.ajax({
+	              type: "GET",
+	              data: {
+	                  "password": password,
+	                  "teacherMobile":teacherMobile
+	              },
+	              contentType: "application/json; charset=utf-8",
+	              async: false,
+	              dataType: "json",
+	              url: "<%=request.getContextPath() %>/teacher/confirmTeacherPassWord.do",
+//	              beforeSend:function(){$("#href").html("等待..");},
+	              success: function (data) {
+	            	  if(data.result == true){
+	            		  result = true;
+	            	  }
+	              },
+	              error: function (data) {
+	            	  
+	              }
+	          });
+			  return result;
+		}
+		//点击教师登录触发密码验证
+		$('#tea').click(function wannaSubmit() {
+			var password = $('#tcpw').val();
+			var teacherMobile = $('#teacherMobile').val();
+			if(getAnwser(password,teacherMobile)){
+				$('#teacherForm').submit();
+			}else {
+				alert("密码错误!");
+			}
+		});
+		
+		
+		//获取学生密码，进行后台比对
+		function getStuAnwser(password,studentRono) {
+			var result = false;
+			$.ajax({
+	              type: "GET",
+	              data: {
+	                  "password": password,
+	                  "studentRono":studentRono
+	              },
+	              contentType: "application/json; charset=utf-8",
+	              async: false,
+	              dataType: "json",
+	              url: "<%=request.getContextPath() %>/student/confirmStudentPassWord.do",
+//	              beforeSend:function(){$("#href").html("等待..");},
+	              success: function (data) {
+	            	  if(data.result == true){
+	            		  result = true;
+	            	  }
+	              },
+	              error: function (data) {
+	            	  
+	              }
+	          });
+			  return result;
+		}
+		//点击学生登录触发密码验证
+		$('#stu').click(function wannaSubmit() {
+			var password = $('#stpw').val();
+			var studentRono = $('#studentRono').val();
+			if(getStuAnwser(password,studentRono)){
+				$('#studentForm').submit();
+			}else {
+				alert("密码错误!");
+			}
+		});
 	});
 </script>
 </head>
@@ -136,7 +208,7 @@
 							name="studentRoNo" id="studentRono" type="text" /><br /> <br /> <span
 							style="color: white">密码:</span>><input name="studentPassword" id="stpw"
 							type="password" disabled="disabled" /><br /> <br /> <input id="stu"
-							class="btn btn-primary btn-lg" style="width: 150px" type="submit"
+							class="btn btn-primary btn-lg" style="width: 150px" type="button"
 							value="登录" /> <br> <br> <a
 							href="<%=request.getContextPath()%>/student/addStudent.do"
 							target="_blank" style="margin-left: 300px">去注册>></a>
@@ -149,7 +221,7 @@
 							name="teacherId" id="teacherMobile" type="text" /><br /> <br /> <span
 							style="color: white">密码:</span>><input name="password" id="tcpw"
 							type="password" /><br /> <br /> <input id="tea" 
-							class="btn btn-primary btn-lg" style="width: 150px" type="submit"
+							class="btn btn-primary btn-lg" style="width: 150px" type="button"
 							value="登录" /> <br> <br> <a
 							href="<%=request.getContextPath()%>/teacher/forTeacherRegister.do"
 							style="margin-left: 300px">去注册>></a>
@@ -171,16 +243,10 @@
          
          
          
-         <div style="background-color: #222; height: 100px">
-            <div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed"
-					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">copyright by CMS team</a>
+         <div style="background-color: #222; height: 100px;">
+            <div class="navbar-header" style="text-align: center;width: 100%;margin-top:2%;">
+				
+				<a style="margin-left: 40%;" class="navbar-brand" href="#">copyright by CMS team</a>
          </div>
 
 

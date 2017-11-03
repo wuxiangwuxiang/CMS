@@ -85,6 +85,20 @@ public class TeacherController {
 		}
 		return map;
 	}
+	//ajax验证密码
+	@SystemLog(module="教师",methods="日志管理-登录密码验证")
+	@RequestMapping(value = "/confirmTeacherPassWord.do")
+	@ResponseBody
+	public Map<String, Object> confirmTeacherPassWord(String password,String teacherMobile){
+		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
+		Map<String, Object> map = new HashMap<>();
+		if(teacher != null && password.equals(teacher.getTeacherPassword())){
+			map.put("result", true);
+		}else{
+			map.put("result", false);
+		}
+		return map;
+	}
 	//教师注册
 	@SystemLog(module="教师",methods="日志管理-注册")
 	@RequestMapping(value = "/insertTeacher.do")
@@ -98,6 +112,19 @@ public class TeacherController {
 		map.addAttribute("teacher", teacher2);
 		return "waitForTeacherRegister";
 	}
-	
-	
+	//老师更改密码
+	@SystemLog(module="教师",methods="日志管理-密码更改")
+	@RequestMapping(value = "/updateTeacherPassWord.do")
+	@ResponseBody
+	public Map<String, Object> updateTeacherPassWord(String teacherMobile,String password,String newPassword){
+		Map<String, Object> map = new HashMap<>();
+		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
+		if (password.equals(teacher.getTeacherPassword())) {
+			teacherServiceImpl.updateTeacherPassWord(teacherMobile, newPassword);
+			map.put("result", true);
+		}else {
+			map.put("result", false);
+		}
+		return map;
+	}
 }

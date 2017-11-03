@@ -88,5 +88,11 @@
 	ClazzId = #{clazzId}
 	where StudentRoNo = #{studentRoNo}
 	</update>
+	
+	<update id="updateStudentPassWord" paramterType="HashMap">
+	update Student set
+	StudentPassword = #{studentPassword}
+	where StudentRoNo = #{studentRoNo}
+	</update>
 
 </mapper>

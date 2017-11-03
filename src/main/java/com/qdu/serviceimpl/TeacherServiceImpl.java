@@ -26,4 +26,10 @@ public class TeacherServiceImpl implements TeacherService{
 		return teacherDaoImpl.selectTeacherByEmail(teacherMobile);
 	}
 
+
+	@Override
+	public void updateTeacherPassWord(String teacherMobile,String teacherPassword) {
+		teacherDaoImpl.updateTeacherPassWord(teacherMobile, teacherPassword);
+	}
+
 }

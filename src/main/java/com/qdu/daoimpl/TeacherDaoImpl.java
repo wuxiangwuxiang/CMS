@@ -1,5 +1,8 @@
 package com.qdu.daoimpl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,6 +26,16 @@ public class TeacherDaoImpl implements TeacherDao{
 	public Teacher selectTeacherByEmail(String teacherMobile) {
 		String statement = "com.qdu.mapping.TeacherMapping.selectTeacherByEmail";
 		return sessionFactory.openSession().selectOne(statement, teacherMobile);
+	}
+
+
+	@Override
+	public void updateTeacherPassWord(String teacherMobile,String teacherPassword) {
+		String statement = "com.qdu.mapping.TeacherMapping.updateTeacherPassWord";
+		Map<String, Object> map = new HashMap<>();
+		map.put("teacherMobile", teacherMobile);
+		map.put("teacherPassword", teacherPassword);
+		sessionFactory.openSession().update(statement, map);
 	}
 
 }

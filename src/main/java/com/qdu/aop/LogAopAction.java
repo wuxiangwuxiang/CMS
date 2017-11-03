@@ -38,7 +38,6 @@ public class LogAopAction {
  
      @Around("controllerAspect()")
      public Object around(ProceedingJoinPoint pjp) throws Throwable {
-    	 System.out.println("进入Log....");
          //常见日志实体对象
          LogEntity log = new LogEntity(); 
          //获取登录用户账户
