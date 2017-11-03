@@ -7,8 +7,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
+<link type="text/css" rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/bootstrap.min.css">
+<link type="text/css" rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/mycss.css">
 <script type="text/javascript"
-	src="<%=request.getContextPath()%>/js/jquery-3.2.0.min.js"></script>
+	src="<%=request.getContextPath()%>/js/jquery-3.2.1.min.js"></script>
+<script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
+<link type="text/css" rel="stylesheet"
+	href="<%=request.getContextPath()%>/layui/css/layui.css">
+<script src="<%=request.getContextPath()%>/layui/layui.js "></script>
 <title>教师门户</title>
 <script type="text/javascript">
 	 $(document).ready(function () {
@@ -47,7 +55,7 @@
               },
               contentType: "application/json; charset=utf-8",
               async: true,
-              url: "<%=request.getContextPath() %>/course/deleteCourseById.do",
+              url: "<%=request.getContextPath()%>/course/deleteCourseById.do",
 //              beforeSend:function(){$("#href").html("等待..");},
               success: function (data) {
             	  document.getElementById("abs"+tem).style.display = "none";
@@ -75,119 +83,224 @@
              },
              contentType: "application/json; charset=utf-8",
              async: false,
-             url: "<%=request.getContextPath() %>/course/insertCourse.do",
-             success: function (data) {
-            	 alert(data.message);
-            	 window.location.reload();
-             },
-             error: function (data) {
-                 alert("服务器异常");
-             },
-             dataType: "json",
-         });
-      }
-	 //跳转到班级页面，post
-	  function aClick(clazzId) {
-		  document.getElementById("asd"+clazzId).submit()
-      }
-
-	</script>
+             url: "<%=request.getContextPath()%>/course/insertCourse.do",
+			success : function(data) {
+				alert(data.message);
+				window.location.reload();
+			},
+			error : function(data) {
+				alert("服务器异常");
+			},
+			dataType : "json",
+		});
+	}
+	//跳转到班级页面，post
+	function aClick(clazzId) {
+		document.getElementById("asd" + clazzId).submit()
+	}
+</script>
 </head>
 <body>
 
-	<div id="torf"
-		style="width: 180px; height: 150px; position: fixed; top: 200px; margin-left: 45%; background-color: white; border: solid; border-color: #C0C0C0; display: none;">
-		<h3 style="color: red; text-align: center;">确定删除该课程？</h3>
-		<a id="delete" onclick="deleteThis()" href="#"
-			style="float: left; margin-left: 30px; margin-top: 30px;">删除</a> <a
-			id="false" href="#"
-			style="float: left; margin-left: 60px; margin-top: 30px;">取消</a>
-	</div>
+	<div class="layui-layout layui-layout-admin">
+
+		<div class="layui-header header header-demo">
+			<div class="layui-main">
+				<a class="logo" href="/"><img
+					src="//res.layui.com/images/layui/logo.png" alt="CMS"> </a>
+
+				<ul class="layui-nav" pc>
+					<li class="layui-nav-item "><a href="/doc/">文档<span
+							class="layui-badge-dot"></span></a></li>
+					<li class="layui-nav-item layui-this"><a href="/demo/">示例</a>
+					</li>
+
+					<li class="layui-nav-item" pc><a href="http://fly.layui.com/"
+						target="_blank">社区</a></li>
+					<li class="layui-nav-item" pc><a href="javascript:;">周边</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="http://layim.layui.com/" target="_blank">即时聊天</a>
+							</dd>
+							<dd>
+								<a href="/alone.html" target="_blank">独立组件</a>
+							</dd>
+							<dd>
+								<a href="http://fly.layui.com/jie/8157/" target="_blank">社区模板</a>
+							</dd>
+							<dd>
+								<a href="http://fly.layui.com/jie/9842/" target="_blank">Axure组件</a>
+							</dd>
+						</dl></li>
+					<li class="layui-nav-item" pc><a href="/v1/" target="_blank">旧版</a>
+					</li>
+					<li class="layui-nav-item" mobile><a href="javascript:;">更多</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="http://fly.layui.com/" target="_blank">社区</a>
+							</dd>
+						</dl></li>
+				</ul>
+
+			</div>
+		</div>
 
 
-	<h1>${teacher.teacherName}老师</h1>
-	<br />
-	<a id="createCourse" href="#">新建课程</a>
-	<br />
-
-	<form id="courseShow" style="display: none;">
-		课程名称：<input type="text" id="courseName" name="courseName" /><br /> 
-		<input type="text" id="teacherMobile" name="teacher.teacherMobile"
-			value="${teacher.teacherMobile}" style="display: none;" />
-		课程类型：&nbsp;&nbsp;&nbsp;<input id="courseType" type="radio"
-			name="courseType" value="必修" checked="checked" />必修 <input
-			id="courseType" type="radio" name="courseType" value="选修" />选修&nbsp;<br />
-		班级容量：<input id="classCapacity" type="text" name="classCapacity" /><br />
-		开始时间：<input id="startTime" type="date" name="startTime" /><br /> 结束时间：<input
-			id="endTime" type="date" name="endTime" /><br /> 当前学年：<input
-			id="currentYear" type="text" name="currentYear">年<br /> 当前学期：<select
-			id="schoolTem" name="schoolTem">
-			<option selected="selected" value="春季">春季学期</option>
-			<option value="夏季">夏季学期</option>
-			<option value="秋季">秋季学期</option>
-			<option value="冬季">冬季学期</option>
-		</select> <input id="subButton" onclick="addCourse()" type="button" value="提交" />
-	</form>
+		<!-- 		<nav class="navbar navbar-inverse navbar-fixed-top"> -->
+		<!-- 		<div class="container"> -->
+		<!-- 			<div class="navbar-header"> -->
+		<!-- 				<button type="button" class="navbar-toggle collapsed" -->
+		<!-- 					data-toggle="collapse" data-target="#navbar" aria-expanded="false" -->
+		<!-- 					aria-controls="navbar"> -->
+		<!-- 					<span class="sr-only">Toggle navigation</span> <span -->
+		<!-- 						class="icon-bar"></span> <span class="icon-bar"></span> <span -->
+		<!-- 						class="icon-bar"></span> -->
+		<!-- 				</button> -->
+		<!-- 				<a class="navbar-brand" href="#">CMS</a> -->
+		<!-- 			</div> -->
+		<!-- 		</div> -->
+		<!-- 		</nav> -->
 
 
-	<table border="1"
-		style="width: 50%; line-height: 3em; margin-left: 10em; margin-top: 5em; background: #cccccc">
-		<tr onmouseover="this.style.backgroundColor = '#ffff66';"
-			onmouseout="this.style.backgroundColor = '#d4e3e5';">
-			<th style="width: 4em">课程名称</th>
-			<th>二维码信息</th>
-			<th>学年</th>
-			<th>班级</th>
-			<th colspan="3">操作</th>
-		</tr>
-		<c:choose>
-			<c:when test="${! empty courses}">
-				<c:forEach items="${courses}" var="r">
-					<tr id="abs${r.courseId}"
-						onmouseover="this.style.backgroundColor = '#ffff66';"
-						onmouseout="this.style.backgroundColor = '#d4e3e5';">
-						<td><a
-							href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">${r.courseName}</a></td>
-						<td style="text-align: center;"><a id="${r.qrImg}"
-							onclick="showQrImg(this.id)" href="#">获取</a></td>
-						<td style="text-align: center;">${r.currentYear}</td>
-						<td style="text-align: center;"><c:choose>
-								<c:when test="${! empty r.clazz}">
-									<c:forEach items="${r.clazz}" var="c">
-									<form style="margin-top: 0; margin-bottom: 0;" id="asd${c.clazzId}" action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do" method="post">
-									<input name="clazzId" style="display: none;" value="${c.clazzId}"/>
-									<a id="${c.clazzId}" onclick="aClick(this.id)"
-							href="#">${c.clazzName}</a>
-									</form>
-										<br/>
-									</c:forEach>
-								</c:when>
-								<c:otherwise>
-									<a>（空）</a>
-								</c:otherwise>
-							</c:choose></td>
-						<td style="text-align: center;"><a
-							href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}&teacherMobile=${teacher.teacherMobile}">查看/签到</a></td>
-						<td><a
-							href="<%=request.getContextPath()%>/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a></td>
-						<td><a id="${r.courseId}" onclick="forDeleteThis(this.id)"
-							href="#">删除</a></td>
-					</tr>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<tr>
-					<td colspan="1">（空）</td>
+
+		<div class="layui-side layui-bg-black">
+			<ul class="layui-nav layui-nav-tree layui-nav-side" lay-filter="test">
+				<!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+				<li class="layui-nav-item layui-nav-itemed"><a
+					href="javascript:;">默认展开</a>
+					<dl class="layui-nav-child">
+						<dd>
+							<a href="javascript:;">选项1</a>
+						</dd>
+						<dd>
+							<a href="javascript:;">选项2</a>
+						</dd>
+						<dd>
+							<a href="">跳转</a>
+						</dd>
+					</dl></li>
+				<li class="layui-nav-item"><a href="javascript:;">解决方案</a>
+					<dl class="layui-nav-child">
+						<dd>
+							<a href="">移动模块</a>
+						</dd>
+						<dd>
+							<a href="">后台模版</a>
+						</dd>
+						<dd>
+							<a href="">电商平台</a>
+						</dd>
+					</dl></li>
+				<li class="layui-nav-item"><a href="">产品</a></li>
+				<li class="layui-nav-item"><a href="">大数据</a></li>
+			</ul>
+		</div>
+
+
+
+
+		<div class="layui-body site-demo">
+
+			<div id="torf"
+				style="width: 180px; height: 150px; position: fixed; top: 200px; margin-left: 45%; background-color: white; border: solid; border-color: #C0C0C0; display: none;">
+				<h3 style="color: red; text-align: center;">确定删除该课程？</h3>
+				<a id="delete" onclick="deleteThis()" href="#"
+					style="float: left; margin-left: 30px; margin-top: 30px;">删除</a> <a
+					id="false" href="#"
+					style="float: left; margin-left: 60px; margin-top: 30px;">取消</a>
+			</div>
+
+
+			<h1>${teacher.teacherName}老师</h1>
+			<br /> <a id="createCourse" href="#">新建课程</a> <br />
+
+			<form id="courseShow" style="display: none;">
+				课程名称：<input type="text" id="courseName" name="courseName" /><br />
+				<input type="text" id="teacherMobile" name="teacher.teacherMobile"
+					value="${teacher.teacherMobile}" style="display: none;" />
+				课程类型：&nbsp;&nbsp;&nbsp;<input id="courseType" type="radio"
+					name="courseType" value="必修" checked="checked" />必修 <input
+					id="courseType" type="radio" name="courseType" value="选修" />选修&nbsp;<br />
+				班级容量：<input id="classCapacity" type="text" name="classCapacity" /><br />
+				开始时间：<input id="startTime" type="date" name="startTime" /><br />
+				结束时间：<input id="endTime" type="date" name="endTime" /><br /> 当前学年：<input
+					id="currentYear" type="text" name="currentYear">年<br />
+				当前学期：<select id="schoolTem" name="schoolTem">
+					<option selected="selected" value="春季">春季学期</option>
+					<option value="夏季">夏季学期</option>
+					<option value="秋季">秋季学期</option>
+					<option value="冬季">冬季学期</option>
+				</select> <input id="subButton" onclick="addCourse()" type="button"
+					value="提交" />
+			</form>
+
+
+			<table border="1"
+				style="width: 50%; line-height: 3em; margin-left: 10em; margin-top: 5em; background: #cccccc">
+				<tr onmouseover="this.style.backgroundColor = '#ffff66';"
+					onmouseout="this.style.backgroundColor = '#d4e3e5';">
+					<th style="width: 4em">课程名称</th>
+					<th>二维码信息</th>
+					<th>学年</th>
+					<th>班级</th>
+					<th colspan="3">操作</th>
 				</tr>
-			</c:otherwise>
-		</c:choose>
-	</table>
+				<c:choose>
+					<c:when test="${! empty courses}">
+						<c:forEach items="${courses}" var="r">
+							<tr id="abs${r.courseId}"
+								onmouseover="this.style.backgroundColor = '#ffff66';"
+								onmouseout="this.style.backgroundColor = '#d4e3e5';">
+								<td><a
+									href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">${r.courseName}</a></td>
+								<td style="text-align: center;"><a id="${r.qrImg}"
+									onclick="showQrImg(this.id)" href="#">获取</a></td>
+								<td style="text-align: center;">${r.currentYear}</td>
+								<td style="text-align: center;"><c:choose>
+										<c:when test="${! empty r.clazz}">
+											<c:forEach items="${r.clazz}" var="c">
+												<form style="margin-top: 0; margin-bottom: 0;"
+													id="asd${c.clazzId}"
+													action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do"
+													method="post">
+													<input name="clazzId" style="display: none;"
+														value="${c.clazzId}" /> <a id="${c.clazzId}"
+														onclick="aClick(this.id)" href="#">${c.clazzName}</a>
+												</form>
+												<br />
+											</c:forEach>
+										</c:when>
+										<c:otherwise>
+											<a>（空）</a>
+										</c:otherwise>
+									</c:choose></td>
+								<td style="text-align: center;"><a
+									href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}&teacherMobile=${teacher.teacherMobile}">查看/签到</a></td>
+								<td><a
+									href="<%=request.getContextPath()%>/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a></td>
+								<td><a id="${r.courseId}" onclick="forDeleteThis(this.id)"
+									href="#">删除</a></td>
+							</tr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td colspan="1">（空）</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
+			</table>
 
-	<div>
-		<img id="target" style="width: 150px; height: 140px;" alt="课程二维码"
-			src="" />
+			<div>
+				<img id="target" style="width: 150px; height: 140px;" alt="课程二维码"
+					src="" />
+			</div>
+			
+			
+			
+
+		</div>
+		
 	</div>
-
-
 </body>
 </html>
