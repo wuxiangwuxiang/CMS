@@ -9,11 +9,10 @@
 	href="<%=request.getContextPath()%>/css/teacherPage.css">
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
-<link type="text/css" rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/bootstrap.min.css">
+
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/jquery-3.2.1.min.js"></script>
-<script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
+
 <link type="text/css" rel="stylesheet"
 	href="<%=request.getContextPath()%>/layui/css/layui.css">
 <script src="<%=request.getContextPath()%>/layui/layui.js "></script>
