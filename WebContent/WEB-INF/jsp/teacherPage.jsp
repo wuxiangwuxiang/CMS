@@ -17,9 +17,6 @@
 	href="<%=request.getContextPath()%>/layui/css/layui.css">
 <script src="<%=request.getContextPath()%>/layui/layui.js "></script>
 <title>教师门户</title>
-<style type="text/css">
-
-</style>
 <script type="text/javascript">
 	 $(document).ready(function () {
 		 var tem;
@@ -85,13 +82,14 @@
              },
              contentType: "application/json; charset=utf-8",
              async: false,
-             url: "<%=request.getContextPath()%>/course/insertCourse.do ",
+             //url不加空格！！！！！！！！！！！！！！！！！！！！！！！
+             url: "<%=request.getContextPath()%>/course/insertCourse.do",
 			success : function(data) {
 				alert(data.message);
 				window.location.reload();
 			},
 			error : function(data) {
-				alert("服务器异常");
+				alert("????服务器异常");
 			},
 			dataType : "json",
 		});
@@ -167,8 +165,8 @@
 				</ul>
 			</div>
 		</div>
-        
-        <!-- 内容显示 -->
+
+		<!-- 内容显示 -->
 		<div class="layui-body site-demo">
 
 			<div id="torf"
@@ -180,30 +178,114 @@
 					style="float: left; margin-left: 60px; margin-top: 30px;">取消</a>
 			</div>
 
-             <br/>
-             
-            <!-- 新建课程 -->
-			<form id="courseShow" style="display: none;">
-				课程名称：<input type="text" id="courseName" name="courseName" /><br />
-				<input type="text" id="teacherMobile" name="teacher.teacherMobile"
-					value="${teacher.teacherMobile}" style="display: none;" />
-				课程类型：&nbsp;&nbsp;&nbsp;<input id="courseType" type="radio"
-					name="courseType" value="必修" checked="checked" />必修 <input
-					id="courseType" type="radio" name="courseType" value="选修" />选修&nbsp;<br />
-				班级容量：<input id="classCapacity" type="text" name="classCapacity" /><br />
-				开始时间：<input id="startTime" type="date" name="startTime" /><br />
-				结束时间：<input id="endTime" type="date" name="endTime" /><br /> 当前学年：<input
-					id="currentYear" type="text" name="currentYear">年<br />
-				当前学期：<select id="schoolTem" name="schoolTem">
-					<option selected="selected" value="春季">春季学期</option>
-					<option value="夏季">夏季学期</option>
-					<option value="秋季">秋季学期</option>
-					<option value="冬季">冬季学期</option>
-				</select> <input id="subButton" onclick="addCourse()" type="button"
-					value="提交" />
-			</form>
+			<br/>
 
-            <!-- 课程信息 -->
+			<!-- 新建课程 -->
+			<div class="site-text site-block" id="courseShow" style="display: none;">
+				<form class="layui-form" action="">
+					<div class="layui-form-item">
+						<label class="layui-form-label">课程名称</label>
+						<div class="layui-input-block">
+							<input id="courseName" type="text" name="courseName" required
+								lay-verify="required" placeholder="请输入课程名称" autocomplete="off"
+								class="layui-input">
+						</div>
+					</div>
+					<input type="text" id="teacherMobile" name="teacher.teacherMobile"
+						value="${teacher.teacherMobile}" style="display: none;" />
+					<div class="layui-form-item">
+						<label class="layui-form-label">课程类型</label>
+						<div class="layui-input-block">
+							<input id="courseType" type="radio" name="courseType" value="必修"
+								title="必修" checked> <input id="courseType" type="radio"
+								name="courseType" value="选修" title="选修">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">班级容量</label>
+						<div class="layui-input-block">
+							<input id="classCapacity" type="text" name="classCapacity"
+								required lay-verify="required" placeholder="请输入班级容量"
+								autocomplete="off" class="layui-input">
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">开始时间</label>
+							<div class="layui-input-inline">
+								<input class="layui-input" id="startTime" type="text"
+									name="startTime" placeholder="yyyy-MM-dd">
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">结束时间</label>
+							<div class="layui-input-inline">
+								<input class="layui-input" id="endTime" type="text"
+									name="endTime" placeholder="yyyy-MM-dd">
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">当前学年</label>
+							<div class="layui-input-inline">
+								<input class="layui-input" id="currentYear" type="text"
+									name="currentYear" placeholder="yyyy">
+							</div>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">当前学期</label>
+						<div class="layui-input-block">
+							<select id="schoolTem" name="schoolTem" lay-verify="required">
+								<option value=""></option>
+								<option value="春季">春季学期</option>
+								<option value="夏季">夏季学期</option>
+								<option value="秋季">秋季学期</option>
+								<option value="冬季">冬季学期</option>
+							</select>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<input id="subButton" class="layui-btn" onclick="addCourse()"
+								type="button" value="提交" />
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</form>
+
+				<script>
+					//Demo
+					layui.use(['form','laydate'], function() {
+						var form = layui.form
+						,laydate = layui.laydate;
+						
+						//监听提交
+						form.on('submit(formDemo)', function(data) {
+							layer.msg(JSON.stringify(data.field));
+							return false;
+						});
+						laydate.render({
+						    elem: '#startTime'
+						});
+						laydate.render({
+						    elem: '#endTime'
+						});
+						laydate.render({
+						    elem: '#currentYear'
+						    ,type: 'year'
+						  });
+
+					});
+				</script>
+			</div>
+
+			
+
+			<!-- 课程信息 -->
 			<table border="1"
 				style="width: 50%; line-height: 3em; margin-left: 10em; margin-top: 5em; background: #cccccc">
 				<tr onmouseover="this.style.backgroundColor = '#ffff66';"
@@ -264,11 +346,7 @@
 				<img id="target" style="width: 150px; height: 140px;" alt="课程二维码"
 					src="" />
 			</div>
-
 		</div>
-
-
-
 	</div>
 
 	<script>
