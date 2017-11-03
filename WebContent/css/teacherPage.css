@@ -1,11 +1,8 @@
 @CHARSET "UTF-8";
 
-
-
-
 .header .layui-nav{
 	position: absolute;
-	right:180px;
+	right:5%;
 	top:0px;
 	padding:0;
 }
@@ -22,7 +19,7 @@
 	border-bottom: none;
 }
 .header-demo .CMSlogo{
-	left:40px
+	left:40px;
 }
 .CMSlogo{
 	position: absolute;
@@ -32,9 +29,7 @@ a{
 	color:#333;
 	text-decoration: none;
 }
-a:active {
-	text-decoration: none;
-}
+
 a:link{
 	text-decoration: none;
 }
@@ -44,4 +39,8 @@ a:visited{
 a:hover{
 	text-decoration: none;
 }
+a:active {
+	text-decoration: none;
+}
+
 
