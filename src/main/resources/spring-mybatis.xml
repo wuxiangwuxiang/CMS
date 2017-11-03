@@ -25,12 +25,12 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="mapperLocations" value="classpath:com/qdu/mapping/*.xml" />
 		<property name="configurationProperties">
-            <props>
-                <prop key="cacheEnabled">true</prop> 
-                <prop key="lazyLoadingEnabled">false</prop> 
-                <prop key="aggressiveLazyLoading">true</prop>
-            </props>
-        </property>
+			<props>
+				<prop key="cacheEnabled">true</prop> 
+				<prop key="lazyLoadingEnabled">false</prop> 
+				<prop key="aggressiveLazyLoading">true</prop>
+			</props>
+		</property>
 	</bean>
 	
 
@@ -40,6 +40,6 @@
 	</bean>
 
 	<tx:annotation-driven transaction-manager="txManager" />
-	
-	
+
+
 </beans>

@@ -42,7 +42,7 @@ public class CourseController {
 	@SystemLog(module="教师",methods="日志管理-添加课程")
 	@RequestMapping(value = "/insertCourse.do")
 	public @ResponseBody Map<String, Object> insertCourse(String teacherMobile,String courseName,String courseType,String classCapacity,
-			@DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,@DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,String currentYear,String schoolTem, ModelMap map,
+			@DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,@DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime,@DateTimeFormat(pattern = "yyyy") Date currentYear,String schoolTem, ModelMap map,
 			HttpServletRequest request) throws Exception {
 		System.out.println("插入开始");
 		Course course = new Course();
@@ -53,12 +53,13 @@ public class CourseController {
 		course.setClassCapacity(Integer.parseInt(classCapacity));
 		course.setStartTime(startTime);
 		course.setEndTime(endTime);
-		course.setCurrentYear(Integer.parseInt(currentYear));
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy");   
+		course.setCurrentYear(Integer.parseInt(sdf.format(currentYear)));
 		course.setSchoolTem(schoolTem);
 		System.out.println(courseName +">>><<<"+startTime);
 		courseServiceImpl.insertCourse(course);
 		String teacherName = teacher.getTeacherName();
-		String current = currentYear;
+		String current = sdf.format(currentYear);
 		String tem =schoolTem;
 		Course course2 = courseServiceImpl.selectIdFromCourse(courseName, teacherMobile);
 		int courseId = course2.getCourseId();
