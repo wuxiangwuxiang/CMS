@@ -17,5 +17,7 @@ public interface StudentInfoDao {
 	public List<StudentInfo> selectInfoList(int courseId);
 	
     public void updateStudentInfoAboutAbs(int studentInfoId,int absenteeism);
+    
+    public List<StudentInfo> selectInfoFromInfoAndStudent(int courseId);
 
 }

@@ -170,6 +170,10 @@ function submitSignIn() {
          },
      });
 }
+//获取所有签到记录
+function getRecord() {
+	$('#scoreTable').toggle();
+}
 </script>
 </head>
 <body>
@@ -177,17 +181,20 @@ function submitSignIn() {
 		style="width: 49%; heigh: 600px; border: solid;; border-color: red; float: left;">
 		<h3>课程：${course.courseName}</h3>
 		<input type="text" value="${course.courseId}" style="display: none;" />
-		<a
-			href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a><br />
 		<br/> 
 		<a id="qrHref" onclick="showQrImg()" href="#">点名签到</a><br/> <br/> 
-		<a href="#">补签</a><br /> <br/> 
+		
 		<a href="#" onclick="submitSignIn()">提交签到表</a><br/><br/> 
+		
+		<a href="#">补签</a><br /> <br/> 
+		
+		<a href="#" onclick="getRecord()">签到记录</a><br/><br/>
 			<input type="text" id="cccourseId"
 			value="${course.courseId}" style="display: none;" /> <input
 			type="text" id="teacherMobile" value="${teacher.teacherMobile}"
 			style="display: none;" />
 
+<a href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a><br />
 		<table border="1">
 			<tr>
 				<th>班级</th>
@@ -249,6 +256,32 @@ function submitSignIn() {
 		<table width="100%" border="1" id = "showStudents">
 			
 			
+		</table>
+		
+		<table id="scoreTable" border="1" style="display: none;">
+		<caption>本学期签到汇总</caption>
+		<tr>
+		<th>学号</th>
+		<th>姓名</th>
+		<th>签到</th>
+		<th>迟到</th>
+		<th>早退</th>
+		<th>旷课</th>
+		</tr>
+		<c:choose>
+		<c:when test="${! empty studentInfo}">
+		<c:forEach items="${studentInfo}" var="s">
+		<tr>
+		<td>${s.student.studentRoNo}</td>
+		<td>${s.student.studentName}</td>
+		<td>${s.signIn}</td>
+		<td>${s.comeLate}</td>
+		<td>${s.leaveEarlier}</td>
+		<td>${s.absenteeism}</td>
+		</tr>
+		</c:forEach>
+		</c:when>
+		</c:choose>
 		</table>
 		
 	</div>

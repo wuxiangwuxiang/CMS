@@ -45,6 +45,11 @@ public class StudentInfoServiceImpl implements StudentInfoService{
 	public void updateStudentInfoAboutAbs(int studentInfoId, int absenteeism) {
 		studentInfoDaoImpl.updateStudentInfoAboutAbs(studentInfoId, absenteeism);
 	}
+
+	@Override
+	public List<StudentInfo> selectInfoFromInfoAndStudent(int courseId) {
+		return studentInfoDaoImpl.selectInfoFromInfoAndStudent(courseId);
+	}
 	
 	
 	

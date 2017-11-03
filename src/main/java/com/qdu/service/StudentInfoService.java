@@ -18,4 +18,6 @@ public interface StudentInfoService {
 	
 	public void updateStudentInfoAboutAbs(int studentInfoId, int absenteeism);
 	
+	public List<StudentInfo> selectInfoFromInfoAndStudent(int courseId);
+	
 }

@@ -1,0 +1,47 @@
+@CHARSET "UTF-8";
+
+
+
+
+.header .layui-nav{
+	position: absolute;
+	right:180px;
+	top:0px;
+	padding:0;
+}
+
+.layui-layout-admin .layui-main{
+	width:auto;
+	margin:0 15px;
+}
+.layui-main{
+	position: relative;
+}
+.header-demo{
+	height:60px;
+	border-bottom: none;
+}
+.header-demo .CMSlogo{
+	left:40px
+}
+.CMSlogo{
+	position: absolute;
+	top:16px;
+}
+a{
+	color:#333;
+	text-decoration: none;
+}
+a:active {
+	text-decoration: none;
+}
+a:link{
+	text-decoration: none;
+}
+a:visited{
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: none;
+}
+

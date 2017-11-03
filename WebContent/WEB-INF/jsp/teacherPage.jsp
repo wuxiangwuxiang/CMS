@@ -5,12 +5,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link type="text/css" rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/teacherPage.css">
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
 <link type="text/css" rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/bootstrap.min.css">
-<link type="text/css" rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/mycss.css">
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/jquery-3.2.1.min.js"></script>
 <script src="<%=request.getContextPath()%>/js/bootstrap.min.js"></script>
@@ -18,6 +18,9 @@
 	href="<%=request.getContextPath()%>/layui/css/layui.css">
 <script src="<%=request.getContextPath()%>/layui/layui.js "></script>
 <title>教师门户</title>
+<style type="text/css">
+
+</style>
 <script type="text/javascript">
 	 $(document).ready(function () {
 		 var tem;

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Clazz;
 import com.qdu.pojo.Course;
+import com.qdu.pojo.StudentInfo;
 import com.qdu.pojo.Teacher;
 import com.qdu.qr.SignInQr;
 import com.qdu.qr.testQR;
@@ -96,7 +97,8 @@ public class CourseController {
 	public String forInsertClazz(int courseId,String teacherMobile, ModelMap map) {
 		Course course = courseServiceImpl.selectCourseById(courseId);
 		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
-		System.out.println(course.getCourseName());
+		List<StudentInfo> studentInfos = studentInfoServiceImpl.selectInfoFromInfoAndStudent(courseId);
+		map.put("studentInfo", studentInfos);
 		map.put("course", course);
 		map.put("teacher", teacher);
 		return "clazzInfo";

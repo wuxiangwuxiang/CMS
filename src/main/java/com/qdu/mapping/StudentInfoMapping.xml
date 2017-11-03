@@ -40,6 +40,10 @@
 		where CourseId = #{courseId})
 	</select>
 	
+	<select id="selectInfoFromInfoAndStudent" resultMap="StudentInfoResult">
+	SELECT * from StudentInfo s,Student i WHERE s.StudentRoNo = i.StudentRoNo AND s.CourseId = #{courseId}
+	</select>
+	
 	<select id="selectStudentInfoByMany" parameterType="HashMap" resultMap="StudentInfoResult">
 	select * from StudentInfo where StudentRoNo = #{studentRoNo} And CourseId = #{courseId}
 	</select>
