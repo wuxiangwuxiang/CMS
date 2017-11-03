@@ -83,7 +83,7 @@
              },
              contentType: "application/json; charset=utf-8",
              async: false,
-             url: "<%=request.getContextPath()%>/course/insertCourse.do",
+             url: "<%=request.getContextPath()%>/course/insertCourse.do ",
 			success : function(data) {
 				alert(data.message);
 				window.location.reload();
@@ -103,102 +103,70 @@
 <body>
 
 	<div class="layui-layout layui-layout-admin">
-
+		<!-- 头部导航 -->
 		<div class="layui-header header header-demo">
 			<div class="layui-main">
-				<a class="logo" href="/"><img
-					src="//res.layui.com/images/layui/logo.png" alt="CMS"> </a>
+				<a class="CMSlogo" href="/"><span
+					style="color: white; font-size: 25px;">CMS</span></a>
 
-				<ul class="layui-nav" pc>
-					<li class="layui-nav-item "><a href="/doc/">文档<span
+				<ul class="layui-nav">
+					<li class="layui-nav-item"><a href="">控制台<span
+							class="layui-badge">9</span></a></li>
+					<li class="layui-nav-item"><a href="">个人中心<span
 							class="layui-badge-dot"></span></a></li>
-					<li class="layui-nav-item layui-this"><a href="/demo/">示例</a>
-					</li>
-
-					<li class="layui-nav-item" pc><a href="http://fly.layui.com/"
-						target="_blank">社区</a></li>
-					<li class="layui-nav-item" pc><a href="javascript:;">周边</a>
+					<li class="layui-nav-item"><a href="">${teacher.teacherName}老师</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a href="http://layim.layui.com/" target="_blank">即时聊天</a>
+								<a href="javascript:;">修改信息</a>
 							</dd>
 							<dd>
-								<a href="/alone.html" target="_blank">独立组件</a>
+								<a href="javascript:;">安全管理</a>
 							</dd>
 							<dd>
-								<a href="http://fly.layui.com/jie/8157/" target="_blank">社区模板</a>
-							</dd>
-							<dd>
-								<a href="http://fly.layui.com/jie/9842/" target="_blank">Axure组件</a>
-							</dd>
-						</dl></li>
-					<li class="layui-nav-item" pc><a href="/v1/" target="_blank">旧版</a>
-					</li>
-					<li class="layui-nav-item" mobile><a href="javascript:;">更多</a>
-						<dl class="layui-nav-child">
-							<dd>
-								<a href="http://fly.layui.com/" target="_blank">社区</a>
+								<a href="javascript:;">注销</a>
 							</dd>
 						</dl></li>
 				</ul>
 
 			</div>
 		</div>
-
-
-		<!-- 		<nav class="navbar navbar-inverse navbar-fixed-top"> -->
-		<!-- 		<div class="container"> -->
-		<!-- 			<div class="navbar-header"> -->
-		<!-- 				<button type="button" class="navbar-toggle collapsed" -->
-		<!-- 					data-toggle="collapse" data-target="#navbar" aria-expanded="false" -->
-		<!-- 					aria-controls="navbar"> -->
-		<!-- 					<span class="sr-only">Toggle navigation</span> <span -->
-		<!-- 						class="icon-bar"></span> <span class="icon-bar"></span> <span -->
-		<!-- 						class="icon-bar"></span> -->
-		<!-- 				</button> -->
-		<!-- 				<a class="navbar-brand" href="#">CMS</a> -->
-		<!-- 			</div> -->
-		<!-- 		</div> -->
-		<!-- 		</nav> -->
-
-
-
+		<!-- 左侧垂直导航 -->
 		<div class="layui-side layui-bg-black">
-			<ul class="layui-nav layui-nav-tree layui-nav-side" lay-filter="test">
-				<!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
-				<li class="layui-nav-item layui-nav-itemed"><a
-					href="javascript:;">默认展开</a>
-					<dl class="layui-nav-child">
-						<dd>
-							<a href="javascript:;">选项1</a>
-						</dd>
-						<dd>
-							<a href="javascript:;">选项2</a>
-						</dd>
-						<dd>
-							<a href="">跳转</a>
-						</dd>
-					</dl></li>
-				<li class="layui-nav-item"><a href="javascript:;">解决方案</a>
-					<dl class="layui-nav-child">
-						<dd>
-							<a href="">移动模块</a>
-						</dd>
-						<dd>
-							<a href="">后台模版</a>
-						</dd>
-						<dd>
-							<a href="">电商平台</a>
-						</dd>
-					</dl></li>
-				<li class="layui-nav-item"><a href="">产品</a></li>
-				<li class="layui-nav-item"><a href="">大数据</a></li>
-			</ul>
+			<div class="layui-side-scroll">
+				<ul class="layui-nav layui-nav-tree" lay-filter="test">
+					<!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+					<li class="layui-nav-item layui-nav-itemed"><a
+						href="javascript:;">默认展开</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a id="createCourse" href="#">新建课程</a>
+							</dd>
+							<dd>
+								<a href="javascript:;">选项2</a>
+							</dd>
+							<dd>
+								<a href="">跳转</a>
+							</dd>
+						</dl></li>
+					<li class="layui-nav-item"><a href="javascript:;">解决方案</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="">移动模块</a>
+							</dd>
+							<dd>
+								<a href="">后台模版</a>
+							</dd>
+							<dd>
+								<a href="">电商平台</a>
+							</dd>
+						</dl></li>
+					<li class="layui-nav-item"><a href="">产品</a></li>
+					<li class="layui-nav-item"><a href="">大数据</a></li>
+				</ul>
+			</div>
 		</div>
-
-
-
-
+        
+        <!-- 内容显示 -->
 		<div class="layui-body site-demo">
 
 			<div id="torf"
@@ -210,10 +178,9 @@
 					style="float: left; margin-left: 60px; margin-top: 30px;">取消</a>
 			</div>
 
-
-			<h1>${teacher.teacherName}老师</h1>
-			<br /> <a id="createCourse" href="#">新建课程</a> <br />
-
+             <br/>
+             
+            <!-- 新建课程 -->
 			<form id="courseShow" style="display: none;">
 				课程名称：<input type="text" id="courseName" name="courseName" /><br />
 				<input type="text" id="teacherMobile" name="teacher.teacherMobile"
@@ -234,7 +201,7 @@
 					value="提交" />
 			</form>
 
-
+            <!-- 课程信息 -->
 			<table border="1"
 				style="width: 50%; line-height: 3em; margin-left: 10em; margin-top: 5em; background: #cccccc">
 				<tr onmouseover="this.style.backgroundColor = '#ffff66';"
@@ -295,12 +262,23 @@
 				<img id="target" style="width: 150px; height: 140px;" alt="课程二维码"
 					src="" />
 			</div>
-			
-			
-			
 
 		</div>
-		
+
+
+
 	</div>
+
+	<script>
+		layui.use('element', function() {
+			var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+			//监听导航点击
+			element.on('nav(demo)', function(elem) {
+				//console.log(elem)
+				layer.msg(elem.text());
+			});
+		});
+	</script>
 </body>
 </html>
