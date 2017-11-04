@@ -23,13 +23,18 @@ public class LogEntityServiceImpl implements LogEntityService{
 	}
  
 	@Override 
-	public List<LogEntity> selectLog() {
-		return logEntityDaoImpl.selectLog();
+	public List<LogEntity> selectLog(int startPos) {
+		return logEntityDaoImpl.selectLog(startPos);
 	}
 
 	@Override
 	public Admin selectAdminById(String adminId) {
 		return logEntityDaoImpl.selectAdminById(adminId);
+	}
+
+	@Override
+	public int selectLogEntityCount() {
+		return logEntityDaoImpl.selectLogEntityCount();
 	}
 
 }
