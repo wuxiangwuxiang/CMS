@@ -53,3 +53,12 @@ a:active {
 	margin:5% 10%;
 }
 
+/*课程信息表格*/
+.sessiontable{
+	margin: 0 8%;
+}
+.sessiontable-th{
+	text-align: center;
+}
+
+

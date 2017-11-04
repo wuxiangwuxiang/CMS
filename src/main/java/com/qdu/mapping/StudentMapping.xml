@@ -89,7 +89,7 @@
 	where StudentRoNo = #{studentRoNo}
 	</update>
 	
-	<update id="updateStudentPassWord" paramterType="HashMap">
+	<update id="updateStudentPassWord" parameterType="HashMap">
 	update Student set
 	StudentPassword = #{studentPassword}
 	where StudentRoNo = #{studentRoNo}

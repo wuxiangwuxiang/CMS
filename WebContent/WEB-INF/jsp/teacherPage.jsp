@@ -26,9 +26,7 @@
 		 $('#false').click(function() {
 			$('#torf').hide();
 		});
-
 	 });
-	
 	 function showQrImg(id) {
 		     var url = "/ClassManageSys/qrImg/" + id + ".gif";
 		     var imgPre = document.getElementById("target");
@@ -139,10 +137,10 @@
 						href="javascript:;">默认展开</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a id="createCourse" href="#">新建课程</a>
+								<a id="checkCourseShow" href="#">课程信息</a>
 							</dd>
 							<dd>
-								<a href="javascript:;">选项2</a>
+								<a id="createCourse" href="#">新建课程</a>
 							</dd>
 							<dd>
 								<a href="">跳转</a>
@@ -178,10 +176,11 @@
 					style="float: left; margin-left: 60px; margin-top: 30px;">取消</a>
 			</div>
 
-			<br/>
+			<br />
 
 			<!-- 新建课程 -->
-			<div class="site-text site-block" id="courseShow" style="display: none;">
+			<div class="site-text site-block" id="courseShow"
+				style="display: none;">
 				<form class="layui-form" action="">
 					<div class="layui-form-item">
 						<label class="layui-form-label">课程名称</label>
@@ -259,89 +258,107 @@
 
 				<script>
 					//Demo
-					layui.use(['form','laydate'], function() {
-						var form = layui.form
-						,laydate = layui.laydate;
-						
+					layui.use([ 'form', 'laydate' ], function() {
+						var form = layui.form, laydate = layui.laydate;
+
 						//监听提交
 						form.on('submit(formDemo)', function(data) {
 							layer.msg(JSON.stringify(data.field));
 							return false;
 						});
 						laydate.render({
-						    elem: '#startTime'
+							elem : '#startTime'
 						});
 						laydate.render({
-						    elem: '#endTime'
+							elem : '#endTime'
 						});
 						laydate.render({
-						    elem: '#currentYear'
-						    ,type: 'year'
-						  });
+							elem : '#currentYear',
+							type : 'year'
+						});
 
 					});
 				</script>
 			</div>
 
-			
 
 			<!-- 课程信息 -->
-			<table border="1"
-				style="width: 50%; line-height: 3em; margin-left: 10em; margin-top: 5em; background: #cccccc">
-				<tr onmouseover="this.style.backgroundColor = '#ffff66';"
-					onmouseout="this.style.backgroundColor = '#d4e3e5';">
-					<th style="width: 4em">课程名称</th>
-					<th>二维码信息</th>
-					<th>学年</th>
-					<th>班级</th>
-					<th colspan="3">操作</th>
-				</tr>
-				<c:choose>
-					<c:when test="${! empty courses}">
-						<c:forEach items="${courses}" var="r">
-							<tr id="abs${r.courseId}"
-								onmouseover="this.style.backgroundColor = '#ffff66';"
-								onmouseout="this.style.backgroundColor = '#d4e3e5';">
-								<td><a
-									href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">${r.courseName}</a></td>
-								<td style="text-align: center;"><a id="${r.qrImg}"
-									onclick="showQrImg(this.id)" href="#">获取</a></td>
-								<td style="text-align: center;">${r.currentYear}</td>
-								<td style="text-align: center;"><c:choose>
-										<c:when test="${! empty r.clazz}">
-											<c:forEach items="${r.clazz}" var="c">
-												<form style="margin-top: 0; margin-bottom: 0;"
-													id="asd${c.clazzId}"
-													action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do"
-													method="post">
-													<input name="clazzId" style="display: none;"
-														value="${c.clazzId}" /> <a id="${c.clazzId}"
-														onclick="aClick(this.id)" href="#">${c.clazzName}</a>
-												</form>
-												<br />
-											</c:forEach>
-										</c:when>
-										<c:otherwise>
-											<a>（空）</a>
-										</c:otherwise>
-									</c:choose></td>
-								<td style="text-align: center;"><a
-									href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}&teacherMobile=${teacher.teacherMobile}">查看/签到</a></td>
-								<td><a
-									href="<%=request.getContextPath()%>/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a></td>
-								<td><a id="${r.courseId}" onclick="forDeleteThis(this.id)"
-									href="#">删除</a></td>
-							</tr>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
+			<div class="layui-form sessiontable" id="courseInfo">
+				<table class="layui-table" lay-even style="text-align: center;">
+					<colgroup>
+						<col width="200">
+						<col width="200">
+						<col width="150">
+						<col width="150">
+						<col width="300">
+					</colgroup>
+					<thead>
 						<tr>
-							<td colspan="1">（空）</td>
+							<th style="text-align: center;">课程名称</th>
+							<th style="text-align: center;">二维码信息</th>
+							<th style="text-align: center;">学年</th>
+							<th style="text-align: center;">班级</th>
+							<th colspan="3" style="text-align: center;">操作</th>
 						</tr>
-					</c:otherwise>
-				</c:choose>
-			</table>
+					</thead>
+					<tbody>
+						<c:choose>
+							<c:when test="${! empty courses}">
+								<c:forEach items="${courses}" var="r">
+									<tr id="abs${r.courseId}">
+										<td><a
+											href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">${r.courseName}</a></td>
+										<td style="text-align: center;"><a id="${r.qrImg}"
+											onclick="showQrImg(this.id)" href="#">获取</a></td>
+										<td style="text-align: center;">${r.currentYear}</td>
+										<td style="text-align: center;"><c:choose>
+												<c:when test="${! empty r.clazz}">
+													<c:forEach items="${r.clazz}" var="c">
+														<form style="margin-top: 0; margin-bottom: 0;"
+															id="asd${c.clazzId}"
+															action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do"
+															method="post">
+															<input name="clazzId" style="display: none;"
+																value="${c.clazzId}" /> <a id="${c.clazzId}"
+																onclick="aClick(this.id)" href="#">${c.clazzName}</a>
+														</form>
+														<br />
+													</c:forEach>
+												</c:when>
+												<c:otherwise>
+													<a>（空）</a>
+												</c:otherwise>
+											</c:choose></td>
+										<td style="text-align: center;"><a
+											href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}&teacherMobile=${teacher.teacherMobile}">查看/签到</a></td>
+										<td><a
+											href="<%=request.getContextPath()%>/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a></td>
+										<td><a id="${r.courseId}"
+											onclick="forDeleteThis(this.id)" href="#">删除</a></td>
+									</tr>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td colspan="1">（空）</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+					</tbody>
+				</table>
+			</div>
 
+
+			<script>
+				layui.use('table', function() {
+					var table = layui.table;
+
+				});
+			</script>
+
+
+
+			<!-- 课程二维码 -->
 			<div>
 				<img id="target" style="width: 150px; height: 140px;" alt="课程二维码"
 					src="" />
