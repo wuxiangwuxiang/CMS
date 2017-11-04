@@ -17,8 +17,12 @@
 		select * from LogEntity where UserId = #{userId} order by LogId desc
 	</select>
 	
-	<select id="selectLog" resultMap="LogEntityResult">
-	  select * from LogEntity order by LogId desc
+	<select id="selectLog" resultMap="LogEntityResult" resultType="com.qdu.util.Page">
+	  select * from LogEntity order by LogId desc limit #{startPos},10
+	</select>
+	
+	<select id="selectLogEntityCount" resultType="int"> 
+	select count(*) from LogEntity
 	</select>
 
     <insert id="insertLogEntity" parameterType="com.qdu.pojo.LogEntity">

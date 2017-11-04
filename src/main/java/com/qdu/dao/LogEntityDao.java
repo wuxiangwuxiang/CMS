@@ -11,7 +11,9 @@ public interface LogEntityDao {
 	
 	public void saveLog(LogEntity logEntity);
 	 
-	public List<LogEntity> selectLog();
+	public List<LogEntity> selectLog(int startPos);
+	
+	public int selectLogEntityCount();
 
 }
  

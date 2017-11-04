@@ -22,15 +22,21 @@ public class LogEntityDaoImpl implements LogEntityDao{
 	} 
 
 	@Override
-	public List<LogEntity> selectLog() {
+	public List<LogEntity> selectLog(int startPos) {
 		String statement = "com.qdu.mapping.LogEntityMapping.selectLog";
-		return sessionFactory.openSession().selectList(statement);
+		return sessionFactory.openSession().selectList(statement,startPos);
 	}
 
 	@Override
 	public Admin selectAdminById(String adminId) {
 		String statement = "com.qdu.mapping.AdminMapping.selectAdminById";
 		return sessionFactory.openSession().selectOne(statement, adminId);
+	}
+
+	@Override
+	public int selectLogEntityCount() {
+		String statement = "com.qdu.mapping.LogEntityMapping.selectLogEntityCount";
+		return sessionFactory.openSession().selectOne(statement);
 	}
 
 }
