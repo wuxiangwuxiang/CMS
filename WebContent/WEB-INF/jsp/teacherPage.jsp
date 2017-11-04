@@ -19,19 +19,30 @@
 <title>教师门户</title>
 <script type="text/javascript">
 	 $(document).ready(function () {
-		 var tem;
 		 $('#createCourse').click(function() {
-			$('#courseShow').toggle();
+			 $('#courseInfo').hide();
+			$('#courseShow').show();
 		});
+		 $('#checkCourseShow').click(function() {
+			 $('#courseShow').hide();
+			 $('#courseInfo').show();
+			});
+		 $('#esc').click(function() {
+			 $('#targetup').hide();
+			 $('#courseInfo').show();
+			});
 		 $('#false').click(function() {
 			$('#torf').hide();
 		});
 	 });
+	 var tem;
 	 function showQrImg(id) {
 		     var url = "/ClassManageSys/qrImg/" + id + ".gif";
 		     var imgPre = document.getElementById("target");
 		     imgPre.style.display = "block";
 		     imgPre.src = url;
+		     $('#courseInfo').hide();
+		     $('#targetup').show();
 		}
 	 function forDeleteThis(courseId) {
 		 var courseId = courseId;
@@ -167,13 +178,16 @@
 		<!-- 内容显示 -->
 		<div class="layui-body site-demo">
 
+             <!-- 背景大幕 -->		
+             
 			<div id="torf"
-				style="width: 180px; height: 150px; position: fixed; top: 200px; margin-left: 45%; background-color: white; border: solid; border-color: #C0C0C0; display: none;">
-				<h3 style="color: red; text-align: center;">确定删除该课程？</h3>
+				style="width: 180px; height: 150px; position: fixed; top: 200px; margin-left: 45%;
+				 background-color: black; border: solid; border-color: black; display: none; z-index: 4">
+				<h3 style="color: red; text-align: center; margin-top: 8%;">确定删除该课程？</h3>
 				<a id="delete" onclick="deleteThis()" href="#"
-					style="float: left; margin-left: 30px; margin-top: 30px;">删除</a> <a
-					id="false" href="#"
-					style="float: left; margin-left: 60px; margin-top: 30px;">取消</a>
+					style="float: left; margin-left: 30px; margin-top: 37%; color: white;">删除</a>
+			    <a id="false" href="#"
+					style="float: left; margin-left: 60px; margin-top: 37%; color: white;">取消</a>
 			</div>
 
 			<br />
@@ -282,8 +296,18 @@
 			</div>
 
 
+             <!-- 课程二维码 -->
+			<div id="targetup" style="display: none; width: 100%; padding-left: 29%; position: fixed; top: 9%;
+			height: 100%; background-color: rgba(0, 0, 0, 0.6); padding-top: 10%; ">
+				<img id="esc" src="<%=request.getContextPath()%>/lib/取消.png" 
+				style="position: fixed; top: 10%; right:5%; background-color: rgba(0, 0, 0, 0.2);" width="4%" height="5%">
+				<img id="target" style="width: 270px; height: 270px;
+				border: solid;border-color: red;" 
+					src="" />
+			</div>
+			
 			<!-- 课程信息 -->
-			<div class="layui-form sessiontable" id="courseInfo">
+			<div class="layui-form sessiontable" id="courseInfo" style="margin-top: 5%;">
 				<table class="layui-table" lay-even style="text-align: center;">
 					<colgroup>
 						<col width="200">
@@ -340,7 +364,7 @@
 							</c:when>
 							<c:otherwise>
 								<tr>
-									<td colspan="1">（空）</td>
+									<td colspan="7">（空）</td>
 								</tr>
 							</c:otherwise>
 						</c:choose>
@@ -356,16 +380,10 @@
 				});
 			</script>
 
-
-
-			<!-- 课程二维码 -->
-			<div>
-				<img id="target" style="width: 150px; height: 140px;" alt="课程二维码"
-					src="" />
-			</div>
 		</div>
 	</div>
-
+     
+     
 	<script>
 		layui.use('element', function() {
 			var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
