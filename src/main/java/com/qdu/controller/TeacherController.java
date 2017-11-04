@@ -18,6 +18,7 @@ import com.qdu.pojo.Teacher;
 import com.qdu.service.ClazzService;
 import com.qdu.service.CourseService;
 import com.qdu.service.TeacherService;
+import com.qdu.util.MD5Util;
 
 @Controller
 @RequestMapping(value="/teacher")
@@ -45,7 +46,7 @@ public class TeacherController {
 		String password = request.getParameter("password");
 		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(id);
 		if(teacher != null){
-		if(id.equals(teacher.getTeacherMobile()) && password.equals(teacher.getTeacherPassword())){
+		if(id.equals(teacher.getTeacherMobile()) && MD5Util.md5(password, "teacher").equals(teacher.getTeacherPassword())){
 			map.addAttribute("teacher",teacher);
 			List<Course> courses  = courseServiceImpl.selectCourseByTeacher(teacher.getTeacherMobile());
 			map.addAttribute("courses", courses);
@@ -92,7 +93,7 @@ public class TeacherController {
 	public Map<String, Object> confirmTeacherPassWord(String password,String teacherMobile){
 		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
 		Map<String, Object> map = new HashMap<>();
-		if(teacher != null && password.equals(teacher.getTeacherPassword())){
+		if(teacher != null && MD5Util.md5(password, "teacher").equals(teacher.getTeacherPassword())){
 			map.put("result", true);
 		}else{
 			map.put("result", false);
@@ -104,6 +105,8 @@ public class TeacherController {
 	@RequestMapping(value = "/insertTeacher.do")
 	public String insertTeacher(Teacher teacher, ModelMap map, HttpServletRequest request) {
 		request.getSession().setAttribute("UserId", teacher.getTeacherMobile());
+		String password = request.getParameter("teacherPassword");
+		teacher.setTeacherPassword(MD5Util.md5(password, "teacher"));
 		teacherServiceImpl.insertTeacher(teacher);
 		String teacherMobile = request.getParameter("teacherMobile");
 		Teacher teacher2 = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
@@ -119,8 +122,8 @@ public class TeacherController {
 	public Map<String, Object> updateTeacherPassWord(String teacherMobile,String password,String newPassword){
 		Map<String, Object> map = new HashMap<>();
 		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
-		if (password.equals(teacher.getTeacherPassword())) {
-			teacherServiceImpl.updateTeacherPassWord(teacherMobile, newPassword);
+		if (MD5Util.md5(password, "teacher").equals(teacher.getTeacherPassword())) {
+			teacherServiceImpl.updateTeacherPassWord(teacherMobile, MD5Util.md5(newPassword, "teacher"));
 			map.put("result", true);
 		}else {
 			map.put("result", false);

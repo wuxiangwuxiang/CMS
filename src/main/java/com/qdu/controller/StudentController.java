@@ -32,6 +32,7 @@ import com.qdu.service.QrTemService;
 import com.qdu.service.StudentInfoService;
 import com.qdu.service.StudentService;
 import com.qdu.util.GlobalVariable;
+import com.qdu.util.MD5Util;
 import com.qdu.util.VertifyCodeUtil;
 
 @Controller
@@ -52,7 +53,7 @@ public class StudentController {
 		System.out.println("正经登陆");
 		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
 		if(student != null){
-			if(password.equals(student.getStudentPassword())){
+			if(MD5Util.md5(password, "juin").equals(student.getStudentPassword())){
 				map.addAttribute("student", student);
 				// session的id存一下
 				request.getSession().setAttribute("UserId", null);
@@ -91,7 +92,7 @@ public class StudentController {
 	public Map<String, Object> confirmStudentPassWord(String studentRono,String password){
 		Map<String, Object> map = new HashMap<>();
 		Student student = studentServiceImpl.selectStudentByNo(studentRono);
-		if(student != null && password.equals(student.getStudentPassword())){
+		if(student != null && MD5Util.md5(password, "juin").equals(student.getStudentPassword())){
 			map.put("result", true);
 		}else {
 			map.put("result", false);
@@ -150,6 +151,9 @@ public class StudentController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		String password = request.getParameter("studentPassword");
+		System.out.println(MD5Util.md5(password, "juin"));
+		student.setStudentPassword(MD5Util.md5(password, "juin"));
 		studentServiceImpl.insertStudentByNo(student);
 		System.out.println("学生注册成功");
 		
@@ -175,8 +179,8 @@ public class StudentController {
 	    public Map<String, Object> updateStudentPassWord(String studentRoNo,String password,String newPassword){
 	    	Map<String, Object> map = new HashMap<>();
 	    	Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
-	    	if(password.equals(student.getStudentPassword())){
-	    		studentServiceImpl.updateStudentPassWord(studentRoNo, newPassword);
+	    	if(MD5Util.md5(password, "juin").equals(student.getStudentPassword())){
+	    		studentServiceImpl.updateStudentPassWord(studentRoNo, MD5Util.md5(newPassword, "juin"));
 	    		map.put("result", true);
 	    	}else {
 	    		map.put("result", false);
@@ -207,7 +211,7 @@ public class StudentController {
 	    			map.put("message", "您不在此课程内");
 	    		}else
 	    		map.put("message", "学号错误");
-	    	}else if(! password.equals(student.getStudentPassword())){
+	    	}else if(! MD5Util.md5(password, "juin").equals(student.getStudentPassword())){
 	    		System.out.println(student.getStudentPassword());
 				map.put("message", "密码错误");
 			}else {
