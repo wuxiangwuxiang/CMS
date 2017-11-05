@@ -208,7 +208,7 @@
 			<br/>
 			<tr style="width: 100%;">
 			<td style="text-align: right; margin-left: 20%;">学号：</td>
-			<td><input type="text" readonly="readonly" name="studentRoNo" value="${student.studentRoNo}" id="studentRoNo" style="width: 19em;"/></td>
+			<td><input type="text"  readonly="readonly" name="studentRoNo" value="${student.studentRoNo}" id="studentRoNo" style="width: 19em;"/></td>
 			</tr>
 			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
 			<tr>
