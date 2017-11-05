@@ -61,7 +61,7 @@ public class LogEntityController {
 			map.put("page", page);
 			map.put("logEntities", logEntities);
 		return "superManagerPage";
-		//I want to test git
+		//I want to test git 
 	}
 	
 //	@RequestMapping(value="/selectAllLog.do")
