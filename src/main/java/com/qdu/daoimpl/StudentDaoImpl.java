@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.qdu.dao.StudentDao;
 import com.qdu.pojo.Student;
+import com.qdu.util.MD5Util;
 @Repository
 public class StudentDaoImpl implements StudentDao{
 	@Autowired  
@@ -49,11 +50,13 @@ public class StudentDaoImpl implements StudentDao{
 	}
 
 	@Override
-	public void updateStudentPassWord(String studentRoNo, String studentPassword) {
+	public void updateStudentPassWord(Student student) {
 		String statement = "com.qdu.mapping.StudentMapping.updateStudentPassWord";
+		String studentRoNo = student.getStudentRoNo();
+		String studentPassword = student.getStudentPassword();
 		Map<String, Object> map = new HashMap<>();
 		map.put("studentRoNo", studentRoNo);
-		map.put("studentPassword", studentPassword);
+		map.put("studentPassword", MD5Util.md5(studentPassword, "juin"));
 		sessionFactory.openSession().update(statement, map);
 	}
 

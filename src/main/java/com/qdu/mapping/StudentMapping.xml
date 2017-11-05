@@ -106,6 +106,13 @@
 		Student(StudentRoNo,StudentPassword,StudentMobile,StudentEmail,StudentName,StudentGender,StudentPhoto)
 		values(#{studentRoNo},#{studentPassword},#{studentMobile},#{studentEmail},#{studentName},#{studentGender},#{studentPhoto})
 	</insert>
+	
+    <update id="updateStudentPassWord" parameterType="HashMap">
+		update Student
+		set
+		StudentPassword = #{studentPassword} 
+		where StudentRoNo = #{studentRoNo}
+	</update>
 
 	<update id="updateStudentOfClazzId" parameterType="HashMap">
 		update Student
@@ -114,12 +121,5 @@
 		where StudentRoNo = #{studentRoNo}
 	</update>
 
-	<update id="updateStudentPassWord" parameterType="HashMap">
-		update Student
-		set
-		StudentPassword = #{studentPassword}
-		where StudentRoNo =
-		#{studentRoNo}
-	</update>
 
 </mapper>
