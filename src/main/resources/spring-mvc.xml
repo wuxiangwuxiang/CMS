@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8' ?> 
-<beans
+<beans 
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
 	http://www.springframework.org/schema/aop 
