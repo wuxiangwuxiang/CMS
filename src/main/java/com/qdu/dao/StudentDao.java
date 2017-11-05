@@ -1,6 +1,8 @@
 package com.qdu.dao;
 
 import java.util.List;
+
+import com.qdu.pojo.Course;
 import com.qdu.pojo.Student;
 
 public interface StudentDao {
@@ -16,5 +18,6 @@ public interface StudentDao {
 	public Student selectStudentAndClazzByNo(String studentRoNo);
 	
 	public void updateStudentPassWord(String studentRoNo,String studentPassword);
+	
  
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdu.mapping.StudentMapping">
-	<cache type="com.qdu.cache.RedisCache"/>
+	<cache type="com.qdu.cache.RedisCache" />
 	<resultMap type="com.qdu.pojo.Student" id="StudentResult">
 		<id property="studentRoNo" column="StudentRoNo" />
 		<result property="studentPassword" column="StudentPassword" />
@@ -13,14 +13,12 @@
 
 		<association property="studentInfo" javaType="com.qdu.pojo.StudentInfo">
 			<id property="studentInfoId" column="StudentInfoId" />
-			<result property="signIn" column="SignIn"/>
+			<result property="signIn" column="SignIn" />
 			<result property="comeLate" column="ComeLate" />
 			<result property="leaveEarlier" column="LeaveEarlier" />
 			<result property="absenteeism" column="Absenteeism" />
 
-			<collection property="couese" ofType="com.qdu.pojo.Course"
-				javaType="ArrayList" column="StudentInfoId"
-				select="com.qdu.mapping.CourseMapping.selectCourseByStudentInfoId">
+			<association property="course" javaType="com.qdu.pojo.Course">
 				<id property="courseId" column="CourseId" />
 				<result property="courseName" column="CourseName" />
 				<result property="courseType" column="CourseType" />
@@ -30,21 +28,42 @@
 				<result property="currentYear" column="CurrentYear" />
 				<result property="schoolTem" column="SchoolTem" />
 				<result property="qrImg" column="QrImg" />
-				<!-- 教师表 -->
+
 				<association property="teacher" javaType="com.qdu.pojo.Teacher">
 					<id property="teacherMobile" column="TeacherMobile" />
 					<result property="teacherEmail" column="TeacherEmail" />
+					<result property="teacherPassword" column="TeacherPassword" />
 					<result property="teacherName" column="TeacherName" />
 					<result property="teacherGender" column="TeacherGender" />
 					<result property="teacherSubject" column="TeacherSubject" />
 				</association>
-			</collection>
+
+				<collection property="studentInfo" ofType="com.qdu.pojo.StudentInfo"
+					javaType="ArrayList" column="CourseId"
+					select="com.qdu.mapping.StudentInfoMapping.selectStudentInfoByCourse">
+					<id property="studentInfoId" column="StudentInfoId" />
+					<result property="signIn" column="SignIn" />
+					<result property="comeLate" column="ComeLate" />
+					<result property="leaveEarlier" column="LeaveEarlier" />
+					<result property="absenteeism" column="Absenteeism" />
+				</collection>
+
+				<!-- 班级表 -->
+				<collection property="clazz" ofType="com.qdu.pojo.Clazz"
+					javaType="ArrayList" column="CourseId"
+					select="com.qdu.mapping.ClazzMapping.selectClazzByCourse">
+					<id property="clazzId" column="ClazzId" />
+					<result property="clazzName" column="ClazzName" />
+					<result property="currentYear" column="CurrentYear" />
+
+				</collection>
+			</association>
 		</association>
-		
+
 		<association property="clazz" javaType="com.qdu.pojo.Clazz">
-		<id property="clazzId" column="ClazzId" />
-		<result property="clazzName" column="ClazzName" />
-		<result property="currentYear" column="CurrentYear" />
+			<id property="clazzId" column="ClazzId" />
+			<result property="clazzName" column="ClazzName" />
+			<result property="currentYear" column="CurrentYear" />
 		</association>
 	</resultMap>
 
@@ -54,27 +73,32 @@
 		StudentInfo
 		where StudentInfoId = #{studentInfoId});
 	</select>
-	
+
 	<select id="selectStudentByClazzId" resultMap="StudentResult">
-	select * from Student s,Clazz c where s.ClazzId = c.ClazzId 
-	and c.ClazzId = #{clazzId} 
+		select * from
+		Student s,Clazz c where s.ClazzId = c.ClazzId
+		and c.ClazzId =
+		#{clazzId}
 	</select>
-	
+
 	<!-- 精确查询学生 -->
 	<select id="selectStudentByMany" resultMap="StudentResult">
-	SELECT * FROM Student s JOIN Clazz c JOIN Course cc ON s.ClazzId = c.ClazzId 
-	AND c.CourseId = cc.CourseId AND cc.CourseId = #{courseId}
+		SELECT * FROM Student
+		s JOIN Clazz c JOIN Course cc ON s.ClazzId = c.ClazzId
+		AND c.CourseId =
+		cc.CourseId AND cc.CourseId = #{courseId}
 	</select>
-	
+
 	<select id="selectStudentByNo" resultMap="StudentResult">
 		select * from Student
 		where StudentRoNo = #{studentRoNo}
 	</select>
-	
-	<select id="selectStudentAndClazzByNo" parameterType = "String" resultMap="StudentResult">
+
+	<select id="selectStudentAndClazzByNo" parameterType="String"
+		resultMap="StudentResult">
 		select * from Student s,Clazz c
-		where s.ClazzId = c.ClazzId 
-		And  StudentRoNo = #{studentRoNo}
+		where s.ClazzId = c.ClazzId
+		And StudentRoNo = #{studentRoNo}
 	</select>
 
 	<insert id="insertStudentByNo" parameterType="com.qdu.pojo.Student">
@@ -82,17 +106,20 @@
 		Student(StudentRoNo,StudentPassword,StudentMobile,StudentEmail,StudentName,StudentGender,StudentPhoto)
 		values(#{studentRoNo},#{studentPassword},#{studentMobile},#{studentEmail},#{studentName},#{studentGender},#{studentPhoto})
 	</insert>
-	
+
 	<update id="updateStudentOfClazzId" parameterType="HashMap">
-	update Student set
-	ClazzId = #{clazzId}
-	where StudentRoNo = #{studentRoNo}
+		update Student
+		set
+		ClazzId = #{clazzId}
+		where StudentRoNo = #{studentRoNo}
 	</update>
-	
+
 	<update id="updateStudentPassWord" parameterType="HashMap">
-	update Student set
-	StudentPassword = #{studentPassword}
-	where StudentRoNo = #{studentRoNo}
+		update Student
+		set
+		StudentPassword = #{studentPassword}
+		where StudentRoNo =
+		#{studentRoNo}
 	</update>
 
 </mapper>

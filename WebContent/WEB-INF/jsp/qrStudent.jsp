@@ -16,7 +16,7 @@
 	<form id="showStudent" action="<%=request.getContextPath()%>/studentInfo/insertStudentInfo.do"
 		style="margin-left: 30%; border: solid; border-color: red; position: fixed; width: 40%; top: 250px; font-size: 30px; z-index: 3">
 		<h3>学生信息</h3>
-		<input type="text" name="courseId" value="${course.courseId}" /> 
+		<input type="text" name="courseId" value="${course.courseId}" style="display: none;"/> 
 	         学号：<input type="text" name="studentRoNo"/><br /> 
 		 密码：<input type="password" name="studentPassword"/><br /> 
 		 <select name="clazzId">

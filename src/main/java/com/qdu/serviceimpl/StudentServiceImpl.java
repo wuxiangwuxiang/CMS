@@ -44,4 +44,6 @@ public class StudentServiceImpl implements StudentService{
 	public void updateStudentPassWord(String studentRoNo, String studentPassword) {
 		studentDaoImpl.updateStudentPassWord(studentRoNo, studentPassword);
 	}
+
+	
 }

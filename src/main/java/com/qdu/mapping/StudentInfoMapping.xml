@@ -30,6 +30,76 @@
 		<result property="currentYear" column="CurrentYear" />
 		<result property="schoolTem" column="SchoolTem" />
 		<result property="qrImg" column="QrImg" />
+
+		<association property="teacher" javaType="com.qdu.pojo.Teacher">
+			<id property="teacherMobile" column="TeacherMobile" />
+			<result property="teacherEmail" column="TeacherEmail" />
+			<result property="teacherPassword" column="TeacherPassword" />
+			<result property="teacherName" column="TeacherName" />
+			<result property="teacherGender" column="TeacherGender" />
+			<result property="teacherSubject" column="TeacherSubject" />
+		</association>
+
+		<collection property="studentInfo" ofType="com.qdu.pojo.StudentInfo"
+			javaType="ArrayList" column="CourseId"
+			select="com.qdu.mapping.StudentInfoMapping.selectStudentInfoByCourse">
+			<id property="studentInfoId" column="StudentInfoId" />
+			<result property="signIn" column="SignIn"/>
+			<result property="comeLate" column="ComeLate" />
+			<result property="leaveEarlier" column="LeaveEarlier" />
+			<result property="absenteeism" column="Absenteeism" />
+			<collection property="students" ofType="com.qdu.pojo.Student"
+				javaType="ArrayList" column="StudentInfoId"
+				select="com.qdu.mapping.StudentMapping.selectStudentByStudentInfoId">
+				<id property="studentRoNo" column="StudentRoNo" />
+				<result property="studentPassword" column="StudentPassword" />
+				<result property="studentMobile" column="StudentMobile" />
+				<result property="studentEmail" column="StudentEmail" />
+				<result property="studentName" column="StudentName" />
+				<result property="studentGender" column="StudentGender" />
+				<result property="studentPhoto" column="StudentPhoto" />
+
+				<association property="teacher" javaType="com.qdu.pojo.Teacher">
+					<id property="teacherMobile" column="TeacherMobile" />
+					<result property="teacherEmail" column="TeacherEmail" />
+					<result property="teacherPassword" column="TeacherPassword" />
+					<result property="teacherName" column="TeacherName" />
+					<result property="teacherGender" column="TeacherGender" />
+					<result property="teacherSubject" column="TeacherSubject" />
+				</association>
+			</collection>
+		</collection>
+
+		<!-- 班级表 -->
+		<collection property="clazz" ofType="com.qdu.pojo.Clazz"
+			javaType="ArrayList" column="CourseId"
+			select="com.qdu.mapping.ClazzMapping.selectClazzByCourse">
+			<id property="clazzId" column="ClazzId" />
+			<result property="clazzName" column="ClazzName" />
+			<result property="currentYear" column="CurrentYear" />
+
+			<!-- 学生表 -->
+			<collection property="student" ofType="com.qdu.pojo.Student"
+				javaType="ArrayList" column="ClazzId"
+				select="com.qdu.mapping.StudentMapping.selectStudentByClazzId">
+				<id property="studentRoNo" column="StudentRoNo" />
+				<result property="studentPassword" column="StudentPassword" />
+				<result property="studentMobile" column="StudentMobile" />
+				<result property="studentEmail" column="StudentEmail" />
+				<result property="studentName" column="StudentName" />
+				<result property="studentGender" column="StudentGender" />
+				<result property="studentPhoto" column="StudentPhoto" />
+
+				<association property="teacher" javaType="com.qdu.pojo.Teacher">
+					<id property="teacherMobile" column="TeacherMobile" />
+					<result property="teacherEmail" column="TeacherEmail" />
+					<result property="teacherPassword" column="TeacherPassword" />
+					<result property="teacherName" column="TeacherName" />
+					<result property="teacherGender" column="TeacherGender" />
+					<result property="teacherSubject" column="TeacherSubject" />
+				</association>
+			</collection>
+		</collection>
         </association>
 	</resultMap>
 
@@ -38,6 +108,14 @@
 		StudentInfo where StudentInfoId in(select StudentInfoId from
 		Course
 		where CourseId = #{courseId})
+	</select>
+	
+	<select id="selectCourseByStudentRono" resultMap="StudentInfoResult"
+		parameterType="String">
+		SELECT * FROM StudentInfo v, Student s,Course c,Teacher
+		t WHERE s.StudentRoNo = #{studentRoNo}
+		AND s.StudentRoNo = v.StudentRoNo AND v.CourseId = c.CourseId AND
+		c.TeacherMobile = t.TeacherMobile
 	</select>
 	
 	<select id="selectInfoFromInfoAndStudent" resultMap="StudentInfoResult">

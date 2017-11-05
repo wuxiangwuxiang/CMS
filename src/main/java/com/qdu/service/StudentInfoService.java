@@ -2,6 +2,7 @@ package com.qdu.service;
 
 import java.util.List;
 
+import com.qdu.pojo.Student;
 import com.qdu.pojo.StudentInfo;
 
 public interface StudentInfoService {
@@ -19,5 +20,7 @@ public interface StudentInfoService {
 	public void updateStudentInfoAboutAbs(int studentInfoId, int absenteeism);
 	
 	public List<StudentInfo> selectInfoFromInfoAndStudent(int courseId);
+	
+	public List<StudentInfo> selectCourseByStudentRono(String studentRoNo);
 	
 }

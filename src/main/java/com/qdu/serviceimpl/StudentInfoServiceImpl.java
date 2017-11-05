@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.qdu.dao.StudentInfoDao;
+import com.qdu.pojo.Student;
 import com.qdu.pojo.StudentInfo;
 import com.qdu.service.StudentInfoService;
 
@@ -51,7 +52,10 @@ public class StudentInfoServiceImpl implements StudentInfoService{
 		return studentInfoDaoImpl.selectInfoFromInfoAndStudent(courseId);
 	}
 	
-	
+	@Override
+	public List<StudentInfo> selectCourseByStudentRono(String studentRoNo) {
+		return studentInfoDaoImpl.selectCourseByStudentRono(studentRoNo);
+	}
 	
 
 }

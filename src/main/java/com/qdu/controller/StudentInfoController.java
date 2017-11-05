@@ -15,6 +15,7 @@ import com.qdu.pojo.Student;
 import com.qdu.pojo.StudentInfo;
 import com.qdu.service.StudentInfoService;
 import com.qdu.service.StudentService;
+import com.qdu.util.MD5Util;
 
 @Controller
 @RequestMapping(value = "/studentInfo")
@@ -31,7 +32,7 @@ public class StudentInfoController {
 		String password = request.getParameter("studentPassword");
 		String courseId = request.getParameter("courseId");
 		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
-		if(student!=null && password.equals(student.getStudentPassword())){
+		if(student!=null && MD5Util.md5(password, "juin").equals(student.getStudentPassword())){
 			System.out.println("芝麻开门");
 			StudentInfo studentInfo2 = studentInfoServiceImpl.selectStudentInfoByMany(studentRoNo, Integer.parseInt(courseId));
 			if(studentInfo2 == null){

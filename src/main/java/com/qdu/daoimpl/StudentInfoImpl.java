@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.qdu.dao.StudentInfoDao;
+import com.qdu.pojo.Student;
 import com.qdu.pojo.StudentInfo;
 
 @Repository
@@ -69,6 +70,12 @@ public class StudentInfoImpl implements StudentInfoDao{
 	public List<StudentInfo> selectInfoFromInfoAndStudent(int courseId) {
 		String statement = "com.qdu.mapping.StudentInfoMapping.selectInfoFromInfoAndStudent";
 		return sessionFactory.openSession().selectList(statement, courseId);
+	}
+	
+	@Override
+	public List<StudentInfo> selectCourseByStudentRono(String studentRoNo) {
+		String statement = "com.qdu.mapping.StudentInfoMapping.selectCourseByStudentRono";
+		return sessionFactory.openSession().selectList(statement,studentRoNo);
 	}
 
 }
