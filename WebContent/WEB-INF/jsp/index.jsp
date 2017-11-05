@@ -20,12 +20,68 @@
 <script type="text/javascript">
 	 $(document).ready(function () {
 		 $('#checkCourseShow').click(function name1() {
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
 			$('#courseInfo').show();
 		});
 		 
 		 $('#addCourse').click(function name1() {
 				$('#courseInfo').hide();
+				$('#doubleHandle').hide();
+				$('#signal').hide();
 			});
+			$('#safeManage').click(function name1() {
+				$('#courseInfo').hide();
+				$('#doubleHandle').show();
+				$('#signal').show();
+			});
+	 
+	//获取学生密码，进行后台比对
+		function getStuAnwser(password,studentRono) {
+			var result = false;
+			$.ajax({
+	              type: "GET",
+	              data: {
+	                  "password": password,
+	                  "studentRono":studentRono
+	              },
+	              contentType: "application/json; charset=utf-8",
+	              async: false,
+	              dataType: "json",
+	              url: "<%=request.getContextPath() %>/student/confirmStudentPassWord.do",
+	              success: function (data) {
+	            	  if(data.result == true){
+	            		  result = true;
+	            	  }
+	              },
+	              error: function (data) {
+	            	  
+	              }
+	          });
+			  return result;
+		}
+		//点击学生登录触发密码验证
+		$('#ccchangePass').click(function wannaSubmittt() {
+			var password = $('#studentPassword').val();
+			var studentRono = $('#studentRoNo').val();
+			var newPassword = $('#newPassword').val();
+			var rePassword = $('#rePassword').val();
+			if(getStuAnwser(password,studentRono)){
+				$('#passError').hide();
+				if(newPassword != null && newPassword != "" && newPassword == rePassword){
+					$('#noLike').hide();
+					changeStuPass();					
+				}else{
+					$('#noLike').show();
+				}
+			}else {
+				$('#passError').show();
+			}
+		});
+		//ajax更改密码
+		function changeStuPass() {
+			$('#safe').submit();
+		}
 	 });
 </script>
 </head>
@@ -49,7 +105,7 @@
 								<a href="#">修改信息</a>
 							</dd>
 							<dd>
-								<a href="#">安全管理</a>
+								<a id="safeManage" href="#">安全管理</a>
 							</dd>
 							<dd>
 								<a href="#">注销</a>
@@ -100,7 +156,7 @@
 		<div class="layui-body site-demo" style="padding-top: 7%;overflow: auto;">
 			<br />
 			
-			
+			<!-- 课程信息表 -->
 			<table id="courseInfo" border="1" style="text-align: center; width: 80%; margin-left: 5%;">
 			<tr>
 			<th>课程名称</th>
@@ -136,8 +192,49 @@
 			</c:choose>
 			</table>
 			
+			<!-- 安全/密码 -->
+			<div id="signal" style="width: 95%; margin-left: 5%; padding-left:5%;
+			background-color:#cccc00; height: 3%;display: none; font-family: 微软雅黑;">
+			提示：修改密码后请前往邮箱确认..
+			</div>
 			
-
+			<div id="doubleHandle" style="width: 70%; margin-left: 15%; margin-top: 8%; 
+			display: none;text-align: center;border: solid;border-color: red;">
+			<a href="#" style="float:left; height:20%; width: 49%;border: solid;border-color: red;font-size: 1.5em">更改密码</a>
+			<a href="#" style="float:left; height:20%; width: 49%;border: solid;border-color: red;font-size: 1.5em">更换邮箱</a>
+			<br/><br/>
+			<form id="safe" action="<%=request.getContextPath()%>/student/updateStudentPassWord.do" style="width: 84%; margin-left: 5%; border: solid;border-color: red; text-align: center;">
+			<table style="padding-left: 10%;">
+			<br/>
+			<tr style="width: 100%;">
+			<td style="text-align: right; margin-left: 20%;">学号：</td>
+			<td><input type="text" readonly="readonly" name="studentRoNo" value="${student.studentRoNo}" id="studentRoNo" style="width: 19em;"/></td>
+			</tr>
+			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
+			<tr>
+			<td style="text-align: right; width: 20em;">原密码：</td>
+			<td><input type="password" name="oldPassword" id="studentPassword" style="width: 19em"/></td>
+			<td id="passError" style="color: red; margin-left: 1.8em; display: none;">*密码错误*</td>
+			</tr>
+			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
+			<tr>
+			<td style="text-align: right;">新密码：</td>
+			<td><input type="password" name="studentPassword" id="newPassword" style="width: 19em"/></td>
+			</tr>
+			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
+			<tr>
+			<td style="text-align: right;">确认新密码：</td>
+			<td><input type="password" name="rePassword" id="rePassword" style="width: 19em"/></td>
+			<td id="noLike" style="color: red; margin-left: 1.8em; display: none;">*两次密码不一致*</td>
+			</tr>
+			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
+			<tr>
+			<td colspan="2"><input id="ccchangePass" type="button" value="申请修改" style="width: 70%; height: 1.5em; margin-left: 14em;"/></td>
+			</tr>
+			</table>
+			</form>
+			</div>
+			
 
 		
 		</div>

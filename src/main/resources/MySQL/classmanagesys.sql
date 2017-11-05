@@ -12,7 +12,7 @@ TeacherSubject VARCHAR(20)
 
 CREATE TABLE Course(
 CourseId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-CourseName VARCHAR(10) NOT NULL,
+CourseName VARCHAR(100) NOT NULL,
 CourseType VARCHAR(5),
 ClassCapacity INT,
 StartTime Date,
@@ -85,7 +85,8 @@ INSERT INTO Admin(AdminId,AdminPassword) VALUES('1185547466','111111');
 
 select * from LogEntity order by LogId desc limit 0,10
 
-
+SELECT * FROM StudentInfo v, Student s,Course c,Teacher t WHERE s.StudentRoNo = '201440703454' 
+AND s.StudentRoNo = v.StudentRoNo AND v.CourseId = c.CourseId  AND c.TeacherMobile = t.TeacherMobile
 
 
 
