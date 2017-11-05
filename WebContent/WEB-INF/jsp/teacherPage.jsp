@@ -178,15 +178,14 @@
 		<!-- 内容显示 -->
 		<div class="layui-body site-demo">
 
-             <!-- 背景大幕 -->		
-             
+			<!-- 背景大幕 -->
+
 			<div id="torf"
-				style="width: 180px; height: 150px; position: fixed; top: 200px; margin-left: 45%;
-				 background-color: black; border: solid; border-color: black; display: none; z-index: 4">
+				style="width: 180px; height: 150px; position: fixed; top: 200px; margin-left: 45%; background-color: black; border: solid; border-color: black; display: none; z-index: 4">
 				<h3 style="color: red; text-align: center; margin-top: 8%;">确定删除该课程？</h3>
 				<a id="delete" onclick="deleteThis()" href="#"
 					style="float: left; margin-left: 30px; margin-top: 37%; color: white;">删除</a>
-			    <a id="false" href="#"
+				<a id="false" href="#"
 					style="float: left; margin-left: 60px; margin-top: 37%; color: white;">取消</a>
 			</div>
 
@@ -296,18 +295,19 @@
 			</div>
 
 
-             <!-- 课程二维码 -->
-			<div id="targetup" style="display: none; width: 100%; padding-left: 29%; position: fixed; top: 9%;
-			height: 100%; background-color: rgba(0, 0, 0, 0.6); padding-top: 10%; ">
-				<img id="esc" src="<%=request.getContextPath()%>/lib/取消.png" 
-				style="position: fixed; top: 10%; right:5%; background-color: rgba(0, 0, 0, 0.2);" width="4%" height="5%">
-				<img id="target" style="width: 270px; height: 270px;
-				border: solid;border-color: red;" 
+			<!-- 课程二维码 -->
+			<div id="targetup"
+				style="display: none; width: 100%; padding-left: 29%; position: fixed; top: 9%; height: 100%; background-color: rgba(0, 0, 0, 0.6); padding-top: 10%;">
+				<img id="esc" src="<%=request.getContextPath()%>/lib/取消.png"
+					style="position: fixed; top: 10%; right: 5%; background-color: rgba(0, 0, 0, 0.2);"
+					width="4%" height="5%"> <img id="target"
+					style="width: 270px; height: 270px; border: solid; border-color: red;"
 					src="" />
 			</div>
-			
+
 			<!-- 课程信息 -->
-			<div class="layui-form sessiontable" id="courseInfo" style="margin-top: 5%;">
+			<div class="layui-form sessiontable" id="courseInfo"
+				style="margin-top: 5%;">
 				<table class="layui-table" lay-even style="text-align: center;">
 					<colgroup>
 						<col width="200">
@@ -370,23 +370,62 @@
 						</c:choose>
 					</tbody>
 				</table>
-			</div>
-
-
-			<script>
+				
+				<script>
 				layui.use('table', function() {
 					var table = layui.table;
-
 				});
-			</script>
-
+			    </script>
+			</div>
+			
+			
+            <div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
+				<button  class="layui-btn" data-method="notice">示范一个删除</button>
+            </div>
+			
+			
+			
 		</div>
 	</div>
-     
-     
+
+      
+
 	<script>
-		layui.use('element', function() {
-			var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+		layui.use(['element','layer'], function() {
+			var element = layui.element
+			,$ = layui.jquery
+			,layer = layui.layer; 
+             
+			//触发事件
+			  var active = {
+			    notice: function(){
+			      //示范一个公告层
+			      layer.open({
+			        type: 1
+			        ,title: false //不显示标题栏
+			        ,closeBtn: false
+			        ,area: '300px;'
+			        ,shade: 0.8
+			        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+			        ,btn: ['删除', '取消']
+			        ,btnAlign: 'c'
+			        ,moveType: 1 //拖拽模式，0或者1
+			        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">确定删除该课程？</div>'
+			        ,success: function(layero){
+			          var btn = layero.find('.layui-layer-btn');
+			          btn.find('.layui-layer-btn0').attr({
+			            href: 'http://www.layui.com/'
+			            ,target: '_blank'
+			          });
+			        }
+			      });
+			    }
+			  };
+
+			  $('#layerDemo .layui-btn').on('click', function(){
+			    var othis = $(this), method = othis.data('method');
+			    active[method] ? active[method].call(this, othis) : '';
+			  });
 
 			//监听导航点击
 			element.on('nav(demo)', function(elem) {
