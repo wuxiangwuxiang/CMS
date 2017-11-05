@@ -51,10 +51,12 @@ public class StudentController {
 		String studentRoNo = request.getParameter("studentRoNo");
 		String password = request.getParameter("studentPassword");
 		System.out.println("正经登陆");
-		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
-		if(student != null){
-			if(MD5Util.md5(password, "juin").equals(student.getStudentPassword())){
-				map.addAttribute("student", student);
+		List<StudentInfo> studentInfos = studentInfoServiceImpl.selectCourseByStudentRono(studentRoNo);
+		Student student2 = studentServiceImpl.selectStudentByNo(studentRoNo);
+		if(student2 != null){
+			if(MD5Util.md5(password, "juin").equals(student2.getStudentPassword())){
+				map.addAttribute("studentInfos", studentInfos);
+				map.addAttribute("student",student2);
 				// session的id存一下
 				request.getSession().setAttribute("UserId", null);
 				request.getSession().setAttribute("UserId", studentRoNo);
@@ -312,5 +314,6 @@ public class StudentController {
 	    	map.put("code", code);
 	    	return map;
 	    }
+	    	    
 
 }
