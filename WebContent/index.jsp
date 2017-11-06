@@ -228,8 +228,8 @@
 							style="color: white">密码:</span>><input name="password" id="tcpw" 
 							type="password" /><br /> <br />
 						
-							 <a href="#"
-							style="margin-left: 300px">忘记密码>></a><br/><br /> 
+							 <a href="<%=request.getContextPath()%>/teacher/getTeacherPasswordBack.do"
+							style="margin-left: 300px" target="_blank">忘记密码>></a><br/><br /> 
 							 <input id="tea" class="btn btn-primary btn-lg" style="width: 130px; float: left;margin-left: 15%;" type="button"
 							value="登录" /> 
 							<a id="stu" href="<%=request.getContextPath()%>/teacher/forTeacherRegister.do"

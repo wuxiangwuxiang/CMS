@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -18,6 +19,7 @@ import com.qdu.pojo.Teacher;
 import com.qdu.service.ClazzService;
 import com.qdu.service.CourseService;
 import com.qdu.service.TeacherService;
+import com.qdu.util.JavaEmailSender;
 import com.qdu.util.MD5Util;
 
 @Controller
@@ -115,6 +117,7 @@ public class TeacherController {
 		map.addAttribute("teacher", teacher2);
 		return "waitForTeacherRegister";
 	}
+	
 	//老师更改密码
 	@SystemLog(module="教师",methods="日志管理-密码更改")
 	@RequestMapping(value = "/updateTeacherPassWord.do")
@@ -130,4 +133,40 @@ public class TeacherController {
 		}
 		return map;
 	}
+	//教师找回密码
+		@SystemLog(module = "教师", methods = "日志管理-找回密码(跳转)")
+		@RequestMapping(value = "/getTeacherPasswordBack.do")
+		public String getTeacherPasswordBack(){
+			return "teacherGetPasswordBack";
+		}
+		//ajax试探教师信息
+		@SystemLog(module = "教师", methods = "日志管理-找回密码(验证)")
+		@RequestMapping(value = "/forTeacherReGetPass.do")
+		@ResponseBody
+		public Map<String, Object> forTeacherReGetPass(String mobile,String name,String mail) throws Exception{
+			Map<String, Object> map = new HashMap<>();
+			Teacher teacher = teacherServiceImpl.selecctTeacherByThree(mobile, name, mail);
+			if(teacher != null){
+				 String EMAIL = mail;
+			        String TITLE = teacher.getTeacherName() + ",找回密码";//标题
+			        String CONTENT = "点击链接完成重置:"+ "   " + "http://192.168.11.229:8080/ClassManageSys/tryReGetTeaPass.jsp?teacherMobile=" + mobile; //内容
+			        JavaEmailSender.sendEmail(EMAIL, TITLE, CONTENT);
+				map.put("result", true);
+			}else{
+				map.put("result", "查无此人");
+			}
+			return map;
+		}
+		
+		//
+		@SystemLog(module = "教师", methods = "日志管理-邮箱更改密码")
+		@RequestMapping(value = "/ajaxupdateTeacherPassWord.do")
+		@ResponseBody
+		public Map<String, Object> ajaxupdateTeacherPassWord(String mobile,String password,HttpServletRequest request){
+			Map<String, Object> map = new HashMap<>();
+			teacherServiceImpl.updateTeacherPassWord(mobile, MD5Util.md5(password, "teacher"));
+			map.put("result", true);
+			return map;
+		}
+		
 }

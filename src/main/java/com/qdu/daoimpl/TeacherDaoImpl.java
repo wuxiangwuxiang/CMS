@@ -38,4 +38,15 @@ public class TeacherDaoImpl implements TeacherDao{
 		sessionFactory.openSession().update(statement, map);
 	}
 
+
+	@Override
+	public Teacher selecctTeacherByThree(String teacherMobile, String teacherName, String teacherEmail) {
+		String statement = "com.qdu.mapping.TeacherMapping.selecctTeacherByThree";
+		Map<String, Object> map = new HashMap<>();
+		map.put("teacherMobile", teacherMobile);
+		map.put("teacherName", teacherName);
+		map.put("teacherEmail", teacherEmail);
+		return sessionFactory.openSession().selectOne(statement, map);
+	}
+
 }

@@ -9,5 +9,7 @@ public interface TeacherDao {
 	public void insertTeacher(Teacher teacher);
 	
 	public void updateTeacherPassWord(String teacherMobile,String teacherPassword);
+	
+	public Teacher selecctTeacherByThree(String teacherMobile,String teacherName,String teacherEmail);
  
 }

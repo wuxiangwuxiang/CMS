@@ -32,4 +32,10 @@ public class TeacherServiceImpl implements TeacherService{
 		teacherDaoImpl.updateTeacherPassWord(teacherMobile, teacherPassword);
 	}
 
+
+	@Override
+	public Teacher selecctTeacherByThree(String teacherMobile, String teacherName, String teacherEmail) {
+		return teacherDaoImpl.selecctTeacherByThree(teacherMobile, teacherName, teacherEmail);
+	}
+
 }
