@@ -35,7 +35,7 @@
 			$('#torf').hide();
 		});
 	 });
-	 var tem;
+	
 	 function showQrImg(id) {
 		     var url = "/ClassManageSys/qrImg/" + id + ".gif";
 		     var imgPre = document.getElementById("target");
@@ -44,37 +44,7 @@
 		     $('#courseInfo').hide();
 		     $('#targetup').show();
 		}
-	 function forDeleteThis(courseId) {
-		 var courseId = courseId;
-		 tem = courseId;
-		 document.getElementById("torf").style.display = "block";
-	}
-	 function deleteThis() {
-		 var Id = tem;
-		 lookApplyPeople(Id); 
-	}
-	 
-	 //删除课程
-	  function lookApplyPeople(courseId) {
-          $.ajax({
-              type: "GET",
-              data: {
-                  "courseId": courseId
-              },
-              contentType: "application/json; charset=utf-8",
-              async: true,
-              url: "<%=request.getContextPath()%>/course/deleteCourseById.do",
-//              beforeSend:function(){$("#href").html("等待..");},
-              success: function (data) {
-            	  document.getElementById("abs"+tem).style.display = "none";
-              },
-              error: function (data) {
-                  alert("出错了！");
-              },
-              dataType: "json",
-          });
-          $('#torf').hide();
-      }
+
 	 //添加课程
 	 function addCourse() {
 		 $.ajax({
@@ -123,7 +93,7 @@
 							class="layui-badge">9</span></a></li>
 					<li class="layui-nav-item"><a href="">个人中心<span
 							class="layui-badge-dot"></span></a></li>
-					<li class="layui-nav-item"><a href="">${teacher.teacherName}老师</a>
+					<li class="layui-nav-item"><a href="#">${teacher.teacherName}老师</a>
 						<dl class="layui-nav-child">
 							<dd>
 								<a href="javascript:;">修改信息</a>
@@ -331,7 +301,7 @@
 								<c:forEach items="${courses}" var="r">
 									<tr id="abs${r.courseId}">
 										<td><a
-											href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">${r.courseName}</a></td>
+   							     href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">${r.courseName}</a></td>
 										<td style="text-align: center;"><a id="${r.qrImg}"
 											onclick="showQrImg(this.id)" href="#">获取</a></td>
 										<td style="text-align: center;">${r.currentYear}</td>
@@ -355,10 +325,17 @@
 											</c:choose></td>
 										<td style="text-align: center;"><a
 											href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}&teacherMobile=${teacher.teacherMobile}">查看/签到</a></td>
-										<td><a
-											href="<%=request.getContextPath()%>/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a></td>
-										<td><a id="${r.courseId}"
-											onclick="forDeleteThis(this.id)" href="#">删除</a></td>
+										<td>
+										<!-- <a href="/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a> -->
+										 <div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
+				                         <button  class="layui-btn" >修改</button>
+                                          </div>
+										</td>
+										<td>
+										 <div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
+				                         <button id="${r.courseId}" onclick="forDeleteThis(this.id)" class="layui-btn" data-method="notice">删除</button>
+                                          </div>
+										</td>
 									</tr>
 								</c:forEach>
 							</c:when>
@@ -379,9 +356,7 @@
 			</div>
 			
 			
-            <div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
-				<button  class="layui-btn" data-method="notice">示范一个删除</button>
-            </div>
+           
 			
 			
 			
@@ -391,6 +366,39 @@
       
 
 	<script>
+	 var tem;
+	 function forDeleteThis(courseId) {
+		 var courseId = courseId;
+		 tem = courseId;
+		 //document.getElementById("torf").style.display = "block";
+	}
+	 function deleteThis() {
+		 var Id = tem;
+		 lookApplyPeople(Id); 
+	}
+	 
+	 //删除课程
+	  function lookApplyPeople(courseId) {
+          $.ajax({
+              type: "GET",
+              data: {
+                  "courseId": courseId
+              },
+              contentType: "application/json; charset=utf-8",
+              async: true,
+              url: "<%=request.getContextPath()%>/course/deleteCourseById.do",
+//              beforeSend:function(){$("#href").html("等待..");},
+              success: function (data) {
+            	  document.getElementById("abs"+tem).style.display = "none";
+              },
+              error: function (data) {
+                  alert("出错了！");
+              },
+              dataType: "json",
+          });
+          $('#torf').hide();
+      }
+	 
 		layui.use(['element','layer'], function() {
 			var element = layui.element
 			,$ = layui.jquery
@@ -412,11 +420,10 @@
 			        ,moveType: 1 //拖拽模式，0或者1
 			        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">确定删除该课程？</div>'
 			        ,success: function(layero){
-			          var btn = layero.find('.layui-layer-btn');
-			          btn.find('.layui-layer-btn0').attr({
-			            href: 'http://www.layui.com/'
-			            ,target: '_blank'
-			          });
+			         // var btn = layero.find('.layui-layer-btn');
+			         // btn.find('.layui-layer-btn0').attr({
+			        	  deleteThis();
+			         // });
 			        }
 			      });
 			    }
