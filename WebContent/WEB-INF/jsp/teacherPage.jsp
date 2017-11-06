@@ -35,16 +35,6 @@
 			$('#torf').hide();
 		});
 	 });
-	
-	 function showQrImg(id) {
-		     var url = "/ClassManageSys/qrImg/" + id + ".gif";
-		     var imgPre = document.getElementById("target");
-		     imgPre.style.display = "block";
-		     imgPre.src = url;
-		     $('#courseInfo').hide();
-		     $('#targetup').show();
-		}
-
 	 //添加课程
 	 function addCourse() {
 		 $.ajax({
@@ -80,7 +70,9 @@
 </script>
 </head>
 <body>
-
+	<!-- 课程二维码 -->
+	<img id="target" style="width: 390px; height: 390px; display: none; z-index: 9; background-color: rgba(0, 0, 0, 1);" src="" />
+		
 	<div class="layui-layout layui-layout-admin">
 		<!-- 头部导航 -->
 		<div class="layui-header header header-demo">
@@ -147,20 +139,7 @@
 
 		<!-- 内容显示 -->
 		<div class="layui-body site-demo">
-
-			<!-- 背景大幕 -->
-
-			<div id="torf"
-				style="width: 180px; height: 150px; position: fixed; top: 200px; margin-left: 45%; background-color: black; border: solid; border-color: black; display: none; z-index: 4">
-				<h3 style="color: red; text-align: center; margin-top: 8%;">确定删除该课程？</h3>
-				<a id="delete" onclick="deleteThis()" href="#"
-					style="float: left; margin-left: 30px; margin-top: 37%; color: white;">删除</a>
-				<a id="false" href="#"
-					style="float: left; margin-left: 60px; margin-top: 37%; color: white;">取消</a>
-			</div>
-
 			<br />
-
 			<!-- 新建课程 -->
 			<div class="site-text site-block" id="courseShow"
 				style="display: none;">
@@ -263,17 +242,7 @@
 					});
 				</script>
 			</div>
-
-
-			<!-- 课程二维码 -->
-			<div id="targetup"
-				style="display: none; width: 100%; padding-left: 29%; position: fixed; top: 9%; height: 100%; background-color: rgba(0, 0, 0, 0.6); padding-top: 10%;">
-				<img id="esc" src="<%=request.getContextPath()%>/lib/取消.png"
-					style="position: fixed; top: 10%; right: 5%; background-color: rgba(0, 0, 0, 0.2);"
-					width="4%" height="5%"> <img id="target"
-					style="width: 270px; height: 270px; border: solid; border-color: red;"
-					src="" />
-			</div>
+			
 
 			<!-- 课程信息 -->
 			<div class="layui-form sessiontable" id="courseInfo"
@@ -302,8 +271,11 @@
 									<tr id="abs${r.courseId}">
 										<td><a
    							     href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">${r.courseName}</a></td>
-										<td style="text-align: center;"><a id="${r.qrImg}"
-											onclick="showQrImg(this.id)" href="#">获取</a></td>
+										<td style="text-align: center;">
+									    	<div class="site-demo-button" id="layerDemo">
+												<button id="${r.qrImg}" onclick="showQrImg(this.id)" class="layui-btn" data-method="page">照片</button>
+											</div>										
+										</td>
 										<td style="text-align: center;">${r.currentYear}</td>
 										<td style="text-align: center;"><c:choose>
 												<c:when test="${! empty r.clazz}">
@@ -353,19 +325,25 @@
 					var table = layui.table;
 				});
 			    </script>
-			</div>
-			
-			
-           
-			
-			
-			
+			</div>				
 		</div>
+				
 	</div>
 
       
 
 	<script>
+	//url
+	 function showQrImg(id) {
+	     var url = "/ClassManageSys/qrImg/" + id + ".gif";
+		     var imgPre = document.getElementById("target");
+//		     imgPre.style.display = "block";
+		     imgPre.src = url;
+//		    alert(imgPre.src);
+//		     $('#courseInfo').hide();
+//		     $('#targetup').show();
+	}
+
 	 var tem;
 	 function forDeleteThis(courseId) {
 		 var courseId = courseId;
@@ -426,14 +404,21 @@
 			        ,btnAlign: 'c'
 			        ,moveType: 1 //拖拽模式，0或者1
 			        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">确定删除该课程？</div>'
-// 			        ,success: function(layero){
-// 			         // var btn = layero.find('.layui-layer-btn');
-// 			         // btn.find('.layui-layer-btn0').attr({
-			        	  
-// 			         // });
-// 			        }
 			      });
+			    }		   
+			    ,page: function(){
+			    	layer.open({
+			    		  type: 1,
+			    		  title: false,
+			    		  closeBtn: 0,
+			    		  area: '390px',
+			    		  skin: 'layui-layer-lan', //没有背景色
+			    		  shadeClose: true,
+			    		  content: $('#target')
+			    		});
 			    }
+			
+			
 			  };
 
 			  $('#layerDemo .layui-btn').on('click', function(){
