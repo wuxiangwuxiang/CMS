@@ -60,5 +60,26 @@ public class StudentDaoImpl implements StudentDao{
 		sessionFactory.openSession().update(statement, map);
 	}
 
+	@Override
+	public Student selectStudentByFour(String studentRoNo, String studentName, String studentMobile,
+			String studentEmail) {
+		String statement = "com.qdu.mapping.StudentMapping.selectStudentByFour";
+		Map<String, Object> map = new HashMap<>();
+		map.put("studentRoNo", studentRoNo);
+		map.put("studentName", studentName);
+		map.put("studentMobile", studentMobile);
+		map.put("studentEmail", studentEmail);
+		return sessionFactory.openSession().selectOne(statement,map);
+	}
+
+	@Override
+	public void ajaxupdateStudentPassWord(String studentRoNo, String studentPassword) {
+		String statement = "com.qdu.mapping.StudentMapping.updateStudentPassWord";
+		Map<String, Object> map = new HashMap<>();
+		map.put("studentRoNo", studentRoNo);
+		map.put("studentPassword", MD5Util.md5(studentPassword, "juin"));
+		sessionFactory.openSession().update(statement, map);
+	}
+
 
 }

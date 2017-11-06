@@ -19,8 +19,12 @@
 <link type="text/css" rel="stylesheet"
 	href="<%=request.getContextPath()%>/layui/css/layui.css">
 <script src="<%=request.getContextPath()%>/layui/layui.js "></script>
-
 <title>学生注册</title>
+<style type="text/css">
+#lllww:HOVER {
+	text-decoration: none;
+}
+</style>
 <script type="text/javascript">
 	function getPath(obj) {
 		if (obj) {
@@ -74,6 +78,9 @@
 			</button>
 			<a class="navbar-brand" href="#">CMS</a>
 		</div>
+		<form class="navbar-form navbar-right" style="margin-right: 5%; float: left; ">
+					<a id="lllww" style="width: 100px; color: white; font-size: 1.7em;">学生注册</a>
+				</form>
 	</div>
 	</nav>
 

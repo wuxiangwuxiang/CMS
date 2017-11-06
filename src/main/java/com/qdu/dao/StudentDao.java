@@ -19,5 +19,11 @@ public interface StudentDao {
 	
 	public void updateStudentPassWord(Student student);
 	
+	public void ajaxupdateStudentPassWord(String studentRoNo,String studentPassword);
+	
+	public Student selectStudentByFour(String studentRoNo,String studentName,String studentMobile,String studentEmail);
+	
+	
+	
  
 }

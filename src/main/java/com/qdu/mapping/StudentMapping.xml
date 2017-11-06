@@ -100,6 +100,11 @@
 		where s.ClazzId = c.ClazzId
 		And StudentRoNo = #{studentRoNo}
 	</select>
+	
+	<select id="selectStudentByFour" parameterType="HashMap" resultMap="StudentResult">
+	select * from Student where StudentRoNo = #{studentRoNo} And StudentName = #{studentName}
+	And StudentMobile = #{studentMobile} And StudentEmail = #{studentEmail}
+	</select>
 
 	<insert id="insertStudentByNo" parameterType="com.qdu.pojo.Student">
 		insert into

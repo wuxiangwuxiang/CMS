@@ -21,7 +21,11 @@
 <script src="<%=request.getContextPath()%>/layui/layui.js "></script>
 
 <title>教师注册</title>
-
+<style type="text/css">
+#lllqq:HOVER {
+	text-decoration: none;
+}
+</style>
 
 
 <script type="text/javascript">
@@ -51,6 +55,9 @@
 			</button>
 			<a class="navbar-brand" href="#">CMS</a>
 		</div>
+		<form class="navbar-form navbar-right" style="margin-right: 5%; float: left; ">
+					<a id="lllqq" style="width: 100px; color: white; font-size: 1.7em;">教师注册</a>
+				</form>
 	</div>
 	</nav>
 
