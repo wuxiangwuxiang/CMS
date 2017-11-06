@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdu.mapping.TeacherMapping">
-  <cache type="com.qdu.cache.RedisCache"/>
+	<cache type="com.qdu.cache.RedisCache" />
 	<resultMap type="com.qdu.pojo.Teacher" id="TeacherResult">
 		<id property="teacherMobile" column="TeacherMobile" />
 		<result property="teacherEmail" column="TeacherEmail" />
@@ -28,7 +28,7 @@
 				javaType="ArrayList" column="CourseName"
 				select="com.qdu.mapping.StudentInfoMapping.selectStudentInfoByCourse">
 				<id property="studentInfoId" column="StudentInfoId" />
-				<result property="signIn" column="SignIn"/>
+				<result property="signIn" column="SignIn" />
 				<result property="comeLate" column="ComeLate" />
 				<result property="leaveEarlier" column="LeaveEarlier" />
 				<result property="absenteeism" column="Absenteeism" />
@@ -55,25 +55,30 @@
 			</collection>
 
 		</collection>
-		
-		
+
+
 	</resultMap>
 	<select id="selectTeacherByEmail" resultMap="TeacherResult">
-		SELECT * from 
+		SELECT * from
 		Teacher where TeacherMobile = #{teacherMobile}
 	</select>
 
+	<select id="selecctTeacherByThree" parameterType="HashMap" resultMap="TeacherResult">
+        select * from Teacher where TeacherMobile = #{teacherMobile} And TeacherName = #{teacherName} 
+        And TeacherEmail = #{teacherEmail}
+	</select>
 
 	<insert id="insertTeacher" parameterType="com.qdu.pojo.Teacher">
 		insert into
 		Teacher(TeacherMobile,TeacherEmail,TeacherPassword,TeacherName,TeacherGender,TeacherSubject)
 		values(#{teacherMobile},#{teacherEmail},#{teacherPassword},#{teacherName},#{teacherGender},#{teacherSubject});
 	</insert>
-	
+
 	<update id="updateTeacherPassWord" parameterType="HashMap">
-	update Teacher set
-	TeacherPassword = #{teacherPassword}
-	where TeacherMobile = #{teacherMobile}
+		update Teacher set
+		TeacherPassword = #{teacherPassword}
+		where TeacherMobile = #{teacherMobile}
 	</update>
+
 
 </mapper>
