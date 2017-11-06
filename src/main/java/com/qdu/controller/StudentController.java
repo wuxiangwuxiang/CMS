@@ -32,6 +32,7 @@ import com.qdu.service.QrTemService;
 import com.qdu.service.StudentInfoService;
 import com.qdu.service.StudentService;
 import com.qdu.util.GlobalVariable;
+import com.qdu.util.JavaEmailSender;
 import com.qdu.util.MD5Util;
 import com.qdu.util.VertifyCodeUtil;
 
@@ -203,6 +204,23 @@ public class StudentController {
 		request.getSession().setAttribute("UserId", student.getStudentRoNo());
 		return "waitForRegister";
 	}
+	
+	// 学生更改密码
+		@RequestMapping(value = "/ajaxupdateStudentPassWord.do")
+		@SystemLog(module = "学生", methods = "日志管理-邮箱更改密码")
+		@ResponseBody
+		public Map<String, Object> ajaxupdateStudentPassWord(String studentRoNo, String password,HttpServletRequest request) {
+			Map<String, Object> map = new HashMap<>();
+			if(password.length() >= 6 && password.length() <= 16){
+				studentServiceImpl.ajaxupdateStudentPassWord(studentRoNo, password);
+				map.put("result", true);
+			}else{
+			map.put("result", "密码长度错误");
+			}
+			request.getSession().setAttribute("UserId", null);
+			request.getSession().setAttribute("UserId", studentRoNo);
+			return map;
+		}
 
 	// 学生签到
 	@RequestMapping(value = "/insertQrTem.do")
@@ -331,6 +349,33 @@ public class StudentController {
 		System.out.println(globalVariable.returnCode() + " ：寻人不知归处");
 		Map<String, Object> map = new HashMap<>();
 		map.put("code", code);
+		return map;
+	}
+	//学生找回密码
+	@SystemLog(module = "学生", methods = "日志管理-找回密码(跳转)")
+	@RequestMapping(value = "/getStudentPasswordBack.do")
+	public String getStudentPasswordBack(){
+		return "studentGetPasswordBack";
+	}
+	//学生找回密码前的账号验证
+	@SystemLog(module = "学生", methods = "日志管理-找回密码(验证)")
+	@RequestMapping(value = "/forStudentReGetPass.do")
+	@ResponseBody
+	public Map<String, Object> forStudentReGetPass(String studentRoNo,String name,String mobile,String mail,HttpServletRequest request) throws Exception{
+		System.out.println("进来验证");
+		Student student = studentServiceImpl.selectStudentByFour(studentRoNo, name, mobile, mail);
+		Map<String, Object> map = new HashMap<>();
+		if(student != null){
+			System.out.println("true");
+			    String EMAIL = mail;
+		        String TITLE = student.getStudentName() + ",找回密码";//标题
+		        String CONTENT = "点击链接完成重置:"+ "   " + "http://192.168.11.229:8080/ClassManageSys/tryReGetStuPass.jsp?studentRoNo=" + studentRoNo; //内容
+		        JavaEmailSender.sendEmail(EMAIL, TITLE, CONTENT);
+			map.put("result", true);
+		}else{
+			map.put("result", false);
+			System.out.println("查无此人");
+		}
 		return map;
 	}
 

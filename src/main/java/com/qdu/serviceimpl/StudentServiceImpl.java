@@ -45,5 +45,16 @@ public class StudentServiceImpl implements StudentService{
 		studentDaoImpl.updateStudentPassWord(student);
 	}
 
+	@Override
+	public Student selectStudentByFour(String studentRoNo, String studentName, String studentMobile,
+			String studentEmail) {
+		return studentDaoImpl.selectStudentByFour(studentRoNo, studentName, studentMobile, studentEmail);
+	}
+
+	@Override
+	public void ajaxupdateStudentPassWord(String studentRoNo, String studentPassword) {
+		studentDaoImpl.ajaxupdateStudentPassWord(studentRoNo, studentPassword);
+	}
+
 	
 }

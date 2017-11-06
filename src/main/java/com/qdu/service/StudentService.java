@@ -18,5 +18,10 @@ public interface StudentService {
 	
 	public void updateStudentPassWord(Student student);
 	
+	public Student selectStudentByFour(String studentRoNo, String studentName, String studentMobile,
+			String studentEmail);
+	
+	public void ajaxupdateStudentPassWord(String studentRoNo,String studentPassword);
+	
 
 }

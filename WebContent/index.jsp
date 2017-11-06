@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
 <link type="text/css" rel="stylesheet" href="css/mycss.css">
@@ -204,27 +204,39 @@
 					<form id="studentForm"
 						action="<%=request.getContextPath()%>/student/studentLogin.do"
 						method="post" style="text-align: center; font-size: 20px;">
-						<br> <br> <br> <br> <span style="color: white">学号:</span>><input
-							name="studentRoNo" id="studentRono" type="text" /><br /> <br /> <span
-							style="color: white">密码:</span>><input name="studentPassword" id="stpw"
-							type="password" disabled="disabled" /><br /> <br /> <input id="stu"
-							class="btn btn-primary btn-lg" style="width: 150px" type="button"
-							value="登录" /> <br> <br> <a
-							href="<%=request.getContextPath()%>/student/addStudent.do"
-							target="_blank" style="margin-left: 300px">去注册>></a>
+						<br> <br> <br> <br> <span style="color: white">学号:</span>><input 
+							name="studentRoNo" id="studentRono" type="text"/><br /> <br /> <span
+							style="color: white">密码:</span>><input name="studentPassword" id="stpw" 
+							type="password" disabled="disabled" /><br /> <br />
+							 <a href="<%=request.getContextPath()%>/student/getStudentPasswordBack.do"
+							style="margin-left: 300px" target="_blank">忘记密码>></a><br/><br /> 
+							 <input id="stu" class="btn btn-primary btn-lg" style="width: 130px; float: left;margin-left: 15%;" type="button"
+							value="登录" /> 
+							<a id="stu" href="<%=request.getContextPath()%>/student/addStudent.do"
+							target="_blank"
+							class="btn btn-primary btn-lg" style="width: 130px;float: left; margin-left: 5%;" 
+							> 注册</a>
+							<br><br>
+							
 					</form>
 					<form id="teacherForm"
 						action="<%=request.getContextPath()%>/teacher/teacherLogin.do"
 						method="post"
 						style="text-align: center; font-size: 20px; display: none;">
-						<br> <br> <br> <br> <span style="color: white">手机:</span>><input
+						<br> <br> <br> <br> <span style="color: white">手机:</span>><input 
 							name="teacherId" id="teacherMobile" type="text" /><br /> <br /> <span
-							style="color: white">密码:</span>><input name="password" id="tcpw"
-							type="password" /><br /> <br /> <input id="tea" 
-							class="btn btn-primary btn-lg" style="width: 150px" type="button"
-							value="登录" /> <br> <br> <a
-							href="<%=request.getContextPath()%>/teacher/forTeacherRegister.do"
-							style="margin-left: 300px">去注册>></a>
+							style="color: white">密码:</span>><input name="password" id="tcpw" 
+							type="password" /><br /> <br />
+						
+							 <a href="#"
+							style="margin-left: 300px">忘记密码>></a><br/><br /> 
+							 <input id="tea" class="btn btn-primary btn-lg" style="width: 130px; float: left;margin-left: 15%;" type="button"
+							value="登录" /> 
+							<a id="stu" href="<%=request.getContextPath()%>/teacher/forTeacherRegister.do"
+							target="_blank"
+							class="btn btn-primary btn-lg" style="width: 130px;float: left; margin-left: 5%;" 
+							> 注册</a>
+							<br><br>
 					</form>
 					<br> <br> <br> <br> <br>
 				</div>
