@@ -2,6 +2,7 @@ package com.qdu.service;
 
 import java.util.List;
 
+import com.qdu.pojo.Message;
 import com.qdu.pojo.Student;
 
 public interface StudentService {
@@ -23,5 +24,7 @@ public interface StudentService {
 	
 	public void ajaxupdateStudentPassWord(String studentRoNo,String studentPassword);
 	
+	public void changeStuMail(String studentRoNo, String studentEmail);
+		
 
 }

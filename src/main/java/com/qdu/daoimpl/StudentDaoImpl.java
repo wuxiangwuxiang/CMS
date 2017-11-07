@@ -8,7 +8,9 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.qdu.dao.MessageDao;
 import com.qdu.dao.StudentDao;
+import com.qdu.pojo.Message;
 import com.qdu.pojo.Student;
 import com.qdu.util.MD5Util;
 @Repository
@@ -80,6 +82,16 @@ public class StudentDaoImpl implements StudentDao{
 		map.put("studentPassword", MD5Util.md5(studentPassword, "juin"));
 		sessionFactory.openSession().update(statement, map);
 	}
+
+	@Override
+	public void changeStuMail(String studentRoNo, String studentEmail) {
+		String statement = "com.qdu.mapping.StudentMapping.changeStuMail";
+		Map<String, Object> map = new HashMap<>();
+		map.put("studentRoNo", studentRoNo);
+		map.put("studentEmail", studentEmail);
+		sessionFactory.openSession().update(statement, map);
+	}
+
 
 
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.qdu.dao.StudentDao;
+import com.qdu.pojo.Message;
 import com.qdu.pojo.Student;
 import com.qdu.service.StudentService;
 
@@ -55,6 +56,14 @@ public class StudentServiceImpl implements StudentService{
 	public void ajaxupdateStudentPassWord(String studentRoNo, String studentPassword) {
 		studentDaoImpl.ajaxupdateStudentPassWord(studentRoNo, studentPassword);
 	}
+
+	@Override
+	public void changeStuMail(String studentRoNo, String studentEmail) {
+		studentDaoImpl.changeStuMail(studentRoNo, studentEmail);
+	}
+
+	
+
 
 	
 }

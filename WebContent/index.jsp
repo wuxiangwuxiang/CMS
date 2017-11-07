@@ -12,6 +12,12 @@
 <script src="js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
+function   fresh(){  
+if(location.href.indexOf("?reload=true")<0){
+    location.href+="?reload=true";  
+   }  
+}  
+setTimeout("fresh()",50)
 	$(document).ready(function() {
 		$('#lll').click(function() {
 			$('#loginForm').toggle();

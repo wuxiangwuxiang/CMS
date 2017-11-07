@@ -15,11 +15,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Course;
+import com.qdu.pojo.Message;
 import com.qdu.pojo.Student;
 import com.qdu.pojo.Teacher;
 import com.qdu.service.ClazzService;
 import com.qdu.service.CourseService;
+import com.qdu.service.MessageService;
+import com.qdu.service.StudentService;
 import com.qdu.service.TeacherService;
+import com.qdu.serviceimpl.StudentServiceImpl;
 import com.qdu.util.JavaEmailSender;
 import com.qdu.util.MD5Util;
 
@@ -30,6 +34,8 @@ public class TeacherController {
 	@Autowired private TeacherService teacherServiceImpl;
 	@Autowired private CourseService courseServiceImpl;
 	@Autowired private ClazzService clazzServiceImpl;
+	@Autowired private MessageService messageServiceImpl;
+	@Autowired private StudentService studentServiceImpl;
 	
 	//教师登录准备
 	@RequestMapping(value = "/forTeacherLogin.do")
@@ -53,6 +59,10 @@ public class TeacherController {
 			map.addAttribute("teacher",teacher);
 			List<Course> courses  = courseServiceImpl.selectCourseByTeacher(teacher.getTeacherMobile());
 			map.addAttribute("courses", courses);
+			int messageCount = messageServiceImpl.selectMessageCount(teacher.getTeacherMobile());
+			map.put("messageCount", messageCount);
+			List<Message> messages = messageServiceImpl.selectUnreadMessage(teacher.getTeacherMobile());
+			map.put("message", messages);
 			// session的id存一下
 			request.getSession().setAttribute("UserId", id);
 			return "teacherPage";
@@ -69,6 +79,10 @@ public class TeacherController {
 				map.addAttribute("teacher",teacher);
 				List<Course> courses  = courseServiceImpl.selectCourseByTeacher(teacher.getTeacherMobile());
 				map.addAttribute("courses", courses);
+				int messageCount = messageServiceImpl.selectMessageCount(teacherMobile);
+				map.put("messageCount", messageCount);
+				List<Message> messages = messageServiceImpl.selectUnreadMessage(teacherMobile);
+				map.put("message", messages);
 				return "teacherPage";
 		}
 		
@@ -129,12 +143,22 @@ public class TeacherController {
 			map.addAttribute("courses", courses);
 			map.addAttribute("teacher", teacher);
 			return "waitForTeacherRegister";
-	}
-	//教师找回密码
+	   }
+	   //教师找回密码
 		@SystemLog(module = "教师", methods = "日志管理-找回密码(跳转)")
 		@RequestMapping(value = "/getTeacherPasswordBack.do")
 		public String getTeacherPasswordBack(){
 			return "teacherGetPasswordBack";
+		}
+		//教师变更邮箱
+		@SystemLog(module = "教师", methods = "日志管理-变更邮箱")
+		@RequestMapping(value = "/changeTeaMail.do")
+		@ResponseBody
+		public Map<String, Object> changeTeaMail(String teacherEmail,String teacherMobile){
+			teacherServiceImpl.changeTeaMail(teacherMobile, teacherEmail);
+			Map<String, Object> map = new HashMap<>();
+			map.put("result", true);
+			return map;
 		}
 		//ajax试探教师信息
 		@SystemLog(module = "教师", methods = "日志管理-找回密码(验证)")
@@ -162,8 +186,29 @@ public class TeacherController {
 			}
 			return map;
 		}
-		
-		//
-		
+		//查看具体消息
+		@SystemLog(module = "教师", methods = "日志管理-查看消息")
+		@RequestMapping(value = "/getMessageByAjax.do")
+		@ResponseBody
+		public Map<String, Object> getMessageByAjax(int messageId){
+			Map<String, Object> map = new HashMap<>();
+			messageServiceImpl.uodateMesageHaveread(messageId);
+			Message message = messageServiceImpl.selectMessageById(messageId);
+			Student student = studentServiceImpl.selectStudentByNo(message.getMessageSender());
+			if(student != null){
+				map.put("student", student);
+			}
+			map.put("mmm", message);
+			return map;
+		}
+		//查看具体消息
+				@RequestMapping(value = "/gggetMessageCount.do")
+				@ResponseBody
+				public Map<String, Object> gggetMessageCount(String teacherMobile){
+					Map<String, Object> map = new HashMap<>();
+					int messages = messageServiceImpl.selectMessageCount(teacherMobile);
+					map.put("message", messages);
+					return map;
+				}
 		
 }

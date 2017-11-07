@@ -7,7 +7,9 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.qdu.dao.MessageDao;
 import com.qdu.dao.TeacherDao;
+import com.qdu.pojo.Message;
 import com.qdu.pojo.Teacher;
 
 @Repository
@@ -48,5 +50,17 @@ public class TeacherDaoImpl implements TeacherDao{
 		map.put("teacherEmail", teacherEmail);
 		return sessionFactory.openSession().selectOne(statement, map);
 	}
+
+
+	@Override
+	public void changeTeaMail(String teacherMobile, String teacherEmail) {
+		String statement = "com.qdu.mapping.TeacherMapping.changeTeaMail";
+		Map<String, Object> map = new HashMap<>();
+		map.put("teacherMobile", teacherMobile);
+		map.put("teacherEmail", teacherEmail);
+	    sessionFactory.openSession().update(statement, map);
+	}
+
+
 
 }

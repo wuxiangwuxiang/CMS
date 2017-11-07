@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdu.mapping.MessageMapping">
+	<cache type="com.qdu.cache.RedisCache"/>
+	<resultMap type="com.qdu.pojo.Message" id="MessageResult">
+		<id property="messageId " column="MessageId " />
+		<result property="messageSender" column="MessageSender" />
+		<result property="messageTitle" column="MessageTitle" />
+		<result property="messageAccepter" column="MessageAccepter" />
+		<result property="sendTime" column="SendTime" />
+		<result property="haveRead" column="HaveRead" />
+		<result property="messageContent" column="MessageContent" />
+		<result property="messageType" column="MessageType" />
+	</resultMap>
+  
+	<insert id="insertMessage" parameterType="com.qdu.pojo.Message">
+	insert into 
+	Message(MessageSender,MessageAccepter,MessageTitle,SendTime,HaveRead,MessageContent,MessageType) 
+	values(#{messageSender},#{messageAccepter},#{messageTitle},#{sendTime},#{haveRead},#{messageContent},#{messageType})
+	</insert>
+	
+	<select id="selectMessageCount" parameterType="String" resultType="int">
+	select Count(*) from Message where MessageAccepter = #{messageAccepter} And HaveRead = '未读'
+	</select>
+	
+	<select id="selectMessageById" parameterType="int" resultMap="MessageResult">
+	select * from Message where MessageId = #{messageId}
+	</select>
+	
+	<select id="selectUnreadMessage" parameterType="ArrayList" resultMap="MessageResult">
+	select * from Message where MessageAccepter = #{messageAccepter} Order by MessageId desc
+	</select>
+	
+	<update id="uodateMesageHaveread" parameterType="int">
+	update Message set
+	HaveRead  = '已读'
+	where MessageId = #{messageId}
+	</update>
+	
+</mapper>
+

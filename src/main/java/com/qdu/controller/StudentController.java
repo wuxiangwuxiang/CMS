@@ -9,10 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,14 +18,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Clazz;
+import com.qdu.pojo.Course;
+import com.qdu.pojo.Message;
 import com.qdu.pojo.QrTem;
 import com.qdu.pojo.Student;
 import com.qdu.pojo.StudentInfo;
+import com.qdu.pojo.Teacher;
 import com.qdu.service.ClazzService;
 import com.qdu.service.CourseService;
+import com.qdu.service.MessageService;
 import com.qdu.service.QrTemService;
 import com.qdu.service.StudentInfoService;
 import com.qdu.service.StudentService;
@@ -50,6 +50,7 @@ public class StudentController {
 	private CourseService courseServiceImpl;
 	@Autowired
 	private StudentInfoService studentInfoServiceImpl;
+	@Autowired private MessageService messageServiceImpl;
 
 	// 学生登录
 	@RequestMapping(value = "/studentLogin.do")
@@ -68,7 +69,7 @@ public class StudentController {
 				// session的id存一下
 				request.getSession().setAttribute("UserId", null);
 				request.getSession().setAttribute("UserId", studentRoNo);
-				return "index";
+				return "studentPage";
 			}
 		}
 		return "failer";
@@ -189,7 +190,7 @@ public class StudentController {
 		// session的id存一下
 		request.getSession().setAttribute("UserId", null);
 		request.getSession().setAttribute("UserId", studentRoNo);
-		return "index";
+		return "studentPage";
 	}
 
 	// 学生更改密码
@@ -206,6 +207,18 @@ public class StudentController {
 		request.getSession().setAttribute("UserId", null);
 		request.getSession().setAttribute("UserId", student.getStudentRoNo());
 		return "waitForRegister";
+	}
+	//学生更换邮箱
+	@SystemLog(module = "学生", methods = "日志管理-更换邮箱")
+	@RequestMapping(value = "/changeStuMail.do")
+	@ResponseBody
+	public Map<String, Object> changeStuMail(String studentRoNo,String studentEmail){
+		System.out.println(studentRoNo);
+		System.out.println(studentEmail);
+		Map<String, Object> map = new HashMap<>();
+		studentServiceImpl.changeStuMail(studentRoNo, studentEmail);
+		map.put("result", true);
+		return map;
 	}
 
 	// 学生签到
@@ -369,6 +382,29 @@ public class StudentController {
 			map.put("result", false);
 			System.out.println("查无此人");
 		}
+		return map;
+	}
+	//ajax学生添加课程发信息给老师
+	@SystemLog(module = "学生", methods = "日志管理-添加课程")
+	@RequestMapping(value = "/atudentAddCourse.do")
+	@ResponseBody
+	public Map<String, Object> atudentAddCourse(String studentRono,String courseName,int courseId){
+		Map<String,Object> map = new HashMap<>();
+		 String time = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
+		 Course course = courseServiceImpl.selectCourseById(courseId);
+		 Teacher teacher = course.getTeacher();
+		 Student student = studentServiceImpl.selectStudentByNo(studentRono);
+		 Message message =  new Message();
+		 message.setMessageSender(studentRono);
+		 message.setMessageAccepter(teacher.getTeacherMobile());
+		 message.setMessageTitle(student.getStudentName() + "同学申请加入课程： " + course.getCourseName() + 
+				 "(" + course.getCurrentYear() + "/" + course.getSchoolTem() + ")");
+		 message.setSendTime(time);
+		 message.setHaveRead("未读");
+		 message.setMessageType("insertCourse");
+		 message.setMessageContent(courseId+"");
+		 messageServiceImpl.insertMessage(message);
+		map.put("result", true);
 		return map;
 	}
 

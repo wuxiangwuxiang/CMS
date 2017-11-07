@@ -11,5 +11,7 @@ public interface TeacherDao {
 	public void updateTeacherPassWord(String teacherMobile,String teacherPassword);
 	
 	public Teacher selecctTeacherByThree(String teacherMobile,String teacherName,String teacherEmail);
+	
+	public void changeTeaMail(String teacherMobile,String teacherEmail);
  
 }

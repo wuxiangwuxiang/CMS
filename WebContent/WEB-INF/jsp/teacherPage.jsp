@@ -8,7 +8,7 @@
 <link type="text/css" rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/teacherPage.css">
 <link rel="shortcut icon" type="image/x-icon"
-	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
+	href="<%=request.getContextPath()%>/icon/cms2.ico" media="screen" />
 
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/jquery-3.2.1.min.js"></script>
@@ -19,12 +19,46 @@
 <title>教师门户</title>
 <script type="text/javascript">
 	 $(document).ready(function () {
+		 //如果消息数量为0
+		 if(${messageCount} == 0){
+			 var TmessageCount = document.getElementById("TmessageCount")
+			 TmessageCount.style.display="none";
+		 }
+		 //每1秒执行一次消息数量的查询
+		 setInterval(gggetMessageCount,1000);
+		 function gggetMessageCount() {
+			 
+			 $.ajax({
+	             type: "GET",
+	             data: {
+	            	 "teacherMobile":$('#teacherMobile').val()
+	             },
+	             contentType: "application/json; charset=utf-8",
+	             async: true,
+	             //url不加空格！！！！！！！！！！！！！！！！！！！！！！！
+	             url: "<%=request.getContextPath()%>/teacher/gggetMessageCount.do",
+				success : function(data) {
+					if(data.message > 0){
+						$('#TmessageCount').html(data.message);
+					}else {
+						var TmessageCount = document.getElementById("TmessageCount")
+						 TmessageCount.style.display="none";
+					}
+				},
+				error : function(data) {
+					
+				},
+				dataType : "json",
+			});
+		}
 		 //添加课程
 		 $('#createCourse').click(function() {
 		    $('#changeCourseinfo').hide();
 			$('#doubleHandle').hide();
 			$('#signal').hide();
 		    $('#courseInfo').hide();
+		    $('#messageShow').hide();
+		    $('#fushuMessage').hide();
 			$('#courseShow').show();
 		});
 		 //课程信息
@@ -33,7 +67,19 @@
 			 $('#doubleHandle').hide();
 			 $('#signal').hide();
 			 $('#courseShow').hide();
+			 $('#messageShow').hide();
+			 $('#fushuMessage').hide();
 			 $('#courseInfo').show();
+			});
+		 //点击消息
+		  $('#messageButtton').click(function() {
+			 $('#changeCourseinfo').hide();
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
+			 $('#courseShow').hide();
+			 $('#courseInfo').hide();
+			 $('#fushuMessage').hide();
+			 $('#messageShow').show();
 			});
 		 //点击二维码叉号
 		 $('#esc').click(function() {
@@ -69,7 +115,7 @@
 				setTimeout('yourFunction()',2000); 
 			},
 			error : function(data) {
-				alert("????服务器异常");
+				alert("服务器异常");
 			},
 			dataType : "json",
 		});
@@ -82,13 +128,98 @@
 	function aClick(clazzId) {
 		document.getElementById("asd" + clazzId).submit()
 	}
+	var tem = ${messageCount}
+	//点击某个消息
+	function getMessage(messageId) {
+		$('#me'+messageId).html("已读");
+		//if(tem > 1){
+		//	if($('#mem'+messageId).val() == '未读'){
+		//		tem = tem - 1;
+		//	}
+		//}else{
+		//	var TmessageCount = document.getElementById("TmessageCount")
+		//	TmessageCount.style.display="none";
+		//}
+		$('#mem'+messageId).val("已读");
+		//$('#TmessageCount').html(tem);
+		getMessageByAjax(messageId);
+	}
+	function getMessageByAjax(messageId) {
+		$.ajax({
+            type: "GET",
+            data: {
+		         "messageId": messageId
+            },
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            //url不加空格！！！！！！！！！！！！！！！！！！！！！！！
+            url: "<%=request.getContextPath()%>/teacher/getMessageByAjax.do",
+			success : function(data) {
+				if(data.mmm.messageType == 'insertCourse'){
+					$('#forMessageContent').hide();
+					$('#messageContent').hide();
+					$('#insertCourseDiv').show();
+					$('#MstudentRoNo').val(data.mmm.messageSender);
+					$('#MCourseId').val(data.mmm.messageContent);
+				}
+				$('#messageShow').hide();
+				$('#messageTitle').html('标题 <' + data.mmm.messageTitle + '>');
+				$('#messageSnder').html('发送人账号 <' + data.mmm.messageSender +'>');
+				if(data.student != null){
+				$('#messageSenderName').html('发送人姓名 <' + data.student.studentName +'><br/><br/><br/><br/>');
+				$('#messageSenderName').show();
+				  }
+				$('#sendTime').html('时间 <' + data.mmm.sendTime +'>');
+				$('#messageContent').html(data.mmm.messageContent + '<br/><br/>');
+				$('#fushuMessage').show();
+				
+			},
+			error : function(data) {
+				alert("服务器异常");
+			},
+			dataType : "json",
+		});
+	}
+	function agree() {
+		 $.ajax({
+             type: "GET",
+             data: {
+		         "studentRoNo": $('#MstudentRoNo').val(),
+		         "courseId": $('#MCourseId').val()
+             },
+             contentType: "application/json; charset=utf-8",
+             async: false,
+             //url不加空格！！！！！！！！！！！！！！！！！！！！！！！
+             url: "<%=request.getContextPath()%>/studentInfo/insertStudentInfoByteacher.do",
+			success : function(data) {
+				if(data.result == true){
+					$('#handleMessageShow').show();
+				}else{
+					alert("请勿重复添加");
+				}
+			},
+			error : function(data) {
+				alert("服务器异常");
+			},
+			dataType : "json",
+		});
+	}
+	function dontCare() {
+			 $('#changeCourseinfo').hide();
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
+			 $('#courseShow').hide();
+			 $('#courseInfo').hide();
+			 $('#fushuMessage').hide();
+			 $('#messageShow').show();
+	}
 </script>
 </head>
 <body>
 	<!-- 课程二维码 -->
 	<img id="target"
 		style="width: 390px; height: 390px; display: none; z-index: 9; background-color: rgba(0, 0, 0, 1);"
-		src="" />
+		src="" /> 
 
 	<!-- 新建课程成功提示信息 -->
 	<div id="addCourseShow"
@@ -101,6 +232,18 @@
 		style="background-color: #393D49; height: 27%; width: 25%; z-index: 20; position: fixed; margin-top: 23%; text-align: center; margin-left: 50%; display: none;">
 		<h3 style="color: white; margin-top: 15%">修改课程成功..</h3>
 	</div>
+	
+	<!-- 更改邮箱成功提示信息 -->
+	<div id="changeMailShow"
+		style="background-color: #393D49; height: 20%; width: 20%; z-index: 20; position: fixed; margin-top: 20%; text-align: center; margin-left: 75%; display: none;">
+		<h3 style="color: white; margin-top: 19%">更新邮箱成功..</h3>
+	</div>
+	
+	<!-- 处理消息成功提示信息 -->
+	<div id="handleMessageShow"
+		style="background-color: #393D49; height: 20%; width: 20%; z-index: 20; position: fixed; margin-top: 20%; text-align: center; margin-left: 30%; display: none;">
+		<h3 style="color: white; margin-top: 19%">处理成功..</h3>
+	</div>
 
 	<div class="layui-layout layui-layout-admin">
 		<!-- 头部导航 -->
@@ -110,8 +253,8 @@
 					style="color: white; font-size: 25px;">CMS</span></a>
 
 				<ul class="layui-nav">
-					<li class="layui-nav-item"><a href="#">控制台<span
-							class="layui-badge">9</span></a></li>
+					<li class="layui-nav-item"><a id="messageButtton" href="#">消息<span id="TmessageCount"
+							class="layui-badge">${messageCount}</span></a></li>
 					<li class="layui-nav-item"><a href="#">个人中心<span
 							class="layui-badge-dot"></span></a></li>
 					<li class="layui-nav-item"><a href="#">${teacher.teacherName}老师</a>
@@ -136,7 +279,7 @@
 				<ul class="layui-nav layui-nav-tree" lay-filter="test">
 					<!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
 					<li class="layui-nav-item layui-nav-itemed"><a
-						href="javascript:;">默认展开</a>
+						href="javascript:;">课程</a>
 						<dl class="layui-nav-child">
 							<dd>
 								<a id="checkCourseShow" href="#">课程信息</a>
@@ -148,20 +291,20 @@
 								<a href="">跳转</a>
 							</dd>
 						</dl></li>
-					<li class="layui-nav-item"><a href="#">解决方案</a>
+					<li class="layui-nav-item"><a href="#">资料</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a href="#">移动模块</a>
+								<a href="#">个人资料</a>
 							</dd>
 							<dd>
-								<a href="#">后台模版</a>
+								<a href="#">课件上传</a>
 							</dd>
 							<dd>
-								<a href="#">电商平台</a>
+								<a href="#">待定</a>
 							</dd>
 						</dl></li>
-					<li class="layui-nav-item"><a href="#">产品</a></li>
-					<li class="layui-nav-item"><a href="#">大数据</a></li>
+					<li class="layui-nav-item"><a href="#">个人博客</a></li>
+					<li class="layui-nav-item"><a href="#">操作日志</a></li>
 				</ul>
 			</div>
 		</div>
@@ -169,6 +312,50 @@
 		<!-- 内容显示 -->
 		<div class="layui-body site-demo">
 			<br />
+			
+			
+			<!-- 显示消息 -->
+			<div class="site-text site-block" id="messageShow"
+				style="display: none; padding-left: 10%;">
+				<table>
+				<c:choose>
+				<c:when test="${! empty message}">
+				<c:forEach items="${message}" var="m">
+				<tr style="margin-top: 3%">
+				<td><img alt="图标cms" src="<%=request.getContextPath()%>/icon/cms3.ico" width="40px" height="40px"></td>
+				<td width="12%">&nbsp;</td>
+				<td><a id="${m.messageId}" onclick="getMessage(this.id)" href="#">${m.messageTitle}</a></td>
+				<td width="12%">&nbsp;</td>
+				<td>${m.sendTime}</td>
+				<td width="12%">&nbsp;</td>
+				<td id="me${m.messageId}">${m.haveRead}</td>
+				<td><input id="mem${m.messageId}" type="text" value="${m.haveRead}" style="display: none;"/></td>
+				</tr>
+				<tr height="10%">
+				<td>&nbsp;</td>
+				</tr>
+				</c:forEach>
+				<br/>
+				</c:when>
+				</c:choose>
+				</table>
+			</div>
+			<!-- 附属详细消息 -->
+			<div id="fushuMessage" style="width: 100%; padding-left: 25%; display: none; margin-top: 5%;">
+			<h3 id="messageTitle"></h3>
+			<hr/><br/><br/>
+			<span id="messageSnder"></span><br/><br/><br/><br/>
+			<span id="messageSenderName" style="display: none;"></span>
+			<span id="sendTime"></span><br/><br/><br/><br/>
+			<span id="forMessageContent">内容<br/></span> <textarea id="messageContent" rows="5" cols="40" readonly="readonly"></textarea><br/><br/>
+			<div id="insertCourseDiv" style="display: none;">
+			<input type="text" id="MstudentRoNo" style="display: none;"/>
+			<input type="text" id="MCourseId" style="display: none;"/>
+			<input id="agree" class="layui-btn" onclick="agree()" type="button" value="同意"/>
+			<input style="margin-left: 10%;" id="dontCare" onclick="dontCare()" class="layui-btn layui-btn-primary" type="button" value="忽略"/>
+			</div>
+			</div>
+			
 			<!-- 新建课程 -->
 			<div class="site-text site-block" id="courseShow"
 				style="display: none;">
@@ -277,6 +464,7 @@
 				style="margin-top: 5%;">
 				<table class="layui-table" lay-even style="text-align: center;">
 					<colgroup>
+					    <col width="150">
 						<col width="200">
 						<col width="200">
 						<col width="150">
@@ -285,6 +473,7 @@
 					</colgroup>
 					<thead>
 						<tr>
+						    <th style="text-align: center;">课程编码</th>
 							<th style="text-align: center;">课程名称</th>
 							<th style="text-align: center;">二维码信息</th>
 							<th style="text-align: center;">学年</th>
@@ -297,6 +486,7 @@
 							<c:when test="${! empty courses}">
 								<c:forEach items="${courses}" var="r">
 									<tr id="abs${r.courseId}">
+									<td>${r.courseId}</td>
 										<td><a
 											href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">${r.courseName}</a></td>
 										<td style="text-align: center;">
@@ -486,12 +676,13 @@
 
 			<div id="doubleHandle"
 				style="width: 70%; margin-left: 15%; margin-top: 8%; display: none; text-align: center; border: solid; border-color: red;">
-				<a href="#"
+				<a href="#" id="changeTeaPass"
 					style="float: left; height: 20%; width: 49%; border: solid; border-color: red; font-size: 1.5em">更改密码</a>
-				<a href="#"
+				<a href="#" id="changeTeaMail"
 					style="float: left; height: 20%; width: 49%; border: solid; border-color: red; font-size: 1.5em">更换邮箱</a>
 				<br />
 				<br />
+				<!-- 修改密码 -->
 				<form id="safe"
 					action="<%=request.getContextPath()%>/teacher/updateTeacherPassWord.do"
 					style="width: 84%; margin-left: 5%; border: solid; border-color: red; text-align: center;">
@@ -553,6 +744,62 @@
 						</tr>
 					</table>
 				</form>
+				
+				<!-- 修改邮箱 -->
+					<form id="emailsafe"
+					action="<%=request.getContextPath()%>/teacher/updateTeacherEmail.do"
+					style="width: 84%; margin-left: 5%; border: solid; border-color: red; 
+					text-align: center; display: none;">
+					<table style="padding-left: 10%;">
+						<br/>
+						<tr style="width: 100%;">
+							<td style="text-align: right; margin-left: 20%;">手机号：</td>
+							<td><input type="text" readonly="readonly"
+								name="teacherMobile" value="${teacher.teacherMobile}"
+								id="teacherMobile" style="width: 19em;" /></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style="text-align: right; width: 20em;">原邮箱：</td>
+							<td><input type="text" name="oldEmail" value="${teacher.teacherEmail}"
+								id="teacherEmail" style="width: 19em" readonly="readonly" /></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style="text-align: right;">
+							<label class="layui-form-label" for="mail" style="text-align: right; width: 20em;">新邮箱</label></td>
+							<td>
+					               <input id="mail" type="text" name="teacherEmail" required
+						          lay-verify="required|email" autocomplete="off" style="width: 19em"/>
+				            </td>
+						</tr>
+						
+						<tr>
+							<td id="emailTypeError" style="text-align: right; width: 20em; color: red; display: none;">*格式错误*</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td colspan="2"><input id="changeTeaMailPush" type="button"
+								value="申请修改"
+								style="width: 70%; height: 1.5em; margin-left: 14em;" /></td>
+						</tr>
+					</table>
+				</form>
 			</div>
 
 
@@ -563,6 +810,66 @@
 
 
 	<script>
+	//修改密码
+	$('#changeTeaPass').click(function asd() {
+		$('#emailsafe').hide();
+		$('#safe').show();
+	});
+	//修改邮箱
+    $('#changeTeaMail').click(function asd() {
+    	$('#safe').hide();
+		$('#emailsafe').show();
+	});
+	//提交更改邮箱申请
+	 $('#changeTeaMailPush').click(function asd() {
+    	if(test()){
+    		 $('#emailTypeError').hide();
+    		 if(pushEmail()){
+    			 $('#changeMailShow').show();
+    			 setTimeout('yourFunction()',2000); 
+    		 }
+    	}
+	});
+	function pushEmail() {
+		 //ajax后台更新
+		 var result = false;
+		 var teacherEmail = $('#mail').val();
+		 var teacherMobile  =$('#teacherMobile').val();
+		$.ajax({
+              type: "GET",
+              data: {
+            	  "teacherEmail":teacherEmail,
+            	  "teacherMobile":teacherMobile
+              },
+              contentType: "application/json; charset=utf-8",
+              async: false,
+              dataType: "json",
+              url: "<%=request.getContextPath()%>/teacher/changeTeaMail.do",
+              success: function (data) {
+            	  if(data.result == true){
+            		  result = true;
+            	  }else{
+            		  
+            	  }
+              },
+              error: function (data) {
+            	  alert("服务器异常");
+              }
+          });
+		return result;
+	}
+  //对电子邮箱的验证
+    function test(){
+     var temp = document.getElementById("mail");
+     var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+     if(!myreg.test(temp.value)){
+         $('#emailTypeError').show();
+         myreg.focus();
+          return false;
+      }else{
+    	  return true;
+      }
+     }
 	 //修改课程信息 前
 	 function beforeChangeCourse(courseId,courseName,classCapacity) {
 		 document.getElementById("ccourseId").value = courseId;
