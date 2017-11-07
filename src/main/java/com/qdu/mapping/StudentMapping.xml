@@ -125,6 +125,12 @@
 		ClazzId = #{clazzId}
 		where StudentRoNo = #{studentRoNo}
 	</update>
+	
+	<update id="changeStuMail" parameterType="HashMap">
+		update Student set
+		StudentEmail = #{studentEmail}
+		where StudentRoNo = #{studentRoNo}
+	</update>
 
 
 </mapper>

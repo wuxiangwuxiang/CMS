@@ -207,6 +207,18 @@ public class StudentController {
 		request.getSession().setAttribute("UserId", student.getStudentRoNo());
 		return "waitForRegister";
 	}
+	//学生更换邮箱
+	@SystemLog(module = "学生", methods = "日志管理-更换邮箱")
+	@RequestMapping(value = "/changeStuMail.do")
+	@ResponseBody
+	public Map<String, Object> changeStuMail(String studentRoNo,String studentEmail){
+		System.out.println(studentRoNo);
+		System.out.println(studentEmail);
+		Map<String, Object> map = new HashMap<>();
+		studentServiceImpl.changeStuMail(studentRoNo, studentEmail);
+		map.put("result", true);
+		return map;
+	}
 
 	// 学生签到
 	@RequestMapping(value = "/insertQrTem.do")

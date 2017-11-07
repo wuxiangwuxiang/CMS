@@ -79,6 +79,12 @@
 		TeacherPassword = #{teacherPassword}
 		where TeacherMobile = #{teacherMobile}
 	</update>
+	
+	<update id="changeTeaMail" parameterType="HashMap">
+		update Teacher set
+		TeacherEmail = #{teacherEmail}
+		where TeacherMobile = #{teacherMobile}
+	</update>
 
 
 </mapper>

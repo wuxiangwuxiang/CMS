@@ -23,7 +23,7 @@ public interface StudentDao {
 	
 	public Student selectStudentByFour(String studentRoNo,String studentName,String studentMobile,String studentEmail);
 	
-	
+	public void changeStuMail(String studentRoNo,String studentEmail);
 	
  
 }

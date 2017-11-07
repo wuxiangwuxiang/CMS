@@ -129,12 +129,22 @@ public class TeacherController {
 			map.addAttribute("courses", courses);
 			map.addAttribute("teacher", teacher);
 			return "waitForTeacherRegister";
-	}
-	//教师找回密码
+	   }
+	   //教师找回密码
 		@SystemLog(module = "教师", methods = "日志管理-找回密码(跳转)")
 		@RequestMapping(value = "/getTeacherPasswordBack.do")
 		public String getTeacherPasswordBack(){
 			return "teacherGetPasswordBack";
+		}
+		//教师变更邮箱
+		@SystemLog(module = "教师", methods = "日志管理-变更邮箱")
+		@RequestMapping(value = "/changeTeaMail.do")
+		@ResponseBody
+		public Map<String, Object> changeTeaMail(String teacherEmail,String teacherMobile){
+			teacherServiceImpl.changeTeaMail(teacherMobile, teacherEmail);
+			Map<String, Object> map = new HashMap<>();
+			map.put("result", true);
+			return map;
 		}
 		//ajax试探教师信息
 		@SystemLog(module = "教师", methods = "日志管理-找回密码(验证)")

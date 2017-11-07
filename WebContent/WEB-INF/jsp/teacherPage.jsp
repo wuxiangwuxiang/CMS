@@ -88,7 +88,7 @@
 	<!-- 课程二维码 -->
 	<img id="target"
 		style="width: 390px; height: 390px; display: none; z-index: 9; background-color: rgba(0, 0, 0, 1);"
-		src="" />
+		src="" /> 
 
 	<!-- 新建课程成功提示信息 -->
 	<div id="addCourseShow"
@@ -100,6 +100,12 @@
 	<div id="changeCourseSuccess"
 		style="background-color: #393D49; height: 27%; width: 25%; z-index: 20; position: fixed; margin-top: 23%; text-align: center; margin-left: 50%; display: none;">
 		<h3 style="color: white; margin-top: 15%">修改课程成功..</h3>
+	</div>
+	
+	<!-- 更改邮箱成功提示信息 -->
+	<div id="changeMailShow"
+		style="background-color: #393D49; height: 20%; width: 20%; z-index: 20; position: fixed; margin-top: 20%; text-align: center; margin-left: 75%; display: none;">
+		<h3 style="color: white; margin-top: 19%">更新邮箱成功..</h3>
 	</div>
 
 	<div class="layui-layout layui-layout-admin">
@@ -486,12 +492,13 @@
 
 			<div id="doubleHandle"
 				style="width: 70%; margin-left: 15%; margin-top: 8%; display: none; text-align: center; border: solid; border-color: red;">
-				<a href="#"
+				<a href="#" id="changeTeaPass"
 					style="float: left; height: 20%; width: 49%; border: solid; border-color: red; font-size: 1.5em">更改密码</a>
-				<a href="#"
+				<a href="#" id="changeTeaMail"
 					style="float: left; height: 20%; width: 49%; border: solid; border-color: red; font-size: 1.5em">更换邮箱</a>
 				<br />
 				<br />
+				<!-- 修改密码 -->
 				<form id="safe"
 					action="<%=request.getContextPath()%>/teacher/updateTeacherPassWord.do"
 					style="width: 84%; margin-left: 5%; border: solid; border-color: red; text-align: center;">
@@ -553,6 +560,62 @@
 						</tr>
 					</table>
 				</form>
+				
+				<!-- 修改邮箱 -->
+					<form id="emailsafe"
+					action="<%=request.getContextPath()%>/teacher/updateTeacherEmail.do"
+					style="width: 84%; margin-left: 5%; border: solid; border-color: red; 
+					text-align: center; display: none;">
+					<table style="padding-left: 10%;">
+						<br/>
+						<tr style="width: 100%;">
+							<td style="text-align: right; margin-left: 20%;">手机号：</td>
+							<td><input type="text" readonly="readonly"
+								name="teacherMobile" value="${teacher.teacherMobile}"
+								id="teacherMobile" style="width: 19em;" /></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style="text-align: right; width: 20em;">原邮箱：</td>
+							<td><input type="text" name="oldEmail" value="${teacher.teacherEmail}"
+								id="teacherEmail" style="width: 19em" readonly="readonly" /></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style="text-align: right;">
+							<label class="layui-form-label" for="mail" style="text-align: right; width: 20em;">新邮箱</label></td>
+							<td>
+					               <input id="mail" type="text" name="teacherEmail" required
+						          lay-verify="required|email" autocomplete="off" style="width: 19em"/>
+				            </td>
+						</tr>
+						
+						<tr>
+							<td id="emailTypeError" style="text-align: right; width: 20em; color: red; display: none;">*格式错误*</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td colspan="2"><input id="changeTeaMailPush" type="button"
+								value="申请修改"
+								style="width: 70%; height: 1.5em; margin-left: 14em;" /></td>
+						</tr>
+					</table>
+				</form>
 			</div>
 
 
@@ -563,6 +626,66 @@
 
 
 	<script>
+	//修改密码
+	$('#changeTeaPass').click(function asd() {
+		$('#emailsafe').hide();
+		$('#safe').show();
+	});
+	//修改邮箱
+    $('#changeTeaMail').click(function asd() {
+    	$('#safe').hide();
+		$('#emailsafe').show();
+	});
+	//提交更改邮箱申请
+	 $('#changeTeaMailPush').click(function asd() {
+    	if(test()){
+    		 $('#emailTypeError').hide();
+    		 if(pushEmail()){
+    			 $('#changeMailShow').show();
+    			 setTimeout('yourFunction()',2000); 
+    		 }
+    	}
+	});
+	function pushEmail() {
+		 //ajax后台更新
+		 var result = false;
+		 var teacherEmail = $('#mail').val();
+		 var teacherMobile  =$('#teacherMobile').val();
+		$.ajax({
+              type: "GET",
+              data: {
+            	  "teacherEmail":teacherEmail,
+            	  "teacherMobile":teacherMobile
+              },
+              contentType: "application/json; charset=utf-8",
+              async: false,
+              dataType: "json",
+              url: "<%=request.getContextPath()%>/teacher/changeTeaMail.do",
+              success: function (data) {
+            	  if(data.result == true){
+            		  result = true;
+            	  }else{
+            		  
+            	  }
+              },
+              error: function (data) {
+            	  alert("服务器异常");
+              }
+          });
+		return result;
+	}
+  //对电子邮箱的验证
+    function test(){
+     var temp = document.getElementById("mail");
+     var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+     if(!myreg.test(temp.value)){
+         $('#emailTypeError').show();
+         myreg.focus();
+          return false;
+      }else{
+    	  return true;
+      }
+     }
 	 //修改课程信息 前
 	 function beforeChangeCourse(courseId,courseName,classCapacity) {
 		 document.getElementById("ccourseId").value = courseId;
