@@ -56,5 +56,10 @@ public class StudentServiceImpl implements StudentService{
 		studentDaoImpl.ajaxupdateStudentPassWord(studentRoNo, studentPassword);
 	}
 
+	@Override
+	public void changeStuMail(String studentRoNo, String studentEmail) {
+		studentDaoImpl.changeStuMail(studentRoNo, studentEmail);
+	}
+
 	
 }

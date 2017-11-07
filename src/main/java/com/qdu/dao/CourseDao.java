@@ -1,5 +1,6 @@
 package com.qdu.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.qdu.pojo.Course;
@@ -17,7 +18,8 @@ public interface CourseDao {
 	
 	public Course selectCourseById(int courseId);
 	
-	public void updateCourse(Course course);
+	public void updateCourse(String courseName,String courseType,int classCapacity,Date startTime,
+			Date endTime,int currentYear,String schoolTem,int courseId);
 	
 	public void deleteCourseById(int courseId);
 	

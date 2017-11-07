@@ -60,7 +60,7 @@
 	          });
 			  return result;
 		}
-		//点击学生登录触发密码验证
+		//点击申请修改触发密码验证
 		$('#ccchangePass').click(function wannaSubmittt() {
 			var password = $('#studentPassword').val();
 			var studentRono = $('#studentRoNo').val();
@@ -86,6 +86,12 @@
 </script>
 </head>
 <body>
+
+<!-- 更改邮箱成功提示信息 -->
+	<div id="changeMailShow"
+		style="background-color: #393D49; height: 20%; width: 20%; z-index: 20; position: fixed; margin-top: 20%; text-align: center; margin-left: 75%; display: none;">
+		<h3 style="color: white; margin-top: 19%">更新邮箱成功..</h3>
+	</div>
 
 	<div class="layui-layout layui-layout-admin" style="">
 		<!-- 头部导航 -->
@@ -195,13 +201,13 @@
 			<!-- 安全/密码 -->
 			<div id="signal" style="width: 95%; margin-left: 5%; padding-left:5%;
 			background-color:#cccc00; height: 3%;display: none; font-family: 微软雅黑;">
-			提示：修改密码后请前往邮箱确认..
+			提示：修改邮箱后后请前往原邮箱确认..
 			</div>
 			
 			<div id="doubleHandle" style="width: 70%; margin-left: 15%; margin-top: 8%; 
 			display: none;text-align: center;border: solid;border-color: red;">
-			<a href="#" style="float:left; height:20%; width: 49%;border: solid;border-color: red;font-size: 1.5em">更改密码</a>
-			<a href="#" style="float:left; height:20%; width: 49%;border: solid;border-color: red;font-size: 1.5em">更换邮箱</a>
+			<a href="#" id="changeStuPass" style="float:left; height:20%; width: 49%;border: solid;border-color: red;font-size: 1.5em">更改密码</a>
+			<a href="#" id="changeStuMail" style="float:left; height:20%; width: 49%;border: solid;border-color: red;font-size: 1.5em">更换邮箱</a>
 			<br/><br/>
 			<form id="safe" action="<%=request.getContextPath()%>/student/updateStudentPassWord.do" style="width: 84%; margin-left: 5%; border: solid;border-color: red; text-align: center;">
 			<table style="padding-left: 10%;">
@@ -233,6 +239,63 @@
 			</tr>
 			</table>
 			</form>
+			
+			<!-- 修改邮箱 -->
+					<form id="emailsafe"
+					action="<%=request.getContextPath()%>/student/updateStudentEmail.do"
+					style="width: 84%; margin-left: 5%; border: solid; border-color: red; 
+					text-align: center; display: none;">
+					<table style="padding-left: 10%;">
+						<br/>
+						<tr style="width: 100%;">
+							<td style="text-align: right; margin-left: 20%;">学号：</td>
+							<td><input type="text" readonly="readonly"
+								name="studentRoNo" value="${student.studentRoNo}"
+								id="studentRoNo" style="width: 19em;" /></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style="text-align: right; width: 20em;">原邮箱：</td>
+							<td><input type="text" name="oldEmail" value="${student.studentEmail}"
+								id="studentEmail" style="width: 19em" readonly="readonly" /></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style="text-align: right;">
+							<label class="layui-form-label" for="mail" style="text-align: right; width: 20em;">新邮箱</label></td>
+							<td>
+					               <input id="mail" type="text" name="studentEmail" required
+						          lay-verify="required|email" autocomplete="off" style="width: 19em"/>
+				            </td>
+						</tr>
+						
+						<tr>
+							<td id="emailTypeError" style="text-align: right; width: 20em; color: red; display: none;">*格式错误*</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td colspan="2"><input id="changeStuMailPush" type="button"
+								value="申请修改"
+								style="width: 70%; height: 1.5em; margin-left: 14em;" /></td>
+						</tr>
+					</table>
+				</form>
+			
 			</div>
 			
 
@@ -245,7 +308,72 @@
          </div>
          </div>
 		
-     
+  <script type="text/javascript">
+   //刷新当前页面
+		function yourFunction() {
+		 window.location.reload();
+	}
+   //修改密码
+ 	$('#changeStuPass').click(function asd() {
+ 		$('#emailsafe').hide();
+ 		$('#safe').show();
+ 	});
+ 	//修改邮箱
+     $('#changeStuMail').click(function asd() {
+     	$('#safe').hide();
+ 		$('#emailsafe').show();
+ 	});
+   //提交更改邮箱申请
+	 $('#changeStuMailPush').click(function asd() {
+    	if(test()){
+    		 $('#emailTypeError').hide();
+    		 if(pushEmail()){
+    			 $('#changeMailShow').show();
+    			 setTimeout('yourFunction()',2000); 
+    		 }
+    	}
+	});
+	function pushEmail() {
+		 //ajax后台更新
+		 var result = false;
+		 var studentEmail = $('#mail').val();
+		 var studentRoNo = $('#studentRoNo').val();
+		$.ajax({
+              type: "GET",
+              data: {
+            	  "studentRoNo":studentRoNo,
+            	  "studentEmail":studentEmail
+              },
+              contentType: "application/json; charset=utf-8",
+              async: false,
+              dataType: "json",
+              url: "<%=request.getContextPath()%>/student/changeStuMail.do",
+              success: function (data) {
+            	  if(data.result == true){
+            		  result = true;
+            	  }else{
+            		  
+            	  }
+              },
+              error: function (data) {
+            	  alert("服务器异常");
+              }
+          });
+		return result;
+	}
+  //对电子邮箱的验证
+    function test(){
+     var temp = document.getElementById("mail");
+     var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+     if(!myreg.test(temp.value)){
+         $('#emailTypeError').show();
+         myreg.focus();
+          return false;
+      }else{
+    	  return true;
+      }
+     }
+     </script>
      
 	<script>
 		layui.use('element', function() {

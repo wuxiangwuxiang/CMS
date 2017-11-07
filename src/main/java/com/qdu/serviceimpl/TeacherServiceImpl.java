@@ -38,4 +38,10 @@ public class TeacherServiceImpl implements TeacherService{
 		return teacherDaoImpl.selecctTeacherByThree(teacherMobile, teacherName, teacherEmail);
 	}
 
+
+	@Override
+	public void changeTeaMail(String teacherMobile, String teacherEmail) {
+		teacherDaoImpl.changeTeaMail(teacherMobile, teacherEmail);
+	}
+
 }

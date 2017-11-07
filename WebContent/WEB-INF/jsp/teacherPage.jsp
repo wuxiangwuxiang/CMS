@@ -19,21 +19,32 @@
 <title>教师门户</title>
 <script type="text/javascript">
 	 $(document).ready(function () {
+		 //添加课程
 		 $('#createCourse').click(function() {
-			 $('#courseInfo').hide();
+		    $('#changeCourseinfo').hide();
+			$('#doubleHandle').hide();
+			$('#signal').hide();
+		    $('#courseInfo').hide();
 			$('#courseShow').show();
 		});
+		 //课程信息
 		 $('#checkCourseShow').click(function() {
+			 $('#changeCourseinfo').hide();
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
 			 $('#courseShow').hide();
 			 $('#courseInfo').show();
 			});
+		 //点击二维码叉号
 		 $('#esc').click(function() {
 			 $('#targetup').hide();
 			 $('#courseInfo').show();
 			});
+		 //删除课程，点击取消时
 		 $('#false').click(function() {
 			$('#torf').hide();
 		});
+		
 	 });
 	 //添加课程
 	 function addCourse() {
@@ -54,14 +65,18 @@
              //url不加空格！！！！！！！！！！！！！！！！！！！！！！！
              url: "<%=request.getContextPath()%>/course/insertCourse.do",
 			success : function(data) {
-				alert(data.message);
-				window.location.reload();
+				$('#addCourseShow').show();
+				setTimeout('yourFunction()',2000); 
 			},
 			error : function(data) {
 				alert("????服务器异常");
 			},
 			dataType : "json",
 		});
+	}
+	 //刷新页面函数
+	 function yourFunction() {
+		 window.location.reload();
 	}
 	//跳转到班级页面，post
 	function aClick(clazzId) {
@@ -71,8 +86,28 @@
 </head>
 <body>
 	<!-- 课程二维码 -->
-	<img id="target" style="width: 390px; height: 390px; display: none; z-index: 9; background-color: rgba(0, 0, 0, 1);" src="" />
-		
+	<img id="target"
+		style="width: 390px; height: 390px; display: none; z-index: 9; background-color: rgba(0, 0, 0, 1);"
+		src="" /> 
+
+	<!-- 新建课程成功提示信息 -->
+	<div id="addCourseShow"
+		style="background-color: #393D49; height: 20%; width: 20%; z-index: 20; position: fixed; margin-top: 23%; text-align: center; margin-left: 50%; display: none;">
+		<h3 style="color: white; margin-top: 19%">添加课程成功..</h3>
+	</div>
+	
+	<!-- 修改课程成功提示信息 -->
+	<div id="changeCourseSuccess"
+		style="background-color: #393D49; height: 27%; width: 25%; z-index: 20; position: fixed; margin-top: 23%; text-align: center; margin-left: 50%; display: none;">
+		<h3 style="color: white; margin-top: 15%">修改课程成功..</h3>
+	</div>
+	
+	<!-- 更改邮箱成功提示信息 -->
+	<div id="changeMailShow"
+		style="background-color: #393D49; height: 20%; width: 20%; z-index: 20; position: fixed; margin-top: 20%; text-align: center; margin-left: 75%; display: none;">
+		<h3 style="color: white; margin-top: 19%">更新邮箱成功..</h3>
+	</div>
+
 	<div class="layui-layout layui-layout-admin">
 		<!-- 头部导航 -->
 		<div class="layui-header header header-demo">
@@ -81,20 +116,20 @@
 					style="color: white; font-size: 25px;">CMS</span></a>
 
 				<ul class="layui-nav">
-					<li class="layui-nav-item"><a href="">控制台<span
+					<li class="layui-nav-item"><a href="#">控制台<span
 							class="layui-badge">9</span></a></li>
-					<li class="layui-nav-item"><a href="">个人中心<span
+					<li class="layui-nav-item"><a href="#">个人中心<span
 							class="layui-badge-dot"></span></a></li>
 					<li class="layui-nav-item"><a href="#">${teacher.teacherName}老师</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a href="javascript:;">修改信息</a>
+								<a href="#">修改信息</a>
 							</dd>
 							<dd>
-								<a href="javascript:;">安全管理</a>
+								<a href="#" id="safeManage">安全管理</a>
 							</dd>
 							<dd>
-								<a href="javascript:;">注销</a>
+								<a href="#">注销</a>
 							</dd>
 						</dl></li>
 				</ul>
@@ -119,20 +154,20 @@
 								<a href="">跳转</a>
 							</dd>
 						</dl></li>
-					<li class="layui-nav-item"><a href="javascript:;">解决方案</a>
+					<li class="layui-nav-item"><a href="#">解决方案</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a href="">移动模块</a>
+								<a href="#">移动模块</a>
 							</dd>
 							<dd>
-								<a href="">后台模版</a>
+								<a href="#">后台模版</a>
 							</dd>
 							<dd>
-								<a href="">电商平台</a>
+								<a href="#">电商平台</a>
 							</dd>
 						</dl></li>
-					<li class="layui-nav-item"><a href="">产品</a></li>
-					<li class="layui-nav-item"><a href="">大数据</a></li>
+					<li class="layui-nav-item"><a href="#">产品</a></li>
+					<li class="layui-nav-item"><a href="#">大数据</a></li>
 				</ul>
 			</div>
 		</div>
@@ -242,7 +277,6 @@
 					});
 				</script>
 			</div>
-			
 
 			<!-- 课程信息 -->
 			<div class="layui-form sessiontable" id="courseInfo"
@@ -270,11 +304,12 @@
 								<c:forEach items="${courses}" var="r">
 									<tr id="abs${r.courseId}">
 										<td><a
-   							     href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">${r.courseName}</a></td>
+											href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}">${r.courseName}</a></td>
 										<td style="text-align: center;">
-									    	<div class="site-demo-button" id="layerDemo">
-												<button id="${r.qrImg}" onclick="showQrImg(this.id)" class="layui-btn" data-method="page">照片</button>
-											</div>										
+											<div class="site-demo-button" id="layerDemo">
+												<button id="${r.qrImg}" onclick="showQrImg(this.id)"
+													class="layui-btn" data-method="page">获取</button>
+											</div>
 										</td>
 										<td style="text-align: center;">${r.currentYear}</td>
 										<td style="text-align: center;"><c:choose>
@@ -298,15 +333,19 @@
 										<td style="text-align: center;"><a
 											href="<%=request.getContextPath()%>/course/forsearchClazz.do?courseId=${r.courseId}&teacherMobile=${teacher.teacherMobile}">查看/签到</a></td>
 										<td>
-										<!-- <a href="/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a> -->
-										 <div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
-				                         <button  class="layui-btn" >修改</button>
-                                          </div>
+											<!-- <a href="/course/forChangeCousrInfo.do?courseId=${r.courseId}">修改</a> -->
+											<div class="site-demo-button" id="layerDemo"
+												style="margin-bottom: 0;">
+												<button id="change${r.courseId}" onclick="beforeChangeCourse('${r.courseId}','${r.courseName}','${r.classCapacity}')"
+													class="layui-btn">修改</button>
+											</div>
 										</td>
 										<td>
-										 <div class="site-demo-button" id="layerDemo" style="margin-bottom: 0;">
-				                         <button id="${r.courseId}" onclick="forDeleteThis(this.id)" class="layui-btn" data-method="notice">删除</button>
-                                          </div>
+											<div class="site-demo-button" id="layerDemo"
+												style="margin-bottom: 0;">
+												<button id="${r.courseId}" onclick="forDeleteThis(this.id)"
+													class="layui-btn" data-method="notice">删除</button>
+											</div>
 										</td>
 									</tr>
 								</c:forEach>
@@ -319,36 +358,468 @@
 						</c:choose>
 					</tbody>
 				</table>
-				
+
 				<script>
 				layui.use('table', function() {
 					var table = layui.table;
 				});
 			    </script>
-			</div>				
-		</div>
+			</div>
+			
+			<!-- 修改课程信息 -->
+			<div class="site-text site-block" id="changeCourseinfo"
+				style="display: none;">
+				<form class="layui-form" action="">
+				<input type="text" name="ccourseId" id="ccourseId" value="" readonly="readonly" style="display: none;"/><br />
+					<div class="layui-form-item">
+						<label class="layui-form-label">课程名称</label>
+						<div class="layui-input-block">
+							<input id="ccourseName" type="text" name="ccourseName" required
+								lay-verify="required" placeholder="请输入课程名称" autocomplete="off"
+								class="layui-input">
+						</div><br/>
+						<p id="listenName" style="color: red;display: none; margin-left: 13%;">*课程名不可为空*</p>
+					</div>
+					<input type="text" id="cteacherMobile" name="cteacher.teacherMobile"
+						value="${teacher.teacherMobile}" style="display: none;" />
+					<div class="layui-form-item">
+						<label class="layui-form-label">课程类型</label>
+						<div class="layui-input-block">
+							<input id="ccourseType" type="radio" name="ccourseType" value="必修"
+								title="必修" checked> <input id="ccourseType" type="radio"
+								name="ccourseType" value="选修" title="选修">
+						</div>
+						<p id="listenType" style="color: red;display: none; margin-left: 13%;">*课程类型不可为空*</p>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">班级容量</label>
+						<div class="layui-input-block">
+							<input id="cclassCapacity" type="text" name="cclassCapacity"
+								required lay-verify="required" placeholder="请输入班级容量"
+								autocomplete="off" class="layui-input">
+						</div>
+						<p id="listenCapacity" style="color: red;display: none; margin-left: 13%;">*班级容量不可为空*</p>
+						<p id="listenIfN" style="color: red;display: none; margin-left: 13%;">*请输入数字*</p>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">开始时间</label>
+							<div class="layui-input-inline">
+								<input class="layui-input" id="cstartTime" type="text"
+									name="cstartTime" placeholder="yyyy-MM-dd">
+							</div>
+							<p id="listenStart" style="color: red;display: none; margin-left: 13%;">*开始时间不可为空*</p>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">结束时间</label>
+							<div class="layui-input-inline">
+								<input class="layui-input" id="cendTime" type="text"
+									name="cendTime" placeholder="yyyy-MM-dd">
+							</div>
+							<p id="listenEnd" style="color: red;display: none; margin-left: 13%;">*结束时间不可为空*</p>
+							<p id="listenMaxOrMin" style="color: red;display: none; margin-left: 13%;">*结束时间不可小于开始时间*</p>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-inline">
+							<label class="layui-form-label">当前学年</label>
+							<div class="layui-input-inline">
+								<input class="layui-input" id="ccurrentYear" type="text"
+									name="ccurrentYear" placeholder="yyyy">
+							</div>
+							<p id="listenCurrent" style="color: red;display: none; margin-left: 13%;">*当前学年不可为空*</p>
+						</div>
+					</div>
+					<div class="layui-form-item">
+						<label class="layui-form-label">当前学期</label>
+						<div class="layui-input-block">
+							<select id="cschoolTem" name="cschoolTem" lay-verify="required">
+								<option value=""></option>
+								<option value="春季">春季学期</option>
+								<option value="夏季">夏季学期</option>
+								<option value="秋季">秋季学期</option>
+								<option value="冬季">冬季学期</option>
+							</select>
+						</div>
+						<p id="listenTem" style="color: red;display: none; margin-left: 13%;">*当前学期不可为空*</p>
+					</div>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<input id="subButton" class="layui-btn" onclick="changeCourseInfo()"
+								type="button" value="提交修改" />
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</form>
+
+				<script>
+					//Demo
+					layui.use([ 'form', 'laydate' ], function() {
+						var form = layui.form, laydate = layui.laydate;
+
+						//监听提交
+						form.on('submit(formDemo)', function(data) {
+							layer.msg(JSON.stringify(data.field));
+							return false;
+						});
+						laydate.render({
+							elem : '#startTime',
+							elem : '#cstartTime'
+						});
+						laydate.render({
+							elem : '#endTime',
+							elem : '#cendTime'
+						});
+						laydate.render({
+							elem : '#currentYear',
+							type : 'year'
+						});
+						laydate.render({
+							elem : '#ccurrentYear',
+							type : 'year'
+						});
+
+					});
+				</script>
+			</div>
+
+			<!-- 安全/密码 -->
+			<div id="signal"
+				style="width: 95%; margin-left: 5%; padding-left: 5%; background-color: #cccc00; height: 3%; display: none; font-family: 微软雅黑;">
+				提示：修改邮箱后后请前往原邮箱确认..</div>
+
+			<div id="doubleHandle"
+				style="width: 70%; margin-left: 15%; margin-top: 8%; display: none; text-align: center; border: solid; border-color: red;">
+				<a href="#" id="changeTeaPass"
+					style="float: left; height: 20%; width: 49%; border: solid; border-color: red; font-size: 1.5em">更改密码</a>
+				<a href="#" id="changeTeaMail"
+					style="float: left; height: 20%; width: 49%; border: solid; border-color: red; font-size: 1.5em">更换邮箱</a>
+				<br />
+				<br />
+				<!-- 修改密码 -->
+				<form id="safe"
+					action="<%=request.getContextPath()%>/teacher/updateTeacherPassWord.do"
+					style="width: 84%; margin-left: 5%; border: solid; border-color: red; text-align: center;">
+					<table style="padding-left: 10%;">
+						<br />
+						<tr style="width: 100%;">
+							<td style="text-align: right; margin-left: 20%;">手机号：</td>
+							<td><input type="text" readonly="readonly"
+								name="teacherMobile" value="${teacher.teacherMobile}"
+								id="teacherMobile" style="width: 19em;" /></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style="text-align: right; width: 20em;">原密码：</td>
+							<td><input type="password" name="oldPassword"
+								id="teacherPassword" style="width: 19em" /></td>
+							<td id="passError"
+								style="color: red; margin-left: 1.8em; display: none;">*密码错误*</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style="text-align: right;">新密码：</td>
+							<td><input type="password" name="teacherPassword"
+								id="newPassword" style="width: 19em" /></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style="text-align: right;">确认新密码：</td>
+							<td><input type="password" name="rePassword" id="rePassword"
+								style="width: 19em" /></td>
+							<td id="noLike"
+								style="color: red; margin-left: 1.8em; display: none;">*两次密码不一致*</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td colspan="2"><input id="ccchangePass" type="button"
+								value="申请修改"
+								style="width: 70%; height: 1.5em; margin-left: 14em;" /></td>
+						</tr>
+					</table>
+				</form>
 				
+				<!-- 修改邮箱 -->
+					<form id="emailsafe"
+					action="<%=request.getContextPath()%>/teacher/updateTeacherEmail.do"
+					style="width: 84%; margin-left: 5%; border: solid; border-color: red; 
+					text-align: center; display: none;">
+					<table style="padding-left: 10%;">
+						<br/>
+						<tr style="width: 100%;">
+							<td style="text-align: right; margin-left: 20%;">手机号：</td>
+							<td><input type="text" readonly="readonly"
+								name="teacherMobile" value="${teacher.teacherMobile}"
+								id="teacherMobile" style="width: 19em;" /></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style="text-align: right; width: 20em;">原邮箱：</td>
+							<td><input type="text" name="oldEmail" value="${teacher.teacherEmail}"
+								id="teacherEmail" style="width: 19em" readonly="readonly" /></td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td style="text-align: right;">
+							<label class="layui-form-label" for="mail" style="text-align: right; width: 20em;">新邮箱</label></td>
+							<td>
+					               <input id="mail" type="text" name="teacherEmail" required
+						          lay-verify="required|email" autocomplete="off" style="width: 19em"/>
+				            </td>
+						</tr>
+						
+						<tr>
+							<td id="emailTypeError" style="text-align: right; width: 20em; color: red; display: none;">*格式错误*</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td colspan="2"><input id="changeTeaMailPush" type="button"
+								value="申请修改"
+								style="width: 70%; height: 1.5em; margin-left: 14em;" /></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+
+
+		</div>
+
 	</div>
 
-      
+
 
 	<script>
+	//修改密码
+	$('#changeTeaPass').click(function asd() {
+		$('#emailsafe').hide();
+		$('#safe').show();
+	});
+	//修改邮箱
+    $('#changeTeaMail').click(function asd() {
+    	$('#safe').hide();
+		$('#emailsafe').show();
+	});
+	//提交更改邮箱申请
+	 $('#changeTeaMailPush').click(function asd() {
+    	if(test()){
+    		 $('#emailTypeError').hide();
+    		 if(pushEmail()){
+    			 $('#changeMailShow').show();
+    			 setTimeout('yourFunction()',2000); 
+    		 }
+    	}
+	});
+	function pushEmail() {
+		 //ajax后台更新
+		 var result = false;
+		 var teacherEmail = $('#mail').val();
+		 var teacherMobile  =$('#teacherMobile').val();
+		$.ajax({
+              type: "GET",
+              data: {
+            	  "teacherEmail":teacherEmail,
+            	  "teacherMobile":teacherMobile
+              },
+              contentType: "application/json; charset=utf-8",
+              async: false,
+              dataType: "json",
+              url: "<%=request.getContextPath()%>/teacher/changeTeaMail.do",
+              success: function (data) {
+            	  if(data.result == true){
+            		  result = true;
+            	  }else{
+            		  
+            	  }
+              },
+              error: function (data) {
+            	  alert("服务器异常");
+              }
+          });
+		return result;
+	}
+  //对电子邮箱的验证
+    function test(){
+     var temp = document.getElementById("mail");
+     var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+     if(!myreg.test(temp.value)){
+         $('#emailTypeError').show();
+         myreg.focus();
+          return false;
+      }else{
+    	  return true;
+      }
+     }
+	 //修改课程信息 前
+	 function beforeChangeCourse(courseId,courseName,classCapacity) {
+		 document.getElementById("ccourseId").value = courseId;
+		 document.getElementById("ccourseName").value = courseName;
+		 document.getElementById("cclassCapacity").value = classCapacity;
+		 $('#doubleHandle').hide();
+		 $('#signal').hide();
+		 $('#courseShow').hide();
+		 $('#courseInfo').hide();
+		 $('#changeCourseinfo').show();
+	}
+	 //修改课程信息
+	 function changeCourseInfo() {
+		if(confirmType()){
+			if(pushCourseInfo()){
+				$('#changeCourseSuccess').show();
+				setTimeout('yourFunction()',2000); 
+			}
+		}
+		
+	}
+	//刷新当前页面
+		function yourFunction() {
+		 window.location.reload();
+	}
+	 
+	 //课程信息提交到后台
+	 function pushCourseInfo() {
+		 var result = false;
+		 var teacherMobile = $('#cteacherMobile').val();
+		 var courseId = $('#ccourseId').val();
+		 var courseName = $('#ccourseName').val();
+		 var courseType = $('#ccourseType').val();
+		 var classCapacity = $('#cclassCapacity').val();
+		 var startTime = $('#cstartTime').val();
+		 var endTime = $('#cendTime').val();
+		 var currentYear = $('#ccurrentYear').val();
+		 var schoolTem = $('#cschoolTem').val();
+		$.ajax({
+              type: "GET",
+              data: {
+            	  "teacherMobile":teacherMobile,
+                  "courseId": courseId,
+                  "courseName":courseName,
+                  "courseType":courseType,
+                  "classCapacity":classCapacity,
+                  "startTime":startTime,
+                  "endTime":endTime,
+                  "currentYear":currentYear,
+                  "schoolTem":schoolTem
+              },
+              contentType: "application/json; charset=utf-8",
+              async: false,
+              dataType: "json",
+              url: "<%=request.getContextPath()%>/course/changeCourse.do",
+              success: function (data) {
+            	  if(data.result == true){
+            		  result = true;
+            	  }else{
+            		  $('#listenMaxOrMin').show();
+            	  }
+              },
+              error: function (data) {
+            	  alert("服务器异常");
+              }
+          });
+		  return result;
+	}
+	//点击安全管理
+	$('#safeManage').click(function name1() {
+		 $('#courseInfo').hide();
+		 $('#courseShow').hide();
+		$('#doubleHandle').show();
+		$('#signal').show();
+	});
+	//点击申请修改触发密码验证
+	$('#ccchangePass').click(function wannaSubmittt() {
+		var password = $('#teacherPassword').val();
+		var teacherMobile = $('#teacherMobile').val();
+		var newPassword = $('#newPassword').val();
+		var rePassword = $('#rePassword').val();
+		if(getStuAnwser(password,teacherMobile)){
+			$('#passError').hide();
+			if(newPassword != null && newPassword != "" && newPassword == rePassword){
+				$('#noLike').hide();
+				changeTeaPass();					
+			}else{
+				$('#noLike').show();
+			}
+		}else {
+			$('#passError').show();
+		}
+	});
+	
+	//获取教师密码，进行后台比对
+	function getStuAnwser(password,teacherMobile) {
+		var result = false;
+		$.ajax({
+              type: "GET",
+              data: {
+                  "password": password,
+                  "teacherMobile":teacherMobile
+              },
+              contentType: "application/json; charset=utf-8",
+              async: false,
+              dataType: "json",
+              url: "<%=request.getContextPath()%>/teacher/confirmTeacherPassWord.do",
+              success: function (data) {
+            	  if(data.result == true){
+            		  result = true;
+            	  }
+              },
+              error: function (data) {
+            	  
+              }
+          });
+		  return result;
+	}
+	//ajax更改教师密码
+	function changeTeaPass() {
+		$('#safe').submit();
+	}
+	
 	//url
 	 function showQrImg(id) {
 	     var url = "/ClassManageSys/qrImg/" + id + ".gif";
 		     var imgPre = document.getElementById("target");
-//		     imgPre.style.display = "block";
 		     imgPre.src = url;
-//		    alert(imgPre.src);
-//		     $('#courseInfo').hide();
-//		     $('#targetup').show();
 	}
 
 	 var tem;
 	 function forDeleteThis(courseId) {
 		 var courseId = courseId;
 		 tem = courseId;
-		 //document.getElementById("torf").style.display = "block";
 	}
 	 function deleteThis() {
 		 var Id = tem;
@@ -365,73 +836,144 @@
               contentType: "application/json; charset=utf-8",
               async: true,
               url: "<%=request.getContextPath()%>/course/deleteCourseById.do",
-//              beforeSend:function(){$("#href").html("等待..");},
-              success: function (data) {
-            	  document.getElementById("abs"+tem).style.display = "none";
-              },
-              error: function (data) {
-                  alert("出错了！");
-              },
-              dataType: "json",
-          });
-          $('#torf').hide();
-      }
-	 
-		layui.use(['element','layer'], function() {
-			var element = layui.element
-			,$ = layui.jquery
-			,layer = layui.layer; 
-             
-			//触发事件
-			  var active = {
-			    notice: function(){
-			      //示范一个公告层
-			      layer.open({
-			        type: 1
-			        ,title: false //不显示标题栏
-			        ,closeBtn: false
-			        ,area: '300px;'
-			        ,shade: 0.8
-			        ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-			        ,btn: ['删除', '取消']
-			        ,yes: function(index, layero){
-			        	deleteThis();
-			        	layer.closeAll();
-			        }
-			        ,btn2: function(index, layero){
-			            //按钮【按钮二】的回调
-			        }
-			        ,btnAlign: 'c'
-			        ,moveType: 1 //拖拽模式，0或者1
-			        ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">确定删除该课程？</div>'
-			      });
-			    }		   
-			    ,page: function(){
-			    	layer.open({
-			    		  type: 1,
-			    		  title: false,
-			    		  closeBtn: 0,
-			    		  area: '390px',
-			    		  skin: 'layui-layer-lan', //没有背景色
-			    		  shadeClose: true,
-			    		  content: $('#target')
-			    		});
-			    }
-			
-			
-			  };
+						//              beforeSend:function(){$("#href").html("等待..");},
+						success : function(data) {
+							document.getElementById("abs" + tem).style.display = "none";
+						},
+						error : function(data) {
+							alert("出错了！");
+						},
+						dataType : "json",
+					});
+			$('#torf').hide();
+		}
+	  //修改课程信息内容输入验证
+		 function confirmType() {
+			var world = false;
+			if($('#ccourseName').val() != null && $('#ccourseName').val() != ""){
+				if($('#ccourseType').val() != null && $('#ccourseType').val() != ""){
+					if($('#cclassCapacity').val() != null && $('#cclassCapacity').val() != ""){
+						if(isNaN($('#cclassCapacity').val())){
+							$('#listenIfN').show();
+						}
+						if($('#cstartTime').val() != null && $('#cstartTime').val() != ""){
+							if($('#cendTime').val() != null && $('#cendTime').val() != ""){
+								if($('#ccurrentYear').val() != null && $('#ccurrentYear').val() != ""){
+									if($('#cschoolTem').val() != null && $('#cschoolTem').val() != ""){
+										//都不为空返回true
+										world = true;
+									}else{
+										$('#listenName').hide();
+										$('#listenType').hide();
+										$('#listenCapacity').hide();
+										$('#listenStart').hide();
+										$('#listenEnd').hide();
+										$('#listenCurrent').hide();
+										$('#listenIfN').hide();
+										$('#listenTem').show();
+									}
+								}else{
+									$('#listenName').hide();
+									$('#listenType').hide();
+									$('#listenCapacity').hide();
+									$('#listenEnd').hide();
+									$('#listenStart').hide();
+									$('#listenIfN').hide();
+									$('#listenCurrent').show();
+								}
+							}else{
+								$('#listenName').hide();
+								$('#listenType').hide();
+								$('#listenCapacity').hide();
+								$('#listenStart').hide();
+								$('#listenIfN').hide();
+								$('#listenEnd').show();
+							}
+						}else{
+							$('#listenName').hide();
+							$('#listenType').hide();
+							$('#listenCapacity').hide();
+							$('#listenIfN').hide();
+							$('#listenStart').show();
+						}
+					}else{
+							$('#listenName').hide();
+							$('#listenType').hide();
+							$('#listenCapacity').show();
+					}
+				}else{
+					$('#listenName').hide();
+					$('#listenType').show();
+				}
+			}else{
+				$('#listenName').show();
+			}
+			return world;
+		}
 
-			  $('#layerDemo .layui-btn').on('click', function(){
-			    var othis = $(this), method = othis.data('method');
-			    active[method] ? active[method].call(this, othis) : '';
-			  });
+		layui
+				.use(
+						[ 'element', 'layer' ],
+						function() {
+							var element = layui.element, $ = layui.jquery, layer = layui.layer;
 
-			//监听导航点击
-			element.on('nav(demo)', function(elem) {
-				//console.log(elem)
-				layer.msg(elem.text());
-			});
-		});
+							//触发事件
+							var active = {
+								notice : function() {
+									//示范一个公告层
+									layer
+											.open({
+												type : 1,
+												title : false //不显示标题栏
+												,
+												closeBtn : false,
+												area : '300px;',
+												shade : 0.8,
+												id : 'LAY_layuipro' //设定一个id，防止重复弹出
+												,
+												btn : [ '删除', '取消' ],
+												yes : function(index, layero) {
+													deleteThis();
+													layer.closeAll();
+												},
+												btn2 : function(index, layero) {
+													//按钮【按钮二】的回调
+												},
+												btnAlign : 'c',
+												moveType : 1 //拖拽模式，0或者1
+												,
+												content : '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">确定删除该课程？</div>'
+											});
+								},
+								page : function() {
+									layer.open({
+										type : 1,
+										title : false,
+										closeBtn : 0,
+										area : '390px',
+										skin : 'layui-layer-lan', //没有背景色
+										shadeClose : true,
+										content : $('#target')
+									});
+								}
+
+							};
+
+							$('#layerDemo .layui-btn').on(
+									'click',
+									function() {
+										var othis = $(this), method = othis
+												.data('method');
+										active[method] ? active[method].call(
+												this, othis) : '';
+									});
+
+							//监听导航点击
+							element.on('nav(demo)', function(elem) {
+								//console.log(elem)
+								layer.msg(elem.text());
+							});
+						});
 	</script>
 </body>
 </html>

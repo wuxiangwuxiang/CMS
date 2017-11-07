@@ -49,4 +49,14 @@ public class TeacherDaoImpl implements TeacherDao{
 		return sessionFactory.openSession().selectOne(statement, map);
 	}
 
+
+	@Override
+	public void changeTeaMail(String teacherMobile, String teacherEmail) {
+		String statement = "com.qdu.mapping.TeacherMapping.changeTeaMail";
+		Map<String, Object> map = new HashMap<>();
+		map.put("teacherMobile", teacherMobile);
+		map.put("teacherEmail", teacherEmail);
+	    sessionFactory.openSession().update(statement, map);
+	}
+
 }
