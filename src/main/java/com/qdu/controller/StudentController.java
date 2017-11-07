@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -60,6 +61,7 @@ public class StudentController {
 		List<StudentInfo> studentInfos = studentInfoServiceImpl.selectCourseByStudentRono(studentRoNo);
 		Student student2 = studentServiceImpl.selectStudentByNo(studentRoNo);
 		if (student2 != null) {
+			System.out.println(MD5Util.md5(password, "juin"));
 			if (MD5Util.md5(password, "juin").equals(student2.getStudentPassword())) {
 				map.addAttribute("studentInfos", studentInfos);
 				map.addAttribute("student", student2);
@@ -102,6 +104,7 @@ public class StudentController {
 	public Map<String, Object> confirmStudentPassWord(String studentRono, String password) {
 		Map<String, Object> map = new HashMap<>();
 		Student student = studentServiceImpl.selectStudentByNo(studentRono);
+		System.out.println(MD5Util.md5(password, "juin"));
 		if (student != null && MD5Util.md5(password, "juin").equals(student.getStudentPassword())) {
 			map.put("result", true);
 		} else {
@@ -204,23 +207,6 @@ public class StudentController {
 		request.getSession().setAttribute("UserId", student.getStudentRoNo());
 		return "waitForRegister";
 	}
-	
-	// 学生更改密码
-		@RequestMapping(value = "/ajaxupdateStudentPassWord.do")
-		@SystemLog(module = "学生", methods = "日志管理-邮箱更改密码")
-		@ResponseBody
-		public Map<String, Object> ajaxupdateStudentPassWord(String studentRoNo, String password,HttpServletRequest request) {
-			Map<String, Object> map = new HashMap<>();
-			if(password.length() >= 6 && password.length() <= 16){
-				studentServiceImpl.ajaxupdateStudentPassWord(studentRoNo, password);
-				map.put("result", true);
-			}else{
-			map.put("result", "密码长度错误");
-			}
-			request.getSession().setAttribute("UserId", null);
-			request.getSession().setAttribute("UserId", studentRoNo);
-			return map;
-		}
 
 	// 学生签到
 	@RequestMapping(value = "/insertQrTem.do")
@@ -358,7 +344,7 @@ public class StudentController {
 		return "studentGetPasswordBack";
 	}
 	//学生找回密码前的账号验证
-	@SystemLog(module = "学生", methods = "日志管理-找回密码(验证)")
+	@SystemLog(module = "学生", methods = "日志管理-找回密码(验证+临时密码发放)")
 	@RequestMapping(value = "/forStudentReGetPass.do")
 	@ResponseBody
 	public Map<String, Object> forStudentReGetPass(String studentRoNo,String name,String mobile,String mail,HttpServletRequest request) throws Exception{
@@ -366,10 +352,17 @@ public class StudentController {
 		Student student = studentServiceImpl.selectStudentByFour(studentRoNo, name, mobile, mail);
 		Map<String, Object> map = new HashMap<>();
 		if(student != null){
-			System.out.println("true");
-			    String EMAIL = mail;
+			Random random = new Random();
+			char a1 = (char)(random.nextInt(24)+97);
+			char a2 = (char)(random.nextInt(14)+97);
+			int x = random.nextInt(9000)+1000;
+			String cc = a1 + "" + x + a2;
+			System.out.println(cc);
+			studentServiceImpl.ajaxupdateStudentPassWord(studentRoNo, cc);			    
+			String EMAIL = mail;
 		        String TITLE = student.getStudentName() + ",找回密码";//标题
-		        String CONTENT = "点击链接完成重置:"+ "   " + "http://192.168.11.229:8080/ClassManageSys/tryReGetStuPass.jsp?studentRoNo=" + studentRoNo; //内容
+		        String CONTENT = "临时密码为:"+ "   " + "[" + cc + "]" + "\n" +
+		        		"为了安全，请尽快使用此密码登录后修改密码"; //内容
 		        JavaEmailSender.sendEmail(EMAIL, TITLE, CONTENT);
 			map.put("result", true);
 		}else{

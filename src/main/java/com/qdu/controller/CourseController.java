@@ -114,27 +114,28 @@ public class CourseController {
     //修改课程信息
 	@SystemLog(module="教师",methods="日志管理-修改课程")
 	@RequestMapping(value = "/changeCourse.do")
-	public String changeCourse(Course course, ModelMap map, HttpServletRequest request) throws Exception {
-		courseServiceImpl.updateCourse(course);
-		String rono = request.getParameter("teacherMobile");
-		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(rono);
-		String courseName = request.getParameter("courseName");
-		String teacherName = teacher.getTeacherName();
-		String current = request.getParameter("currentYear");
-		String tem = request.getParameter("schoolTem");
-		int courseId = Integer.parseInt(request.getParameter("courseId"));
-		String teacherMobile = teacher.getTeacherMobile();
-		String text = "http://192.168.11.229:8080/ClassManageSys/qr.jsp?teacherMobile=" + teacherMobile + "&courseId="
-				+ courseId + "&courseName=" + courseName.replaceAll("\\+", "%2B") + "&teacherName=" + teacherName
-				+ "&currentTime=" + current + "&tem=" + tem;
-		testQR tQr = new testQR(text, courseName, teacherName);
-		String qrImg = tQr.createQR(request);
-		courseServiceImpl.updateQrImg(courseId, qrImg);
-		Teacher teacher2 = teacherServiceImpl.selectTeacherByEmail(rono);
-		List<Course> courses = courseServiceImpl.selectCourseByTeacher(rono);
-		map.addAttribute("courses", courses);
-		map.addAttribute("teacher", teacher2);
-		return "teacherPage";
+	@ResponseBody
+	public Map<String, Object> changeCourse(String teacherMobile,int courseId, String courseName,String courseType,int classCapacity,
+			@DateTimeFormat(pattern = "yyyy-MM-dd") Date startTime,@DateTimeFormat(pattern = "yyyy-MM-dd") Date endTime, int currentYear,String schoolTem,HttpServletRequest request) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		long time1 = startTime.getTime();
+		long time2 = endTime.getTime();
+		if(time1 < time2){
+			courseServiceImpl.updateCourse(courseName, courseType, classCapacity, startTime, endTime, currentYear, schoolTem, courseId);
+			Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
+			String teacherName = teacher.getTeacherName();
+			String current = currentYear +"";
+			String text = "http://192.168.11.229:8080/ClassManageSys/qr.jsp?teacherMobile=" + teacherMobile + "&courseId="
+					+ courseId + "&courseName=" + courseName.replaceAll("\\+", "%2B") + "&teacherName=" + teacherName
+					+ "&currentTime=" + current + "&tem=" + schoolTem;
+			testQR tQr = new testQR(text, courseName, teacherName);
+			String qrImg = tQr.createQR(request);
+			courseServiceImpl.updateQrImg(courseId, qrImg);
+			map.put("result", true);
+		}else {
+			map.put("result", false);
+		}
+		return map;
 	}
     //删除课程信息通过id
 	@SystemLog(module="教师",methods="日志管理-删除课程")
