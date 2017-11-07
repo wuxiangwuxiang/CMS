@@ -1,5 +1,6 @@
 package com.qdu.daoimpl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,12 +56,6 @@ public class CourseDaoImpl implements CourseDao {
 	}
 
 	@Override
-	public void updateCourse(Course course) {
-		String statement = "com.qdu.mapping.CourseMapping.updateCourse";
-		SqlSessionFactory.openSession().update(statement, course);
-	}
-
-	@Override
 	public void deleteCourseById(int courseId) {
 		String statement = "com.qdu.mapping.CourseMapping.deleteCourseById";
 		SqlSessionFactory.openSession().delete(statement, courseId);
@@ -70,6 +65,22 @@ public class CourseDaoImpl implements CourseDao {
 	public List<Student> selectStudentByMany(int courseId) {
 		String statement = "com.qdu.mapping.StudentMapping.selectStudentByMany";
 		return SqlSessionFactory.openSession().selectList(statement, courseId);
+	}
+
+	@Override
+	public void updateCourse(String courseName, String courseType, int classCapacity, Date startTime, Date endTime,
+			int currentYear, String schoolTem, int courseId) {	
+		Map<String, Object> map = new HashMap<>();
+		map.put("courseId", courseId);
+		map.put("courseName", courseName);
+		map.put("courseType", courseType);
+		map.put("classCapacity", classCapacity);
+		map.put("startTime", startTime);
+		map.put("endTime", endTime);
+		map.put("currentYear", currentYear);
+		map.put("schoolTem", schoolTem);
+		String statement = "com.qdu.mapping.CourseMapping.updateCourse";
+		SqlSessionFactory.openSession().update(statement, map);
 	}
 
 }

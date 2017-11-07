@@ -3,6 +3,7 @@ package com.qdu.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -121,17 +122,13 @@ public class TeacherController {
 	//老师更改密码
 	@SystemLog(module="教师",methods="日志管理-密码更改")
 	@RequestMapping(value = "/updateTeacherPassWord.do")
-	@ResponseBody
-	public Map<String, Object> updateTeacherPassWord(String teacherMobile,String password,String newPassword){
-		Map<String, Object> map = new HashMap<>();
-		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
-		if (MD5Util.md5(password, "teacher").equals(teacher.getTeacherPassword())) {
-			teacherServiceImpl.updateTeacherPassWord(teacherMobile, MD5Util.md5(newPassword, "teacher"));
-			map.put("result", true);
-		}else {
-			map.put("result", false);
-		}
-		return map;
+	public String updateTeacherPassWord(String teacherMobile,String teacherPassword,ModelMap map){
+			teacherServiceImpl.updateTeacherPassWord(teacherMobile, MD5Util.md5(teacherPassword, "teacher"));
+			List<Course> courses  = courseServiceImpl.selectCourseByTeacher(teacherMobile);
+			Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
+			map.addAttribute("courses", courses);
+			map.addAttribute("teacher", teacher);
+			return "waitForTeacherRegister";
 	}
 	//教师找回密码
 		@SystemLog(module = "教师", methods = "日志管理-找回密码(跳转)")
@@ -147,9 +144,17 @@ public class TeacherController {
 			Map<String, Object> map = new HashMap<>();
 			Teacher teacher = teacherServiceImpl.selecctTeacherByThree(mobile, name, mail);
 			if(teacher != null){
-				 String EMAIL = mail;
+				Random random = new Random();
+				char a1 = (char)(random.nextInt(24)+97);
+				char a2 = (char)(random.nextInt(14)+97);
+				int x = random.nextInt(9000)+1000;
+				String cc = a1 + "" + x + a2;
+				System.out.println(cc);
+				teacherServiceImpl.updateTeacherPassWord(mobile, MD5Util.md5(cc, "teacher"));		    
+				String EMAIL = mail;
 			        String TITLE = teacher.getTeacherName() + ",找回密码";//标题
-			        String CONTENT = "点击链接完成重置:"+ "   " + "http://192.168.11.229:8080/ClassManageSys/tryReGetTeaPass.jsp?teacherMobile=" + mobile; //内容
+			        String CONTENT = "临时密码为:"+ "   " + "[" + cc + "]" + "\n" +
+			        		"为了安全，请尽快使用此密码登录后修改密码"; //内容
 			        JavaEmailSender.sendEmail(EMAIL, TITLE, CONTENT);
 				map.put("result", true);
 			}else{
@@ -159,14 +164,6 @@ public class TeacherController {
 		}
 		
 		//
-		@SystemLog(module = "教师", methods = "日志管理-邮箱更改密码")
-		@RequestMapping(value = "/ajaxupdateTeacherPassWord.do")
-		@ResponseBody
-		public Map<String, Object> ajaxupdateTeacherPassWord(String mobile,String password,HttpServletRequest request){
-			Map<String, Object> map = new HashMap<>();
-			teacherServiceImpl.updateTeacherPassWord(mobile, MD5Util.md5(password, "teacher"));
-			map.put("result", true);
-			return map;
-		}
+		
 		
 }

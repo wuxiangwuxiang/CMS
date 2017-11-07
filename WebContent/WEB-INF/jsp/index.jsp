@@ -60,7 +60,7 @@
 	          });
 			  return result;
 		}
-		//点击学生登录触发密码验证
+		//点击申请修改触发密码验证
 		$('#ccchangePass').click(function wannaSubmittt() {
 			var password = $('#studentPassword').val();
 			var studentRono = $('#studentRoNo').val();
@@ -195,7 +195,7 @@
 			<!-- 安全/密码 -->
 			<div id="signal" style="width: 95%; margin-left: 5%; padding-left:5%;
 			background-color:#cccc00; height: 3%;display: none; font-family: 微软雅黑;">
-			提示：修改密码后请前往邮箱确认..
+			提示：修改邮箱后后请前往原邮箱确认..
 			</div>
 			
 			<div id="doubleHandle" style="width: 70%; margin-left: 15%; margin-top: 8%; 

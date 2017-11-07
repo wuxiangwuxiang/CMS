@@ -1,5 +1,6 @@
 package com.qdu.serviceimpl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,9 @@ public class CourseServiceImpl implements CourseService{
 		return courseDaoImpl.selectCourseById(courseId);
 	}
 	@Override
-	public void updateCourse(Course course) {
-		courseDaoImpl.updateCourse(course);
+	public void updateCourse(String courseName, String courseType, int classCapacity, Date startTime, Date endTime,
+			int currentYear, String schoolTem, int courseId) {
+		courseDaoImpl.updateCourse(courseName, courseType, classCapacity, startTime, endTime, currentYear, schoolTem, courseId);
 	}
 	@Override
 	public void deleteCourseById(int courseId) {

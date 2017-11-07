@@ -145,7 +145,7 @@
 		where CourseId = #{courseId}
 	</update>
 
-	<update id="updateCourse" parameterType="int">
+	<update id="updateCourse" parameterType="HashMap">
 		update Course set
 		CourseName = #{courseName},
 		CourseType = #{courseType},
