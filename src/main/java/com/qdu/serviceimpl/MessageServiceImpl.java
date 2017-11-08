@@ -15,7 +15,7 @@ import com.qdu.service.MessageService;
 public class MessageServiceImpl implements MessageService{
      
 	@Autowired private MessageDao messageDaoImpl;
-	
+	 
 	@Override
 	public void insertMessage(Message message) {
 		messageDaoImpl.insertMessage(message);
@@ -27,8 +27,8 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public List<Message> selectUnreadMessage(String messageAccepter) {
-		return messageDaoImpl.selectUnreadMessage(messageAccepter);
+	public List<Message> selectUnreadMessage(String messageAccepter ,int startPos) {
+		return messageDaoImpl.selectUnreadMessage(messageAccepter, startPos);
 	}
 
 	@Override
@@ -39,6 +39,11 @@ public class MessageServiceImpl implements MessageService{
 	@Override
 	public void uodateMesageHaveread(int messageId) {
 		messageDaoImpl.uodateMesageHaveread(messageId);
+	}
+
+	@Override
+	public int selectMessageTotalCount(String messageAccepter) {
+		return messageDaoImpl.selectMessageTotalCount(messageAccepter);
 	}
 
 }

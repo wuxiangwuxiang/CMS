@@ -10,9 +10,11 @@ public interface MessageService {
 	
 	public int selectMessageCount(String messageAccepter);
 	
-	public List<Message> selectUnreadMessage(String messageAccepter);
-	
+	public List<Message> selectUnreadMessage(String messageAccepter ,int startPos);
+	 
 	public Message selectMessageById(int messageId);
 	
 	public void uodateMesageHaveread(int messageId);
+	
+	public int selectMessageTotalCount(String messageAccepter);
 }

@@ -18,7 +18,7 @@ public class StudentDaoImpl implements StudentDao{
 	@Autowired  
 	SqlSessionFactory sessionFactory;
 	
-	@Override
+	@Override 
 	public void insertStudentByNo(Student student) {
 		String statement = "com.qdu.mapping.StudentMapping.insertStudentByNo";
 		sessionFactory.openSession().insert(statement, student);

@@ -16,7 +16,7 @@ import com.qdu.pojo.Teacher;
 public class TeacherDaoImpl implements TeacherDao{
 	@Autowired 
 	SqlSessionFactory sessionFactory;
-	
+	 
 	@Override
 	public void insertTeacher(Teacher teacher) {
 		String statement = "com.qdu.mapping.TeacherMapping.insertTeacher";

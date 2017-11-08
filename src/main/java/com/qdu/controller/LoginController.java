@@ -12,7 +12,7 @@ import com.qdu.service.TestService;
 @Controller
 public class LoginController {
  
-	@Autowired
+	@Autowired 
 	private TestService testServiceImpl;
 
 	// 模板测试登录用
