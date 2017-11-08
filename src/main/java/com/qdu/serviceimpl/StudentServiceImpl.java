@@ -15,7 +15,7 @@ import com.qdu.service.StudentService;
 public class StudentServiceImpl implements StudentService{
 	@Autowired
 	private StudentDao studentDaoImpl;
-	  
+	 
 	@Override
 	public void insertStudentByNo(Student student) {
 		studentDaoImpl.insertStudentByNo(student);

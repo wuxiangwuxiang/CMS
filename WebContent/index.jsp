@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta charset="utf-8"> 
+<meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
@@ -229,7 +229,6 @@ setTimeout("fresh()",50)
 						action="<%=request.getContextPath()%>/teacher/teacherLogin.do"
 						method="post"
 						style="text-align: center; font-size: 20px; display: none;">
-						<input type="text" name="repageNow" value="1" style="display: none;"/>
 						<br> <br> <br> <br> <span style="color: white">手机:</span>><input 
 							name="teacherId" id="teacherMobile" type="text" /><br /> <br /> <span
 							style="color: white">密码:</span>><input name="password" id="tcpw" 

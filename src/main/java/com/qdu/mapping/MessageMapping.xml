@@ -21,18 +21,14 @@
 	
 	<select id="selectMessageCount" parameterType="String" resultType="int">
 	select Count(*) from Message where MessageAccepter = #{messageAccepter} And HaveRead = '未读'
-	</select> 
+	</select>
 	
 	<select id="selectMessageById" parameterType="int" resultMap="MessageResult">
 	select * from Message where MessageId = #{messageId}
 	</select>
 	
-	<select id="selectUnreadMessage" parameterType="HashMap" resultMap="MessageResult">
-	select * from Message where MessageAccepter = #{messageAccepter} Order by MessageId desc limit #{startPos},10
-	</select>
-	
-	<select id="selectMessageTotalCount" parameterType="String" resultType="int"> 
-	select count(*) from Message where MessageAccepter = #{messageAccepter}
+	<select id="selectUnreadMessage" parameterType="ArrayList" resultMap="MessageResult">
+	select * from Message where MessageAccepter = #{messageAccepter} Order by MessageId desc
 	</select>
 	
 	<update id="uodateMesageHaveread" parameterType="int">

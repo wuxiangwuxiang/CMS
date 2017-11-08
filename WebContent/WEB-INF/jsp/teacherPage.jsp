@@ -20,10 +20,10 @@
 <script type="text/javascript">
 	 $(document).ready(function () {
 		 //如果消息数量为0
-		 //if(${messageCount} == 0){
-			// var TmessageCount = document.getElementById("TmessageCount")
-			// TmessageCount.style.display="none";
-		 //}
+		 if(${messageCount} == 0){
+			 var TmessageCount = document.getElementById("TmessageCount")
+			 TmessageCount.style.display="none";
+		 }
 		 //每1秒执行一次消息数量的查询
 		 setInterval(gggetMessageCount,1000);
 		 function gggetMessageCount() {
@@ -58,13 +58,11 @@
 			$('#signal').hide();
 		    $('#courseInfo').hide();
 		    $('#messageShow').hide();
-		    $('#seprateMessage').hide();
 		    $('#fushuMessage').hide();
 			$('#courseShow').show();
 		});
 		 //课程信息
 		 $('#checkCourseShow').click(function() {
-			 $('#seprateMessage').hide();
 			 $('#changeCourseinfo').hide();
 			 $('#doubleHandle').hide();
 			 $('#signal').hide();
@@ -81,7 +79,6 @@
 			 $('#courseShow').hide();
 			 $('#courseInfo').hide();
 			 $('#fushuMessage').hide();
-			 $('#seprateMessage').show();
 			 $('#messageShow').show();
 			});
 		 //点击二维码叉号
@@ -161,7 +158,6 @@
 				if(data.mmm.messageType == 'insertCourse'){
 					$('#forMessageContent').hide();
 					$('#messageContent').hide();
-					$('#seprateMessage').hide();
 					$('#insertCourseDiv').show();
 					$('#MstudentRoNo').val(data.mmm.messageSender);
 					$('#MCourseId').val(data.mmm.messageContent);
@@ -207,7 +203,7 @@
 			},
 			dataType : "json",
 		});
-	} 
+	}
 	function dontCare() {
 			 $('#changeCourseinfo').hide();
 			 $('#doubleHandle').hide();
@@ -215,7 +211,6 @@
 			 $('#courseShow').hide();
 			 $('#courseInfo').hide();
 			 $('#fushuMessage').hide();
-			 $('#seprateMessage').show();
 			 $('#messageShow').show();
 	}
 </script>
@@ -321,7 +316,7 @@
 			
 			<!-- 显示消息 -->
 			<div class="site-text site-block" id="messageShow"
-				style="padding-left: 10%;">
+				style="display: none; padding-left: 10%;">
 				<table>
 				<c:choose>
 				<c:when test="${! empty message}">
@@ -345,38 +340,6 @@
 				</c:choose>
 				</table>
 			</div>
-			<!-- 消息分页 -->
-			 <div id="seprateMessage" style="text-align: center;margin-left: 0">  
-            <font size="2">第  ${page.pageNow} 页</font> <font size="2">共 ${page.totalPageCount} 页</font>
-            <a href="teacherLogin.do?pageNow=1&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">首页</a>  
-            <c:choose>
-                <c:when test="${page.pageNow - 1 > 0}">  
-                    <a href="teacherLogin.do?pageNow=${page.pageNow - 1}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">上一页</a>  
-                </c:when>  
-                <c:when test="${page.pageNow - 1 <= 0}">  
-                    <a href="teacherLogin.do?pageNow=1&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">上一页</a>  
-                </c:when>  
-            </c:choose>  
-            <c:choose>  
-                <c:when test="${page.totalPageCount==0}">  
-                    <a href="teacherLogin.do?pageNow=${page.pageNow}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">下一页</a>  
-                </c:when>  
-                <c:when test="${page.pageNow + 1 < page.totalPageCount}">  
-                    <a href="teacherLogin.do?pageNow=${page.pageNow + 1}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">下一页</a>  
-                </c:when>  
-                <c:when test="${page.pageNow + 1 >= page.totalPageCount}">  
-                    <a href="teacherLogin.do?pageNow=${page.totalPageCount}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">下一页</a>  
-                </c:when>  
-            </c:choose>  
-            <c:choose>  
-                <c:when test="${page.totalPageCount==0}">  
-                    <a href="teacherLogin.do?pageNow=${page.pageNow}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">尾页</a>  
-                </c:when>  
-                <c:otherwise>  
-                    <a href="teacherLogin.do?pageNow=${page.totalPageCount}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">尾页</a>  
-                </c:otherwise>  
-            </c:choose>  
-        </div>
 			<!-- 附属详细消息 -->
 			<div id="fushuMessage" style="width: 100%; padding-left: 25%; display: none; margin-top: 5%;">
 			<h3 id="messageTitle"></h3>
@@ -498,7 +461,7 @@
 
 			<!-- 课程信息 -->
 			<div class="layui-form sessiontable" id="courseInfo"
-				style="margin-top: 5%; display: none;">
+				style="margin-top: 5%;">
 				<table class="layui-table" lay-even style="text-align: center;">
 					<colgroup>
 					    <col width="150">
@@ -979,9 +942,6 @@
 	$('#safeManage').click(function name1() {
 		 $('#courseInfo').hide();
 		 $('#courseShow').hide();
-		 $('#messageShow').hide();
-		 $('#fushuMessage').hide();
-		 $('#seprateMessage').hide();
 		$('#doubleHandle').show();
 		$('#signal').show();
 	});

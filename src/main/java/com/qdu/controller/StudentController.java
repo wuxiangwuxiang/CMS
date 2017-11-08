@@ -400,7 +400,7 @@ public class StudentController {
 		 message.setMessageTitle(student.getStudentName() + "同学申请加入课程： " + course.getCourseName() + 
 				 "(" + course.getCurrentYear() + "/" + course.getSchoolTem() + ")");
 		 message.setSendTime(time);
-		 message.setHaveRead("未读"); 
+		 message.setHaveRead("未读");
 		 message.setMessageType("insertCourse");
 		 message.setMessageContent(courseId+"");
 		 messageServiceImpl.insertMessage(message);
