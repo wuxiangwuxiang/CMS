@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.qdu.pojo.Message;
 
-public interface MessageDao { 
+public interface MessageDao {  
 	
 	public void insertMessage(Message message);
 	

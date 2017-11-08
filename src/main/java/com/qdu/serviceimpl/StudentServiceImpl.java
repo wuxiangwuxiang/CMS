@@ -11,7 +11,7 @@ import com.qdu.pojo.Student;
 import com.qdu.service.StudentService;
 
 @Transactional
-@Service
+@Service 
 public class StudentServiceImpl implements StudentService{
 	@Autowired
 	private StudentDao studentDaoImpl;

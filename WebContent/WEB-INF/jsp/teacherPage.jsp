@@ -349,7 +349,7 @@
 			 <div id="seprateMessage" style="text-align: center;margin-left: 0">  
             <font size="2">第  ${page.pageNow} 页</font> <font size="2">共 ${page.totalPageCount} 页</font>
             <a href="teacherLogin.do?pageNow=1&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">首页</a>  
-            <c:choose>
+            <c:choose> 
                 <c:when test="${page.pageNow - 1 > 0}">  
                     <a href="teacherLogin.do?pageNow=${page.pageNow - 1}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">上一页</a>  
                 </c:when>  

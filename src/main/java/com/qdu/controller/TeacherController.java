@@ -54,7 +54,7 @@ public class TeacherController {
 	public String forTeacherRegister() {
 		return "addTeacher";
 	}
-
+ 
 	// 教师登录
 	@SystemLog(module = "教师", methods = "日志管理-登录")
 	@RequestMapping(value = "/teacherLogin.do")
@@ -105,7 +105,9 @@ public class TeacherController {
 		String repageNow = request.getParameter("repageNow");
 		 if(repageNow != null){
 			 pageNow = repageNow;
-		 }
+		 }else{
+			pageNow = 1+"";
+		}
 		 int totalCount = messageServiceImpl.selectMessageTotalCount(teacher.getTeacherMobile());
 		 page = new Page(totalCount, Integer.parseInt(pageNow));
 		 map.put("page", page);

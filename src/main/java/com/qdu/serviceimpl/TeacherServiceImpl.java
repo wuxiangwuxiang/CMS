@@ -8,7 +8,7 @@ import com.qdu.dao.TeacherDao;
 import com.qdu.pojo.Teacher;
 import com.qdu.service.TeacherService;
 
-@Transactional
+@Transactional 
 @Service
 public class TeacherServiceImpl implements TeacherService{
 

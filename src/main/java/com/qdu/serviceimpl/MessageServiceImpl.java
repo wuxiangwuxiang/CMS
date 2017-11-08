@@ -11,7 +11,7 @@ import com.qdu.pojo.Message;
 import com.qdu.service.MessageService;
 
 @Service
-@Transactional
+@Transactional 
 public class MessageServiceImpl implements MessageService{
      
 	@Autowired private MessageDao messageDaoImpl;

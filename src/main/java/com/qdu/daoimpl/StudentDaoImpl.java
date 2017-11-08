@@ -15,7 +15,7 @@ import com.qdu.pojo.Student;
 import com.qdu.util.MD5Util;
 @Repository
 public class StudentDaoImpl implements StudentDao{
-	@Autowired  
+	@Autowired   
 	SqlSessionFactory sessionFactory;
 	
 	@Override 

@@ -19,7 +19,7 @@ import com.qdu.service.StudentInfoService;
 import com.qdu.service.StudentService;
 import com.qdu.util.MD5Util;
 
-@Controller
+@Controller 
 @RequestMapping(value = "/studentInfo")
 public class StudentInfoController {
 

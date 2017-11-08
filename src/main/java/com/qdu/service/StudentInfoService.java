@@ -5,7 +5,7 @@ import java.util.List;
 import com.qdu.pojo.Student;
 import com.qdu.pojo.StudentInfo;
 
-public interface StudentInfoService {
+public interface StudentInfoService { 
 
 	public void insertStudentInfo(String studentRoNo,int courseId);
 	

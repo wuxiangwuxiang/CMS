@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.qdu.pojo.Test;
 import com.qdu.service.TestService;
 
-@Controller
+@Controller 
 public class LoginController {
  
 	@Autowired 
