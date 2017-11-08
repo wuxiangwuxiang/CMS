@@ -55,7 +55,7 @@ public class StudentInfoController {
 
 	}
 
-	// 添加学生——课程 中间表
+	// 添加学生——课程 中间表 
 	@SystemLog(module = "中间表", methods = "日志管理-添加中间表")
 	@RequestMapping(value = "/insertStudentInfoByteacher.do")
 	@ResponseBody

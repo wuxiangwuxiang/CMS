@@ -231,7 +231,7 @@
 					<li class="layui-nav-item"><a href="#">课堂资料</a></li>
 				</ul>
 			</div>
-		</div>
+		</div> 
 	</div>
 
 		<!-- 内容显示 -->
