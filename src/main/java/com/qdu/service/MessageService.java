@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.qdu.pojo.Message;
 
-public interface MessageService {
+public interface MessageService { 
 
 	public void insertMessage(Message message);
 	

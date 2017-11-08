@@ -2,7 +2,7 @@ package com.qdu.pojo;
 
 import java.io.Serializable;
 
-@SuppressWarnings("serial")
+@SuppressWarnings("serial") 
 public class Message implements Serializable{
 	private int messageId;
 	private String messageSender;

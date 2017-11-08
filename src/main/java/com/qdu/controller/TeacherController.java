@@ -54,7 +54,7 @@ public class TeacherController {
 	public String forTeacherRegister() {
 		return "addTeacher";
 	}
-
+ 
 	// 教师登录
 	@SystemLog(module = "教师", methods = "日志管理-登录")
 	@RequestMapping(value = "/teacherLogin.do")

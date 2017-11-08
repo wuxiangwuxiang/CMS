@@ -12,7 +12,7 @@ import com.qdu.dao.TeacherDao;
 import com.qdu.pojo.Message;
 import com.qdu.pojo.Teacher;
 
-@Repository
+@Repository 
 public class TeacherDaoImpl implements TeacherDao{
 	@Autowired 
 	SqlSessionFactory sessionFactory;

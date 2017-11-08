@@ -3,7 +3,7 @@
 <mapper namespace="com.qdu.mapping.MessageMapping">
 	<cache type="com.qdu.cache.RedisCache"/>
 	<resultMap type="com.qdu.pojo.Message" id="MessageResult">
-		<id property="messageId " column="MessageId " />
+		<id property="messageId " column="MessageId " /> 
 		<result property="messageSender" column="MessageSender" />
 		<result property="messageTitle" column="MessageTitle" />
 		<result property="messageAccepter" column="MessageAccepter" />

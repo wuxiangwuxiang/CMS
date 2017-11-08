@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.qdu.dao.MessageDao;
 import com.qdu.pojo.Message;
 
-@Repository
+@Repository 
 public class MessageDaoImpl implements MessageDao{
 	@Autowired 
 	private SqlSessionFactory sessionFactory;

@@ -37,7 +37,7 @@ import com.qdu.util.JavaEmailSender;
 import com.qdu.util.MD5Util;
 import com.qdu.util.VertifyCodeUtil;
 
-@Controller
+@Controller 
 @RequestMapping(value = "/student")
 public class StudentController {
 	@Autowired
