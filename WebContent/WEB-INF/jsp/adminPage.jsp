@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="shortcut icon" type="image/x-icon"
+	href="<%=request.getContextPath()%>/icon/cms2.ico" media="screen" />
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/jquery-3.2.0.min.js"></script>
 <title>超管登录</title>

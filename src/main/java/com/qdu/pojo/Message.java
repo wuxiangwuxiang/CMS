@@ -65,12 +65,5 @@ public class Message implements Serializable{
 	public void setMessageType(String messageType) {
 		this.messageType = messageType;
 	} 
-	@Override
-	public String toString() {
-		return "Message [messageId=" + messageId + ", messageSender=" + messageSender + ", messageAccepter="
-				+ messageAccepter + ", messageTitle=" + messageTitle + ", sendTime=" + sendTime + ", haveRead="
-				+ haveRead + ", messageContent=" + messageContent + ", messageType=" + messageType + "]";
-	}
-	
 	
 }

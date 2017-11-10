@@ -8,7 +8,7 @@
 <link type="text/css" rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/teacherPage.css">
 <link rel="shortcut icon" type="image/x-icon"
-	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
+	href="<%=request.getContextPath()%>/icon/cms2.ico" media="screen" />
 
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/jquery-3.2.1.min.js"></script>
@@ -19,23 +19,94 @@
 <title>学生页面</title>
 <script type="text/javascript">
 	 $(document).ready(function () {
+		 //如果pageNow大于1，点击下一页/上一页则显示消息页面
+		 if(${page.pageNow} > 1){
+			 $('#doubleHandle').hide();
+				$('#signal').hide();
+			    $('#studentAddCourse').hide();
+			     $('#courseInfo').hide();
+				 $('#seprateMessage').show();
+				 $('#messageShow').show();
+		 }
+		 //如果是最后一页
+		 if(${page.pageNow} == ${page.totalPageCount}){
+			 $('#doubleHandle').hide();
+				$('#signal').hide();
+			    $('#studentAddCourse').hide();
+			     $('#courseInfo').hide();
+				 $('#seprateMessage').show();
+				 $('#messageShow').show();
+		 }
+		 //每1秒执行一次消息数量的查询
+		 setInterval(gggetMessageCount,1000);
+		 function gggetMessageCount() {
+			 
+			 $.ajax({
+	             type: "GET",
+	             data: {
+	            	 "studentRoNo":$('#studentRoNo').val()
+	             },
+	             contentType: "application/json; charset=utf-8",
+	             async: true,
+	             //url不加空格！！！！！！！！！！！！！！！！！！！！！！！
+	             url: "<%=request.getContextPath()%>/student/gggetMessageCount.do",
+				success : function(data) {
+					if(data.message > 0){
+						$('#TmessageCount').html(data.message);
+					}else {
+						var TmessageCount = document.getElementById("TmessageCount")
+						 TmessageCount.style.display="none";
+					}
+				},
+				error : function(data) {
+					
+				},
+				dataType : "json",
+			});
+		}
+			
+		 //该学生课程信息
 		 $('#checkCourseShow').click(function name1() {
 			 $('#doubleHandle').hide();
 			 $('#signal').hide();
 			 $('#studentAddCourse').hide();
+			 $('#seprateMessage').hide();
+			 $('#messageShow').hide();
+			 $('#insertCourseDiv').hide();
+			 $('#fushuMessage').hide();
 			$('#courseInfo').show();
 		});
-		 
+		//点击消息
+		  $('#messageButtton').click(function() {
+			$('#doubleHandle').hide();
+			$('#signal').hide();
+		    $('#studentAddCourse').hide();
+		     $('#courseInfo').hide();
+		     $('#insertCourseDiv').hide();
+		     $('#fushuMessage').hide();
+			 $('#seprateMessage').show();
+			 $('#messageShow').show();
+			});
+		 //手动添加课程
 		 $('#addCourse').click(function name1() {
 				$('#courseInfo').hide();
 				$('#doubleHandle').hide();
 				$('#signal').hide();
+				 $('#seprateMessage').hide();
+				 $('#messageShow').hide();
+				 $('#insertCourseDiv').hide();
+				 $('#fushuMessage').hide();
 				$('#studentAddCourse').show();
 			});
+		 //安全管理
 			$('#safeManage').click(function name1() {
 				$('#courseInfo').hide();
 				$('#studentAddCourse').hide();
 				$('#doubleHandle').show();
+				 $('#seprateMessage').hide();
+				 $('#fushuMessage').hide();
+				 $('#messageShow').hide();
+				 $('#insertCourseDiv').hide();
 				$('#signal').show();
 			});
 	 
@@ -152,6 +223,56 @@
 			}
 			
 		}
+		//点击某个消息
+		function getMessage(messageId) {
+			$('#me'+messageId).html("已读");
+			$('#mem'+messageId).val("已读");
+			getMessageByAjax(messageId);
+		}
+		function getMessageByAjax(messageId) {
+			$.ajax({
+	            type: "GET",
+	            data: {
+			         "messageId": messageId
+	            },
+	            contentType: "application/json; charset=utf-8",
+	            async: false,
+	            url: "<%=request.getContextPath()%>/student/getMessageByAjax.do",
+				success : function(data) {
+					if(data.mmm.messageType == 'insertCourse'){
+						$('#forMessageContent').hide();
+						$('#messageContent').hide();
+						$('#seprateMessage').hide();
+						$('#insertCourseDiv').show();
+						$('#MteacherMobile').val(data.mmm.messageSender);
+						$('#MCourseId').val(data.mmm.messageContent);
+					}
+					$('#messageShow').hide();
+					$('#messageTitle').html('标题 <' + data.mmm.messageTitle + '>');
+					$('#messageSnder').html('发送人账号 <' + data.mmm.messageSender +'>');
+					if(data.teacher != null){
+					$('#messageSenderName').html('发送人姓名 <' + data.teacher.teacherName +'><br/><br/><br/><br/>');
+					$('#messageSenderName').show();
+					  }
+					$('#sendTime').html('时间 <' + data.mmm.sendTime +'>');
+					$('#messageContent').html(data.mmm.messageContent + '<br/><br/>');
+					$('#fushuMessage').show();
+				},
+				error : function(data) {
+					alert("异常");
+				},
+				dataType : "json",
+			});
+		}
+		//点击忽略某个消息
+		function dontCare() {
+			$('#doubleHandle').hide();
+			$('#signal').hide();
+		    $('#studentAddCourse').hide();
+		     $('#courseInfo').hide();
+			 $('#seprateMessage').show();
+			 $('#messageShow').show();
+       }
 	 
 </script>
 </head>
@@ -177,8 +298,8 @@
 					style="color: white; font-size: 25px;">CMS</span></a>
 
 				<ul class="layui-nav">
-					<li class="layui-nav-item"><a href="#">消息<span
-							class="layui-badge">9</span></a></li>
+					<li class="layui-nav-item"><a id="messageButtton" href="#">消息<span id="TmessageCount"
+							class="layui-badge">${messageCount}</span></a></li>
 					<li class="layui-nav-item"><a href="#">个人中心<span
 							class="layui-badge-dot"></span></a></li>
 					<li class="layui-nav-item"><a href="#">${student.studentName}</a>
@@ -237,6 +358,81 @@
 		<!-- 内容显示 -->
 		<div class="layui-body site-demo" style="padding-top: 7%;overflow: auto;">
 			<br />
+			<!-- 显示消息 -->
+			<div class="site-text site-block" id="messageShow"
+				style="padding-left: 10%; display: none;">
+				<table>
+				<c:choose>
+				<c:when test="${! empty message}">
+				<c:forEach items="${message}" var="m">
+				<tr style="margin-top: 3%">
+				<td><img alt="图标cms" src="<%=request.getContextPath()%>/icon/cms3.ico" width="40px" height="40px"></td>
+				<td width="12%">&nbsp;</td>
+				<td><a id="${m.messageId}" onclick="getMessage(this.id)" href="#">${m.messageTitle}</a></td>
+				<td width="12%">&nbsp;</td>
+				<td>${m.sendTime}</td>
+				<td width="12%">&nbsp;</td>
+				<td id="me${m.messageId}">${m.haveRead}</td>
+				<td><input id="mem${m.messageId}" type="text" value="${m.haveRead}" style="display: none;"/></td>
+				</tr>
+				<tr height="10%">
+				<td>&nbsp;</td>
+				</tr>
+				</c:forEach>
+				<br/>
+				</c:when>
+				</c:choose>
+				</table>
+			</div>
+			<!-- 消息分页 -->
+			 <div id="seprateMessage" style="text-align: center;margin-left: 0; display: none;">  
+            <font size="2">第  ${page.pageNow} 页</font> <font size="2">共 ${page.totalPageCount} 页</font>
+            <a href="studentLogin.do?pageNow=1&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">首页</a>  
+            <c:choose> 
+                <c:when test="${page.pageNow - 1 > 0}">  
+                    <a href="studentLogin.do?pageNow=${page.pageNow - 1}&studentRoNo=${student.teacherMobile}&password=${student.studentPassword}">上一页</a>  
+                </c:when>  
+                <c:when test="${page.pageNow - 1 <= 0}">  
+                    <a href="studentLogin.do?pageNow=1&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">上一页</a>  
+                </c:when>  
+            </c:choose>  
+            <c:choose>  
+                <c:when test="${page.totalPageCount==0}">  
+                    <a href="studentLogin.do?pageNow=${page.pageNow}&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">下一页</a>  
+                </c:when>  
+                <c:when test="${page.pageNow + 1 < page.totalPageCount}">  
+                    <a href="studentLogin.do?pageNow=${page.pageNow + 1}&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">下一页</a>  
+                </c:when>  
+                <c:when test="${page.pageNow + 1 >= page.totalPageCount}">  
+                    <a href="studentLogin.do?pageNow=${page.totalPageCount}&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">下一页</a>  
+                </c:when>  
+            </c:choose>  
+            <c:choose>  
+                <c:when test="${page.totalPageCount==0}">  
+                    <a href="studentLogin.do?pageNow=${page.pageNow}&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">尾页</a>  
+                </c:when>  
+                <c:otherwise>  
+                    <a href="studentLogin.do?pageNow=${page.totalPageCount}&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">尾页</a>  
+                </c:otherwise>  
+            </c:choose>  
+          </div>
+			<!-- 附属详细消息 -->
+			<div id="fushuMessage" style="width: 100%; padding-left: 25%; display: none; margin-top: 5%;">
+			<h3 id="messageTitle"></h3>
+			<hr/><br/><br/>
+			<span id="messageSnder"></span><br/><br/><br/><br/>
+			<span id="messageSenderName" style="display: none;"></span>
+			<span id="sendTime"></span><br/><br/><br/><br/>
+			<span id="forMessageContent">内容<br/></span> <textarea id="messageContent" rows="5" cols="40" readonly="readonly"></textarea><br/><br/>
+			<div id="insertCourseDiv" style="display: none;">
+			<input type="text" id="MteacherMoile" style="display: none;"/>
+			<input type="text" id="MCourseId" style="display: none;"/>
+			<input id="agree" class="layui-btn" onclick="dontCare()" type="button" value="了解"/>
+			<input style="margin-left: 10%;" id="dontCare" onclick="dontCare()" class="layui-btn layui-btn-primary" type="button" value="忽略"/>
+			</div>
+			</div>
+			  
+			
 				<!-- 学生添加课程 -->
 			<div class="site-text site-block" id="studentAddCourse"
 				style="display: none;">

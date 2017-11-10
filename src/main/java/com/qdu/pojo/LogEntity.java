@@ -61,11 +61,6 @@ public class LogEntity implements Serializable{
 	public void setCommite(String commite) {
 		this.commite = commite;
 	}
-	@Override
-	public String toString() {
-		return "LogEntity [logId=" + logId + ", userId=" + userId + ", module=" + module + ", method=" + method
-				+ ", reponseTime=" + reponseTime + ", ip=" + ip + ", date=" + date + ", commite=" + commite + "]";
-	}
 	
 
 }
