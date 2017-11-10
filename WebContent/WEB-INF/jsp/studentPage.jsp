@@ -75,6 +75,10 @@
 			 $('#insertCourseDiv').hide();
 			 $('#fushuMessage').hide();
 			 $('#studentInfoShow').hide();
+			 $('#forStudentLogInfo').hide();
+			 $('#studentLogInfo').hide();
+			 $("#studentLogOfTime").hide();
+			 $('#studentWork').hide();
 			$('#courseInfo').show();
 		});
 		 //个人中心
@@ -87,8 +91,45 @@
 			 $('#insertCourseDiv').hide();
 			 $('#fushuMessage').hide();
 			 $('#courseInfo').hide();
+			 $('#forStudentLogInfo').hide();
+			 $('#studentLogInfo').hide();
+			 $("#studentLogOfTime").hide();
+			 $('#studentWork').hide();
 			 $('#studentInfoShow').show();
 		 });
+		 //点击修改信息
+		 $('#updateStudentInfoNow').click(function name1() {
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
+			 $('#studentAddCourse').hide();
+			 $('#seprateMessage').hide();
+			 $('#messageShow').hide();
+			 $('#insertCourseDiv').hide();
+			 $('#fushuMessage').hide();
+			 $('#courseInfo').hide();
+			 $('#forStudentLogInfo').hide();
+			 $('#studentLogInfo').hide();
+			 $("#studentLogOfTime").hide();
+			 $('#studentWork').hide();
+			 $('#studentInfoShow').show();
+		 });
+		 //点击操作日志
+		 $('#studentLog').click(function name() {
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
+			 $('#studentAddCourse').hide();
+			 $('#seprateMessage').hide();
+			 $('#messageShow').hide();
+			 $('#insertCourseDiv').hide();
+			 $('#fushuMessage').hide();
+			 $('#courseInfo').hide();
+			 $('#studentInfoShow').hide();
+			 $("#studentLogOfTime").hide();
+			 $('#studentWork').hide();
+			 $('#forStudentLogInfo').show();
+			 $('#studentLogInfo').show();
+		});
+		 
 		//点击消息
 		  $('#messageButtton').click(function() {
 			$('#doubleHandle').hide();
@@ -99,8 +140,12 @@
 		     $('#fushuMessage').hide();
 		     $('#studentInfoShow').hide();
 			 $('#seprateMessage').show();
+			 $('#forStudentLogInfo').hide();
+			 $('#studentLogInfo').hide();
+			 $("#studentLogOfTime").hide();
+			 $('#studentWork').hide();
 			 $('#messageShow').show();
-			});
+			}); 
 		 //手动添加课程
 		 $('#addCourse').click(function name1() {
 				$('#courseInfo').hide();
@@ -111,6 +156,10 @@
 				 $('#insertCourseDiv').hide();
 				 $('#fushuMessage').hide();
 				 $('#studentInfoShow').hide();
+				 $('#forStudentLogInfo').hide();
+				 $('#studentLogInfo').hide();
+				 $("#studentLogOfTime").hide();
+				 $('#studentWork').hide();
 				$('#studentAddCourse').show();
 			});
 		 //安全管理
@@ -123,7 +172,27 @@
 				 $('#messageShow').hide();
 				 $('#studentInfoShow').hide();
 				 $('#insertCourseDiv').hide();
+				 $("#studentLogOfTime").hide();
+				 $('#forStudentLogInfo').hide();
+				 $('#studentLogInfo').hide();
+				 $('#studentWork').hide();
 				$('#signal').show();
+			});
+		 //点击签到记录
+			$('#studentWordRecord').click(function wq() {
+				$('#courseInfo').hide();
+				$('#studentAddCourse').hide();
+				$('#doubleHandle').hide();
+				 $('#seprateMessage').hide();
+				 $('#fushuMessage').hide();
+				 $('#messageShow').hide();
+				 $('#studentInfoShow').hide();
+				 $('#insertCourseDiv').hide();
+				 $("#studentLogOfTime").hide();
+				 $('#forStudentLogInfo').hide();
+				 $('#studentLogInfo').hide();
+				$('#signal').hide();
+				$('#studentWork').show();
 			});
 			//点击完善信息
 			$('#perfectButton').click(function wq() {
@@ -296,7 +365,7 @@
 		function getMessageByAjax(messageId) {
 			$.ajax({
 	            type: "GET",
-	            data: {
+	            data: { 
 			         "messageId": messageId
 	            },
 	            contentType: "application/json; charset=utf-8",
@@ -335,10 +404,58 @@
 		    $('#studentAddCourse').hide();
 		     $('#courseInfo').hide();
 		     $('#studentInfoShow').hide();
+		     $('#studentLogInfo').hide();
+		     $('#fushuMessage').hide();
 			 $('#seprateMessage').show();
 			 $('#messageShow').show();
        }
-	 
+		//根据时间查询操作日志
+		function searchStudentLogByTime() {
+			if($('#logDate').val() != "" && $('#logDate').val()){
+			 $.ajax({
+		         type: "GET",
+		         data: {
+		        	 "logDate": $('#logDate').val(),
+		        	 "studentRono":$('#studentRoNo').val()
+		         },
+		         contentType: "application/json; charset=utf-8",
+		         dataType: "json",
+		         async: true,
+		         url: "<%=request.getContextPath()%>/student/searchStudentLogByTime.do",
+		         success: function (data) {
+		        	 $('#studentLogInfo').hide();
+		        	    var dataObj = data.logEntities, //返回的data为json格式的数据
+		        	    con =  '\
+		        				<tr>\
+		        					<th>学号</th>\
+		        					<th>身份</th>\
+		        					<th>活动</th>\
+		        					<th>Ip</th>\
+		        					<th>时间</th>\
+		        					<th>结果</th>\
+		        				</tr>\
+		        				';
+		        	    $.each(dataObj, function (index, item) {
+		        	        con += "<tr>";
+		        	        con += "<td>" + item.userId + "</td>";
+		        	        con += "<td>" + item.module + "</td>";
+		        	        con += "<td>" + item.method + "</td>";
+		        	        con += "<td>" + item.ip + "</td>";
+		        	        con += "<td>" + item.date + "</td>";
+		        	        con += "<td>" + item.result + "</td>";
+		        	        con += "<tr/>";
+		        	    });
+		        	        //可以在控制台打印一下看看，这是拼起来的标签和数据
+		        	        //把内容入到这个div中即完成
+		        	    $("#studentLogOfTime").html(con);
+		        	    $("#studentLogOfTime").show();
+		         },
+		         error: function (data) {
+		             alert("暂时无法获取");
+		         },
+		     });
+			}
+		}
 </script>
 </head>
 <body>
@@ -376,7 +493,7 @@
 					<li class="layui-nav-item"><a href="#">${student.studentName}</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a href="#">修改信息</a>
+								<a id="updateStudentInfoNow" href="#">修改信息</a>
 							</dd>
 							<dd>
 								<a id="safeManage" href="#">安全管理</a>
@@ -410,10 +527,10 @@
 					<li class="layui-nav-item"><a href="javascript:;">数据平台</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a href="#">签到记录</a>
+								<a id="studentWordRecord" href="#">签到记录</a>
 							</dd>
 							<dd>
-								<a href="#">操作日志</a>
+								<a id="studentLog" href="#">操作日志</a>
 							</dd>
 							<dd>
 								<a href="#">待定</a>
@@ -429,6 +546,45 @@
 		<!-- 内容显示 -->
 		<div class="layui-body site-demo" style="padding-top: 7%;overflow: auto;">
 			<br />
+			
+			<!-- 签到记录 -->
+			
+			<table id="studentWork" border="1" style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%;
+			 display: none;">
+			 <tr>
+			 <th>课程编码</th>
+			 <th>课程名称</th> 
+			 <th>学年</th>
+			 <th>学期</th>  
+			 <th>签到</th>
+			 <th>迟到</th>
+			 <th>早退</th>
+			 <th>旷课</th>
+			 </tr>
+			 <c:choose>
+			<c:when test="${! empty studentInfos}">
+			<c:forEach items="${studentInfos}" var="s">
+			<tr>
+			<td>${s.course.courseId}</td>
+			<td>${s.course.courseName}</td>
+			<td>${s.course.currentYear}</td>
+			<td>${s.course.schoolTem}</td>
+			<td>${s.signIn}</td>
+			<td>${s.comeLate}</td>
+			<td>${s.leaveEarlier}</td>
+			<td>${s.absenteeism}</td>
+			</tr>
+			</c:forEach>
+			</c:when>
+			<c:otherwise>
+			<tr>
+			<td colspan="8">(暂无信息)</td>
+			</tr>
+			</c:otherwise>
+			</c:choose>
+			 </table>			
+			
+			
 			<!-- 显示消息 -->
 			<div class="site-text site-block" id="messageShow"
 				style="padding-left: 10%; display: none;">
@@ -502,6 +658,8 @@
 			<input style="margin-left: 10%;" id="dontCare" onclick="dontCare()" class="layui-btn layui-btn-primary" type="button" value="忽略"/>
 			</div>
 			</div>
+			
+			
 				<!-- 学生添加课程 -->
 			<div class="site-text site-block" id="studentAddCourse"
 				style="display: none;">
@@ -582,11 +740,79 @@
 			</c:when>
 			<c:otherwise>
 			<tr>
-			<td colspan="8">(暂无课程)</td>
+			<td colspan="9">(暂无课程)</td>
 			</tr>
 			</c:otherwise>
 			</c:choose>
 			</table>
+			
+			<!-- 学生操作日志表 -->
+			<div id="forStudentLogInfo" class="site-text site-block" style="text-align: center; 
+			height: 3em;margin-top: 0.1%; display: none;">
+			<form class="layui-form" action="">
+			<div class="layui-form-item" style="width: 80%;
+			 margin-left: 11%;">
+						<label class="layui-form-label">输入日期</label>
+						<div class="layui-input-block">
+							<input id="logDate" type="text" required
+								lay-verify="logDate" placeholder="yyyy-MM-dd" autocomplete="off"
+								class="layui-input" style="width: 30%;float: left;">
+								<input class="layui-btn" lay-submit type="button" onclick="searchStudentLogByTime()" value="查询" style="float: left;"/>
+						</div>
+			</div>
+			</form>
+			</div>
+			<script>
+					//Demo
+					layui.use([ 'form', 'laydate' ], function() {
+						var form = layui.form, laydate = layui.laydate;
+						laydate.render({
+							elem : '#logDate'
+						});
+						
+						form.verify({
+							logDate:[/\S/,'日期不可为空']
+						});
+					});
+				</script>
+				
+			<table id="studentLogOfTime" border="1" style="display: none;text-align: center; 
+			width: 80%;margin-left: 8.5%;">
+			
+			</table>	
+			
+			<table id="studentLogInfo" border="1" style="text-align: center; width: 80%;
+			 margin-left: 8.5%; display: none;">
+			<tr>
+			<th>学号</th>
+			<th>身份</th>
+			<th>活动</th>
+			<th>Ip</th>
+			<th>时间</th>
+			<th>结果</th>
+			</tr>
+			<c:choose>
+			<c:when test="${! empty logEntity}">
+			<c:forEach items="${logEntity}" var="s">
+			<tr>
+			<td>${s.userId}</td>
+			<td>${s.module}</td>
+			<td style="text-align: left; padding-left: 10%;">${s.method}</td>
+			<td>${s.ip}</td>
+			<td>${s.date}</td>
+			<td>${s.result}</td>
+			<!--  <td colspan="8"></td>-->
+			</tr>
+			</c:forEach>
+			</c:when>
+			<c:otherwise>
+			<tr>
+			<td colspan="5">(暂无信息)</td>
+			</tr>
+			</c:otherwise>
+			</c:choose>
+			</table>
+			
 			
 			
 			<!-- 个人中心 -->

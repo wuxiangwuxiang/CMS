@@ -55,13 +55,13 @@ public class StudentServiceImpl implements StudentService{
 	@Override
 	public void ajaxupdateStudentPassWord(String studentRoNo, String studentPassword) {
 		studentDaoImpl.ajaxupdateStudentPassWord(studentRoNo, studentPassword);
-	}
+	} 
 
 	@Override
 	public void changeStuMail(String studentRoNo, String studentEmail) {
 		studentDaoImpl.changeStuMail(studentRoNo, studentEmail);
 	}
-
+ 
 	@Override
 	public int updateStudentextra(Student student) {
 		return studentDaoImpl.updateStudentextra(student);

@@ -56,6 +56,11 @@ public class StudentInfoServiceImpl implements StudentInfoService{
 	public List<StudentInfo> selectCourseByStudentRono(String studentRoNo) {
 		return studentInfoDaoImpl.selectCourseByStudentRono(studentRoNo);
 	}
+
+	@Override
+	public List<StudentInfo> selectStudentInfoList(String studentRoNo) {
+		return studentInfoDaoImpl.selectStudentInfoList(studentRoNo);
+	}
 	
 
 }

@@ -1,6 +1,6 @@
 package com.qdu.aop;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Method; 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
@@ -46,7 +46,9 @@ public class LogAopAction {
          log.setUserId(name);
          //获取系统时间
          String time = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
+         String time2 = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
          log.setDate(time);
+         log.setDateTime(time2);
          //获取系统ip,这里用的是我自己的工具类
          String ip = GetIp.getIpAddr(request);
          log.setIp(ip);
@@ -89,12 +91,14 @@ public class LogAopAction {
                     //将计算好的时间保存在实体中
                     log.setReponseTime((System.currentTimeMillis()-start)+"ms");
                     log.setCommite("执行成功！");
+                    log.setResult("success");
                     //保存进数据库
                     logEntityServiceImpl.saveLog(log);
                 } catch (Throwable e) {
                     //long end = System.currentTimeMillis();
                     log.setReponseTime((System.currentTimeMillis()-start)+"ms");
                     log.setCommite("执行失败: " + e);
+                    log.setResult("failed");
                     logEntityServiceImpl.saveLog(log);
                 }
             } else {//没有包含注解

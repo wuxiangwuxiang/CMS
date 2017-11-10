@@ -82,8 +82,8 @@ public class StudentDaoImpl implements StudentDao{
 		map.put("studentPassword", MD5Util.md5(studentPassword, "juin"));
 		sessionFactory.openSession().update(statement, map);
 	}
-
-	@Override
+ 
+	@Override 
 	public void changeStuMail(String studentRoNo, String studentEmail) {
 		String statement = "com.qdu.mapping.StudentMapping.changeStuMail";
 		Map<String, Object> map = new HashMap<>();

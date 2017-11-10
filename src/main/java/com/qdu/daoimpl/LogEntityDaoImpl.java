@@ -1,6 +1,8 @@
 package com.qdu.daoimpl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +16,7 @@ import com.qdu.pojo.LogEntity;
 public class LogEntityDaoImpl implements LogEntityDao{
 
 	@Autowired private SqlSessionFactory sessionFactory;
-	
+	 
 	@Override 
 	public void saveLog(LogEntity logEntity) {
 		String statement="com.qdu.mapping.LogEntityMapping.insertLogEntity";
@@ -37,6 +39,21 @@ public class LogEntityDaoImpl implements LogEntityDao{
 	public int selectLogEntityCount() {
 		String statement = "com.qdu.mapping.LogEntityMapping.selectLogEntityCount";
 		return sessionFactory.openSession().selectOne(statement);
+	}
+
+	@Override
+	public List<LogEntity> selectStudentLog(String userId) {
+		String statement = "com.qdu.mapping.LogEntityMapping.selectStudentLog";
+		return sessionFactory.openSession().selectList(statement, userId);
+	}
+
+	@Override
+	public List<LogEntity> selectStudentLogByTime(String userId, String dateTime) {
+		String statement = "com.qdu.mapping.LogEntityMapping.selectStudentLogByTime";
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", userId);
+		map.put("dateTime", dateTime);
+		return sessionFactory.openSession().selectList(statement, map);
 	}
 
 }

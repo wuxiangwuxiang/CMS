@@ -21,7 +21,7 @@ public class LogEntityServiceImpl implements LogEntityService{
 	public void saveLog(LogEntity logEntity) {
 		logEntityDaoImpl.saveLog(logEntity);
 	}
- 
+  
 	@Override 
 	public List<LogEntity> selectLog(int startPos) {
 		return logEntityDaoImpl.selectLog(startPos);
@@ -35,6 +35,16 @@ public class LogEntityServiceImpl implements LogEntityService{
 	@Override
 	public int selectLogEntityCount() {
 		return logEntityDaoImpl.selectLogEntityCount();
+	}
+
+	@Override
+	public List<LogEntity> selectStudentLog(String userId) {
+		return logEntityDaoImpl.selectStudentLog(userId);
+	}
+
+	@Override
+	public List<LogEntity> selectStudentLogByTime(String userId, String dateTime) {
+		return logEntityDaoImpl.selectStudentLogByTime(userId, dateTime);
 	}
 
 }

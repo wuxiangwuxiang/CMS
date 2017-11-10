@@ -1,4 +1,4 @@
-package com.qdu.cache;
+ package com.qdu.cache;
 
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * @创建日期: 2017年10月30日 
  * @创建时间: 下午8:02:57
  */
-public class RedisCache implements Cache
+public class RedisCache implements Cache 
 {
 	private static Logger logger = LoggerFactory.getLogger(RedisCache.class); 
 

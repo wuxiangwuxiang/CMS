@@ -1,7 +1,7 @@
 package com.qdu.pojo;
 
 import java.io.Serializable;
-
+ 
 public class Student implements Serializable{
 	private String studentRoNo;
 	private String studentPassword;
@@ -10,7 +10,7 @@ public class Student implements Serializable{
 	private String studentName;
 	private String studentGender;
 	private String studentPhoto;
-	private String college;
+	private String college; 
 	private String special;
 	private int intoSchoolYear;
 	private String schoolRecord;

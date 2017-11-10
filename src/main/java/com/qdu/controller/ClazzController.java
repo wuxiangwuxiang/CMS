@@ -19,7 +19,7 @@ import com.qdu.service.ClazzService;
 import com.qdu.service.CourseService;
 
 @Controller
-@RequestMapping(value = "/clazz")
+@RequestMapping(value = "/clazz") 
 public class ClazzController {
  
 	@Autowired private ClazzService clazzServiceImpl;

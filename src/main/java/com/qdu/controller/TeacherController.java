@@ -38,7 +38,7 @@ public class TeacherController {
 	private CourseService courseServiceImpl;
 	@Autowired
 	private ClazzService clazzServiceImpl;
-	@Autowired
+	@Autowired 
 	private MessageService messageServiceImpl;
 	@Autowired
 	private StudentService studentServiceImpl;
@@ -103,7 +103,9 @@ public class TeacherController {
 		String repageNow = request.getParameter("repageNow");
 		 if(repageNow != null){
 			 pageNow = repageNow;
-		 }
+		 }else{
+			pageNow = 1+"";
+		}
 		 int totalCount = messageServiceImpl.selectMessageTotalCount(teacher.getTeacherMobile());
 		 page = new Page(totalCount, Integer.parseInt(pageNow));
 		 map.put("page", page);

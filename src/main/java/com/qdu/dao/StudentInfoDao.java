@@ -22,5 +22,7 @@ public interface StudentInfoDao {
     public List<StudentInfo> selectInfoFromInfoAndStudent(int courseId);
     
     public List<StudentInfo> selectCourseByStudentRono(String studentRoNo);
+    
+    public List<StudentInfo> selectStudentInfoList(String studentRoNo);
 
 }

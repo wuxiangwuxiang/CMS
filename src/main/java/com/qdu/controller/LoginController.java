@@ -14,7 +14,7 @@ public class LoginController {
  
 	@Autowired 
 	private TestService testServiceImpl;
-
+ 
 	// 模板测试登录用
 	@RequestMapping(value = "/login.do")
 	public String lllogin(ModelMap map, HttpServletRequest request, HttpServletResponse response) {

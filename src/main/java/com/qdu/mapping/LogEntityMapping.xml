@@ -9,8 +9,10 @@
 		<result property="method" column="Method" />
 		<result property="reponseTime" column="ReponseTime" />
 		<result property="ip" column="Ip" />
-		<result property="date" column="Date" />
+		<result property="date" column="Date" /> 
+		<result property="dateTime" column="DateTime" />
 		<result property="commite" column="Commite" />
+		<result property="result" column="Result" />
 	</resultMap>
   
 	<select id="selectLogByUserId" resultMap="LogEntityResult">
@@ -24,11 +26,19 @@
 	<select id="selectLogEntityCount" resultType="int"> 
 	select count(*) from LogEntity
 	</select>
+	
+	<select id="selectStudentLog" parameterType="ArrayList" resultMap="LogEntityResult">
+	select * FROM Logentity WHERE UserId = #{userId} ORDER BY LogId DESC
+	</select>
+	
+	<select id="selectStudentLogByTime" parameterType="HashMap" resultMap="LogEntityResult">
+	select * FROM Logentity WHERE UserId = #{userId} And DateTime = #{dateTime} ORDER BY LogId DESC
+	</select>
 
     <insert id="insertLogEntity" parameterType="com.qdu.pojo.LogEntity">
      insert into 
-     LogEntity(UserId,Module,Method,ReponseTime,Ip,Date,Commite) 
-        values(#{userId},#{module},#{method},#{reponseTime},#{ip},#{date},#{commite})
+     LogEntity(UserId,Module,Method,ReponseTime,Ip,Date,DateTime,Commite,Result) 
+        values(#{userId},#{module},#{method},#{reponseTime},#{ip},#{date},#{dateTime},#{commite},#{result})
     </insert>
 	
 </mapper>

@@ -29,7 +29,7 @@
         <property name="password" value="${redis.password}"></property>
         <property name="poolConfig" ref="poolConfig"></property>
     </bean>
-
+ 
     <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" p:connection-factory-ref="connectionFactory" >
         <!--以下针对各种数据进行序列化方式的选择-->
         <property name="keySerializer">

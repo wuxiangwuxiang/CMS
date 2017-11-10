@@ -4,7 +4,7 @@
 	<cache type="com.qdu.cache.RedisCache" />
 	<resultMap type="com.qdu.pojo.Student" id="StudentResult">
 		<id property="studentRoNo" column="StudentRoNo" />
-		<result property="studentPassword" column="StudentPassword" />
+		<result property="studentPassword" column="StudentPassword" /> 
 		<result property="studentMobile" column="StudentMobile" />
 		<result property="studentEmail" column="StudentEmail" />
 		<result property="studentName" column="StudentName" />
@@ -82,9 +82,9 @@
 
 	<select id="selectStudentByClazzId" resultMap="StudentResult">
 		select * from
-		Student s,Clazz c where s.ClazzId = c.ClazzId
-		and c.ClazzId =
-		#{clazzId}
+		Student s,Clazz c 
+		where s.ClazzId = c.ClazzId
+		and c.ClazzId = #{clazzId}
 	</select>
 
 	<!-- 精确查询学生 -->
@@ -102,10 +102,10 @@
 
 	<select id="selectStudentAndClazzByNo" parameterType="String"
 		resultMap="StudentResult">
-		select * from Student s,Clazz c
+		select StudentRoNo, StudentName,clazzName from Student s,Clazz c
 		where s.ClazzId = c.ClazzId
-		And StudentRoNo = #{studentRoNo}
-	</select>
+		And s.StudentRoNo = #{studentRoNo}
+	</select> 
 	
 	<select id="selectStudentByFour" parameterType="HashMap" resultMap="StudentResult">
 	select * from Student where StudentRoNo = #{studentRoNo} And StudentName = #{studentName}

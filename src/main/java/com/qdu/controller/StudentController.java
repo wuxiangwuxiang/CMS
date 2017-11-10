@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Clazz;
 import com.qdu.pojo.Course;
+import com.qdu.pojo.LogEntity;
 import com.qdu.pojo.Message;
 import com.qdu.pojo.QrTem;
 import com.qdu.pojo.Student;
@@ -29,6 +30,7 @@ import com.qdu.pojo.StudentInfo;
 import com.qdu.pojo.Teacher;
 import com.qdu.service.ClazzService;
 import com.qdu.service.CourseService;
+import com.qdu.service.LogEntityService;
 import com.qdu.service.MessageService;
 import com.qdu.service.QrTemService;
 import com.qdu.service.StudentInfoService;
@@ -57,6 +59,8 @@ public class StudentController {
 	private MessageService messageServiceImpl;
 	@Autowired
 	private TeacherService teacherServiceImpl;
+	@Autowired 
+	private LogEntityService logEntityServiceImpl;
 
 	// 学生登录
 	@RequestMapping(value = "/studentLogin.do")
@@ -70,13 +74,18 @@ public class StudentController {
 			password = request.getParameter("studentPassword");
 		}
 		System.out.println("正经登陆");
-		List<StudentInfo> studentInfos = studentInfoServiceImpl.selectCourseByStudentRono(studentRoNo);
 		Student student2 = studentServiceImpl.selectStudentByNo(studentRoNo);
 		if (student2 != null) {
 			if (MD5Util.md5(password, "juin").equals(student2.getStudentPassword()) || password.equals(student2.getStudentPassword())) {
 				if (pageNow == null) {
 					pageNow = 1 + "";
 				}
+				List<LogEntity> logEntities = logEntityServiceImpl.selectStudentLog(studentRoNo);
+				map.put("logEntity", logEntities);
+				
+				List<StudentInfo> studentInfos2 = studentInfoServiceImpl.selectStudentInfoList(studentRoNo);
+				map.put("studentInfos2", studentInfos2);
+				
 				Page page = null;
 				int totalCount = messageServiceImpl.selectMessageTotalCount(studentRoNo);
 				page = new Page(totalCount, Integer.parseInt(pageNow));
@@ -86,6 +95,8 @@ public class StudentController {
 						page.getStartPos());
 				map.put("message", messages);
 				map.put("page", page);
+				
+				List<StudentInfo> studentInfos = studentInfoServiceImpl.selectCourseByStudentRono(studentRoNo);
 				map.addAttribute("studentInfos", studentInfos);
 				map.addAttribute("student", student2);
 				// session的id存一下
@@ -217,6 +228,10 @@ public class StudentController {
 		map.put("messageCount", messageCount);
 		List<Message> messages = messageServiceImpl.selectUnreadMessage(studentRoNo,
 				page.getStartPos());
+		List<LogEntity> logEntities = logEntityServiceImpl.selectStudentLog(studentRoNo);
+		map.put("logEntity", logEntities);
+		List<StudentInfo> studentInfos2 = studentInfoServiceImpl.selectStudentInfoList(studentRoNo);
+		map.put("studentInfos2", studentInfos2);
 		map.put("message", messages);
 		map.put("page", page);
 		map.put("student", student);
@@ -318,9 +333,8 @@ public class StudentController {
 		if (qrTems != null && qrTems.size() != 0) {
 			for (QrTem qrTem : qrTems) {
 				Student student = studentServiceImpl.selectStudentAndClazzByNo(qrTem.getStudentRoNo());
-				System.out.println(qrTem.getStudentRoNo());
 				students.add(student);
-			}
+			} 
 		} else {
 			System.out.println("空");
 		}
@@ -462,7 +476,6 @@ public class StudentController {
 			Map<String, Object> map = new HashMap<>();
 			messageServiceImpl.uodateMesageHaveread(messageId);
 			Message message = messageServiceImpl.selectMessageById(messageId);
-			//标记：教师查询有点问题，后续等待改动
 			Course course = courseServiceImpl.selectCourseById(Integer.parseInt(message.getMessageContent()));
 			if(course != null){
 				Teacher teacher2 = course.getTeacher();
@@ -503,5 +516,16 @@ public class StudentController {
 			}
 			return map;
 		}
+		//ajax查询日志记录通过时间
+		@SystemLog(module = "学生", methods = "日志管理-通过时间查询日志")
+		@RequestMapping(value = "/searchStudentLogByTime.do")
+		@ResponseBody
+		public Map<String, Object> searchStudentLogByTime(String logDate,String studentRono){
+			Map<String, Object> map = new HashMap<>();
+			List<LogEntity> logEntities = logEntityServiceImpl.selectStudentLogByTime(studentRono, logDate);
+			map.put("logEntities", logEntities);
+			return map;
+		}
+		
 
 }

@@ -78,4 +78,10 @@ public class StudentInfoImpl implements StudentInfoDao{
 		return sessionFactory.openSession().selectList(statement,studentRoNo);
 	}
 
+	@Override
+	public List<StudentInfo> selectStudentInfoList(String studentRoNo) {
+		String statement = "com.qdu.mapping.StudentInfoMapping.selectStudentInfoList";
+		return sessionFactory.openSession().selectList(statement,studentRoNo);
+	}
+
 }

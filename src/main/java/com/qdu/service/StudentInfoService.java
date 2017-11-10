@@ -23,4 +23,6 @@ public interface StudentInfoService {
 	
 	public List<StudentInfo> selectCourseByStudentRono(String studentRoNo);
 	
+	public List<StudentInfo> selectStudentInfoList(String studentRoNo);
+	
 }

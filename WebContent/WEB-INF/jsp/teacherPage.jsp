@@ -613,18 +613,21 @@
 								lay-verify="required" placeholder="请输入课程名称" autocomplete="off"
 								class="layui-input">
 						</div><br/>
-						<p id="listenName" style="color: red;display: none; margin-left: 13%;">*课程名不可为空*</p>
+						<p id="listenName"
+							style="color: red; display: none; margin-left: 13%;">*课程名不可为空*</p>
 					</div>
-					<input type="text" id="cteacherMobile" name="cteacher.teacherMobile"
-						value="${teacher.teacherMobile}" style="display: none;" />
+					<input type="text" id="cteacherMobile"
+						name="cteacher.teacherMobile" value="${teacher.teacherMobile}"
+						style="display: none;" />
 					<div class="layui-form-item">
 						<label class="layui-form-label">课程类型</label>
 						<div class="layui-input-block">
-							<input id="ccourseType" type="radio" name="ccourseType" value="必修"
-								title="必修" checked> <input id="ccourseType" type="radio"
-								name="ccourseType" value="选修" title="选修">
+							<input id="ccourseType" type="radio" name="ccourseType"
+								value="必修" title="必修" checked> <input id="ccourseType"
+								type="radio" name="ccourseType" value="选修" title="选修">
 						</div>
-						<p id="listenType" style="color: red;display: none; margin-left: 13%;">*课程类型不可为空*</p>
+						<p id="listenType"
+							style="color: red; display: none; margin-left: 13%;">*课程类型不可为空*</p>
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">班级容量</label>
@@ -633,8 +636,10 @@
 								required lay-verify="required" placeholder="请输入班级容量"
 								autocomplete="off" class="layui-input">
 						</div>
-						<p id="listenCapacity" style="color: red;display: none; margin-left: 13%;">*班级容量不可为空*</p>
-						<p id="listenIfN" style="color: red;display: none; margin-left: 13%;">*请输入数字*</p>
+						<p id="listenCapacity"
+							style="color: red; display: none; margin-left: 13%;">*班级容量不可为空*</p>
+						<p id="listenIfN"
+							style="color: red; display: none; margin-left: 13%;">*请输入数字*</p>
 					</div>
 					<div class="layui-form-item">
 						<div class="layui-inline">
@@ -643,7 +648,8 @@
 								<input class="layui-input" id="cstartTime" type="text"
 									name="cstartTime" placeholder="yyyy-MM-dd">
 							</div>
-							<p id="listenStart" style="color: red;display: none; margin-left: 13%;">*开始时间不可为空*</p>
+							<p id="listenStart"
+								style="color: red; display: none; margin-left: 13%;">*开始时间不可为空*</p>
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -653,8 +659,10 @@
 								<input class="layui-input" id="cendTime" type="text"
 									name="cendTime" placeholder="yyyy-MM-dd">
 							</div>
-							<p id="listenEnd" style="color: red;display: none; margin-left: 13%;">*结束时间不可为空*</p>
-							<p id="listenMaxOrMin" style="color: red;display: none; margin-left: 13%;">*结束时间不可小于开始时间*</p>
+							<p id="listenEnd"
+								style="color: red; display: none; margin-left: 13%;">*结束时间不可为空*</p>
+							<p id="listenMaxOrMin"
+								style="color: red; display: none; margin-left: 13%;">*结束时间不可小于开始时间*</p>
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -664,7 +672,8 @@
 								<input class="layui-input" id="ccurrentYear" type="text"
 									name="ccurrentYear" placeholder="yyyy">
 							</div>
-							<p id="listenCurrent" style="color: red;display: none; margin-left: 13%;">*当前学年不可为空*</p>
+							<p id="listenCurrent"
+								style="color: red; display: none; margin-left: 13%;">*当前学年不可为空*</p>
 						</div>
 					</div>
 					<div class="layui-form-item">
@@ -678,12 +687,13 @@
 								<option value="冬季">冬季学期</option>
 							</select>
 						</div>
-						<p id="listenTem" style="color: red;display: none; margin-left: 13%;">*当前学期不可为空*</p>
+						<p id="listenTem"
+							style="color: red; display: none; margin-left: 13%;">*当前学期不可为空*</p>
 					</div>
 					<div class="layui-form-item">
 						<div class="layui-input-block">
-							<input id="subButton" class="layui-btn" onclick="changeCourseInfo()"
-								type="button" value="提交修改" />
+							<input id="subButton" class="layui-btn"
+								onclick="changeCourseInfo()" type="button" value="提交修改" />
 							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
 						</div>
 					</div>
@@ -731,8 +741,7 @@
 					style="float: left; height: 20%; width: 49%; border: solid; border-color: red; font-size: 1.5em">更改密码</a>
 				<a href="#" id="changeTeaMail"
 					style="float: left; height: 20%; width: 49%; border: solid; border-color: red; font-size: 1.5em">更换邮箱</a>
-				<br />
-				<br />
+				<br /> <br />
 				<!-- 修改密码 -->
 				<form id="safe"
 					action="<%=request.getContextPath()%>/teacher/updateTeacherPassWord.do"
@@ -795,14 +804,13 @@
 						</tr>
 					</table>
 				</form>
-				
+
 				<!-- 修改邮箱 -->
-					<form id="emailsafe"
+				<form id="emailsafe"
 					action="<%=request.getContextPath()%>/teacher/updateTeacherEmail.do"
-					style="width: 84%; margin-left: 5%; border: solid; border-color: red; 
-					text-align: center; display: none;">
+					style="width: 84%; margin-left: 5%; border: solid; border-color: red; text-align: center; display: none;">
 					<table style="padding-left: 10%;">
-						<br/>
+						<br />
 						<tr style="width: 100%;">
 							<td style="text-align: right; margin-left: 20%;">手机号：</td>
 							<td><input type="text" readonly="readonly"
@@ -817,8 +825,9 @@
 						</tr>
 						<tr>
 							<td style="text-align: right; width: 20em;">原邮箱：</td>
-							<td><input type="text" name="oldEmail" value="${teacher.teacherEmail}"
-								id="teacherEmail" style="width: 19em" readonly="readonly" /></td>
+							<td><input type="text" name="oldEmail"
+								value="${teacher.teacherEmail}" id="teacherEmail"
+								style="width: 19em" readonly="readonly" /></td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -827,16 +836,17 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td style="text-align: right;">
-							<label class="layui-form-label" for="mail" style="text-align: right; width: 20em;">新邮箱</label></td>
-							<td>
-					               <input id="mail" type="text" name="teacherEmail" required
-						          lay-verify="required|email" autocomplete="off" style="width: 19em"/>
-				            </td>
+							<td style="text-align: right;"><label
+								class="layui-form-label" for="mail"
+								style="text-align: right; width: 20em;">新邮箱</label></td>
+							<td><input id="mail" type="text" name="teacherEmail"
+								required lay-verify="required|email" autocomplete="off"
+								style="width: 19em" /></td>
 						</tr>
-						
+
 						<tr>
-							<td id="emailTypeError" style="text-align: right; width: 20em; color: red; display: none;">*格式错误*</td>
+							<td id="emailTypeError"
+								style="text-align: right; width: 20em; color: red; display: none;">*格式错误*</td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -1085,22 +1095,29 @@
 					});
 			$('#torf').hide();
 		}
-	  //修改课程信息内容输入验证
-		 function confirmType() {
+		//修改课程信息内容输入验证
+		function confirmType() {
 			var world = false;
-			if($('#ccourseName').val() != null && $('#ccourseName').val() != ""){
-				if($('#ccourseType').val() != null && $('#ccourseType').val() != ""){
-					if($('#cclassCapacity').val() != null && $('#cclassCapacity').val() != ""){
-						if(isNaN($('#cclassCapacity').val())){
+			if ($('#ccourseName').val() != null
+					&& $('#ccourseName').val() != "") {
+				if ($('#ccourseType').val() != null
+						&& $('#ccourseType').val() != "") {
+					if ($('#cclassCapacity').val() != null
+							&& $('#cclassCapacity').val() != "") {
+						if (isNaN($('#cclassCapacity').val())) {
 							$('#listenIfN').show();
 						}
-						if($('#cstartTime').val() != null && $('#cstartTime').val() != ""){
-							if($('#cendTime').val() != null && $('#cendTime').val() != ""){
-								if($('#ccurrentYear').val() != null && $('#ccurrentYear').val() != ""){
-									if($('#cschoolTem').val() != null && $('#cschoolTem').val() != ""){
+						if ($('#cstartTime').val() != null
+								&& $('#cstartTime').val() != "") {
+							if ($('#cendTime').val() != null
+									&& $('#cendTime').val() != "") {
+								if ($('#ccurrentYear').val() != null
+										&& $('#ccurrentYear').val() != "") {
+									if ($('#cschoolTem').val() != null
+											&& $('#cschoolTem').val() != "") {
 										//都不为空返回true
 										world = true;
-									}else{
+									} else {
 										$('#listenName').hide();
 										$('#listenType').hide();
 										$('#listenCapacity').hide();
@@ -1110,7 +1127,7 @@
 										$('#listenIfN').hide();
 										$('#listenTem').show();
 									}
-								}else{
+								} else {
 									$('#listenName').hide();
 									$('#listenType').hide();
 									$('#listenCapacity').hide();
@@ -1119,7 +1136,7 @@
 									$('#listenIfN').hide();
 									$('#listenCurrent').show();
 								}
-							}else{
+							} else {
 								$('#listenName').hide();
 								$('#listenType').hide();
 								$('#listenCapacity').hide();
@@ -1127,23 +1144,23 @@
 								$('#listenIfN').hide();
 								$('#listenEnd').show();
 							}
-						}else{
+						} else {
 							$('#listenName').hide();
 							$('#listenType').hide();
 							$('#listenCapacity').hide();
 							$('#listenIfN').hide();
 							$('#listenStart').show();
 						}
-					}else{
-							$('#listenName').hide();
-							$('#listenType').hide();
-							$('#listenCapacity').show();
+					} else {
+						$('#listenName').hide();
+						$('#listenType').hide();
+						$('#listenCapacity').show();
 					}
-				}else{
+				} else {
 					$('#listenName').hide();
 					$('#listenType').show();
 				}
-			}else{
+			} else {
 				$('#listenName').show();
 			}
 			return world;
@@ -1154,7 +1171,6 @@
 						[ 'element', 'layer' ],
 						function() {
 							var element = layui.element, $ = layui.jquery, layer = layui.layer;
-
 							//触发事件
 							var active = {
 								notice : function() {

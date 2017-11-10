@@ -9,14 +9,14 @@ public interface StudentService {
 
 	public void insertStudentByNo(Student student);
 	 
-	public Student selectStudentByNo(String studentRoNo);
+	public Student selectStudentByNo(String studentRoNo); 
 	
 	public List<Student> selectStudentByClazzId(int clazzId);
 	
 	public void updateStudentOfClazzId(String studentRoNo, int clazzId);
 	
 	public Student selectStudentAndClazzByNo(String studentRoNo);
-	
+	 
 	public void updateStudentPassWord(Student student);
 	
 	public Student selectStudentByFour(String studentRoNo, String studentName, String studentMobile,

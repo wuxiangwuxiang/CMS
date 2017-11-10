@@ -9,8 +9,10 @@ public class LogEntity implements Serializable{
 	private String method;//执行的方法
 	private String reponseTime;//响应
 	private String ip;//本地IP地址
-	private String date;//执行的时间
-	private String commite;//执行的描述
+	private String date;//执行的时间，具体到秒 
+	private String dateTime;//具体到日
+	private String commite;//执行的描述,具体到错误信息
+	private String result;//具体到成功/失败
 	
 	
 	public int getLogId() {
@@ -60,6 +62,18 @@ public class LogEntity implements Serializable{
 	}
 	public void setCommite(String commite) {
 		this.commite = commite;
+	}
+	public String getDateTime() {
+		return dateTime;
+	}
+	public void setDateTime(String dateTime) {
+		this.dateTime = dateTime;
+	}
+	public String getResult() {
+		return result;
+	}
+	public void setResult(String result) {
+		this.result = result;
 	}
 	
 

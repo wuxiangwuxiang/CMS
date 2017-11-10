@@ -42,7 +42,7 @@ public class LogEntityController {
 			map.put("result", true);
 		}
 		else {
-			map.put("result", false);
+			map.put("result", false); 
 		}
 		return map;
 	}

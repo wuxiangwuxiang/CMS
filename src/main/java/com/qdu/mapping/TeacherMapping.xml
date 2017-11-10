@@ -9,7 +9,7 @@
 		<result property="teacherName" column="TeacherName" />
 		<result property="teacherGender" column="TeacherGender" />
 		<result property="teacherSubject" column="TeacherSubject" />
-
+ 
 		<!-- 课程表 -->
 		<collection property="course" ofType="com.qdu.pojo.Course"
 			javaType="ArrayList" column="TeacherMobile"

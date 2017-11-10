@@ -96,8 +96,9 @@ public class StudentInfoController {
 			map.put("result", true);
 		}else{
 			map.put("result", false);
-		}
+		} 
 		return map;
 	}
+	
 
 }

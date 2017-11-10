@@ -9,7 +9,7 @@ public class StudentInfo implements Serializable{
 	private int studentInfoId;
 	private Student student;
 	private Course course;
-	private int signIn;
+	private int signIn; 
 	private int comeLate;
 	private int leaveEarlier;
 	private int absenteeism;

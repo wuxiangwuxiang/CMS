@@ -19,7 +19,7 @@ public class TeacherServiceImpl implements TeacherService{
 	public void insertTeacher(Teacher teacher) {
 		teacherDaoImpl.insertTeacher(teacher);
 	}
-
+ 
 
 	@Override
 	public Teacher selectTeacherByEmail(String teacherMobile) {

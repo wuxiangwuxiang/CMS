@@ -29,7 +29,7 @@ import com.qdu.service.TeacherService;
 @RequestMapping(value = "/course")
 public class CourseController {
 
-	@Autowired
+	@Autowired 
 	CourseService courseServiceImpl;
 	@Autowired
 	TeacherService teacherServiceImpl;

@@ -25,7 +25,7 @@
 			<result property="birthDay" column="BirthDay" />
 			<result property="freeStyle" column="FreeStyle" />
 		</association>
-
+ 
 		<association property="course" javaType="com.qdu.pojo.Course">
 			<id property="courseId" column="CourseId" />
 			<result property="courseName" column="CourseName" />
@@ -151,6 +151,10 @@
 
 	<select id="selectInfoList" parameterType="int" resultMap="StudentInfoResult">
 		select * from StudentInfo where CourseId = #{courseId}
+	</select>
+	
+	<select id="selectStudentInfoList" parameterType="ArrayList" resultMap="StudentInfoResult">
+		select * from StudentInfo where StudentRoNo = #{studentRoNo}
 	</select>
 
 
