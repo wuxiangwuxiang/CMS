@@ -171,19 +171,19 @@ function submitSignIn() {
          dataType: "json",
          async: false,
          url: "<%=request.getContextPath()%>/student/submitSignIn.do",
-         success: function (data) {
-        	 alert(data.message);
-        	 window.location.reload();
-         },
-         error: function (data) {
-             alert("服务器异常！");
-         },
-     });
-}
-//获取所有签到记录
-function getRecord() {
-	$('#scoreTable').toggle();
-}
+			success : function(data) {
+				alert(data.message);
+				window.location.reload();
+			},
+			error : function(data) {
+				alert("服务器异常！");
+			},
+		});
+	}
+	//获取所有签到记录
+	function getRecord() {
+		$('#scoreTable').toggle();
+	}
 </script>
 </head>
 <body>
@@ -215,75 +215,125 @@ function getRecord() {
 			</div>
 		</div>
 
-
-
-
-		<div
-			style="width: 49%; heigh: 600px; border: solid;; border-color: red; float: left;">
-			<h3>课程：${course.courseName}</h3>
-			<input type="text" value="${course.courseId}" style="display: none;" />
-			<br /> <a id="qrHref" onclick="showQrImg()" href="#">点名签到</a><br />
-			<br /> <a href="#" onclick="submitSignIn()">提交签到表</a><br /> <br />
-			<a href="#">补签</a><br /> <br /> <a href="#" onclick="getRecord()">签到记录</a><br />
-			<br /> <input type="text" id="cccourseId" value="${course.courseId}"
-				style="display: none;" /> <input type="text" id="teacherMobile"
-				value="${teacher.teacherMobile}" style="display: none;" /> <a
-				href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a><br />
-			<table border="1">
-				<tr>
-					<th>班级</th>
-					<th>学年</th>
-					<th colspan="3">操作</th>
-				</tr>
-
-				<c:choose>
-					<c:when test="${! empty course.clazz }">
-						<c:forEach items="${course.clazz}" var="c">
-							<tr>
-								<td>${c.clazzName}</td>
-								<td>${c.currentYear}</td>
-								<td>
-									<form id="asd${c.clazzId}"
-										action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do"
-										method="post">
-										<input name="clazzId" style="display: none;"
-											value="${c.clazzId}" /> <a id="${c.clazzId}"
-											onclick="aClick(this.id)" href="#">查看</a>
-									</form>
-								</td>
-								<td><a id="zxc${c.clazzId}"
-									onclick="changeWhenClick(this.id)" href="#">修改</a></td>
-								<td><a id="del${c.clazzId}"
-									onclick="deleteClazzByAjax(this.id)" href="#">删除</a></td>
-							</tr>
-							<br />
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						<a>(空)</a>
-					</c:otherwise>
-				</c:choose>
-			</table>
-			<br /> <br />
+		<!-- 左侧垂直导航 -->
+		<div class="layui-side layui-bg-black">
+			<div class="layui-side-scroll">
+				<ul class="layui-nav layui-nav-tree" lay-filter="test">
+					<!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+					<li class="layui-nav-item layui-nav-itemed"><a
+						href="javascript:;">签到</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a id="checkCourseShow" href="#">点名签到</a>
+							</dd>
+							<dd>
+								<a id="createCourse" href="#">补签</a>
+							</dd>
+							<dd>
+								<a href="#">签到记录</a>
+							</dd>
+						</dl></li>
+					<li class="layui-nav-item"><a href="#">解决方案</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="#">移动模块</a>
+							</dd>
+							<dd>
+								<a href="#">后台模版</a>
+							</dd>
+							<dd>
+								<a href="#">电商平台</a>
+							</dd>
+						</dl></li>
+					<li class="layui-nav-item"><a href="#">产品</a></li>
+					<li class="layui-nav-item"><a href="#">大数据</a></li>
+				</ul>
+			</div>
 		</div>
 
-		<div
-			style="width: 49%; heigh: 600px; border: solid;; border-color: red; float: left; overflow: auto;">
-			<form id="clazzForm" style="display: none">
-				<input type="text" id="courseId" name="courseId"
-					value="${course.courseId}" /><br /> <input type="text"
-					id="preclazzId" name="preclazzId"><br /> 班级名称：<input
-					type="text" id="preclazzName" name="preclazzName"><br /> <input
-					onclick="saveChange()" type="button" value="提交修改" />
-			</form>
-			<a href="#">发布公告</a><br /> <a href="#">上传资料</a><br />
-			<div id="validateCode"
-				style="width: 100%; height: 30px; font-size: 25px; text-align: center; border: solid; border-bottom-color: red;"></div>
+		<!-- 内容 -->
+		<div class="layui-body site-demo">
+			
+			
+			<div style="border: solid;border-color:blue;">
+				<div style="width: 100%; height: 20%; border: solid; border-color: yellow; text-align: center;">
+					<img id="qrImg" alt="签到二维码" src="">
+				</div>
+				<div style="border: solid;border-color:red;">
+					<input type="text" value="${course.courseId}" style="display: none;" />
+					<br /> <a id="qrHref" onclick="showQrImg()" href="#">开始签到</a><br />
+					<br /> <a href="#" onclick="submitSignIn()">提交签到表</a><br /> <br />
+				
+				</div>				
+			</div>
 
 			<div
-				style="width: 100%; height: 20%; border: solid; border-color: blue; text-align: center;">
-				<img id="qrImg" alt="签到二维码" src="">
+				style="width: 49%; heigh: 600px; border: solid;; border-color: red; overflow: auto;">
+				<form id="clazzForm" style="display: none">
+					<input type="text" id="courseId" name="courseId"
+						value="${course.courseId}" /><br /> <input type="text"
+						id="preclazzId" name="preclazzId"><br /> 班级名称：<input
+						type="text" id="preclazzName" name="preclazzName"><br />
+					<input onclick="saveChange()" type="button" value="提交修改" />
+				</form>
+				<a href="#">发布公告</a><br /> <a href="#">上传资料</a><br />
+				<div id="validateCode"
+					style="width: 100%; height: 30px; font-size: 25px; text-align: center; border: solid; border-bottom-color: red;"></div>
+
+
 			</div>
+
+
+
+			<div
+				style="width: 49%; heigh: 600px; border: solid;; border-color: red;">
+				<h3>课程：${course.courseName}</h3>
+				
+				<a href="#">补签</a><br /> <br /> <a href="#" onclick="getRecord()">签到记录</a><br />
+				<br /> <input type="text" id="cccourseId"
+					value="${course.courseId}" style="display: none;" /> <input
+					type="text" id="teacherMobile" value="${teacher.teacherMobile}"
+					style="display: none;" /> <a
+					href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a><br />
+				<table border="1">
+					<tr>
+						<th>班级</th>
+						<th>学年</th>
+						<th colspan="3">操作</th>
+					</tr>
+
+					<c:choose>
+						<c:when test="${! empty course.clazz }">
+							<c:forEach items="${course.clazz}" var="c">
+								<tr>
+									<td>${c.clazzName}</td>
+									<td>${c.currentYear}</td>
+									<td>
+										<form id="asd${c.clazzId}"
+											action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do"
+											method="post">
+											<input name="clazzId" style="display: none;"
+												value="${c.clazzId}" /> <a id="${c.clazzId}"
+												onclick="aClick(this.id)" href="#">查看</a>
+										</form>
+									</td>
+									<td><a id="zxc${c.clazzId}"
+										onclick="changeWhenClick(this.id)" href="#">修改</a></td>
+									<td><a id="del${c.clazzId}"
+										onclick="deleteClazzByAjax(this.id)" href="#">删除</a></td>
+								</tr>
+								<br />
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<a>(空)</a>
+						</c:otherwise>
+					</c:choose>
+				</table>
+				<br /> <br />
+			</div>
+
+
 			<br />
 
 			<table width="100%" border="1" id="showStudents">
@@ -317,7 +367,23 @@ function getRecord() {
 				</c:choose>
 			</table>
 
+
+
 		</div>
+
 	</div>
+
+	<script>
+		layui.use([ 'element', 'layer' ], function() {
+			var element = layui.element, $ = layui.jquery;
+
+			//监听导航点击
+			element.on('nav(demo)', function(elem) {
+				//console.log(elem)
+				layer.msg(elem.text());
+			});
+		});
+	</script>
+
 </body>
 </html>
