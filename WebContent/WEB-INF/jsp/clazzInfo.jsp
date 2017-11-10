@@ -87,14 +87,27 @@ function hello(){
          url: "<%=request.getContextPath()%>/student/getVertifyCode.do",
          success: function (data) {
         	 $("#validateCode").html(data.code);
-        	 var t2 = window.setTimeout("hello()",7000);//7s后刷新随机数
+        	 var t2 = window.setTimeout("hello()",15000);//15s后刷新随机数
          },
          error: function (data) {
              alert("服务器异常！");
          },
      });
-	 window.setTimeout("closeValidateCode()",13000);
+	 window.setTimeout("closeValidateCode()",30000);
 	} 
+//倒计时
+var maxtime = 10;
+function CountDown(){  
+		if(maxtime>=0){   
+			 seconds = maxtime;  
+			 msg = "签到码还有"+seconds+"秒刷新";  
+			 document.all["timer"].innerHTML=msg;   
+			 --maxtime;  
+		}else{  
+		clearInterval(timer);    
+		}  
+}  
+//timer = setInterval("CountDown()",1000); 	
 //显示签到二维码
 function showQrImg() {
 	 $.ajax({
@@ -109,14 +122,14 @@ function showQrImg() {
          url: "<%=request.getContextPath()%>/course/getQrImg.do",
          success: function (data) {
         	 var url = "/ClassManageSys/qrImg/" + data.url + ".gif";
-        	 alert(url);
         	 var imgPre = document.getElementById("qrImg");
-        	 imgPre.style.display = "block";
+//         	 imgPre.style.display = "block";
              imgPre.src = url;
+             setInterval("CountDown()",1000);
              //5s刷新
              setInterval('YesConfirm()', 5000);
              var t1 = window.setTimeout("hello()",10000); //10s后显示随机数
-            // window.clearTimeout(t1);//去掉定时器 
+            // window.clearTimeout(t1);//去掉定时器             
          },
          error: function (data) {
              alert("服务器异常！");
@@ -253,19 +266,44 @@ function submitSignIn() {
 
 		<!-- 内容 -->
 		<div class="layui-body site-demo">
-			
-			
-			<div style="border: solid;border-color:blue;">
+
+			<!-- 签到模块 -->
+			<div style="border: solid; border-color: blue;">
+				<!-- 二维码模块 -->
 				<div style="width: 100%; height: 20%; border: solid; border-color: yellow; text-align: center;">
-					<img id="qrImg" alt="签到二维码" src="">
+					<!-- 签到数字 -->
+					<div id="validateCode"
+						style="width: 100%; height: 30px; font-size: 25px; text-align: center; border: solid; border-color: green;"><span id="timer">签到码</span>
+					</div>			
+					<!-- 签到二维码 -->
+					<div style="border: solid; border-color: red; padding: 10px; width: auto;text-align: center;">
+						<img style="border: solid; border-color: black;" id="qrImg"
+							alt="签到二维码" src="">
+					</div>
+					
 				</div>
-				<div style="border: solid;border-color:red;">
-					<input type="text" value="${course.courseId}" style="display: none;" />
-					<br /> <a id="qrHref" onclick="showQrImg()" href="#">开始签到</a><br />
-					<br /> <a href="#" onclick="submitSignIn()">提交签到表</a><br /> <br />
-				
-				</div>				
+				<!-- 签到操作 -->
+				<div style="border: solid; border-color: red;">
+					<input type="text" value="${course.courseId}"
+						style="display: none;" /> <br /> <a id="qrHref" class="layui-btn layui-btn-normal"
+						onclick="showQrImg()" href="#">开始签到</a><br /> <br /> <a href="#"
+						onclick="submitSignIn()">提交签到表</a><br /> <br />
+				</div>
 			</div>
+			<script>
+// 				var maxtime = 10 //按秒计算(10s)  
+// 				function CountDown(){  
+// 			  		if(maxtime>=0){   
+// 			   			 seconds = maxtime;  
+// 			   			 msg = "签到码还有"+seconds+"秒刷新";  
+// 			   			 document.all["timer"].innerHTML=msg;   
+// 			   			 --maxtime;  
+// 			 		}else{  
+// 			    		clearInterval(timer);    
+// 			  		}  
+// 				}  
+// 				timer = setInterval("CountDown()",1000); 				
+			</script>
 
 			<div
 				style="width: 49%; heigh: 600px; border: solid;; border-color: red; overflow: auto;">
@@ -277,8 +315,7 @@ function submitSignIn() {
 					<input onclick="saveChange()" type="button" value="提交修改" />
 				</form>
 				<a href="#">发布公告</a><br /> <a href="#">上传资料</a><br />
-				<div id="validateCode"
-					style="width: 100%; height: 30px; font-size: 25px; text-align: center; border: solid; border-bottom-color: red;"></div>
+
 
 
 			</div>
@@ -288,7 +325,7 @@ function submitSignIn() {
 			<div
 				style="width: 49%; heigh: 600px; border: solid;; border-color: red;">
 				<h3>课程：${course.courseName}</h3>
-				
+
 				<a href="#">补签</a><br /> <br /> <a href="#" onclick="getRecord()">签到记录</a><br />
 				<br /> <input type="text" id="cccourseId"
 					value="${course.courseId}" style="display: none;" /> <input
