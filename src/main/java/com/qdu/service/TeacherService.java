@@ -13,5 +13,7 @@ public void insertTeacher(Teacher teacher);
 	public Teacher selecctTeacherByThree(String teacherMobile, String teacherName, String teacherEmail);
 	
 	public void changeTeaMail(String teacherMobile, String teacherEmail);
+	
+	public Teacher selectTeacherByMobile(String teacherMobile);
  
 }

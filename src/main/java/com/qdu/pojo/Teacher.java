@@ -11,6 +11,10 @@ public class Teacher implements Serializable{
 	private String teacherGender;
 	private String teacherSubject;
 	private List<Course> course;
+	
+	public Teacher(){
+		
+	}
 	public String getTeacherMobile() {
 		return teacherMobile;
 	}
@@ -54,7 +58,6 @@ public class Teacher implements Serializable{
 	}
 	public void setCourse(List<Course> course) {
 		this.course = course;
-	}
-
+	}	
 	
 }

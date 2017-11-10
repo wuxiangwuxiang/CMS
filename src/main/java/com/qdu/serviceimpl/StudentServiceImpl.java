@@ -62,6 +62,11 @@ public class StudentServiceImpl implements StudentService{
 		studentDaoImpl.changeStuMail(studentRoNo, studentEmail);
 	}
 
+	@Override
+	public int updateStudentextra(Student student) {
+		return studentDaoImpl.updateStudentextra(student);
+	}
+
 	
 
 

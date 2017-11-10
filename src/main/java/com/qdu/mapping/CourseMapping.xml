@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.qdu.mapping.CourseMapping">
-<cache type="com.qdu.cache.RedisCache"/>
+	<cache type="com.qdu.cache.RedisCache" />
 	<resultMap type="com.qdu.pojo.Course" id="CourseResult">
 		<id property="courseId" column="CourseId" />
 		<result property="courseName" column="CourseName" />
@@ -26,7 +26,7 @@
 			javaType="ArrayList" column="CourseId"
 			select="com.qdu.mapping.StudentInfoMapping.selectStudentInfoByCourse">
 			<id property="studentInfoId" column="StudentInfoId" />
-			<result property="signIn" column="SignIn"/>
+			<result property="signIn" column="SignIn" />
 			<result property="comeLate" column="ComeLate" />
 			<result property="leaveEarlier" column="LeaveEarlier" />
 			<result property="absenteeism" column="Absenteeism" />
@@ -40,6 +40,12 @@
 				<result property="studentName" column="StudentName" />
 				<result property="studentGender" column="StudentGender" />
 				<result property="studentPhoto" column="StudentPhoto" />
+				<result property="college" column="College" />
+				<result property="special" column="Special" />
+				<result property="intoSchoolYear" column="IntoSchoolYear" />
+				<result property="schoolRecord" column="SchoolRecord" />
+				<result property="birthDay" column="BirthDay" />
+				<result property="freeStyle" column="FreeStyle" />
 
 				<association property="teacher" javaType="com.qdu.pojo.Teacher">
 					<id property="teacherMobile" column="TeacherMobile" />
@@ -71,6 +77,12 @@
 				<result property="studentName" column="StudentName" />
 				<result property="studentGender" column="StudentGender" />
 				<result property="studentPhoto" column="StudentPhoto" />
+				<result property="college" column="College" />
+				<result property="special" column="Special" />
+				<result property="intoSchoolYear" column="IntoSchoolYear" />
+				<result property="schoolRecord" column="SchoolRecord" />
+				<result property="birthDay" column="BirthDay" />
+				<result property="freeStyle" column="FreeStyle" />
 
 				<association property="teacher" javaType="com.qdu.pojo.Teacher">
 					<id property="teacherMobile" column="TeacherMobile" />
@@ -83,7 +95,7 @@
 
 				<association property="studentInfo" javaType="com.qdu.pojo.StudentInfo">
 					<id property="studentInfoId" column="StudentInfoId" />
-					<result property="signIn" column="SignIn"/>
+					<result property="signIn" column="SignIn" />
 					<result property="comeLate" column="ComeLate" />
 					<result property="leaveEarlier" column="LeaveEarlier" />
 					<result property="absenteeism" column="Absenteeism" />
@@ -110,7 +122,8 @@
 
 	<select id="selectCourseList" parameterType="ArrayList"
 		resultMap="CourseResult">
-		SELECT * from Teacher t JOIN course c ON t.TeacherMobile = c.TeacherMobile 
+		SELECT * from Teacher t JOIN course c ON t.TeacherMobile =
+		c.TeacherMobile
 		AND t.TeacherMobile = #{teacherMobile}
 		ORDER BY c.CourseId DESC
 	</select>
@@ -158,9 +171,9 @@
 		where CourseId =
 		${courseId}
 	</update>
-	
-	<delete id="deleteCourseById" parameterType = "int">
-	delete from Course where CourseId = #{courseId}
+
+	<delete id="deleteCourseById" parameterType="int">
+		delete from Course where CourseId = #{courseId}
 	</delete>
 </mapper>
 

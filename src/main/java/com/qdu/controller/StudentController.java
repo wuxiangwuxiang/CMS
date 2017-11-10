@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,12 +33,14 @@ import com.qdu.service.MessageService;
 import com.qdu.service.QrTemService;
 import com.qdu.service.StudentInfoService;
 import com.qdu.service.StudentService;
+import com.qdu.service.TeacherService;
 import com.qdu.util.GlobalVariable;
 import com.qdu.util.JavaEmailSender;
 import com.qdu.util.MD5Util;
+import com.qdu.util.Page;
 import com.qdu.util.VertifyCodeUtil;
 
-@Controller 
+@Controller
 @RequestMapping(value = "/student")
 public class StudentController {
 	@Autowired
@@ -50,20 +53,39 @@ public class StudentController {
 	private CourseService courseServiceImpl;
 	@Autowired
 	private StudentInfoService studentInfoServiceImpl;
-	@Autowired private MessageService messageServiceImpl;
+	@Autowired
+	private MessageService messageServiceImpl;
+	@Autowired
+	private TeacherService teacherServiceImpl;
 
 	// 学生登录
 	@RequestMapping(value = "/studentLogin.do")
 	@SystemLog(module = "学生", methods = "日志管理-登录")
-	public String studentLogin(HttpServletRequest request, ModelMap map) {
-		String studentRoNo = request.getParameter("studentRoNo");
-		String password = request.getParameter("studentPassword");
+	public String studentLogin(HttpServletRequest request, String pageNow, String studentRoNo, String password,
+			ModelMap map) {
+		if (studentRoNo == null) {
+			studentRoNo = request.getParameter("studentRoNo");
+		}
+		if (password == null) {
+			password = request.getParameter("studentPassword");
+		}
 		System.out.println("正经登陆");
 		List<StudentInfo> studentInfos = studentInfoServiceImpl.selectCourseByStudentRono(studentRoNo);
 		Student student2 = studentServiceImpl.selectStudentByNo(studentRoNo);
 		if (student2 != null) {
-			System.out.println(MD5Util.md5(password, "juin"));
-			if (MD5Util.md5(password, "juin").equals(student2.getStudentPassword())) {
+			if (MD5Util.md5(password, "juin").equals(student2.getStudentPassword()) || password.equals(student2.getStudentPassword())) {
+				if (pageNow == null) {
+					pageNow = 1 + "";
+				}
+				Page page = null;
+				int totalCount = messageServiceImpl.selectMessageTotalCount(studentRoNo);
+				page = new Page(totalCount, Integer.parseInt(pageNow));
+				int messageCount = messageServiceImpl.selectMessageCount(studentRoNo);
+				map.put("messageCount", messageCount);
+				List<Message> messages = messageServiceImpl.selectUnreadMessage(studentRoNo,
+						page.getStartPos());
+				map.put("message", messages);
+				map.put("page", page);
 				map.addAttribute("studentInfos", studentInfos);
 				map.addAttribute("student", student2);
 				// session的id存一下
@@ -182,9 +204,21 @@ public class StudentController {
 	// 注册后跳转到首页
 	@SystemLog(module = "学生", methods = "日志管理-学生注册成功跳转到首页")
 	@RequestMapping(value = "/exchangeStudent.do")
-	public String exchangeStudent(String studentRoNo, ModelMap map, HttpServletRequest request) {
+	public String exchangeStudent(String studentRoNo,String pageNow, ModelMap map, HttpServletRequest request) {
 		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
 		List<StudentInfo> studentInfos = studentInfoServiceImpl.selectCourseByStudentRono(studentRoNo);
+		if (pageNow == null) {
+			pageNow = 1 + "";
+		}
+		Page page = null;
+		int totalCount = messageServiceImpl.selectMessageTotalCount(studentRoNo);
+		page = new Page(totalCount, Integer.parseInt(pageNow));
+		int messageCount = messageServiceImpl.selectMessageCount(studentRoNo);
+		map.put("messageCount", messageCount);
+		List<Message> messages = messageServiceImpl.selectUnreadMessage(studentRoNo,
+				page.getStartPos());
+		map.put("message", messages);
+		map.put("page", page);
 		map.put("student", student);
 		map.addAttribute("studentInfos", studentInfos);
 		// session的id存一下
@@ -196,7 +230,7 @@ public class StudentController {
 	// 学生更改密码
 	@RequestMapping(value = "/updateStudentPassWord.do")
 	@SystemLog(module = "学生", methods = "日志管理-更改密码")
-	public String updateStudentPassWord(Student student,ModelMap map,HttpServletRequest request) {
+	public String updateStudentPassWord(Student student, ModelMap map, HttpServletRequest request) {
 		MD5Util.md5(student.getStudentPassword(), "juin");
 		studentServiceImpl.updateStudentPassWord(student);
 		String studentRoNo = request.getParameter("studentRoNo");
@@ -208,11 +242,12 @@ public class StudentController {
 		request.getSession().setAttribute("UserId", student.getStudentRoNo());
 		return "waitForRegister";
 	}
-	//学生更换邮箱
+
+	// 学生更换邮箱
 	@SystemLog(module = "学生", methods = "日志管理-更换邮箱")
 	@RequestMapping(value = "/changeStuMail.do")
 	@ResponseBody
-	public Map<String, Object> changeStuMail(String studentRoNo,String studentEmail){
+	public Map<String, Object> changeStuMail(String studentRoNo, String studentEmail) {
 		System.out.println(studentRoNo);
 		System.out.println(studentEmail);
 		Map<String, Object> map = new HashMap<>();
@@ -350,62 +385,123 @@ public class StudentController {
 		map.put("code", code);
 		return map;
 	}
-	//学生找回密码
+
+	// 学生找回密码
 	@SystemLog(module = "学生", methods = "日志管理-找回密码(跳转)")
 	@RequestMapping(value = "/getStudentPasswordBack.do")
-	public String getStudentPasswordBack(){
+	public String getStudentPasswordBack() {
 		return "studentGetPasswordBack";
 	}
-	//学生找回密码前的账号验证
+
+	// 学生找回密码前的账号验证
 	@SystemLog(module = "学生", methods = "日志管理-找回密码(验证+临时密码发放)")
 	@RequestMapping(value = "/forStudentReGetPass.do")
 	@ResponseBody
-	public Map<String, Object> forStudentReGetPass(String studentRoNo,String name,String mobile,String mail,HttpServletRequest request) throws Exception{
+	public Map<String, Object> forStudentReGetPass(String studentRoNo, String name, String mobile, String mail,
+			HttpServletRequest request) throws Exception {
 		System.out.println("进来验证");
 		Student student = studentServiceImpl.selectStudentByFour(studentRoNo, name, mobile, mail);
 		Map<String, Object> map = new HashMap<>();
-		if(student != null){
+		if (student != null) {
 			Random random = new Random();
-			char a1 = (char)(random.nextInt(24)+97);
-			char a2 = (char)(random.nextInt(14)+97);
-			int x = random.nextInt(9000)+1000;
+			char a1 = (char) (random.nextInt(24) + 97);
+			char a2 = (char) (random.nextInt(14) + 97);
+			int x = random.nextInt(9000) + 1000;
 			String cc = a1 + "" + x + a2;
 			System.out.println(cc);
-			studentServiceImpl.ajaxupdateStudentPassWord(studentRoNo, cc);			    
+			studentServiceImpl.ajaxupdateStudentPassWord(studentRoNo, cc);
 			String EMAIL = mail;
-		        String TITLE = student.getStudentName() + ",找回密码";//标题
-		        String CONTENT = "临时密码为:"+ "   " + "[" + cc + "]" + "\n" +
-		        		"为了安全，请尽快使用此密码登录后修改密码"; //内容
-		        JavaEmailSender.sendEmail(EMAIL, TITLE, CONTENT);
+			String TITLE = student.getStudentName() + ",找回密码";// 标题
+			String CONTENT = "临时密码为:" + "   " + "[" + cc + "]" + "\n" + "为了安全，请尽快使用此密码登录后修改密码"; // 内容
+			JavaEmailSender.sendEmail(EMAIL, TITLE, CONTENT);
 			map.put("result", true);
-		}else{
+		} else {
 			map.put("result", false);
 			System.out.println("查无此人");
 		}
 		return map;
 	}
-	//ajax学生添加课程发信息给老师
+
+	// ajax学生添加课程发信息给老师
 	@SystemLog(module = "学生", methods = "日志管理-添加课程")
 	@RequestMapping(value = "/atudentAddCourse.do")
 	@ResponseBody
-	public Map<String, Object> atudentAddCourse(String studentRono,String courseName,int courseId){
-		Map<String,Object> map = new HashMap<>();
-		 String time = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
-		 Course course = courseServiceImpl.selectCourseById(courseId);
-		 Teacher teacher = course.getTeacher();
-		 Student student = studentServiceImpl.selectStudentByNo(studentRono);
-		 Message message =  new Message();
-		 message.setMessageSender(studentRono);
-		 message.setMessageAccepter(teacher.getTeacherMobile());
-		 message.setMessageTitle(student.getStudentName() + "同学申请加入课程： " + course.getCourseName() + 
-				 "(" + course.getCurrentYear() + "/" + course.getSchoolTem() + ")");
-		 message.setSendTime(time);
-		 message.setHaveRead("未读"); 
-		 message.setMessageType("insertCourse");
-		 message.setMessageContent(courseId+"");
-		 messageServiceImpl.insertMessage(message);
+	public Map<String, Object> atudentAddCourse(String studentRono, String courseName, int courseId) {
+		Map<String, Object> map = new HashMap<>();
+		String time = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
+		Course course = courseServiceImpl.selectCourseById(courseId);
+		Teacher teacher = course.getTeacher();
+		Student student = studentServiceImpl.selectStudentByNo(studentRono);
+		Message message = new Message();
+		message.setMessageSender(studentRono);
+		message.setMessageAccepter(teacher.getTeacherMobile());
+		message.setMessageTitle(student.getStudentName() + "同学申请加入课程： " + course.getCourseName() + "("
+				+ course.getCurrentYear() + "/" + course.getSchoolTem() + ")");
+		message.setSendTime(time);
+		message.setHaveRead("未读");
+		message.setMessageType("insertCourse");
+		message.setMessageContent(courseId + "");
+		messageServiceImpl.insertMessage(message);
 		map.put("result", true);
 		return map;
 	}
+	// ajax获取消息数量
+		@RequestMapping(value = "/gggetMessageCount.do")
+		@ResponseBody
+		public Map<String, Object> gggetMessageCount(String studentRoNo) {
+			Map<String, Object> map = new HashMap<>();
+			int messages = messageServiceImpl.selectMessageCount(studentRoNo);
+			map.put("message", messages);
+			return map;
+		}
+		// 查看具体消息
+		@SystemLog(module = "学生", methods = "日志管理-查看消息")
+		@RequestMapping(value = "/getMessageByAjax.do")
+		@ResponseBody
+		public Map<String, Object> getMessageByAjax(int messageId) {
+			Map<String, Object> map = new HashMap<>();
+			messageServiceImpl.uodateMesageHaveread(messageId);
+			Message message = messageServiceImpl.selectMessageById(messageId);
+			//标记：教师查询有点问题，后续等待改动
+			Course course = courseServiceImpl.selectCourseById(Integer.parseInt(message.getMessageContent()));
+			if(course != null){
+				Teacher teacher2 = course.getTeacher();
+				map.put("teacher", teacher2);
+			}
+			map.put("mmm", message);
+			System.out.println(map);
+			return map;
+		}
+		//ajax更新学生信息
+		@SystemLog(module = "学生", methods = "日志管理-刷新信息")
+		@RequestMapping(value = "/updateStudentInfoByAjax.do")
+		@ResponseBody
+		public Map<String, Object> updateStudentInfoByAjax(String studentRono,String college,String special,
+				@DateTimeFormat(pattern = "yyyy") Date intoSchoolYear,String schoolRecord,@DateTimeFormat(pattern = "yyyy-MM-dd") Date birthDay,String freeStyle){
+			System.out.println(studentRono);
+			System.out.println(college);
+			System.out.println(special);
+			System.out.println(schoolRecord);
+			System.out.println(birthDay);
+			System.out.println(intoSchoolYear);
+			System.out.println(freeStyle);
+			Map<String, Object> map = new HashMap<>();
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy");
+			SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd");
+			Student student  =studentServiceImpl.selectStudentByNo(studentRono);
+			student.setCollege(college);
+			student.setSpecial(special);
+			student.setBirthDay(sdf2.format(birthDay));
+			student.setFreeStyle(freeStyle);
+			student.setSchoolRecord(schoolRecord);
+			student.setIntoSchoolYear(Integer.parseInt(sdf.format(intoSchoolYear)));
+			int tem = studentServiceImpl.updateStudentextra(student);
+			if(tem > 0){
+				map.put("result", true);
+			}else {
+				map.put("result", false);
+			}
+			return map;
+		}
 
 }

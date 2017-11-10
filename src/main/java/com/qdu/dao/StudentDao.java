@@ -25,5 +25,7 @@ public interface StudentDao {
 	
 	public void changeStuMail(String studentRoNo,String studentEmail);
 	
+	public int updateStudentextra(Student student);
+	
  
 }

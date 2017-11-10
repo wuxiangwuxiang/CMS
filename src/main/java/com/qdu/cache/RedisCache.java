@@ -68,8 +68,8 @@ public class RedisCache implements Cache
         Object value = SerializeUtil.unserialize(RedisUtil.getJedis().get(SerializeUtil.serialize(key.toString())));
 
         logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>getObject:"+key+"="+value);
-
         return value;
+        
 
     }
 
@@ -84,7 +84,7 @@ public class RedisCache implements Cache
  
 
     public void clear() {
-
+    	System.out.println("clear");
         RedisUtil.getJedis().flushDB();
 
     }

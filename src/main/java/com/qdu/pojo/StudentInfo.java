@@ -55,12 +55,6 @@ public class StudentInfo implements Serializable{
 	public void setAbsenteeism(int absenteeism) {
 		this.absenteeism = absenteeism;
 	}
-	@Override
-	public String toString() {
-		return "StudentInfo [studentInfoId=" + studentInfoId + ", student=" + student + ", course=" + course
-				+ ", signIn=" + signIn + ", comeLate=" + comeLate + ", leaveEarlier=" + leaveEarlier + ", absenteeism="
-				+ absenteeism + "]";
-	}
-	
+
 	
 }

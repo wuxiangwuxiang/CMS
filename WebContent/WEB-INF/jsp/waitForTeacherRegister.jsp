@@ -12,7 +12,7 @@
 <meta http-equiv="refresh"
 	content="2;URL=<%=request.getContextPath() %>/teacher/teacherFirstLogin.do?teacherMobile=${teacher.teacherMobile}">
 <link rel="shortcut icon" type="image/x-icon"
-	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
+	href="<%=request.getContextPath()%>/icon/cms2.ico" media="screen" />
 
 
 <script type="text/javascript"

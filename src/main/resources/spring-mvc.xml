@@ -19,7 +19,7 @@
 	xmlns="http://www.springframework.org/schema/beans">
 
 	<context:component-scan base-package="com.qdu.controller" />
-	<mvc:annotation-driven />
+	<mvc:annotation-driven />         
 	<aop:aspectj-autoproxy/>
 	<!--SpringMVC上传文件时，需要配置MultipartResolver处理器 -->
 	<bean

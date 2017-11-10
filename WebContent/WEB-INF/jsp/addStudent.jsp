@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
 <link rel="shortcut icon" type="image/x-icon"
-	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
+	href="<%=request.getContextPath()%>/icon/cms2.ico" media="screen" />
 
 <link type="text/css" rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/bootstrap.min.css">
@@ -150,7 +150,7 @@
 						style="display: none;" onchange="preImg(this.id, 'imgPre','tct');" />
 					<button class="layui-btn" type="button"
 						onclick="uploadFile.click()" style="float: left;">上传照片</button>
-					<input id="tct" type="text" name="studentPhoto" value=""
+					<input id="tct" type="text" name="studentPhoto" value="" lay-verify="photovalidate"
 						style="display: none" />
 						<button style="float: left;margin-left: 34%; width:100px" type="reset" class="layui-btn layui-btn-primary">重置</button>
 				        <br/><br/><br/><button style="margin-left: 0;" class="layui-btn" lay-submit lay-filter="formDemo">现在注册</button>
@@ -179,17 +179,24 @@
 			form.on('submit(formDemo)', function(data) {
 				
 				var id = $('#id').val();
-				if (trySubmit(id)) {
+				var tct = $('#tct').val();
+				if(tct != null && tct != ""){
+				   if (trySubmit(id) && tct != "") {
 					return true;
 				} else {
 					alert("用户已存在!");
 					return false;
 				}
+			}else {
+				//alert("请上传照片");
+			}
+				
 			});
 			
 			function trySubmit(id) {
 				var studentRoNo = id;
 				  var result = false;
+				  var tct = $('#tct').val();
 				$.ajax({
 		              type: "GET",
 		              data: {
@@ -201,7 +208,7 @@
 		              url: "<%=request.getContextPath() %>/student/confirmExitsStudent.do",
 //		              beforeSend:function(){$("#href").html("等待..");},
 		              success: function (data) {
-		            	  if(data.result == true){
+		            	  if(data.result == true && tct != ""){
 		            		  result = true;
 		            	  }
 		              },
@@ -214,7 +221,8 @@
 
 			form.verify({
 				idvalidate:[/^[\d]{10,20}$/,'学号必须是10到20位数字'],
-				pass : [/^[\w]{6,16}$/, '密码必须6到16位的数字,字母或下划线']
+				pass : [/^[\w]{6,16}$/, '密码必须6到16位的数字,字母或下划线'],
+				photovalidate: [/\S/,'请上传照片']
 			});
 		});
 	</script>

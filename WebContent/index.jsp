@@ -5,7 +5,8 @@
 <head> 
 <meta charset="utf-8"> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
+<link rel="shortcut icon" type="image/x-icon"
+	href="<%=request.getContextPath()%>/icon/cms2.ico" media="screen" />
 <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">
 <link type="text/css" rel="stylesheet" href="css/mycss.css">
 <script src="js/jquery-3.2.1.min.js"></script>

@@ -22,7 +22,9 @@ public class Course implements Serializable{
 	private Teacher teacher;
 	private List<StudentInfo> studentInfo;
 
-	
+	public Course(){
+		
+	}
 	public int getCourseId() {
 		return courseId;
 	}
@@ -123,6 +125,7 @@ public class Course implements Serializable{
 	public void setClazz(List<Clazz> clazz) {
 		this.clazz = clazz;
 	}
+
 
 
 }

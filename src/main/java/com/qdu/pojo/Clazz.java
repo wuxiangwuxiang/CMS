@@ -11,6 +11,11 @@ public class Clazz implements Serializable{
 	private Teacher teacher;
 	private Course course;
 	private List<Student> student;
+	
+	
+	public Clazz(){
+		
+	}
 	public int getClazzId() {
 		return clazzId;
 	}
@@ -46,11 +51,6 @@ public class Clazz implements Serializable{
 	}
 	public void setStudents(List<Student> students) {
 		this.student = students;
-	}
-	@Override
-	public String toString() {
-		return "Clazz [clazzId=" + clazzId + ", clazzName=" + clazzName + ", currentYear=" + currentYear + ", teacher="
-				+ teacher + ", course=" + course + ", student=" + student + "]";
 	}
 
 

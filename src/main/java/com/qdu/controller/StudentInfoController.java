@@ -1,5 +1,7 @@
 package com.qdu.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,10 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.qdu.aop.SystemLog;
+import com.qdu.pojo.Course;
+import com.qdu.pojo.Message;
 import com.qdu.pojo.Student;
 import com.qdu.pojo.StudentInfo;
+import com.qdu.pojo.Teacher;
+import com.qdu.service.CourseService;
+import com.qdu.service.MessageService;
 import com.qdu.service.StudentInfoService;
 import com.qdu.service.StudentService;
+import com.qdu.service.TeacherService;
 import com.qdu.util.MD5Util;
 
 @Controller 
@@ -27,6 +35,12 @@ public class StudentInfoController {
 	StudentInfoService studentInfoServiceImpl;
 	@Autowired
 	StudentService studentServiceImpl;
+	@Autowired
+	private TeacherService teacherServiceImpl;
+	@Autowired 
+	private MessageService messageServiceImpl;
+	@Autowired
+	private CourseService courseServiceImpl;
 
 	// 添加学生——课程 中间表
 	@SystemLog(module = "中间表", methods = "日志管理-添加中间表")
@@ -56,15 +70,29 @@ public class StudentInfoController {
 	}
 
 	// 添加学生——课程 中间表 
-	@SystemLog(module = "中间表", methods = "日志管理-添加中间表")
+	@SystemLog(module = "教师", methods = "日志管理-添加学生")
 	@RequestMapping(value = "/insertStudentInfoByteacher.do")
 	@ResponseBody
-	public Map<String, Object> insertStudentInfoByteacher(int courseId, String studentRoNo,
+	public Map<String, Object> insertStudentInfoByteacher(int courseId,String teacherMobile, String studentRoNo,
 			HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
 		StudentInfo studentInfo2 = studentInfoServiceImpl.selectStudentInfoByMany(studentRoNo,courseId);
 		if (studentInfo2 == null) {
 			studentInfoServiceImpl.insertStudentInfo(studentRoNo,courseId);
+			Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
+			Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
+	        String time = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
+	        Message message =  new Message();
+	        Course course = courseServiceImpl.selectCourseById(courseId);
+			 message.setMessageSender(teacherMobile);
+			 message.setMessageAccepter(studentRoNo);
+			 message.setMessageTitle(teacher.getTeacherName() + "老师同意你加入课程< " + course.getCourseName() + 
+					 ">(" + course.getCurrentYear() + "/" + course.getSchoolTem() + ")");
+			 message.setSendTime(time);
+			 message.setHaveRead("未读"); 
+			 message.setMessageType("insertCourse");
+			 message.setMessageContent(courseId+"");
+			 messageServiceImpl.insertMessage(message);
 			map.put("result", true);
 		}else{
 			map.put("result", false);

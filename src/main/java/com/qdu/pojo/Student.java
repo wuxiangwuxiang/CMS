@@ -10,6 +10,12 @@ public class Student implements Serializable{
 	private String studentName;
 	private String studentGender;
 	private String studentPhoto;
+	private String college;
+	private String special;
+	private int intoSchoolYear;
+	private String schoolRecord;
+	private String birthDay;
+	private String freeStyle;
 	private Clazz clazz;
 	private StudentInfo studentInfo;
 	public String getStudentRoNo() {
@@ -56,7 +62,44 @@ public class Student implements Serializable{
 	public void setStudentPhoto(String studentPhoto) {
 		this.studentPhoto = studentPhoto;
 	}
+	
 
+	public String getCollege() {
+		return college;
+	}
+	public void setCollege(String college) {
+		this.college = college;
+	}
+	public String getSpecial() {
+		return special;
+	}
+	public void setSpecial(String special) {
+		this.special = special;
+	}
+	public int getIntoSchoolYear() {
+		return intoSchoolYear;
+	}
+	public void setIntoSchoolYear(int intoSchoolYear) {
+		this.intoSchoolYear = intoSchoolYear;
+	}
+	public String getSchoolRecord() {
+		return schoolRecord;
+	}
+	public void setSchoolRecord(String schoolRecord) {
+		this.schoolRecord = schoolRecord;
+	}
+	public String getBirthDay() {
+		return birthDay;
+	}
+	public void setBirthDay(String birthDay) {
+		this.birthDay = birthDay;
+	}
+	public String getFreeStyle() {
+		return freeStyle;
+	}
+	public void setFreeStyle(String freeStyle) {
+		this.freeStyle = freeStyle;
+	}
 	public StudentInfo getStudentInfo() {
 		return studentInfo;
 	}
@@ -70,12 +113,5 @@ public class Student implements Serializable{
 	public void setClazz(Clazz clazz) {
 		this.clazz = clazz;
 	}
-//	@Override
-//	public String toString() {
-//		return "Student [studentRoNo=" + studentRoNo + ", studentPassword=" + studentPassword + ", studentMobile="
-//				+ studentMobile + ", studentEmail=" + studentEmail + ", studentName=" + studentName + ", studentGender="
-//				+ studentGender + ", studentPhoto=" + studentPhoto + ", teacher=" + teacher + ", course=" + course
-//				+ ", clazz=" + clazz + ", studentInfo=" + studentInfo + "]";
-//	}
 	
 }

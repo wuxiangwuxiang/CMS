@@ -92,6 +92,13 @@ public class StudentDaoImpl implements StudentDao{
 		sessionFactory.openSession().update(statement, map);
 	}
 
+	@Override
+	public int updateStudentextra(Student student) {
+		String statement = "com.qdu.mapping.StudentMapping.updateStudentextra";
+		return sessionFactory.openSession().update(statement, student);
+		
+	}
+
 
 
 }
