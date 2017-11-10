@@ -38,11 +38,6 @@ public class QrTem implements Serializable{
 	public void setQrTime(String qrTime) {
 		this.qrTime = qrTime;
 	}
-	@Override
-	public String toString() {
-		return "QrTem [qrTemId=" + qrTemId + ", courseId=" + courseId + ", studentRoNo=" + studentRoNo + ", qrTime="
-				+ qrTime + "]";
-	}
 	
 	
 

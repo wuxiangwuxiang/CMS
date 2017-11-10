@@ -65,8 +65,6 @@ public class TeacherController {
 		if(password == null){
 			id = password = request.getParameter("password");
 		}
-		//String id = request.getParameter("teacherId");
-		//String password = request.getParameter("password");
 		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(id);
 		if (teacher != null) {
 			if (id.equals(teacher.getTeacherMobile())) {

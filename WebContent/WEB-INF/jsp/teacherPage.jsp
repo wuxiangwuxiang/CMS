@@ -19,6 +19,16 @@
 <title>教师门户</title>
 <script type="text/javascript">
 	 $(document).ready(function () {
+		 if(${page.pageNow} > 1){
+			 $('#changeCourseinfo').hide();
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
+			 $('#courseShow').hide();
+			 $('#courseInfo').hide();
+			 $('#fushuMessage').hide();
+			 $('#seprateMessage').show();
+			 $('#messageShow').show();
+		 }
 		 //如果消息数量为0
 		 //if(${messageCount} == 0){
 			// var TmessageCount = document.getElementById("TmessageCount")
@@ -135,16 +145,7 @@
 	//点击某个消息
 	function getMessage(messageId) {
 		$('#me'+messageId).html("已读");
-		//if(tem > 1){
-		//	if($('#mem'+messageId).val() == '未读'){
-		//		tem = tem - 1;
-		//	}
-		//}else{
-		//	var TmessageCount = document.getElementById("TmessageCount")
-		//	TmessageCount.style.display="none";
-		//}
 		$('#mem'+messageId).val("已读");
-		//$('#TmessageCount').html(tem);
 		getMessageByAjax(messageId);
 	}
 	function getMessageByAjax(messageId) {
@@ -184,10 +185,22 @@
 			dataType : "json",
 		});
 	}
+	function myFunction() {
+		$('#handleMessageShow').hide();
+		 $('#changeCourseinfo').hide();
+		 $('#doubleHandle').hide();
+		 $('#signal').hide();
+		 $('#courseShow').hide();
+		 $('#courseInfo').hide();
+		 $('#fushuMessage').hide();
+		 $('#seprateMessage').show();
+		 $('#messageShow').show();
+	}
 	function agree() {
 		 $.ajax({
              type: "GET",
              data: {
+            	 "teacherMobile":$('#teacherMobile').val(),
 		         "studentRoNo": $('#MstudentRoNo').val(),
 		         "courseId": $('#MCourseId').val()
              },
@@ -198,6 +211,7 @@
 			success : function(data) {
 				if(data.result == true){
 					$('#handleMessageShow').show();
+					setTimeout('myFunction()',1500);
 				}else{
 					alert("请勿重复添加");
 				}
@@ -321,7 +335,7 @@
 			
 			<!-- 显示消息 -->
 			<div class="site-text site-block" id="messageShow"
-				style="padding-left: 10%;">
+				style="padding-left: 10%; display: none;">
 				<table>
 				<c:choose>
 				<c:when test="${! empty message}">
@@ -346,7 +360,7 @@
 				</table>
 			</div>
 			<!-- 消息分页 -->
-			 <div id="seprateMessage" style="text-align: center;margin-left: 0">  
+			 <div id="seprateMessage" style="text-align: center;margin-left: 0; display: none;">  
             <font size="2">第  ${page.pageNow} 页</font> <font size="2">共 ${page.totalPageCount} 页</font>
             <a href="teacherLogin.do?pageNow=1&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">首页</a>  
             <c:choose> 
@@ -498,7 +512,7 @@
 
 			<!-- 课程信息 -->
 			<div class="layui-form sessiontable" id="courseInfo"
-				style="margin-top: 5%; display: none;">
+				style="margin-top: 5%; ">
 				<table class="layui-table" lay-even style="text-align: center;">
 					<colgroup>
 					    <col width="150">

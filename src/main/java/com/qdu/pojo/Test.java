@@ -23,11 +23,7 @@ public class Test {
 	public void setStudentName(String studentName) {
 		this.studentName = studentName;
 	}
-	@Override
-	public String toString() {
-		return "Test [studentId=" + studentId + ", studentPassword=" + studentPassword + ", studentName=" + studentName
-				+ "]";
-	}
+
 	
 	
 	
