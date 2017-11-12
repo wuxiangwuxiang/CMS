@@ -180,6 +180,14 @@
 		o.CourseId
 		AND o.CourseId = #{courseId}
 	</select>
+	
+	<select id="selectClazzNameByCourse" resultMap="ClazzResult"
+		parameterType="ArrayList">
+		select ClazzId, ClazzName from Clazz c,Course o where
+		c.CourseId =
+		o.CourseId
+		AND o.CourseId = #{courseId}
+	</select>
 
 	<select id="clazzListByClazzId" parameterType="ArrayList">
 		select * from Clazz where CourseId = #{courseId}

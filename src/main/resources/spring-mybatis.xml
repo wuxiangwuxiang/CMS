@@ -9,7 +9,7 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
  
- 
+    
 	<context:component-scan base-package="com.qdu"/>
 	<tx:annotation-driven transaction-manager="txManager" />
 	<bean id="dataSource"
@@ -30,6 +30,8 @@
 				<prop key="cacheEnabled">true</prop> 
 				<prop key="lazyLoadingEnabled">false</prop> 
 				<prop key="aggressiveLazyLoading">true</prop>
+				<!-- 给予被嵌套的resultMap以字段-属性的映射支持 FULL,PARTIAL -->
+              <prop key="autoMappingBehavior">PARTIAL</prop>
 			</props>
 		</property>
 	</bean>

@@ -27,9 +27,9 @@ public final class RedisUtil {
     private static int MAX_IDLE = 8;
     
     //等待可用连接的最大时间，单位毫秒，默认值为-1，表示永不超时。如果超过等待时间，则直接抛出JedisConnectionException；
-    private static int MAX_WAIT = -1;
+    private static int MAX_WAIT = 10000;
     
-    private static int TIMEOUT = 1000;
+    private static int TIMEOUT = 10000;
     
     //在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的；
     private static boolean TEST_ON_BORROW = true;
@@ -42,11 +42,12 @@ public final class RedisUtil {
     static {
         try {
             JedisPoolConfig config = new JedisPoolConfig();
-            config.setMaxTotal(3000);
-            config.setMaxIdle(50);
-            config.setMinIdle(8);//设置最小空闲数
+            config.setMaxTotal(8);
+            config.setMaxIdle(8);
+            config.setMinIdle(0);//设置最小空闲数
             config.setMaxWaitMillis(10000);
             config.setTestOnBorrow(true);
+            config.setJmxNamePrefix("pool");
             config.setTestOnReturn(true);
             //Idle时进行连接扫描
             config.setTestWhileIdle(true);
@@ -55,8 +56,8 @@ public final class RedisUtil {
             //表示idle object evitor每次扫描的最多的对象数
             config.setNumTestsPerEvictionRun(10);
             //表示一个对象至少停留在idle状态的最短时间，然后才能被idle object evitor扫描并驱逐；这一项只有在timeBetweenEvictionRunsMillis大于0时才有意义
-            config.setMinEvictableIdleTimeMillis(6000);
-            jedisPool = new JedisPool(config, ADDR, PORT, 1000, AUTH);
+            config.setMinEvictableIdleTimeMillis(1000);
+            jedisPool = new JedisPool(config, ADDR, PORT, 1000, AUTH,0);
             System.out.println("redis连接池初始化完成");
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,20 +71,17 @@ public final class RedisUtil {
     public synchronized static Jedis getJedis() {
     	Jedis jedis = null;
         try {
-            if (jedisPool != null) {
                 jedis = jedisPool.getResource();
                 return jedis;
-            } else {
-                return null;
-            }
+           
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }finally {
-//            if(null != jedisPool) {
-//              returnResource(jedis);
-//              System.out.println("连接池释放");
-//            }
+           // if(null != jedisPool) {
+              returnResource(jedis);
+              System.out.println("连接池释放");
+          // }
         }
     }
     

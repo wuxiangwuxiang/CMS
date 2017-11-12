@@ -262,12 +262,19 @@ public class StudentController {
 	@SystemLog(module = "学生", methods = "日志管理-更换邮箱")
 	@RequestMapping(value = "/changeStuMail.do")
 	@ResponseBody
-	public Map<String, Object> changeStuMail(String studentRoNo, String studentEmail) {
-		System.out.println(studentRoNo);
-		System.out.println(studentEmail);
+	public Map<String, Object> changeStuMail(String oldEmail,String studentRoNo, String studentEmail) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		studentServiceImpl.changeStuMail(studentRoNo, studentEmail);
-		map.put("result", true);
+		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
+		String EMAIL = oldEmail;
+		String TITLE = student.getStudentName() + "更换邮箱";// 标题
+		String CONTENT = "新邮箱为:" + "   " + "[" + oldEmail + "]" + "\n"; // 内容
+		int tem = studentServiceImpl.changeStuMail(studentRoNo, studentEmail);
+		if(tem > 0){
+			JavaEmailSender.sendEmail(EMAIL, TITLE, CONTENT);
+			map.put("result", true);
+		}else {
+			map.put("result", false);
+		}
 		return map;
 	}
 
@@ -440,21 +447,22 @@ public class StudentController {
 	@SystemLog(module = "学生", methods = "日志管理-添加课程")
 	@RequestMapping(value = "/atudentAddCourse.do")
 	@ResponseBody
-	public Map<String, Object> atudentAddCourse(String studentRono, String courseName, int courseId) {
+	public Map<String, Object> atudentAddCourse(int clazzId,String studentRono, String courseName, int courseId) {
 		Map<String, Object> map = new HashMap<>();
 		String time = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
 		Course course = courseServiceImpl.selectCourseById(courseId);
 		Teacher teacher = course.getTeacher();
+		Clazz clazz = clazzServiceImpl.selectClazzById(clazzId);
 		Student student = studentServiceImpl.selectStudentByNo(studentRono);
 		Message message = new Message();
 		message.setMessageSender(studentRono);
 		message.setMessageAccepter(teacher.getTeacherMobile());
-		message.setMessageTitle(student.getStudentName() + "同学申请加入课程： " + course.getCourseName() + "("
+		message.setMessageTitle(student.getStudentName() + "同学("+clazz.getClazzName()+")申请加入课程： " + course.getCourseName() + "("
 				+ course.getCurrentYear() + "/" + course.getSchoolTem() + ")");
 		message.setSendTime(time);
 		message.setHaveRead("未读");
 		message.setMessageType("insertCourse");
-		message.setMessageContent(courseId + "");
+		message.setMessageContent(courseId + "c" + clazz.getClazzId());
 		messageServiceImpl.insertMessage(message);
 		map.put("result", true);
 		return map;
@@ -491,23 +499,28 @@ public class StudentController {
 		@ResponseBody
 		public Map<String, Object> updateStudentInfoByAjax(String studentRono,String college,String special,
 				@DateTimeFormat(pattern = "yyyy") Date intoSchoolYear,String schoolRecord,@DateTimeFormat(pattern = "yyyy-MM-dd") Date birthDay,String freeStyle){
-			System.out.println(studentRono);
-			System.out.println(college);
-			System.out.println(special);
-			System.out.println(schoolRecord);
-			System.out.println(birthDay);
-			System.out.println(intoSchoolYear);
-			System.out.println(freeStyle);
 			Map<String, Object> map = new HashMap<>();
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy");
 			SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd");
 			Student student  =studentServiceImpl.selectStudentByNo(studentRono);
+			if(college != null){
 			student.setCollege(college);
+			}
+			if(special != null){
 			student.setSpecial(special);
+			}
+			if(birthDay != null){
 			student.setBirthDay(sdf2.format(birthDay));
+			}
+			if(freeStyle != null){
 			student.setFreeStyle(freeStyle);
+			}
+			if(schoolRecord != null){
 			student.setSchoolRecord(schoolRecord);
+			}
+			if(intoSchoolYear != null){
 			student.setIntoSchoolYear(Integer.parseInt(sdf.format(intoSchoolYear)));
+			}
 			int tem = studentServiceImpl.updateStudentextra(student);
 			if(tem > 0){
 				map.put("result", true);

@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.collections.map.HashedMap;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -73,12 +74,31 @@ public class StudentInfoController {
 	@SystemLog(module = "教师", methods = "日志管理-添加学生")
 	@RequestMapping(value = "/insertStudentInfoByteacher.do")
 	@ResponseBody
-	public Map<String, Object> insertStudentInfoByteacher(int courseId,String teacherMobile, String studentRoNo,
+	public Map<String, Object> insertStudentInfoByteacher(String content,String teacherMobile, String studentRoNo,
 			HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
+        int tem = 0;
+        for(int i = 0; i < content.length(); i ++){
+        	if(content.charAt(i) == 'c'){
+        		tem = i;
+        		break;
+        	}
+        }
+        System.out.println("结束" + content.substring(0, tem));
+        String aa = content.substring(0, tem);
+        String bb = content.substring(tem+1);
+        System.out.println(aa);
+        System.out.println(bb);
+        int courseId = Integer.parseInt(aa);
+        int clazzId = Integer.parseInt(bb);
+        System.out.println("CourseId>>>>>>>>: " + courseId);
+        System.out.println("clazzId>>>>"+clazzId);
 		StudentInfo studentInfo2 = studentInfoServiceImpl.selectStudentInfoByMany(studentRoNo,courseId);
 		if (studentInfo2 == null) {
 			studentInfoServiceImpl.insertStudentInfo(studentRoNo,courseId);
+			if (clazzId != 0) {
+				studentServiceImpl.updateStudentOfClazzId(studentRoNo, clazzId);
+			}
 			Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
 			Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
 	        String time = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());

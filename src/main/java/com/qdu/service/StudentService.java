@@ -24,7 +24,7 @@ public interface StudentService {
 	
 	public void ajaxupdateStudentPassWord(String studentRoNo,String studentPassword);
 	
-	public void changeStuMail(String studentRoNo, String studentEmail);
+	public int changeStuMail(String studentRoNo, String studentEmail);
 	
 	public int updateStudentextra(Student student);
 		

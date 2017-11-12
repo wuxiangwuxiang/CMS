@@ -19,6 +19,17 @@
 <title>学生页面</title>
 <script type="text/javascript">
 	 $(document).ready(function () {
+		 //检查入学时间是否为0
+		 if(${student.intoSchoolYear} == '0'){
+			 $('#innerTime').html("");
+		 }
+	 
+		 //首先检查学生个人信息是否完善
+		 if(${empty student.college} ||${empty student.special}||${empty student.intoSchoolYear}
+		 ||${empty student.schoolRecord}||${empty student.birthDay}||${empty student.freeStyle}){
+			 $('#redSignal').show();
+		 }
+	 
 		 //如果pageNow大于1，点击下一页/上一页则显示消息页面
 		 if(${page.pageNow} > 1){
 			 $('#doubleHandle').hide();
@@ -239,7 +250,6 @@
 		}
 	    //点击后台完善学生信息
 	    $('#savefectButton').click(function wannaSubmittt() {
-	    	alert($('#intoSchoolYear').val());
 	    	$.ajax({
 	              type: "GET",
 	              data: {
@@ -257,7 +267,8 @@
 	              url: "<%=request.getContextPath()%>/student/updateStudentInfoByAjax.do",
 	              success: function (data) {
 	            	  if(data.result == true){
-	            		  alert("更新成功");
+	            		 $('#updateStudentInfoSuccess').show();
+	            		 setTimeout('yourFunction()',2000); 
 	            	  }else{
 	            		  alert("更新信息失败！");
 	            	  }
@@ -291,23 +302,34 @@
 		}
 	 });
 		//学生添加课程
+		var ccclazzName = "";
 		function studentAddCourse() {
 			var courseId = $('#courseId').val();
 			var courseName = $('#courseName').val();
+			ccclazzName = $('#clazzName').val();
 			if(confirmInputType(courseId,courseName)){
-				if(pushAddCourse(courseId,courseName)){
+				if(searchIfExistCourse()){
+				if(ccclazzName != "" ){
+				if(pushAddCourse(courseId,courseName,ccclazzName)){
 					$('#addCourseShow').show();
 					setTimeout('yourFunction()',2000); 
+				   }
+					}else{
+						$('#listenClss').show();
+					}
+				}else{
+					
 				}
 			}
 		}
 		//ajax添加课程，后台发送信息给教师
-		function pushAddCourse(courseId,courseName) {
+		function pushAddCourse(courseId,courseName,ccclazzName) {
 			 var result = false;
 			 var studentRono = $('#studentRoNo').val();
 			$.ajax({
 	              type: "GET",
 	              data: {
+	            	  "clazzId":ccclazzName,
 	            	  "courseId":courseId,
 	            	  "studentRono":studentRono,
 	            	  "courseName":courseName
@@ -456,15 +478,62 @@
 		     });
 			}
 		}
+		//验证课程有效性
+		function searchIfExistCourse() {
+			var result = false;
+			var courseId = $('#courseId').val();
+			if(courseId != null && courseId != ""){
+			$.ajax({
+	            type: "GET",
+	            data: { 
+			         "courseId": courseId
+	            },
+	            contentType: "application/json; charset=utf-8",
+	            dataType : "json",
+	            async: false,
+	            url: "<%=request.getContextPath()%>/course/searchIfExistCourse.do",
+				success : function(data) {
+					var dataObj = data.clazzs;
+					if(data.result == true && data.clazzs != null){
+						var con = "";
+						con = "<option value=''>" + "请选择" + " </option>";
+						$.each(dataObj, function (index, item) {
+		        	        con += "<option value=\"" + item.clazzId + "\" >" + item.clazzName + "</option>";
+						});
+					$('#clazzName').html(con);
+					$('#listenEmpty').hide();
+					$('#listenClazzs').hide();
+					$('#clazzDiv').show();
+					result = true;
+					}else if (data.result == true && data.clazzs == null) {
+						$('#clazzDiv').hide();
+						$('#listenEmpty').hide();
+						$('#listenClazzs').show();
+					}else {
+						$('#clazzDiv').hide();
+						$('#listenEmpty').show();
+						$('#listenIdEmpty').hide();
+						$('#listenClazzs').hide();
+					}
+				},
+				error : function(data) {
+					alert("异常");
+				},
+			});
+			return result;
+			}else{
+			$('#clazzDiv').hide();
+			$('#listenEmpty').show();
+			$('#listenIdEmpty').hide();
+			$('#listenClazzs').hide();
+			}
+		}
 </script>
 </head>
 <body>
 
 <!-- 更改邮箱成功提示信息 -->
-	<div id="changeMailShow"
-		style="background-color: #393D49; height: 20%; width: 20%; z-index: 20; position: fixed; margin-top: 20%; text-align: center; margin-left: 75%; display: none;">
-		<h3 style="color: white; margin-top: 19%">更新邮箱成功..</h3>
-	</div>
+
 	
 	<!-- 添加课程成功提示信息 -->
 	<div id="addCourseShow"
@@ -488,7 +557,7 @@
 				<ul class="layui-nav">
 					<li class="layui-nav-item"><a id="messageButtton" href="#">消息<span id="TmessageCount"
 							class="layui-badge">${messageCount}</span></a></li>
-					<li class="layui-nav-item"><a id="studentInfoCenter" href="#">个人中心<span
+					<li class="layui-nav-item"><a id="studentInfoCenter" href="#">个人中心<span id="redSignal" style="display: none;"
 							class="layui-badge-dot"></span></a></li>
 					<li class="layui-nav-item"><a href="#">${student.studentName}</a>
 						<dl class="layui-nav-child">
@@ -663,16 +732,18 @@
 				<!-- 学生添加课程 -->
 			<div class="site-text site-block" id="studentAddCourse"
 				style="display: none;">
-				<form class="layui-form" action="">
+				<form class="" action="">
 					<div class="layui-form-item">
 						<label class="layui-form-label">课程编码</label>
 						<div class="layui-input-block">
 							<input id="courseId" type="text" name="courseId" required
-								lay-verify="required" placeholder="请输入课程编码" autocomplete="off"
+								lay-verify="required" onchange="searchIfExistCourse()" placeholder="请输入课程编码" autocomplete="off"
 								class="layui-input">
 						</div>
+				<p id="listenEmpty" style="color: red;display: none; margin-left: 13%;">*课程为空*</p>
 				<p id="listenId" style="color: red;display: none; margin-left: 13%;">*课程编码请输入数字*</p>
 				<p id="listenIdEmpty" style="color: red;display: none; margin-left: 13%;">*课程编码不可为空*</p>
+				<p id="listenClazzs" style="color: red;display: none; margin-left: 13%;">*暂无班级可供选择*</p>
 					</div>
 					
 					<div class="layui-form-item">
@@ -684,6 +755,15 @@
 						</div>
 			  <p id="listenName" style="color: red;display: none; margin-left: 13%;">*课程名称请控制在100字以内*</p>
 					</div>
+					
+						<div id="clazzDiv" style="display: none;">
+						<label class="layui-form-label">选择班级</label>
+							<select id="clazzName" name="clazzName" style="height: 2.3em; width: 20%;">
+							
+							</select>
+							<br/>
+					</div>
+			<p id="listenClss" style="color: red;display: none; margin-left: 13%;">*班级不可为空*</p>
 				
 					<div class="layui-form-item">
 						<div class="layui-input-block">
@@ -818,6 +898,14 @@
 			<!-- 个人中心 -->
 		<div id="studentInfoShow" style="background-color: white; margin-left: 13%; margin-right:20%; width:100%;
 		padding-left: 5%;  padding-top: 2%; padding-bottom: 500px; display: none;">
+		
+		<!-- 更新信息成功显示的Div -->
+		<div id="updateStudentInfoSuccess" class="site-text site-block"
+		style="background-color: #393D49; height: 20%; width: 20%; display:none;
+		 z-index: 20; margin-top: 14%; text-align: center; margin-left: 15%; position: absolute;">
+		<h3 style="color: white; margin-top: 19%">更新信息成功..</h3>
+	   </div>
+		
 		<table style="float:left;width: 40%;text-align: center;" 
 		class="layui-form layui-form-pane">
 		<tr>
@@ -885,10 +973,10 @@
 		
 		<tr id="intoSchoolYearTr" style="">
 		<td class="layui-form-label" style="text-align: left;">入学时间</td>
-		<td style="text-align:left; width: 47%;">${student.intoSchoolYear}</td>
+		<td id="innerTime" style="text-align:left; width: 47%;">${student.intoSchoolYear}</td>
 		</tr>
 		<tr id="reIntoSchoolYearTr" style="display: none;">
-		<td class="layui-form-label" style="text-align: left;">入学时间</td>
+		<td class="layui-form-label" valign="2017" style="text-align: left;">入学时间</td>
 		<td style="text-align:left; width: 47%;">
 		<input lay-verify="requirevalidate" required style="width: 60%;" class="layui-input" type="text" value="${student.intoSchoolYear}" id="intoSchoolYear" name="intoSchoolYear"/>
 		</td>
@@ -945,7 +1033,8 @@
 						});
 						laydate.render({
 							elem : '#intoSchoolYear',
-							type : 'year'
+							type : 'year',
+							value: '2017'
 						});
 
 					});
@@ -954,111 +1043,71 @@
 					form.verify({
 						requirevalidate: [/\S/,'必填项不可为空']
 					});
-					}
-				</script>
-			
-			<!-- 学生添加课程 -->
-			<div class="site-text site-block" id="studentAddCourse"
-				style="display: none;">
-				<form class="layui-form" action="">
-					<div class="layui-form-item">
-						<label class="layui-form-label">课程编码</label>
-						<div class="layui-input-block">
-							<input id="courseId" type="text" name="courseId" required
-								lay-verify="required" placeholder="请输入课程编码" autocomplete="off"
-								class="layui-input">
-						</div>
-				<p id="listenId" style="color: red;display: none; margin-left: 13%;">*课程编码请输入数字*</p>
-				<p id="listenIdEmpty" style="color: red;display: none; margin-left: 13%;">*课程编码不可为空*</p>
-					</div>
-					
-					<div class="layui-form-item">
-						<label class="layui-form-label">课程名称</label>
-						<div class="layui-input-block">
-							<input id="courseName" type="text" name="courseName" required
-								lay-verify="required" placeholder="请输入课程名称" autocomplete="off"
-								class="layui-input">
-						</div>
-			  <p id="listenName" style="color: red;display: none; margin-left: 13%;">*课程名称请控制在100字以内*</p>
-					</div>
-				
-					<div class="layui-form-item">
-						<div class="layui-input-block">
-							<input id="AddCourseButton" class="layui-btn" onclick="studentAddCourse()"
-								type="button" value="提交申请" />
-							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-						</div>
-					</div>
-				</form>
-
-				<script>
-					//Demo
-					layui.use([ 'form', 'laydate' ], function() {
-						var form = layui.form, laydate = layui.laydate;
-
-						//监听提交
-						form.on('submit(formDemo)', function(data) {
-							layer.msg(JSON.stringify(data.field));
-							return false;
-						});
 					});
 				</script>
-			</div>
+			
 			
 			<!-- 安全/密码 -->
-			<div id="signal" style="width: 95%; margin-left: 5%; padding-left:5%;
+			<div id="signal" style="width: 95%; margin-left: 5%; padding-left:5%; z-index:1;
 			background-color:#cccc00; height: 3%;display: none; font-family: 微软雅黑;">
 			提示：修改邮箱后后请前往原邮箱确认..
 			</div>
-			
-			<div id="doubleHandle" style="width: 70%; margin-left: 15%; margin-top: 8%; 
-			display: none;text-align: center;border: solid;border-color: red;">
-			<a href="#" id="changeStuPass" style="float:left; height:20%; width: 49%;border: solid;border-color: red;font-size: 1.5em">更改密码</a>
-			<a href="#" id="changeStuMail" style="float:left; height:20%; width: 49%;border: solid;border-color: red;font-size: 1.5em">更换邮箱</a>
+		<!-- 更改邮箱成功提示信息 -->
+	   <div id="changeMailShow" class="site-text site-block"
+		style="background-color: #393D49; height: 20%; width: 20%; display:none;
+		 z-index: 20; margin-top: 14%; text-align: center; margin-left: 25%; position: absolute;">
+		<h3 style="color: white; margin-top: 19%">更新邮箱成功..</h3>
+	   </div>
+
+			<div class="site-text site-block" id="doubleHandle" style="width: 70%; margin-left: 15%; margin-top: 4%; 
+			display: none;">
+			<a class="layui-btn layui-btn-primary" href="#" id="changeStuPass" style="float:left; height:20%; width: 49%;font-size: 1.5em">更改密码</a>
+			<a class="layui-btn layui-btn-primary" href="#" id="changeStuMail" style="float:left; height:20%; width: 49%;font-size: 1.5em">更换邮箱</a>
 			<br/><br/>
-			<form id="safe" action="<%=request.getContextPath()%>/student/updateStudentPassWord.do" style="width: 84%; margin-left: 5%; border: solid;border-color: red; text-align: center;">
-			<table style="padding-left: 10%;">
+			<form class="layui-form layui-form-pane" id="safe" action="<%=request.getContextPath()%>/student/updateStudentPassWord.do" style="width: 84%; 
+			margin-left: 5%; padding-left: 17%">
+			<table>
 			<br/>
 			<tr style="width: 100%;">
-			<td style="text-align: right; margin-left: 20%;">学号：</td>
-			<td><input type="text"  readonly="readonly" name="studentRoNo" value="${student.studentRoNo}" id="studentRoNo" style="width: 19em;"/></td>
+			<td><label class="layui-form-label">学号</label></td>
+			<td><input class="layui-input" type="text"  readonly="readonly" name="studentRoNo" value="${student.studentRoNo}" id="studentRoNo" style="width: 25em;"/></td>
 			</tr>
 			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
 			<tr>
-			<td style="text-align: right; width: 20em;">原密码：</td>
-			<td><input type="password" name="oldPassword" id="studentPassword" style="width: 19em"/></td>
+			<td><label class="layui-form-label">原密码</label></td>
+			<td><input class="layui-input" type="password" name="oldPassword" id="studentPassword" style="width: 25em"/></td>
 			<td id="passError" style="color: red; margin-left: 1.8em; display: none;">*密码错误*</td>
 			</tr>
 			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
 			<tr>
-			<td style="text-align: right;">新密码：</td>
-			<td><input type="password" name="studentPassword" id="newPassword" style="width: 19em"/></td>
+			<td><label class="layui-form-label">新密码</label></td>
+			<td><input class="layui-input" type="password" name="studentPassword" id="newPassword" style="width: 25em"/></td>
 			</tr>
 			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
 			<tr>
-			<td style="text-align: right;">确认新密码：</td>
-			<td><input type="password" name="rePassword" id="rePassword" style="width: 19em"/></td>
+			<td><label class="layui-form-label">确认新密码</label></td>
+			<td><input class="layui-input" type="password" name="rePassword" id="rePassword" style="width: 25em"/></td>
 			<td id="noLike" style="color: red; margin-left: 1.8em; display: none;">*两次密码不一致*</td>
 			</tr>
 			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
 			<tr>
-			<td colspan="2"><input id="ccchangePass" type="button" value="申请修改" style="width: 70%; height: 1.5em; margin-left: 14em;"/></td>
-			</tr>
+			<td colspan="2"><input class="layui-btn" id="ccchangePass" type="button" value="申请修改" style="width: 70%;margin-left: 15%; "/></td>
+			</tr> 
 			</table>
 			</form>
 			
 			<!-- 修改邮箱 -->
-					<form id="emailsafe"
+					<form id="emailsafe" class="layui-form layui-form-pane"
 					action="<%=request.getContextPath()%>/student/updateStudentEmail.do"
-					style="width: 84%; margin-left: 5%; border: solid; border-color: red; 
-					text-align: center; display: none;">
-					<table style="padding-left: 10%;">
+					style="width: 84%; margin-left: 5%; padding-left:17%;
+					 display: none;">
+					<table style="">
 						<br/>
 						<tr style="width: 100%;">
-							<td style="text-align: right; margin-left: 20%;">学号：</td>
-							<td><input type="text" readonly="readonly"
+							<td><label class="layui-form-label">学号</label></td>
+							<td><input class="layui-input" type="text" readonly="readonly"
 								name="studentRoNo" value="${student.studentRoNo}"
-								id="studentRoNo" style="width: 19em;" /></td>
+								id="studentRoNo" style="width: 25em;" /></td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -1067,9 +1116,9 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td style="text-align: right; width: 20em;">原邮箱：</td>
-							<td><input type="text" name="oldEmail" value="${student.studentEmail}"
-								id="studentEmail" style="width: 19em" readonly="readonly" /></td>
+							<td><label class="layui-form-label">原邮箱</label></td>
+							<td><input class="layui-input" type="text" id="oldEmail" name="oldEmail" value="${student.studentEmail}"
+								id="studentEmail" style="width: 25em" readonly="readonly" /></td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -1078,16 +1127,17 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td style="text-align: right;">
-							<label class="layui-form-label" for="mail" style="text-align: right; width: 20em;">新邮箱</label></td>
 							<td>
-					               <input id="mail" type="text" name="studentEmail" required
+							<label class="layui-form-label">新邮箱</label></td>
+							<td>
+					               <input class="layui-input" id="mail" type="text" name="studentEmail" required
 						          lay-verify="required|email" autocomplete="off" style="width: 19em"/>
 				            </td>
 						</tr>
-						
+						<tr><td>&nbsp;</td></tr><tr>
 						<tr>
-							<td id="emailTypeError" style="text-align: right; width: 20em; color: red; display: none;">*格式错误*</td>
+							<td colspan="2" id="emailTypeError" style="text-align: right; width: 20em; 
+							color: red; display: none; padding-left: 20%;">*格式错误*</td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -1096,9 +1146,9 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td colspan="2"><input id="changeStuMailPush" type="button"
+							<td colspan="2"><input class="layui-btn" id="changeStuMailPush" type="button"
 								value="申请修改"
-								style="width: 70%; height: 1.5em; margin-left: 14em;" /></td>
+								style="width: 70%;margin-left: 15%;" /></td>
 						</tr>
 					</table>
 				</form>
@@ -1137,19 +1187,26 @@
     		 if(pushEmail()){
     			 $('#changeMailShow').show();
     			 setTimeout('yourFunction()',2000); 
-    		 }
-    	}
+    		 }else {
+				alert("抱歉，服务器拥挤请稍后再试..");
+			}
+    	}else {
+    		$('#waitChangeMailShow').hide();
+		}
 	});
+   //后台更新邮箱及通知原邮箱
 	function pushEmail() {
 		 //ajax后台更新
 		 var result = false;
 		 var studentEmail = $('#mail').val();
+		 var oldEmail = $('#oldEmail').val();
 		 var studentRoNo = $('#studentRoNo').val();
 		$.ajax({
               type: "GET",
               data: {
             	  "studentRoNo":studentRoNo,
-            	  "studentEmail":studentEmail
+            	  "studentEmail":studentEmail,
+            	  "oldEmail":oldEmail
               },
               contentType: "application/json; charset=utf-8",
               async: false,

@@ -84,12 +84,12 @@ public class StudentDaoImpl implements StudentDao{
 	}
  
 	@Override 
-	public void changeStuMail(String studentRoNo, String studentEmail) {
+	public int changeStuMail(String studentRoNo, String studentEmail) {
 		String statement = "com.qdu.mapping.StudentMapping.changeStuMail";
 		Map<String, Object> map = new HashMap<>();
 		map.put("studentRoNo", studentRoNo);
 		map.put("studentEmail", studentEmail);
-		sessionFactory.openSession().update(statement, map);
+		return sessionFactory.openSession().update(statement, map);
 	}
 
 	@Override

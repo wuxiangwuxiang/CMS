@@ -58,5 +58,9 @@ public class ClazzServiceImpl implements ClazzService{
 	public int selectCountOfStudentByClazz(int clazzId) {
 		return clazzDaoImpl.selectCountOfStudentByClazz(clazzId);
 	}
+	@Override
+	public List<Clazz> selectClazzNameByCourse(int courseId) {
+		return clazzDaoImpl.selectClazzNameByCourse(courseId);
+	}
 
 }

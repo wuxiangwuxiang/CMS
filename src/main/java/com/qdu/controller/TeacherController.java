@@ -95,7 +95,7 @@ public class TeacherController {
 	}
 
 	// 教师头一次登录
-	@SystemLog(module = "教师", methods = "日志管理-教师第一次登录")
+	@SystemLog(module = "教师", methods = "日志管理-跳转首页")
 	@RequestMapping(value = "/teacherFirstLogin.do")
 	public String teacherFirstLogin(HttpServletRequest request,String pageNow, ModelMap map, String teacherMobile) {
 		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);

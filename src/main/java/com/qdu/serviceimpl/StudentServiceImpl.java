@@ -58,8 +58,8 @@ public class StudentServiceImpl implements StudentService{
 	} 
 
 	@Override
-	public void changeStuMail(String studentRoNo, String studentEmail) {
-		studentDaoImpl.changeStuMail(studentRoNo, studentEmail);
+	public int changeStuMail(String studentRoNo, String studentEmail) {
+		return studentDaoImpl.changeStuMail(studentRoNo, studentEmail);
 	}
  
 	@Override

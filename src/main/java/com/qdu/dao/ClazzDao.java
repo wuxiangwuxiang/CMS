@@ -25,4 +25,6 @@ public interface ClazzDao {
 	public void deleteClazzById(int clazzId);
 	
 	public int selectCountOfStudentByClazz(int clazzId);
+	
+	public List<Clazz> selectClazzNameByCourse(int courseId);
 }

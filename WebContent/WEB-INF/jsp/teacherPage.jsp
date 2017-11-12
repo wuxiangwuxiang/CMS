@@ -202,7 +202,7 @@
              data: {
             	 "teacherMobile":$('#teacherMobile').val(),
 		         "studentRoNo": $('#MstudentRoNo').val(),
-		         "courseId": $('#MCourseId').val()
+		         "content": $('#MCourseId').val()
              },
              contentType: "application/json; charset=utf-8",
              async: false,
@@ -252,11 +252,6 @@
 		<h3 style="color: white; margin-top: 15%">修改课程成功..</h3>
 	</div>
 	
-	<!-- 更改邮箱成功提示信息 -->
-	<div id="changeMailShow"
-		style="background-color: #393D49; height: 20%; width: 20%; z-index: 20; position: fixed; margin-top: 20%; text-align: center; margin-left: 75%; display: none;">
-		<h3 style="color: white; margin-top: 19%">更新邮箱成功..</h3>
-	</div>
 	
 	<!-- 处理消息成功提示信息 -->
 	<div id="handleMessageShow"
@@ -335,14 +330,14 @@
 			
 			<!-- 显示消息 -->
 			<div class="site-text site-block" id="messageShow"
-				style="padding-left: 10%; display: none;">
+				style="padding-left: 2%; display: none;">
 				<table>
 				<c:choose>
 				<c:when test="${! empty message}">
 				<c:forEach items="${message}" var="m">
 				<tr style="margin-top: 3%">
 				<td><img alt="图标cms" src="<%=request.getContextPath()%>/icon/cms3.ico" width="40px" height="40px"></td>
-				<td width="12%">&nbsp;</td>
+				<td width="11%">&nbsp;</td>
 				<td><a id="${m.messageId}" onclick="getMessage(this.id)" href="#">${m.messageTitle}</a></td>
 				<td width="12%">&nbsp;</td>
 				<td>${m.sendTime}</td>
@@ -734,25 +729,32 @@
 			<div id="signal"
 				style="width: 95%; margin-left: 5%; padding-left: 5%; background-color: #cccc00; height: 3%; display: none; font-family: 微软雅黑;">
 				提示：修改邮箱后后请前往原邮箱确认..</div>
+				
+				<!-- 更改邮箱成功提示信息 -->
+	   <div id="changeMailShow" class="site-text site-block"
+		style="background-color: #393D49; height: 20%; width: 20%; display:none;
+		 z-index: 20; margin-top: 14%; text-align: center; margin-left: 25%; position: absolute;">
+		<h3 style="color: white; margin-top: 19%">更新邮箱成功..</h3>
+	   </div>
 
-			<div id="doubleHandle"
-				style="width: 70%; margin-left: 15%; margin-top: 8%; display: none; text-align: center; border: solid; border-color: red;">
-				<a href="#" id="changeTeaPass"
-					style="float: left; height: 20%; width: 49%; border: solid; border-color: red; font-size: 1.5em">更改密码</a>
-				<a href="#" id="changeTeaMail"
-					style="float: left; height: 20%; width: 49%; border: solid; border-color: red; font-size: 1.5em">更换邮箱</a>
+			<div class="site-text site-block" id="doubleHandle"
+				style="width: 70%; margin-left: 15%; margin-top: 8%; display: none;">
+				<a class="layui-btn layui-btn-primary" href="#" id="changeTeaPass"
+					style="float: left; height: 20%; width: 49%; font-size: 1.5em">更改密码</a>
+				<a class="layui-btn layui-btn-primary" href="#" id="changeTeaMail"
+					style="float: left; height: 20%; width: 49%; font-size: 1.5em">更换邮箱</a>
 				<br /> <br />
 				<!-- 修改密码 -->
-				<form id="safe"
+				<form class="layui-form layui-form-pane" id="safe"
 					action="<%=request.getContextPath()%>/teacher/updateTeacherPassWord.do"
-					style="width: 84%; margin-left: 5%; border: solid; border-color: red; text-align: center;">
-					<table style="padding-left: 10%;">
+					style="width: 84%; margin-left: 5%; padding-left: 17%">
+					<table>
 						<br />
 						<tr style="width: 100%;">
-							<td style="text-align: right; margin-left: 20%;">手机号：</td>
-							<td><input type="text" readonly="readonly"
+							<td><label class="layui-form-label">手机号</label></td>
+							<td><input class="layui-input" type="text" readonly="readonly"
 								name="teacherMobile" value="${teacher.teacherMobile}"
-								id="teacherMobile" style="width: 19em;" /></td>
+								id="teacherMobile" style="width: 25em;" /></td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -761,9 +763,9 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td style="text-align: right; width: 20em;">原密码：</td>
-							<td><input type="password" name="oldPassword"
-								id="teacherPassword" style="width: 19em" /></td>
+							<td><label class="layui-form-label">原密码</label></td>
+							<td><input class="layui-input" type="password" name="oldPassword"
+								id="teacherPassword" style="width: 25em" /></td>
 							<td id="passError"
 								style="color: red; margin-left: 1.8em; display: none;">*密码错误*</td>
 						</tr>
@@ -774,9 +776,9 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td style="text-align: right;">新密码：</td>
-							<td><input type="password" name="teacherPassword"
-								id="newPassword" style="width: 19em" /></td>
+							<td><label class="layui-form-label">新密码</label></td>
+							<td><input class="layui-input" type="password" name="teacherPassword"
+								id="newPassword" style="width: 25em" /></td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -785,9 +787,9 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td style="text-align: right;">确认新密码：</td>
-							<td><input type="password" name="rePassword" id="rePassword"
-								style="width: 19em" /></td>
+							<td><label class="layui-form-label">确认新密码</label></td>
+							<td><input class="layui-input" type="password" name="rePassword" id="rePassword"
+								style="width: 25em" /></td>
 							<td id="noLike"
 								style="color: red; margin-left: 1.8em; display: none;">*两次密码不一致*</td>
 						</tr>
@@ -798,9 +800,9 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td colspan="2"><input id="ccchangePass" type="button"
+							<td colspan="2"><input class="layui-btn" id="ccchangePass" type="button"
 								value="申请修改"
-								style="width: 70%; height: 1.5em; margin-left: 14em;" /></td>
+								style="width: 70%; margin-left: 15%;" /></td>
 						</tr>
 					</table>
 				</form>
@@ -808,14 +810,14 @@
 				<!-- 修改邮箱 -->
 				<form id="emailsafe"
 					action="<%=request.getContextPath()%>/teacher/updateTeacherEmail.do"
-					style="width: 84%; margin-left: 5%; border: solid; border-color: red; text-align: center; display: none;">
-					<table style="padding-left: 10%;">
+					style="width: 84%; margin-left: 5%; padding-left: 17%; display: none;">
+					<table>
 						<br />
 						<tr style="width: 100%;">
-							<td style="text-align: right; margin-left: 20%;">手机号：</td>
-							<td><input type="text" readonly="readonly"
+							<td><label class="layui-form-label">手机号</label></td>
+							<td><input class="layui-input" type="text" readonly="readonly"
 								name="teacherMobile" value="${teacher.teacherMobile}"
-								id="teacherMobile" style="width: 19em;" /></td>
+								id="teacherMobile" style="width: 25em;" /></td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -824,10 +826,10 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td style="text-align: right; width: 20em;">原邮箱：</td>
-							<td><input type="text" name="oldEmail"
+							<td><label class="layui-form-label">邮箱</label></td>
+							<td><input class="layui-input" type="text" name="oldEmail"
 								value="${teacher.teacherEmail}" id="teacherEmail"
-								style="width: 19em" readonly="readonly" /></td>
+								style="width: 25em" readonly="readonly" /></td>
 						</tr>
 						<tr>
 							<td>&nbsp;</td>
@@ -836,12 +838,10 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td style="text-align: right;"><label
-								class="layui-form-label" for="mail"
-								style="text-align: right; width: 20em;">新邮箱</label></td>
-							<td><input id="mail" type="text" name="teacherEmail"
+							<td><label class="layui-form-label">新邮箱</label></td>
+							<td><input class="layui-input" id="mail" type="text" name="teacherEmail"
 								required lay-verify="required|email" autocomplete="off"
-								style="width: 19em" /></td>
+								style="width: 25em" /></td>
 						</tr>
 
 						<tr>
@@ -855,9 +855,9 @@
 							<td>&nbsp;</td>
 						</tr>
 						<tr>
-							<td colspan="2"><input id="changeTeaMailPush" type="button"
+							<td colspan="2"><input class="layui-btn" id="changeTeaMailPush" type="button"
 								value="申请修改"
-								style="width: 70%; height: 1.5em; margin-left: 14em;" /></td>
+								style="width: 70%; margin-left: 15%;" /></td>
 						</tr>
 					</table>
 				</form>

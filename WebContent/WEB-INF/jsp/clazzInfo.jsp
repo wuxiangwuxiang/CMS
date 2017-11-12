@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link type="text/css" rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/teacherPage.css">
+	href="<%=request.getContextPath()%>/css/teacherPage.css"> 
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
 
@@ -268,42 +268,58 @@ function submitSignIn() {
 		<!-- 内容 -->
 		<div class="layui-body site-demo">
 
-			<!-- 签到模块 -->
-			<div style="border: solid; border-color: blue;">
-				<!-- 二维码模块 -->
-				<div style="width: 100%; height: 20%; border: solid; border-color: yellow; text-align: center;">
-					<!-- 签到数字 -->
-					<div id="validateCode"
-						style="width: 100%; height: 30px; font-size: 25px; text-align: center; border: solid; border-color: green;"><span id="timer">签到码</span>
-					</div>			
-					<!-- 签到二维码 -->
-					<div style="border: solid; border-color: red; padding: 10px; width: auto;text-align: center;">
-						<img style="border: solid; border-color: black;" id="qrImg"
-							alt="签到二维码" src="">
+			<div style="width: 100%;border: solid;border-color: black;overflow:hidden">
+				<!-- 签到模块 -->
+				<div
+					style="border: solid; border-color: blue; width: 49%; float: right;">
+					<!-- 二维码模块 -->
+					<div
+						style="width: 98%; height: 20%; border: solid; border-color: yellow; text-align: center;">
+						<!-- 签到数字 -->
+						<div id="validateCode"
+							style="width: 98; height: 30px; font-size: 25px; text-align: center; border: solid; border-color: green;">
+							<span id="timer">签到码</span>
+						</div>
+						<!-- 签到二维码 -->
+						<div
+							style="border: solid; border-color: red; padding: 10px; width: auto; text-align: center;">
+							<img style="border: solid; border-color: black;" id="qrImg"
+								alt="签到二维码" src="">
+						</div>
 					</div>
-					
+					<!-- 签到操作 -->
+					<div style="border: solid; border-color: red;">
+						<input type="text" value="${course.courseId}"
+							style="display: none;" /> <br /> <a id="qrHref"
+							class="layui-btn layui-btn-normal" onclick="showQrImg()" href="#">开始签到</a>
+						<a class="layui-btn layui-btn-danger" href="#"
+							onclick="submitSignIn()">提交签到表</a><br />
+						<br />
+					</div>
 				</div>
-				<!-- 签到操作 -->
-				<div style="border: solid; border-color: red;">
-					<input type="text" value="${course.courseId}"
-						style="display: none;" /> <br /> <a id="qrHref" class="layui-btn layui-btn-normal"
-						onclick="showQrImg()" href="#">开始签到</a><br /> <br /> <a href="#"
-						onclick="submitSignIn()">提交签到表</a><br /> <br />
+				<div style="float: right;width: 2%;height: 100%;text-align: center;">
+					<hr style="width:2px;height:200px;background-color: black; "></hr>
+				</div>
+				<!-- 签到状况模块 -->
+				<div style="width: 49%; border: solid; border-color: yellow;">
+					<table class="layui-table" width="99%" border="1" id="showStudents">
+
+					</table>
 				</div>
 			</div>
 			<script>
-// 				var maxtime = 10 //按秒计算(10s)  
-// 				function CountDown(){  
-// 			  		if(maxtime>=0){   
-// 			   			 seconds = maxtime;  
-// 			   			 msg = "签到码还有"+seconds+"秒刷新";  
-// 			   			 document.all["timer"].innerHTML=msg;   
-// 			   			 --maxtime;  
-// 			 		}else{  
-// 			    		clearInterval(timer);    
-// 			  		}  
-// 				}  
-// 				timer = setInterval("CountDown()",1000); 				
+				// 				var maxtime = 10 //按秒计算(10s)  
+				// 				function CountDown(){  
+				// 			  		if(maxtime>=0){   
+				// 			   			 seconds = maxtime;  
+				// 			   			 msg = "签到码还有"+seconds+"秒刷新";  
+				// 			   			 document.all["timer"].innerHTML=msg;   
+				// 			   			 --maxtime;  
+				// 			 		}else{  
+				// 			    		clearInterval(timer);    
+				// 			  		}  
+				// 				}  
+				// 				timer = setInterval("CountDown()",1000);
 			</script>
 
 			<div
@@ -374,10 +390,7 @@ function submitSignIn() {
 
 			<br />
 
-			<table width="100%" border="1" id="showStudents">
 
-
-			</table>
 
 			<table id="scoreTable" border="1" style="display: none;">
 				<caption>本学期签到汇总</caption>
@@ -414,7 +427,6 @@ function submitSignIn() {
 	<script>
 		layui.use([ 'element', 'layer' ], function() {
 			var element = layui.element, $ = layui.jquery;
-
 			//监听导航点击
 			element.on('nav(demo)', function(elem) {
 				//console.log(elem)

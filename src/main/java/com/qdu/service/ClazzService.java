@@ -27,4 +27,6 @@ public interface ClazzService {
 	
 	public int selectCountOfStudentByClazz(int clazzId);
 	
+	public List<Clazz> selectClazzNameByCourse(int courseId);
+	
 	}

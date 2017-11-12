@@ -27,7 +27,7 @@
 <body onload="shownum()" style="background-color: #393D49">
 	<div style="background-color: rgba(0, 0, 0, 0.1); margin: 10% 33% auto;height: 150px ;padding: 150px 10px 100px;">
 		<h1 style="color: #5FB878; font-size: 20px" >
-			操作成功，<span id="time">2</span>s后自动跳转...
+			数据加载中，<span id="time">2</span>s后自动跳转...
 		</h1>
 		<div class="layui-progress layui-progress-big"  lay-filter="demo" lay-showPercent="true">
 			<div class="layui-progress-bar" lay-percent="0%"></div>

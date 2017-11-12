@@ -87,5 +87,11 @@ public class ClazzDaoImpl implements ClazzDao{
 		String statement = "com.qdu.mapping.ClazzMapping.selectCountOfStudentByClazz";
 		return sqlSessionFactory.openSession().selectOne(statement, clazzId);
 	}
+
+	@Override
+	public List<Clazz> selectClazzNameByCourse(int courseId) {
+		String statement = "com.qdu.mapping.ClazzMapping.selectClazzNameByCourse";
+		return sqlSessionFactory.openSession().selectList(statement, courseId);
+	}
 	
 }

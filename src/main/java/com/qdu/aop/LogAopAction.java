@@ -1,6 +1,6 @@
 package com.qdu.aop;
 
-import java.lang.reflect.Method; 
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;

@@ -176,4 +176,28 @@ public class CourseController {
 		map.put("url", url);
 		return map;
 	}
+	//查询是否课程编码有效
+	@SystemLog(module="学生",methods="日志管理-查看课程有效性")
+	@RequestMapping(value = "/searchIfExistCourse.do")
+	@ResponseBody
+	public Map<String, Object> searchIfExistCourse(int courseId){
+		Map<String, Object> map = new HashMap<>();
+		Course course = courseServiceImpl.selectCourseById(courseId);
+		if(course != null){
+			List<Clazz> clazzs = clazzServiceImpl.selectClazzNameByCourse(courseId);
+			if(clazzs.size() > 0){
+				map.put("clazzs", clazzs);
+				map.put("result", true);
+				System.out.println(clazzs.get(0).getClazzName());
+				
+			}else {
+				map.put("result", true);
+				map.put("clazzs", null);
+			}
+		}else {
+			map.put("result", false);
+			map.put("clazzs", null);
+		}
+		return map;
+	}
 }
