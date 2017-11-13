@@ -248,7 +248,7 @@
 	          });
 			  return result;
 		}
-	    //点击后台完善学生信息
+	    //点击保存 后台完善学生信息
 	    $('#savefectButton').click(function wannaSubmittt() {
 	    	$.ajax({
 	              type: "GET",
@@ -528,6 +528,24 @@
 			$('#listenClazzs').hide();
 			}
 		}
+		function exitLogin() {
+			 $.ajax({
+	             type: "GET",
+	             data: {
+	            	 "studentRoNo":$('#studentRoNo').val()
+	             },
+	             contentType: "application/json; charset=utf-8",
+	             async: false,
+	             //url不加空格！！！！！！！！！！！！！！！！！！！！！！！
+	             url: "<%=request.getContextPath()%>/student/exitLogin.do",
+				success : function(data) {
+					
+				},
+				error : function(data) {
+				},
+				dataType : "json",
+			});
+		}
 </script>
 </head>
 <body>
@@ -568,7 +586,7 @@
 								<a id="safeManage" href="#">安全管理</a>
 							</dd>
 							<dd>
-								<a href="#">注销</a>
+								<a onclick="exitLogin()" href="<%=request.getContextPath() %>/index.jsp">注销</a>
 							</dd>
 						</dl></li>
 				</ul>

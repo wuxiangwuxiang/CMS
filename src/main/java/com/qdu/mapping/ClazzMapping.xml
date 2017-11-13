@@ -6,7 +6,7 @@
 		<id property="clazzId" column="ClazzId" />
 		<result property="clazzName" column="ClazzName" />
 		<result property="currentYear" column="CurrentYear" />
- 
+
 
 		<association property="course" javaType="com.qdu.pojo.Course">
 			<id property="courseId" column="CourseId" />
@@ -26,6 +26,11 @@
 				<result property="teacherName" column="TeacherName" />
 				<result property="teacherGender" column="TeacherGender" />
 				<result property="teacherSubject" column="TeacherSubject" />
+				<result property="college" column="College" />
+				<result property="special" column="Special" />
+				<result property="schoolRecord" column="SchoolRecord" />
+				<result property="birthDay" column="BirthDay" />
+				<result property="freeStyle" column="FreeStyle" />
 			</association>
 
 			<collection property="studentInfo" ofType="com.qdu.pojo.StudentInfo"
@@ -60,6 +65,11 @@
 						<result property="teacherName" column="TeacherName" />
 						<result property="teacherGender" column="TeacherGender" />
 						<result property="teacherSubject" column="TeacherSubject" />
+						<result property="college" column="College" />
+						<result property="special" column="Special" />
+						<result property="schoolRecord" column="SchoolRecord" />
+						<result property="birthDay" column="BirthDay" />
+						<result property="freeStyle" column="FreeStyle" />
 					</association>
 				</collection>
 			</collection>
@@ -151,11 +161,11 @@
 					<result property="studentGender" column="StudentGender" />
 					<result property="studentPhoto" column="StudentPhoto" />
 					<result property="college" column="College" />
-		            <result property="special" column="Special" />
-		            <result property="intoSchoolYear" column="IntoSchoolYear" />
-		            <result property="schoolRecord" column="SchoolRecord" />
-		            <result property="birthDay" column="BirthDay" />
-		            <result property="freeStyle" column="FreeStyle" />
+					<result property="special" column="Special" />
+					<result property="intoSchoolYear" column="IntoSchoolYear" />
+					<result property="schoolRecord" column="SchoolRecord" />
+					<result property="birthDay" column="BirthDay" />
+					<result property="freeStyle" column="FreeStyle" />
 				</association>
 
 				<association property="course" javaType="com.qdu.pojo.Course">
@@ -180,7 +190,7 @@
 		o.CourseId
 		AND o.CourseId = #{courseId}
 	</select>
-	
+
 	<select id="selectClazzNameByCourse" resultMap="ClazzResult"
 		parameterType="ArrayList">
 		select ClazzId, ClazzName from Clazz c,Course o where
@@ -190,7 +200,8 @@
 	</select>
 
 	<select id="clazzListByClazzId" parameterType="ArrayList">
-		select * from Clazz where CourseId = #{courseId}
+		select * from
+		Clazz where CourseId = #{courseId}
 	</select>
 
 	<select id="selectClazzByAll" resultMap="ClazzResult"
@@ -207,7 +218,8 @@
 
 	<select id="selectCountOfStudentByClazz" parameterType="int"
 		resultType="int">
-		select count(*) from Student s,Clazz c where c.ClazzId = #{clazzId}
+		select count(*) from Student s,Clazz c where c.ClazzId =
+		#{clazzId}
 		AND s.ClazzId = c.ClazzId
 	</select>
 
@@ -238,7 +250,8 @@
 	</update>
 
 	<delete id="deleteClazzById" parameterType="int">
-		delete from Clazz where ClazzId = #{clazzId}
+		delete from Clazz
+		where ClazzId = #{clazzId}
 	</delete>
 
 </mapper>

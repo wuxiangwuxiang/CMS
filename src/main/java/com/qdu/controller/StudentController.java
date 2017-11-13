@@ -64,7 +64,7 @@ public class StudentController {
 
 	// 学生登录
 	@RequestMapping(value = "/studentLogin.do")
-	@SystemLog(module = "学生", methods = "日志管理-登录")
+	@SystemLog(module = "学生", methods = "日志管理-登录/刷新")
 	public String studentLogin(HttpServletRequest request, String pageNow, String studentRoNo, String password,
 			ModelMap map) {
 		if (studentRoNo == null) {
@@ -107,6 +107,15 @@ public class StudentController {
 		}
 		return "failer";
 	}
+	//学生注销登录
+		@SystemLog(module = "学生", methods = "日志管理-注销")
+		@RequestMapping(value = "/exitLogin.do")
+		@ResponseBody
+		public void exitLogin(String studentRoNo,HttpServletRequest request){
+			// session的id存一下
+			request.getSession().setAttribute("UserId", studentRoNo);
+			//数据库记录注销
+		}
 
 	// 学生等待审核
 	@RequestMapping(value = "/waitForRegister.do")
@@ -494,7 +503,7 @@ public class StudentController {
 			return map;
 		}
 		//ajax更新学生信息
-		@SystemLog(module = "学生", methods = "日志管理-刷新信息")
+		@SystemLog(module = "学生", methods = "日志管理-完善信息")
 		@RequestMapping(value = "/updateStudentInfoByAjax.do")
 		@ResponseBody
 		public Map<String, Object> updateStudentInfoByAjax(String studentRono,String college,String special,
@@ -538,7 +547,7 @@ public class StudentController {
 			List<LogEntity> logEntities = logEntityServiceImpl.selectStudentLogByTime(studentRono, logDate);
 			map.put("logEntities", logEntities);
 			return map;
-		}
+		} 
 		
 
 }

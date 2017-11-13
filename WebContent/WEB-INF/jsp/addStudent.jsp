@@ -177,20 +177,28 @@
 
 			//监听提交
 			form.on('submit(formDemo)', function(data) {
-				
+				var ttem = false;
 				var id = $('#id').val();
 				var tct = $('#tct').val();
-				if(tct != null && tct != ""){
-				   if (trySubmit(id) && tct != "") {
+				filepath=tct;
+				var extStart=filepath.lastIndexOf(".");
+				var ext=filepath.substring(extStart,filepath.length).toUpperCase();
+				if(ext!=".BMP" && ext!= ".PNG" && ext!=".GIF" && ext!= ".JPG" && ext!=".JPEG"){
+					alert("照片格式不对，请上传照片");
+					return false;
+				}else{
+					ttem = true;
+				}
+				if(tct != null && tct != "" && ttem == true){
+				   if (trySubmit(id) && tct != "" && ttem == true) {
 					return true;
 				} else {
 					alert("用户已存在!");
 					return false;
-				}
+					}
 			}else {
 				//alert("请上传照片");
 			}
-				
 			});
 			
 			function trySubmit(id) {
@@ -206,7 +214,6 @@
 		              async: false,
 		              dataType: "json",
 		              url: "<%=request.getContextPath() %>/student/confirmExitsStudent.do",
-//		              beforeSend:function(){$("#href").html("等待..");},
 		              success: function (data) {
 		            	  if(data.result == true && tct != ""){
 		            		  result = true;
@@ -222,7 +229,7 @@
 			form.verify({
 				idvalidate:[/^[\d]{10,20}$/,'学号必须是10到20位数字'],
 				pass : [/^[\w]{6,16}$/, '密码必须6到16位的数字,字母或下划线'],
-				photovalidate: [/\S/,'请上传照片']
+				photovalidate: [/\S/,'请上传照片'],
 			});
 		});
 	</script>

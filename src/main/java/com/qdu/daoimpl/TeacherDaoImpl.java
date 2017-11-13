@@ -69,5 +69,12 @@ public class TeacherDaoImpl implements TeacherDao{
 	}
 
 
+	@Override
+	public int updateStudentextra(Teacher teacher) {
+		String statement = "com.qdu.mapping.TeacherMapping.updateStudentextra";
+		return sessionFactory.openSession().update(statement, teacher);
+	}
+
+
 
 }

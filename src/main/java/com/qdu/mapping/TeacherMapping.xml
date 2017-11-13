@@ -9,6 +9,11 @@
 		<result property="teacherName" column="TeacherName" />
 		<result property="teacherGender" column="TeacherGender" />
 		<result property="teacherSubject" column="TeacherSubject" />
+		<result property="college" column="College" />
+		<result property="special" column="Special" />
+		<result property="schoolRecord" column="SchoolRecord" />
+		<result property="birthDay" column="BirthDay" />
+		<result property="freeStyle" column="FreeStyle" />
  
 		<!-- 课程表 -->
 		<collection property="course" ofType="com.qdu.pojo.Course"
@@ -48,15 +53,6 @@
 		            <result property="schoolRecord" column="SchoolRecord" />
 		            <result property="birthDay" column="BirthDay" />
 		            <result property="freeStyle" column="FreeStyle" />
-
-					<association property="teacher" javaType="com.qdu.pojo.Teacher">
-						<id property="teacherMobile" column="TeacherMobile" />
-						<result property="teacherEmail" column="TeacherEmail" />
-						<result property="teacherPassword" column="TeacherPassword" />
-						<result property="teacherName" column="TeacherName" />
-						<result property="teacherGender" column="TeacherGender" />
-						<result property="teacherSubject" column="TeacherSubject" />
-					</association>
 				</collection>
 			</collection>
 
@@ -94,6 +90,17 @@
 	<update id="changeTeaMail" parameterType="HashMap">
 		update Teacher set
 		TeacherEmail = #{teacherEmail}
+		where TeacherMobile = #{teacherMobile}
+	</update>
+	
+	<update id="updateStudentextra" parameterType="com.qdu.pojo.Teacher">
+	update Teacher
+		set
+		College = #{college},
+		Special = #{special},
+		SchoolRecord = #{schoolRecord},
+		BirthDay = #{birthDay},
+		FreeStyle = #{freeStyle}
 		where TeacherMobile = #{teacherMobile}
 	</update>
 

@@ -20,6 +20,11 @@
 			<result property="teacherName" column="TeacherName" />
 			<result property="teacherGender" column="TeacherGender" />
 			<result property="teacherSubject" column="TeacherSubject" />
+			<result property="college" column="College" />
+			<result property="special" column="Special" />
+			<result property="schoolRecord" column="SchoolRecord" />
+			<result property="birthDay" column="BirthDay" />
+			<result property="freeStyle" column="FreeStyle" />
 		</association>
 
 		<collection property="studentInfo" ofType="com.qdu.pojo.StudentInfo"
@@ -54,6 +59,11 @@
 					<result property="teacherName" column="TeacherName" />
 					<result property="teacherGender" column="TeacherGender" />
 					<result property="teacherSubject" column="TeacherSubject" />
+					<result property="college" column="College" />
+					<result property="special" column="Special" />
+					<result property="schoolRecord" column="SchoolRecord" />
+					<result property="birthDay" column="BirthDay" />
+					<result property="freeStyle" column="FreeStyle" />
 				</association>
 			</collection>
 		</collection>
@@ -91,6 +101,11 @@
 					<result property="teacherName" column="TeacherName" />
 					<result property="teacherGender" column="TeacherGender" />
 					<result property="teacherSubject" column="TeacherSubject" />
+					<result property="college" column="College" />
+					<result property="special" column="Special" />
+					<result property="schoolRecord" column="SchoolRecord" />
+					<result property="birthDay" column="BirthDay" />
+					<result property="freeStyle" column="FreeStyle" />
 				</association>
 
 				<association property="studentInfo" javaType="com.qdu.pojo.StudentInfo">
@@ -125,7 +140,8 @@
 		SELECT * from Teacher t JOIN course c ON t.TeacherMobile =
 		c.TeacherMobile
 		AND t.TeacherMobile = #{teacherMobile}
-		ORDER BY c.CourseId DESC
+		ORDER BY
+		c.CourseId DESC
 	</select>
 
 
@@ -173,7 +189,8 @@
 	</update>
 
 	<delete id="deleteCourseById" parameterType="int">
-		delete from Course where CourseId = #{courseId}
+		delete from Course
+		where CourseId = #{courseId}
 	</delete>
 </mapper>
 

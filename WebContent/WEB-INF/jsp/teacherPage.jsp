@@ -19,6 +19,13 @@
 <title>教师门户</title>
 <script type="text/javascript">
 	 $(document).ready(function () {
+		 
+		 //首先检查学生个人信息是否完善
+		 if(${empty student.college} ||${empty student.special}||${empty student.intoSchoolYear}
+		 ||${empty student.schoolRecord}||${empty student.birthDay}||${empty student.freeStyle}){
+			 $('#redSignal').show();
+			 $('#signalNow').show();
+		 }
 		 if(${page.pageNow} > 1){
 			 $('#changeCourseinfo').hide();
 			 $('#doubleHandle').hide();
@@ -26,6 +33,31 @@
 			 $('#courseShow').hide();
 			 $('#courseInfo').hide();
 			 $('#fushuMessage').hide();
+			 $('#teacherInfoShow').hide();
+			 $('#seprateMessage').show();
+			 $('#messageShow').show();
+		 }
+		 //如果pageNow大于1，点击下一页/上一页则显示消息页面
+		 if(${page.pageNow} > 1){
+			 $('#changeCourseinfo').hide();
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
+			 $('#courseShow').hide();
+			 $('#courseInfo').hide();
+			 $('#fushuMessage').hide();
+			 $('#teacherInfoShow').hide();
+			 $('#seprateMessage').show();
+			 $('#messageShow').show();
+		 }
+		 //如果是最后一页
+		 if(${page.pageNow} == ${page.totalPageCount}){
+			 $('#changeCourseinfo').hide();
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
+			 $('#courseShow').hide();
+			 $('#courseInfo').hide();
+			 $('#fushuMessage').hide();
+			 $('#teacherInfoShow').hide();
 			 $('#seprateMessage').show();
 			 $('#messageShow').show();
 		 }
@@ -70,6 +102,7 @@
 		    $('#messageShow').hide();
 		    $('#seprateMessage').hide();
 		    $('#fushuMessage').hide();
+		    $('#teacherInfoShow').hide();
 			$('#courseShow').show();
 		});
 		 //课程信息
@@ -81,6 +114,19 @@
 			 $('#courseShow').hide();
 			 $('#messageShow').hide();
 			 $('#fushuMessage').hide();
+			 $('#teacherInfoShow').hide();
+			 $('#courseInfo').show();
+			});
+		 //首页
+		  $('#checkCourseShow2').click(function() {
+			 $('#seprateMessage').hide();
+			 $('#changeCourseinfo').hide();
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
+			 $('#courseShow').hide();
+			 $('#messageShow').hide();
+			 $('#fushuMessage').hide();
+			 $('#teacherInfoShow').hide();
 			 $('#courseInfo').show();
 			});
 		 //点击消息
@@ -91,6 +137,7 @@
 			 $('#courseShow').hide();
 			 $('#courseInfo').hide();
 			 $('#fushuMessage').hide();
+			 $('#teacherInfoShow').hide();
 			 $('#seprateMessage').show();
 			 $('#messageShow').show();
 			});
@@ -103,6 +150,89 @@
 		 $('#false').click(function() {
 			$('#torf').hide();
 		});
+		//个人中心
+		 $('#teacherInfoCenter').click(function name1() {
+			 $('#seprateMessage').hide();
+			 $('#changeCourseinfo').hide();
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
+			 $('#courseShow').hide();
+			 $('#messageShow').hide();
+			 $('#fushuMessage').hide();
+			 $('#courseInfo').hide();
+			 $('#teacherInfoShow').show();
+		 });
+		$('#changeTeacherInfoh').click(function name1() {
+			 $('#seprateMessage').hide();
+			 $('#changeCourseinfo').hide();
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
+			 $('#courseShow').hide();
+			 $('#messageShow').hide();
+			 $('#fushuMessage').hide();
+			 $('#courseInfo').hide();
+			 $('#collegeTr').hide();
+				$('#reCollegeTr').show();
+				$('#specialTr').hide();
+				$('#reSpecialTr').show();
+				$('#schoolRecordTr').hide();
+				$('#reSchoolRecordTr').show();
+				$('#birthDayTr').hide();
+				$('#reBirthDayTr').show();
+				$('#forSavefectButton').show();
+				$('#freeStyleTr').hide();
+				$('#reFreeStyleTr').show();
+				$('#perfectButton').hide();
+				$('#signalNow').hide();
+				$('#savefectButton').show();
+			 $('#teacherInfoShow').show();
+		});
+		//点击完善信息
+		 $('#perfectButton').click(function wq() {
+				$('#collegeTr').hide();
+				$('#reCollegeTr').show();
+				$('#specialTr').hide();
+				$('#reSpecialTr').show();
+				$('#schoolRecordTr').hide();
+				$('#reSchoolRecordTr').show();
+				$('#birthDayTr').hide();
+				$('#reBirthDayTr').show();
+				$('#forSavefectButton').show();
+				$('#freeStyleTr').hide();
+				$('#reFreeStyleTr').show();
+				$('#perfectButton').hide();
+				$('#signalNow').hide();
+				$('#savefectButton').show();
+			});
+		    //点击保存 后台完善教师信息
+		    $('#savefectButton').click(function wannaSubmittt() {
+		    	$.ajax({
+		              type: "GET",
+		              data: {
+		            	  "teacherMobile":$('#teacherMobile').val(),
+		            	  "college":$('#college').val(),
+		            	  "special":$('#special').val(),
+		            	  "schoolRecord":$('#schoolRecord').val(),
+		            	  "birthDay":$('#birthDay').val(),
+		            	  "freeStyle":$('#freeStyle').val()
+		              },
+		              contentType: "application/json; charset=utf-8",
+		              async: false,
+		              dataType: "json",
+		              url: "<%=request.getContextPath()%>/teacher/updateStudentInfoByAjax.do",
+		              success: function (data) {
+		            	  if(data.result == true){
+		            		 $('#updateTeacherInfoSuccess').show();
+		            		 setTimeout('yourFunction()',2000); 
+		            	  }else{
+		            		  alert("更新信息失败！");
+		            	  }
+		              },
+		              error: function (data) {
+		            	  alert("服务器异常");
+		              }
+		          });
+		    });
 		
 	 });
 	 //添加课程
@@ -232,6 +362,24 @@
 			 $('#seprateMessage').show();
 			 $('#messageShow').show();
 	}
+	function exitLogin() {
+		 $.ajax({
+             type: "GET",
+             data: {
+            	 "teacherMobile":$('#teacherMobile').val()
+             },
+             contentType: "application/json; charset=utf-8",
+             async: false,
+             //url不加空格！！！！！！！！！！！！！！！！！！！！！！！
+             url: "<%=request.getContextPath()%>/teacher/exitLogin.do",
+			success : function(data) {
+				
+			},
+			error : function(data) {
+			},
+			dataType : "json",
+		});
+	}
 </script>
 </head>
 <body>
@@ -267,20 +415,21 @@
 					style="color: white; font-size: 25px;">CMS</span></a>
 
 				<ul class="layui-nav">
+				<li class="layui-nav-item"><a id="checkCourseShow2" href="#">首页</a></li>
 					<li class="layui-nav-item"><a id="messageButtton" href="#">消息<span id="TmessageCount"
 							class="layui-badge">${messageCount}</span></a></li>
-					<li class="layui-nav-item"><a href="#">个人中心<span
+					<li class="layui-nav-item"><a id="teacherInfoCenter" href="#">个人中心<span id="redSignal" style="display: none;"
 							class="layui-badge-dot"></span></a></li>
 					<li class="layui-nav-item"><a href="#">${teacher.teacherName}老师</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a href="#">修改信息</a>
+								<a id="changeTeacherInfoh" href="#">修改信息</a>
 							</dd>
 							<dd>
 								<a href="#" id="safeManage">安全管理</a>
 							</dd>
 							<dd>
-								<a href="#">注销</a>
+								<a onclick="exitLogin()" href="<%=request.getContextPath() %>/index.jsp">注销</a>
 							</dd>
 						</dl></li>
 				</ul>
@@ -327,6 +476,143 @@
 		<div class="layui-body site-demo">
 			<br />
 			
+			<!-- 个人中心 -->
+			<div id="teacherInfoShow" style="background-color: white; margin-left: 13%; margin-right:20%; width:100%;
+		padding-left: 5%;  padding-top: 8%; padding-bottom: 500px; display: none;">
+		
+		<!-- 更新信息成功显示的Div -->
+		<div id="updateTeacherInfoSuccess" class="site-text site-block"
+		style="background-color: #393D49; height: 20%; width: 20%; display:none;
+		 z-index: 20; margin-top: 14%; text-align: center; margin-left: 15%; position: absolute;">
+		<h3 style="color: white; margin-top: 19%">更新信息成功..</h3>
+	   </div>
+		
+		<table style="float:left;width: 40%;text-align: center;" 
+		class="layui-form layui-form-pane">
+		<tr>
+		<td class="layui-form-label">账号</td>
+		<td style="text-align: left;">${teacher.teacherMobile}</td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+		<td class="layui-form-label">姓名</td>
+		<td style="text-align: left;">${teacher.teacherName}</td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+		<td class="layui-form-label">性别</td>
+		<td style="text-align: left;">${teacher.teacherGender}</td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+		<td class="layui-form-label">邮箱</td>
+		<td style="text-align: left;">${teacher.teacherEmail}</td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		<tr>
+		<td class="layui-form-label">学科</td>
+		<td style="text-align: left;">${teacher.teacherSubject}</td>
+		</tr>
+		<tr><td>&nbsp;</td></tr>
+		
+		
+		<tr id="forSavefectButton" style="display: none;"><td>&nbsp;</td></tr>
+		<tr id="savefectButton" style="display: none;">
+		<td colspan="2" style="text-align: left;">
+		<button style="margin-left: 0;" class="layui-btn">保存信息</button>
+		</td>
+		</tr>
+		<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
+		<tr>
+		<td colspan="2" style="text-align: left;"><button id="perfectButton" style="margin-left: 0;" class="layui-btn">完善信息</button>
+		<span id="signalNow" style="color: red; margin-left: 20%; display: none;">*请尽快完善信息*</span>
+		</td></tr>
+		
+		</table>
+		
+		<!-- 补充信息 -->
+		<div class="layui-upload-list" style="width: 50%; heigh:120px; float: left;">
+			<p id="demoText"></p>
+		<table style="margin-left: -50px;width: 70%" class="layui-form layui-form-pane">		
+		
+		<tr id="collegeTr" style="">
+		<td class="layui-form-label">学院</td>
+		<td style="text-align: left;">${teacher.college}</td>
+		</tr>
+		
+		<tr id="reCollegeTr" style="display: none;">
+		<td class="layui-form-label">学院</td>
+		<td style="text-align: left;"><input required style="width: 60%;" class="layui-input" type="text" value="${teacher.college}" id="college" name="college"/></td>
+		</tr>
+		
+		<tr id="forSpecial" style=""><td>&nbsp;</td></tr>
+		
+		<tr id="specialTr" style="">
+		<td class="layui-form-label">研究方向</td>
+		<td style="text-align: left;">${teacher.special}</td>
+		</tr>
+		<tr id="reSpecialTr" style="display: none;">
+		<td class="layui-form-label">研究方向</td>
+		<td style="text-align: left;"><input required style="width: 60%;" class="layui-input" type="text" value="${teacher.special}" id="special" name="special"/></td>
+		</tr>
+		<tr id="forschoolRecord" style=""><td>&nbsp;</td></tr>
+		
+		<tr id="schoolRecordTr" style="text-align: left;">
+		<td class="layui-form-label" style="text-align: left;">当前学历</td>
+		<td style="text-align:left; width: 47%;">${teacher.schoolRecord}</td>
+		</tr>
+		<tr id="reSchoolRecordTr" style="display: none;">
+		<td class="layui-form-label" style="text-align: left;" required>当前学历</td>
+		<td style="text-align:left; width: 47%;">
+		<select id="schoolRecord">
+		<option value="本科" selected="selected">本科</option>
+		<option value="硕士">硕士</option>
+		<option value="博士">博士</option>
+		<option value="海归">海归</option>
+		</select>
+		</tr>
+		
+		<tr id="forBirthDay" style=""><td>&nbsp;</td></tr>
+		
+		<tr id="birthDayTr" style="">
+		<td class="layui-form-label" style="text-align: left;">出生日期</td>
+		<td style="text-align:left; width: 47%;">${teacher.birthDay}</td>
+		</tr>
+		<tr id="reBirthDayTr" style="display: none;">
+		<td class="layui-form-label" style="text-align: left;">出生日期</td>
+		<td style="text-align:left; width: 47%;"><input required style="width: 60%;" class="layui-input" type="text" value="${teacher.birthDay}" id="birthDay" name="birthDay"/></td>
+		</tr>
+		
+		<tr id="forFreeStyle" style=""><td>&nbsp;</td></tr>
+		
+		<tr id="freeStyleTr" style="">
+		<td class="layui-form-label" style="text-align: left;">备注信息</td>
+		<td style="text-align: left;">${teacher.freeStyle}</td>
+		</tr>
+		<tr id="reFreeStyleTr" style="display: none;">
+		<td class="layui-form-label" style="text-align: left;">备注信息</td>
+		<td style="text-align:left; width: 47%;"><input  style="width: 60%;" class="layui-input" type="text" value="${teacher.freeStyle}" id="freeStyle" name="freeStyle"/></td>
+		</tr>
+			</table>
+		</div>
+				
+	</div>
+	<script>
+					//Demo
+					layui.use([ 'form', 'laydate' ], function() {
+						var form = layui.form, laydate = layui.laydate;
+						laydate.render({
+							elem : '#birthDay'
+						});
+
+					});
+					layui.use('form', function() {
+						var form = layui.form;
+					form.verify({
+						requirevalidate: [/\S/,'必填项不可为空']
+					});
+					});
+				</script>
 			
 			<!-- 显示消息 -->
 			<div class="site-text site-block" id="messageShow"
@@ -1006,6 +1292,7 @@
 		 $('#messageShow').hide();
 		 $('#fushuMessage').hide();
 		 $('#seprateMessage').hide();
+		 $('#teacherInfoShow').hide();
 		$('#doubleHandle').show();
 		$('#signal').show();
 	});

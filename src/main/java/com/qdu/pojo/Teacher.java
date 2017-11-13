@@ -10,6 +10,11 @@ public class Teacher implements Serializable{
 	private String teacherName;
 	private String teacherGender;
 	private String teacherSubject;
+	private String college; 
+	private String special;
+	private String schoolRecord;
+	private String birthDay;
+	private String freeStyle;
 	private List<Course> course;
 	
 	public Teacher(){
@@ -58,6 +63,36 @@ public class Teacher implements Serializable{
 	}
 	public void setCourse(List<Course> course) {
 		this.course = course;
+	}
+	public String getCollege() {
+		return college;
+	}
+	public void setCollege(String college) {
+		this.college = college;
+	}
+	public String getSpecial() {
+		return special;
+	}
+	public void setSpecial(String special) {
+		this.special = special;
+	}
+	public String getSchoolRecord() {
+		return schoolRecord;
+	}
+	public void setSchoolRecord(String schoolRecord) {
+		this.schoolRecord = schoolRecord;
+	}
+	public String getBirthDay() {
+		return birthDay;
+	}
+	public void setBirthDay(String birthDay) {
+		this.birthDay = birthDay;
+	}
+	public String getFreeStyle() {
+		return freeStyle;
+	}
+	public void setFreeStyle(String freeStyle) {
+		this.freeStyle = freeStyle;
 	}	
 	
 }
