@@ -16,4 +16,5 @@ public void insertTeacher(Teacher teacher);
 	
 	public Teacher selectTeacherByMobile(String teacherMobile);
  
+	public int updateStudentextra(Teacher teacher);
 }

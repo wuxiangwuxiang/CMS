@@ -4,7 +4,7 @@
 	<cache type="com.qdu.cache.RedisCache" />
 	<resultMap type="com.qdu.pojo.Student" id="StudentResult">
 		<id property="studentRoNo" column="StudentRoNo" />
-		<result property="studentPassword" column="StudentPassword" /> 
+		<result property="studentPassword" column="StudentPassword" />
 		<result property="studentMobile" column="StudentMobile" />
 		<result property="studentEmail" column="StudentEmail" />
 		<result property="studentName" column="StudentName" />
@@ -42,6 +42,11 @@
 					<result property="teacherName" column="TeacherName" />
 					<result property="teacherGender" column="TeacherGender" />
 					<result property="teacherSubject" column="TeacherSubject" />
+					<result property="college" column="College" />
+					<result property="special" column="Special" />
+					<result property="schoolRecord" column="SchoolRecord" />
+					<result property="birthDay" column="BirthDay" />
+					<result property="freeStyle" column="FreeStyle" />
 				</association>
 
 				<collection property="studentInfo" ofType="com.qdu.pojo.StudentInfo"
@@ -82,7 +87,7 @@
 
 	<select id="selectStudentByClazzId" resultMap="StudentResult">
 		select * from
-		Student s,Clazz c 
+		Student s,Clazz c
 		where s.ClazzId = c.ClazzId
 		and c.ClazzId = #{clazzId}
 	</select>
@@ -102,14 +107,17 @@
 
 	<select id="selectStudentAndClazzByNo" parameterType="String"
 		resultMap="StudentResult">
-		select StudentRoNo, StudentName,clazzName from Student s,Clazz c
+		select StudentRoNo, StudentName,clazzName from Student
+		s,Clazz c
 		where s.ClazzId = c.ClazzId
 		And s.StudentRoNo = #{studentRoNo}
-	</select> 
-	
-	<select id="selectStudentByFour" parameterType="HashMap" resultMap="StudentResult">
-	select * from Student where StudentRoNo = #{studentRoNo} And StudentName = #{studentName}
-	And StudentMobile = #{studentMobile} And StudentEmail = #{studentEmail}
+	</select>
+
+	<select id="selectStudentByFour" parameterType="HashMap"
+		resultMap="StudentResult">
+		select * from Student where StudentRoNo = #{studentRoNo} And StudentName =
+		#{studentName}
+		And StudentMobile = #{studentMobile} And StudentEmail = #{studentEmail}
 	</select>
 
 	<insert id="insertStudentByNo" parameterType="com.qdu.pojo.Student">
@@ -117,22 +125,24 @@
 		Student(StudentRoNo,StudentPassword,StudentMobile,StudentEmail,StudentName,StudentGender,StudentPhoto)
 		values(#{studentRoNo},#{studentPassword},#{studentMobile},#{studentEmail},#{studentName},#{studentGender},#{studentPhoto})
 	</insert>
-	
-    <update id="updateStudentPassWord" parameterType="HashMap">
+
+	<update id="updateStudentPassWord" parameterType="HashMap">
 		update Student
 		set
-		StudentPassword = #{studentPassword} 
+		StudentPassword = #{studentPassword}
 		where StudentRoNo = #{studentRoNo}
 	</update>
-	
+
 	<update id="updateStudentextra" parameterType="com.qdu.pojo.Student">
 		update Student
 		set
 		College = #{college},
 		Special = #{special},
-		IntoSchoolYear = #{intoSchoolYear},
+		IntoSchoolYear =
+		#{intoSchoolYear},
 		SchoolRecord = #{schoolRecord},
-		BirthDay = #{birthDay},
+		BirthDay =
+		#{birthDay},
 		FreeStyle = #{freeStyle}
 		where StudentRoNo = #{studentRoNo}
 	</update>
@@ -143,7 +153,7 @@
 		ClazzId = #{clazzId}
 		where StudentRoNo = #{studentRoNo}
 	</update>
-	
+
 	<update id="changeStuMail" parameterType="HashMap">
 		update Student set
 		StudentEmail = #{studentEmail}

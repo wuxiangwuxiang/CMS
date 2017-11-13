@@ -50,4 +50,10 @@ public class TeacherServiceImpl implements TeacherService{
 		return teacherDaoImpl.selectTeacherByMobile(teacherMobile);
 	}
 
+
+	@Override
+	public int updateStudentextra(Teacher teacher) {
+		return teacherDaoImpl.updateStudentextra(teacher);
+	}
+
 }

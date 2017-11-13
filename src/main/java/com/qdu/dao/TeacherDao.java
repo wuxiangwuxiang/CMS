@@ -15,5 +15,7 @@ public interface TeacherDao {
 	public void changeTeaMail(String teacherMobile,String teacherEmail);
 	
 	public Teacher selectTeacherByMobile(String teacherMobile);
+	
+	public int updateStudentextra(Teacher teacher);
  
 }

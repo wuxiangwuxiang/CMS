@@ -1,5 +1,7 @@
 package com.qdu.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +9,7 @@ import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,7 +59,7 @@ public class TeacherController {
 	}
  
 	// 教师登录
-	@SystemLog(module = "教师", methods = "日志管理-登录")
+	@SystemLog(module = "教师", methods = "日志管理-登录/刷新")
 	@RequestMapping(value = "/teacherLogin.do")
 	public String teacherLogin(HttpServletRequest request,String pageNow,String id,String password, ModelMap map) {
 		if(id == null){
@@ -92,6 +95,15 @@ public class TeacherController {
 		}
 	}
 		return "failer";
+	}
+	//教师注销登录
+	@SystemLog(module = "教师", methods = "日志管理-注销")
+	@RequestMapping(value = "/exitLogin.do")
+	@ResponseBody
+	public void exitLogin(String teacherMobile,HttpServletRequest request){
+		// session的id存一下
+		request.getSession().setAttribute("UserId", teacherMobile);
+		//数据库记录注销
 	}
 
 	// 教师头一次登录
@@ -250,6 +262,39 @@ public class TeacherController {
 		map.put("message", messages);
 		return map;
 	}
+	//ajax更新寄教师信息
+			@SystemLog(module = "教师", methods = "日志管理-完善信息")
+			@RequestMapping(value = "/updateStudentInfoByAjax.do")
+			@ResponseBody
+			public Map<String, Object> updateStudentInfoByAjax(String teacherMobile,String college,String special,
+					String schoolRecord,@DateTimeFormat(pattern = "yyyy-MM-dd") Date birthDay,String freeStyle){
+				Map<String, Object> map = new HashMap<>();
+				SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd");
+				Teacher teacher = teacherServiceImpl.selectTeacherByMobile(teacherMobile);
+				if(college != null){
+					teacher.setCollege(college);
+				}
+				if(special != null){
+					teacher.setSpecial(special);
+				}
+				if(birthDay != null){
+					teacher.setBirthDay(sdf2.format(birthDay));
+				}
+				if(freeStyle != null){
+					teacher.setFreeStyle(freeStyle);
+				}
+				if(schoolRecord != null){
+					teacher.setSchoolRecord(schoolRecord);
+				}
+				
+				int tem = teacherServiceImpl.updateStudentextra(teacher);
+				if(tem > 0){
+					map.put("result", true);
+				}else {
+					map.put("result", false);
+				}
+				return map;
+			}
 	
 
 }

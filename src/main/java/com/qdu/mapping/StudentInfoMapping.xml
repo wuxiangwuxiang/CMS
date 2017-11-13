@@ -25,7 +25,7 @@
 			<result property="birthDay" column="BirthDay" />
 			<result property="freeStyle" column="FreeStyle" />
 		</association>
- 
+
 		<association property="course" javaType="com.qdu.pojo.Course">
 			<id property="courseId" column="CourseId" />
 			<result property="courseName" column="CourseName" />
@@ -44,6 +44,11 @@
 				<result property="teacherName" column="TeacherName" />
 				<result property="teacherGender" column="TeacherGender" />
 				<result property="teacherSubject" column="TeacherSubject" />
+				<result property="college" column="College" />
+				<result property="special" column="Special" />
+				<result property="schoolRecord" column="SchoolRecord" />
+				<result property="birthDay" column="BirthDay" />
+				<result property="freeStyle" column="FreeStyle" />
 			</association>
 
 			<collection property="studentInfo" ofType="com.qdu.pojo.StudentInfo"
@@ -65,11 +70,11 @@
 					<result property="studentGender" column="StudentGender" />
 					<result property="studentPhoto" column="StudentPhoto" />
 					<result property="college" column="College" />
-		            <result property="special" column="Special" />
-		            <result property="intoSchoolYear" column="IntoSchoolYear" />
-		            <result property="schoolRecord" column="SchoolRecord" />
-		            <result property="birthDay" column="BirthDay" />
-		            <result property="freeStyle" column="FreeStyle" />
+					<result property="special" column="Special" />
+					<result property="intoSchoolYear" column="IntoSchoolYear" />
+					<result property="schoolRecord" column="SchoolRecord" />
+					<result property="birthDay" column="BirthDay" />
+					<result property="freeStyle" column="FreeStyle" />
 
 					<association property="teacher" javaType="com.qdu.pojo.Teacher">
 						<id property="teacherMobile" column="TeacherMobile" />
@@ -78,6 +83,11 @@
 						<result property="teacherName" column="TeacherName" />
 						<result property="teacherGender" column="TeacherGender" />
 						<result property="teacherSubject" column="TeacherSubject" />
+						<result property="college" column="College" />
+						<result property="special" column="Special" />
+						<result property="schoolRecord" column="SchoolRecord" />
+						<result property="birthDay" column="BirthDay" />
+						<result property="freeStyle" column="FreeStyle" />
 					</association>
 				</collection>
 			</collection>
@@ -102,11 +112,11 @@
 					<result property="studentGender" column="StudentGender" />
 					<result property="studentPhoto" column="StudentPhoto" />
 					<result property="college" column="College" />
-		            <result property="special" column="Special" />
-		            <result property="intoSchoolYear" column="IntoSchoolYear" />
-		            <result property="schoolRecord" column="SchoolRecord" />
-		            <result property="birthDay" column="BirthDay" />
-		            <result property="freeStyle" column="FreeStyle" />
+					<result property="special" column="Special" />
+					<result property="intoSchoolYear" column="IntoSchoolYear" />
+					<result property="schoolRecord" column="SchoolRecord" />
+					<result property="birthDay" column="BirthDay" />
+					<result property="freeStyle" column="FreeStyle" />
 
 					<association property="teacher" javaType="com.qdu.pojo.Teacher">
 						<id property="teacherMobile" column="TeacherMobile" />
@@ -115,6 +125,11 @@
 						<result property="teacherName" column="TeacherName" />
 						<result property="teacherGender" column="TeacherGender" />
 						<result property="teacherSubject" column="TeacherSubject" />
+						<result property="college" column="College" />
+						<result property="special" column="Special" />
+						<result property="schoolRecord" column="SchoolRecord" />
+						<result property="birthDay" column="BirthDay" />
+						<result property="freeStyle" column="FreeStyle" />
 					</association>
 				</collection>
 			</collection>
@@ -139,21 +154,25 @@
 	</select>
 
 	<select id="selectInfoFromInfoAndStudent" resultMap="StudentInfoResult">
-		SELECT * from StudentInfo s,Student i WHERE s.StudentRoNo = i.StudentRoNo
-		AND s.CourseId = #{courseId}
+		SELECT *
+		from StudentInfo s,Student i WHERE s.StudentRoNo = i.StudentRoNo
+		AND
+		s.CourseId = #{courseId}
 	</select>
 
 	<select id="selectStudentInfoByMany" parameterType="HashMap"
 		resultMap="StudentInfoResult">
-		select * from StudentInfo where StudentRoNo = #{studentRoNo} And CourseId =
+		select * from StudentInfo where StudentRoNo = #{studentRoNo}
+		And CourseId =
 		#{courseId}
 	</select>
 
 	<select id="selectInfoList" parameterType="int" resultMap="StudentInfoResult">
 		select * from StudentInfo where CourseId = #{courseId}
 	</select>
-	
-	<select id="selectStudentInfoList" parameterType="ArrayList" resultMap="StudentInfoResult">
+
+	<select id="selectStudentInfoList" parameterType="ArrayList"
+		resultMap="StudentInfoResult">
 		select * from StudentInfo where StudentRoNo = #{studentRoNo}
 	</select>
 
@@ -165,19 +184,24 @@
 	</insert>
 
 	<delete id="deleteStudentInfoByCourse" parameterType="int">
-		delete from StudentInfo where CourseId = #{clazzId}
+		delete from
+		StudentInfo where CourseId = #{clazzId}
 	</delete>
 
 	<update id="updateStudentInfoAboutSignIn" parameterType="HashMap">
-		update StudentInfo set
+		update
+		StudentInfo set
 		SignIn = #{signIn}
-		where StudentInfoId = #{studentInfoId}
+		where StudentInfoId =
+		#{studentInfoId}
 	</update>
 
 	<update id="updateStudentInfoAboutAbs" parameterType="HashMap">
-		update StudentInfo set
+		update
+		StudentInfo set
 		Absenteeism = #{absenteeism}
-		where StudentInfoId = #{studentInfoId}
+		where StudentInfoId =
+		#{studentInfoId}
 	</update>
 
 </mapper>
