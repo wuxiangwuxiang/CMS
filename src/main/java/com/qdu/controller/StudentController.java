@@ -546,7 +546,7 @@ public class StudentController {
 			Map<String, Object> map = new HashMap<>();
 			List<LogEntity> logEntities = logEntityServiceImpl.selectStudentLogByTime(studentRono, logDate);
 			map.put("logEntities", logEntities);
-			return map;
+			return map; 
 		} 
 		
 
