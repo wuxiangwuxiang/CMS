@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdu.mapping.FilePackageMapping">
+	<cache type="com.qdu.cache.RedisCache" />
+	<resultMap type="com.qdu.pojo.FilePackage" id="FilePackageResult">
+		<id property="fileId" column="FileId" />
+		<result property="userId" column="UserId" />
+		<result property="fileName" column="FileName" />
+		<result property="fileType" column="FileType" />
+		<result property="createTime" column="CreateTime" />
+	</resultMap>
+     <select id="selectFileByUserId" parameterType="ArrayList" resultMap="FilePackageResult">
+     select * from FilePackage where UserId = #{userId} order by UserId desc
+     </select>
+     
+     <insert id="insertFile" parameterType="com.qdu.pojo.FilePackage">
+     insert into 
+     FilePackage(UserId,FileName,FileType,CreateTime) 
+     values(#{userId},#{fileName},#{fileType},#{createTime})
+     </insert>
+	
+</mapper>
+

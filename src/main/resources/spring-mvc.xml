@@ -26,9 +26,9 @@
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
 		id="multipartResolver">
 		<property value="UTF-8" name="defaultEncoding" />
-		<!--指定所上传文件的总大小不能超过500KB。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->
+		<!--指定所上传文件的总大小不能超过10G。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->
 		<!--不在这里限制了,后台各自进行限制了 -->
-		<property value="5000000" name="maxUploadSize" />
+		<property value="104855760" name="maxUploadSize" />
 	</bean>
 	<bean p:suffix=".jsp" p:prefix="/WEB-INF/jsp/"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver"

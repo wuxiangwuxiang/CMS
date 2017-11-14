@@ -1,28 +1,41 @@
 package com.qdu.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Course;
+import com.qdu.pojo.FilePackage;
 import com.qdu.pojo.Message;
 import com.qdu.pojo.Student;
 import com.qdu.pojo.Teacher;
 import com.qdu.service.ClazzService;
 import com.qdu.service.CourseService;
+import com.qdu.service.FilePackageService;
 import com.qdu.service.MessageService;
 import com.qdu.service.StudentService;
 import com.qdu.service.TeacherService;
@@ -41,10 +54,12 @@ public class TeacherController {
 	private CourseService courseServiceImpl;
 	@Autowired
 	private ClazzService clazzServiceImpl;
-	@Autowired 
+	@Autowired
 	private MessageService messageServiceImpl;
 	@Autowired
 	private StudentService studentServiceImpl;
+	@Autowired
+	private FilePackageService filePackageServiceImpl;
 
 	// 教师登录准备
 	@RequestMapping(value = "/forTeacherLogin.do")
@@ -57,77 +72,82 @@ public class TeacherController {
 	public String forTeacherRegister() {
 		return "addTeacher";
 	}
- 
+
 	// 教师登录
 	@SystemLog(module = "教师", methods = "日志管理-登录/刷新")
 	@RequestMapping(value = "/teacherLogin.do")
-	public String teacherLogin(HttpServletRequest request,String pageNow,String id,String password, ModelMap map) {
-		if(id == null){
+	public String teacherLogin(HttpServletRequest request, String pageNow, String id, String password, ModelMap map) {
+		if (id == null) {
 			id = request.getParameter("teacherId");
 		}
-		if(password == null){
+		if (password == null) {
 			id = password = request.getParameter("password");
 		}
 		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(id);
 		if (teacher != null) {
 			if (id.equals(teacher.getTeacherMobile())) {
-				if(MD5Util.md5(password, "teacher").equals(teacher.getTeacherPassword()) || password.equals(teacher.getTeacherPassword())){
-				Page page = null;
-				 int totalCount = messageServiceImpl.selectMessageTotalCount(teacher.getTeacherMobile());
-				 String repageNow = request.getParameter("repageNow");
-				 if(repageNow != null){
-					 pageNow = repageNow;
-				 }
-				 page = new Page(totalCount, Integer.parseInt(pageNow));
-				map.addAttribute("teacher", teacher);
-				List<Course> courses = courseServiceImpl.selectCourseByTeacher(teacher.getTeacherMobile());
-				map.addAttribute("courses", courses);
-				int messageCount = messageServiceImpl.selectMessageCount(teacher.getTeacherMobile());
-				map.put("messageCount", messageCount);
-				List<Message> messages = messageServiceImpl.selectUnreadMessage(teacher.getTeacherMobile(),page.getStartPos());
-				map.put("message", messages);
-				map.put("page", page);
-				// session的id存一下
-				request.getSession().setAttribute("UserId", id);
-				return "teacherPage";
-			} else
-				return "failer";
+				if (MD5Util.md5(password, "teacher").equals(teacher.getTeacherPassword())
+						|| password.equals(teacher.getTeacherPassword())) {
+					Page page = null;
+					int totalCount = messageServiceImpl.selectMessageTotalCount(teacher.getTeacherMobile());
+					String repageNow = request.getParameter("repageNow");
+					if (repageNow != null) {
+						pageNow = repageNow;
+					}
+					page = new Page(totalCount, Integer.parseInt(pageNow));
+					map.addAttribute("teacher", teacher);
+					List<Course> courses = courseServiceImpl.selectCourseByTeacher(teacher.getTeacherMobile());
+					map.addAttribute("courses", courses);
+					int messageCount = messageServiceImpl.selectMessageCount(teacher.getTeacherMobile());
+					map.put("messageCount", messageCount);
+					List<Message> messages = messageServiceImpl.selectUnreadMessage(teacher.getTeacherMobile(),
+							page.getStartPos());
+					map.put("message", messages);
+					map.put("page", page);
+					List<FilePackage> filePackages = filePackageServiceImpl.selectFileByUserId(teacher.getTeacherMobile());
+					map.put("filePackages", filePackages);
+					// session的id存一下
+					request.getSession().setAttribute("UserId", id);
+					return "teacherPage";
+				} else
+					return "failer";
+			}
 		}
-	}
 		return "failer";
 	}
-	//教师注销登录
+
+	// 教师注销登录
 	@SystemLog(module = "教师", methods = "日志管理-注销")
 	@RequestMapping(value = "/exitLogin.do")
 	@ResponseBody
-	public void exitLogin(String teacherMobile,HttpServletRequest request){
+	public void exitLogin(String teacherMobile, HttpServletRequest request) {
 		// session的id存一下
 		request.getSession().setAttribute("UserId", teacherMobile);
-		//数据库记录注销
+		// 数据库记录注销
 	}
 
 	// 教师头一次登录
 	@SystemLog(module = "教师", methods = "日志管理-跳转首页")
 	@RequestMapping(value = "/teacherFirstLogin.do")
-	public String teacherFirstLogin(HttpServletRequest request,String pageNow, ModelMap map, String teacherMobile) {
+	public String teacherFirstLogin(HttpServletRequest request, String pageNow, ModelMap map, String teacherMobile) {
 		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
 		Page page = null;
 		String repageNow = request.getParameter("repageNow");
-		 if(repageNow != null){
-			 pageNow = repageNow;
-		 }else{
-			pageNow = 1+"";
+		if (repageNow != null) {
+			pageNow = repageNow;
+		} else {
+			pageNow = 1 + "";
 		}
-		 int totalCount = messageServiceImpl.selectMessageTotalCount(teacher.getTeacherMobile());
-		 page = new Page(totalCount, Integer.parseInt(pageNow));
-		 map.put("page", page);
-		 
+		int totalCount = messageServiceImpl.selectMessageTotalCount(teacher.getTeacherMobile());
+		page = new Page(totalCount, Integer.parseInt(pageNow));
+		map.put("page", page);
+
 		map.addAttribute("teacher", teacher);
 		List<Course> courses = courseServiceImpl.selectCourseByTeacher(teacher.getTeacherMobile());
 		map.addAttribute("courses", courses);
 		int messageCount = messageServiceImpl.selectMessageCount(teacherMobile);
 		map.put("messageCount", messageCount);
-		List<Message> messages = messageServiceImpl.selectUnreadMessage(teacherMobile,page.getStartPos());
+		List<Message> messages = messageServiceImpl.selectUnreadMessage(teacherMobile, page.getStartPos());
 		map.put("message", messages);
 		return "teacherPage";
 	}
@@ -262,39 +282,90 @@ public class TeacherController {
 		map.put("message", messages);
 		return map;
 	}
-	//ajax更新寄教师信息
-			@SystemLog(module = "教师", methods = "日志管理-完善信息")
-			@RequestMapping(value = "/updateStudentInfoByAjax.do")
-			@ResponseBody
-			public Map<String, Object> updateStudentInfoByAjax(String teacherMobile,String college,String special,
-					String schoolRecord,@DateTimeFormat(pattern = "yyyy-MM-dd") Date birthDay,String freeStyle){
-				Map<String, Object> map = new HashMap<>();
-				SimpleDateFormat sdf2=new SimpleDateFormat("yyyy-MM-dd");
-				Teacher teacher = teacherServiceImpl.selectTeacherByMobile(teacherMobile);
-				if(college != null){
-					teacher.setCollege(college);
-				}
-				if(special != null){
-					teacher.setSpecial(special);
-				}
-				if(birthDay != null){
-					teacher.setBirthDay(sdf2.format(birthDay));
-				}
-				if(freeStyle != null){
-					teacher.setFreeStyle(freeStyle);
-				}
-				if(schoolRecord != null){
-					teacher.setSchoolRecord(schoolRecord);
-				}
-				
-				int tem = teacherServiceImpl.updateStudentextra(teacher);
-				if(tem > 0){
-					map.put("result", true);
-				}else {
-					map.put("result", false);
-				}
-				return map;
+
+	// ajax更新寄教师信息
+	@SystemLog(module = "教师", methods = "日志管理-完善信息")
+	@RequestMapping(value = "/updateStudentInfoByAjax.do")
+	@ResponseBody
+	public Map<String, Object> updateStudentInfoByAjax(String teacherMobile, String college, String special,
+			String schoolRecord, @DateTimeFormat(pattern = "yyyy-MM-dd") Date birthDay, String freeStyle) {
+		Map<String, Object> map = new HashMap<>();
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
+		Teacher teacher = teacherServiceImpl.selectTeacherByMobile(teacherMobile);
+		if (college != null) {
+			teacher.setCollege(college);
+		}
+		if (special != null) {
+			teacher.setSpecial(special);
+		}
+		if (birthDay != null) {
+			teacher.setBirthDay(sdf2.format(birthDay));
+		}
+		if (freeStyle != null) {
+			teacher.setFreeStyle(freeStyle);
+		}
+		if (schoolRecord != null) {
+			teacher.setSchoolRecord(schoolRecord);
+		}
+
+		int tem = teacherServiceImpl.updateStudentextra(teacher);
+		if (tem > 0) {
+			map.put("result", true);
+		} else {
+			map.put("result", false);
+		}
+		return map;
+	}
+
+	// 教师端多文件上传
+	@RequestMapping(value = "/teacherUpload.do")
+	@ResponseBody
+	public Map<String, Object> teacherUpload(@RequestParam("file") MultipartFile file, String teacherMobile,
+			String fileType, HttpServletRequest request) throws IOException, Throwable {
+		Map<String, Object> map = new HashMap<>();
+		Teacher teacher = teacherServiceImpl.selectTeacherByMobile(teacherMobile);
+		// 定义上传路径
+		String path = request.getSession().getServletContext().getRealPath("/") + "file";
+		System.out.println(path);
+		boolean isFileUpload = ServletFileUpload.isMultipartContent(request);
+		// 如果是文件上传类型
+		if (isFileUpload) {
+			// 得到文件上传工厂
+			DiskFileItemFactory GongChang = new DiskFileItemFactory();
+			// 处理文件上传核心类
+			ServletFileUpload fileUpload = new ServletFileUpload(GongChang);
+			// 设置文件上传类的编码格式
+			fileUpload.setHeaderEncoding("UTF-8");
+			// 得到文件名
+			String FileName = file.getOriginalFilename();
+			String time = new SimpleDateFormat("YYYY-MM-dd_HH_mm_ss").format(new Date());
+			String time2 = new SimpleDateFormat("YYYY-MM-dd").format(new Date());
+			String newfileName = teacher.getTeacherName() + time + FileName;
+			FilePackage filePackage = new FilePackage();
+			filePackage.setUserId(teacherMobile);
+			filePackage.setFileName(newfileName);
+			filePackage.setFileType(fileType);
+			filePackage.setCreateTime(time2);
+			// 拼接一个新的文件名
+			// 路径
+			File targetFile = new File(path, newfileName);
+			System.out.println(targetFile.getAbsolutePath());
+			if (!targetFile.exists()) {
+				targetFile.mkdirs();
 			}
-	
+			// 保存
+			try {
+				file.transferTo(targetFile);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			int tem = filePackageServiceImpl.insertFile(filePackage);
+			if (tem > 0) {
+				map.put("code", 0);
+			}
+		}
+
+		return map;
+	}
 
 }
