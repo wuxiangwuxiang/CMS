@@ -6,7 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link type="text/css" rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/teacherPage.css"> 
+	href="<%=request.getContextPath()%>/css/teacherPage.css">
 <link rel="shortcut icon" type="image/x-icon"
 	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
 
@@ -17,7 +17,7 @@
 	href="<%=request.getContextPath()%>/layui/css/layui.css">
 <script src="<%=request.getContextPath()%>/layui/layui.js "></script>
 <title>班级信息</title>
- 
+
 
 
 <script type="text/javascript">
@@ -238,10 +238,10 @@ function submitSignIn() {
 						href="javascript:;">签到</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a id="checkCourseShow" href="#">点名签到</a>
+								<a id="signShow" href="#">点名签到</a>
 							</dd>
 							<dd>
-								<a id="createCourse" href="#">补签</a>
+								<a id="otherShow" href="#">补签</a>
 							</dd>
 							<dd>
 								<a href="#">签到记录</a>
@@ -268,156 +268,162 @@ function submitSignIn() {
 		<!-- 内容 -->
 		<div class="layui-body site-demo">
 
-			<div style="width: 100%;border: solid;border-color: black;overflow:hidden">
+			<!-- 签到content -->
+			<div id="signModel"
+				style="width: 100%; overflow: hidden; height: 100%;">
 				<!-- 签到模块 -->
 				<div
-					style="border: solid; border-color: blue; width: 49%; float: right;">
+					style=" width: 49%; float: right;margin-top: 7%;">
 					<!-- 二维码模块 -->
 					<div
-						style="width: 98%; height: 20%; border: solid; border-color: yellow; text-align: center;">
+						style="width: 98%; height: 20%;text-align: center;">
 						<!-- 签到数字 -->
 						<div id="validateCode"
-							style="width: 98; height: 30px; font-size: 25px; text-align: center; border: solid; border-color: green;">
+							style="width: 98; height: 30px; font-size: 25px; text-align: center; ">
 							<span id="timer">签到码</span>
 						</div>
 						<!-- 签到二维码 -->
 						<div
-							style="border: solid; border-color: red; padding: 10px; width: auto; text-align: center;">
+							style=" padding: 10px; width: auto; text-align: center;">
 							<img style="border: solid; border-color: black;" id="qrImg"
 								alt="签到二维码" src="">
 						</div>
 					</div>
 					<!-- 签到操作 -->
-					<div style="border: solid; border-color: red;">
+					<div style="text-align: center;">
 						<input type="text" value="${course.courseId}"
 							style="display: none;" /> <br /> <a id="qrHref"
 							class="layui-btn layui-btn-normal" onclick="showQrImg()" href="#">开始签到</a>
 						<a class="layui-btn layui-btn-danger" href="#"
-							onclick="submitSignIn()">提交签到表</a><br />
-						<br />
+							onclick="submitSignIn()">提交签到表</a><br /> <br />
 					</div>
 				</div>
-				<div style="float: right;width: 2%;height: 100%;text-align: center;">
-					<hr style="width:2px;height:200px;background-color: black; "></hr>
+				<!-- 垂直分界线 -->
+				<div
+					style="float: right; width: 2%; height: 100%; text-align: center;">
+					<hr style="width: 2px; height: 100%; background-color: #c2c2c2;"></hr>
 				</div>
 				<!-- 签到状况模块 -->
-				<div style="width: 49%; border: solid; border-color: yellow;">
-					<table class="layui-table" width="99%" border="1" id="showStudents">
+				<div style="width: 48%;">
+					<table class="layui-table" width="99%" border="1" id="showStudents"
+						style="margin-top: 10%;">
 
 					</table>
 				</div>
 			</div>
+			
 			<script>
-				// 				var maxtime = 10 //按秒计算(10s)  
-				// 				function CountDown(){  
-				// 			  		if(maxtime>=0){   
-				// 			   			 seconds = maxtime;  
-				// 			   			 msg = "签到码还有"+seconds+"秒刷新";  
-				// 			   			 document.all["timer"].innerHTML=msg;   
-				// 			   			 --maxtime;  
-				// 			 		}else{  
-				// 			    		clearInterval(timer);    
-				// 			  		}  
-				// 				}  
-				// 				timer = setInterval("CountDown()",1000);
+				//签到模块显示
+				$('#signShow').click(function() {
+					$('#signModel').show();
+					$('#otherModel').hide();
+				});
 			</script>
 
-			<div
-				style="width: 49%; heigh: 600px; border: solid;; border-color: red; overflow: auto;">
-				<form id="clazzForm" style="display: none">
-					<input type="text" id="courseId" name="courseId"
-						value="${course.courseId}" /><br /> <input type="text"
-						id="preclazzId" name="preclazzId"><br /> 班级名称：<input
-						type="text" id="preclazzName" name="preclazzName"><br />
-					<input onclick="saveChange()" type="button" value="提交修改" />
-				</form>
-				<a href="#">发布公告</a><br /> <a href="#">上传资料</a><br />
+			<!-- 其他模块 -->
+			<div id="otherModel" style="display: none;">
+				<div
+					style="width: 49%; heigh: 600px; border: solid;; border-color: red; overflow: auto;">
+					<form id="clazzForm" style="display: none">
+						<input type="text" id="courseId" name="courseId"
+							value="${course.courseId}" /><br /> <input type="text"
+							id="preclazzId" name="preclazzId"><br /> 班级名称：<input
+							type="text" id="preclazzName" name="preclazzName"><br />
+						<input onclick="saveChange()" type="button" value="提交修改" />
+					</form>
+					<a href="#">发布公告</a><br /> <a href="#">上传资料</a><br />
+				</div>
 
 
+				<div
+					style="width: 49%; heigh: 600px; border: solid;; border-color: red;">
+					<h3>课程：${course.courseName}</h3>
 
+					<a href="#">补签</a><br /> <br /> <a href="#" onclick="getRecord()">签到记录</a><br />
+					<br /> <input type="text" id="cccourseId"
+						value="${course.courseId}" style="display: none;" /> <input
+						type="text" id="teacherMobile" value="${teacher.teacherMobile}"
+						style="display: none;" /> <a
+						href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a><br />
+					<table border="1">
+						<tr>
+							<th>班级</th>
+							<th>学年</th>
+							<th colspan="3">操作</th>
+						</tr>
+
+						<c:choose>
+							<c:when test="${! empty course.clazz }">
+								<c:forEach items="${course.clazz}" var="c">
+									<tr>
+										<td>${c.clazzName}</td>
+										<td>${c.currentYear}</td>
+										<td>
+											<form id="asd${c.clazzId}"
+												action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do"
+												method="post">
+												<input name="clazzId" style="display: none;"
+													value="${c.clazzId}" /> <a id="${c.clazzId}"
+													onclick="aClick(this.id)" href="#">查看</a>
+											</form>
+										</td>
+										<td><a id="zxc${c.clazzId}"
+											onclick="changeWhenClick(this.id)" href="#">修改</a></td>
+										<td><a id="del${c.clazzId}"
+											onclick="deleteClazzByAjax(this.id)" href="#">删除</a></td>
+									</tr>
+									<br />
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<a>(空)</a>
+							</c:otherwise>
+						</c:choose>
+					</table>
+					<br /> <br />
+				</div>
 			</div>
 
-
-
-			<div
-				style="width: 49%; heigh: 600px; border: solid;; border-color: red;">
-				<h3>课程：${course.courseName}</h3>
-
-				<a href="#">补签</a><br /> <br /> <a href="#" onclick="getRecord()">签到记录</a><br />
-				<br /> <input type="text" id="cccourseId"
-					value="${course.courseId}" style="display: none;" /> <input
-					type="text" id="teacherMobile" value="${teacher.teacherMobile}"
-					style="display: none;" /> <a
-					href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a><br />
-				<table border="1">
-					<tr>
-						<th>班级</th>
-						<th>学年</th>
-						<th colspan="3">操作</th>
-					</tr>
-
-					<c:choose>
-						<c:when test="${! empty course.clazz }">
-							<c:forEach items="${course.clazz}" var="c">
-								<tr>
-									<td>${c.clazzName}</td>
-									<td>${c.currentYear}</td>
-									<td>
-										<form id="asd${c.clazzId}"
-											action="<%=request.getContextPath()%>/student/selectStudentByClazzId.do"
-											method="post">
-											<input name="clazzId" style="display: none;"
-												value="${c.clazzId}" /> <a id="${c.clazzId}"
-												onclick="aClick(this.id)" href="#">查看</a>
-										</form>
-									</td>
-									<td><a id="zxc${c.clazzId}"
-										onclick="changeWhenClick(this.id)" href="#">修改</a></td>
-									<td><a id="del${c.clazzId}"
-										onclick="deleteClazzByAjax(this.id)" href="#">删除</a></td>
-								</tr>
-								<br />
-							</c:forEach>
-						</c:when>
-						<c:otherwise>
-							<a>(空)</a>
-						</c:otherwise>
-					</c:choose>
-				</table>
-				<br /> <br />
-			</div>
+			<script>
+				//其它模块显示
+				$('#otherShow').click(function(){
+					$('#otherModel').show();
+					$('#signModel').hide();
+				})
+			</script>
+			
 
 
 			<br />
 
 
-
-			<table id="scoreTable" border="1" style="display: none;">
-				<caption>本学期签到汇总</caption>
-				<tr>
-					<th>学号</th>
-					<th>姓名</th>
-					<th>签到</th>
-					<th>迟到</th>
-					<th>早退</th>
-					<th>旷课</th>
-				</tr>
-				<c:choose>
-					<c:when test="${! empty studentInfo}">
-						<c:forEach items="${studentInfo}" var="s">
-							<tr>
-								<td>${s.student.studentRoNo}</td>
-								<td>${s.student.studentName}</td>
-								<td>${s.signIn}</td>
-								<td>${s.comeLate}</td>
-								<td>${s.leaveEarlier}</td>
-								<td>${s.absenteeism}</td>
-							</tr>
-						</c:forEach>
-					</c:when>
-				</c:choose>
-			</table>
-
+			<div>
+				<table id="scoreTable" border="1" style="display: none;">
+					<caption>本学期签到汇总</caption>
+					<tr>
+						<th>学号</th>
+						<th>姓名</th>
+						<th>签到</th>
+						<th>迟到</th>
+						<th>早退</th>
+						<th>旷课</th>
+					</tr>
+					<c:choose>
+						<c:when test="${! empty studentInfo}">
+							<c:forEach items="${studentInfo}" var="s">
+								<tr>
+									<td>${s.student.studentRoNo}</td>
+									<td>${s.student.studentName}</td>
+									<td>${s.signIn}</td>
+									<td>${s.comeLate}</td>
+									<td>${s.leaveEarlier}</td>
+									<td>${s.absenteeism}</td>
+								</tr>
+							</c:forEach>
+						</c:when>
+					</c:choose>
+				</table>
+			</div>
 
 
 		</div>
