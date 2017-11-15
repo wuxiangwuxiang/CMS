@@ -16,7 +16,11 @@
 		<result property="schoolRecord" column="SchoolRecord" />
 		<result property="birthDay" column="BirthDay" />
 		<result property="freeStyle" column="FreeStyle" />
-
+        
+        <association property="clazzStu" javaType="com.qdu.pojo.ClazzStu">
+          <id property="clazzStuId" column="ClazzStuId" />
+        </association>
+        
 		<association property="studentInfo" javaType="com.qdu.pojo.StudentInfo">
 			<id property="studentInfoId" column="StudentInfoId" />
 			<result property="signIn" column="SignIn" />
@@ -70,13 +74,21 @@
 				</collection>
 			</association>
 		</association>
+		
 	</resultMap>
+
 
 	<select id="selectStudentByStudentInfoId" resultMap="StudentResult">
 		select *
 		from Student where StudentRoNo in(select StudentRoNo from
 		StudentInfo
 		where StudentInfoId = #{studentInfoId});
+	</select>
+	
+	<select id="selectStudentAndClazzByNo" parameterType="HashMap" resultMap="StudentResult">
+	SELECT * from Student s,Clazz c Where 
+    c.CourseId = #{courseId}
+	And s.StudentRoNo = #{studentRoNo}
 	</select>
 
 	<select id="selectStudentByNo" resultMap="StudentResult">

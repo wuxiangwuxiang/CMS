@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class ClazzStu implements Serializable{
 	private int ClazzStuId;
-	private String studentRoNo;
-	private int clazzId;
+	private Student student;
+	private Clazz clazz;
 	
 	public int getClazzStuId() {
 		return ClazzStuId;
@@ -13,17 +13,17 @@ public class ClazzStu implements Serializable{
 	public void setClazzStuId(int clazzStuId) {
 		ClazzStuId = clazzStuId;
 	}
-	public String getStudentRoNo() {
-		return studentRoNo;
+	public Student getStudent() {
+		return student;
 	}
-	public void setStudentRoNo(String studentRoNo) {
-		this.studentRoNo = studentRoNo;
+	public void setStudent(Student student) {
+		this.student = student;
 	}
-	public int getClazzId() {
-		return clazzId;
+	public Clazz getClazz() {
+		return clazz;
 	}
-	public void setClazzId(int clazzId) {
-		this.clazzId = clazzId;
+	public void setClazz(Clazz clazz) {
+		this.clazz = clazz;
 	}
 	
 	

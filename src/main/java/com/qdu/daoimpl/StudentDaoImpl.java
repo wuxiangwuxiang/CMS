@@ -46,9 +46,12 @@ public class StudentDaoImpl implements StudentDao{
 	}
 
 	@Override
-	public Student selectStudentAndClazzByNo(String studentRoNo) {
+	public Student selectStudentAndClazzByNo(String studentRoNo,int courseId) {
+		Map<String, Object> map = new HashMap<>();
 		String statement = "com.qdu.mapping.StudentMapping.selectStudentAndClazzByNo";
-		return sessionFactory.openSession().selectOne(statement, studentRoNo);
+		map.put("studentRoNo", studentRoNo);
+		map.put("courseId", courseId);
+		return sessionFactory.openSession().selectOne(statement, map);
 	}
 
 	@Override

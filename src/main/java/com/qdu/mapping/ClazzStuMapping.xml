@@ -4,26 +4,60 @@
 	<cache type="com.qdu.cache.RedisCache" />
 	<resultMap type="com.qdu.pojo.ClazzStu" id="ClazzStuResult">
 		<id property="clazzStuId" column="ClazzStuId" />
-		<result property="studentRoNo" column="StudentRoNo" />
-		<result property="clazzId" column="ClazzId" />
+
+
+		<association property="student" javaType="com.qdu.pojo.Student">
+			<id property="studentRoNo" column="StudentRoNo" />
+			<result property="studentPassword" column="StudentPassword" />
+			<result property="studentMobile" column="StudentMobile" />
+			<result property="studentEmail" column="StudentEmail" />
+			<result property="studentName" column="StudentName" />
+			<result property="studentGender" column="StudentGender" />
+			<result property="studentPhoto" column="StudentPhoto" />
+			<result property="college" column="College" />
+			<result property="special" column="Special" />
+			<result property="intoSchoolYear" column="IntoSchoolYear" />
+			<result property="schoolRecord" column="SchoolRecord" />
+			<result property="birthDay" column="BirthDay" />
+			<result property="freeStyle" column="FreeStyle" />
+		</association>
+
+		<association property="clazz" javaType="com.qdu.pojo.Clazz">
+			<id property="clazzId" column="ClazzId" />
+			<result property="clazzName" column="ClazzName" />
+			<result property="currentYear" column="CurrentYear" />
+		</association>
 	</resultMap>
 
-	<insert id="insertClazzStu" parameterType="com.qdu.pojo.ClazzStu">
-      insert into 
-      ClazzStu(StudentRoNo,ClazzId) 
-      values(#{studentRoNo},#{clazzId})
+	<insert id="insertClazzStu" parameterType="HashMap">
+		insert into
+		ClazzStu(StudentRoNo,ClazzId)
+		values(#{studentRoNo},#{clazzId})
 	</insert>
-	
+
+	<select id="selectClazzStuByCourse" resultMap="ClazzStuResult">
+		SELECT * from ClazzStu l, Student s,Clazz c Where
+		l.studentRoNo = s.StudentRoNo
+		AND l.ClazzId = c.ClazzId
+		And s.StudentRoNo = #{studentRoNo}
+		AND c.CourseId = #{courseId}
+	</select>
+
 	<select id="selectClazzStuById" resultMap="ClazzStuResult">
-	  select * from ClazzStu where ClazzId = #{clazzd}
+		select * from ClazzStu
+		where ClazzId = #{clazzd}
 	</select>
-	
-	<select id="selectClazzStuByDouble" parameterType="HashMap" resultMap="ClazzStuResult">
-	  select * from ClazzStu where ClazzId = #{clazzId} And StudentRoNo = #{studentRoNo}
+
+	<select id="selectClazzStuByDouble" parameterType="HashMap"
+		resultMap="ClazzStuResult">
+		select * from ClazzStu where ClazzId = #{clazzId} And
+		StudentRoNo =
+		#{studentRoNo}
 	</select>
-	
+
 	<delete id="deleteClazzStuByClazzId" parameterType="int">
-	  delete from ClazzStu where ClazzId = #{clazzd}
+		delete from
+		ClazzStu where ClazzId = #{clazzd}
 	</delete>
 
 </mapper>

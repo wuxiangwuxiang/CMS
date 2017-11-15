@@ -22,12 +22,14 @@ import com.qdu.pojo.Message;
 import com.qdu.pojo.Student;
 import com.qdu.pojo.StudentInfo;
 import com.qdu.pojo.Teacher;
+import com.qdu.service.ClazzService;
 import com.qdu.service.ClazzStuService;
 import com.qdu.service.CourseService;
 import com.qdu.service.MessageService;
 import com.qdu.service.StudentInfoService;
 import com.qdu.service.StudentService;
 import com.qdu.service.TeacherService;
+import com.qdu.serviceimpl.ClazzServiceImpl;
 import com.qdu.util.MD5Util;
 
 @Controller 
@@ -46,6 +48,7 @@ public class StudentInfoController {
 	private CourseService courseServiceImpl;
 	@Autowired
 	private ClazzStuService clazzStuServiceImpl;
+	@Autowired ClazzService clazzServiceImpl;
 
 	// 添加学生——课程 中间表
 	@SystemLog(module = "中间表", methods = "日志管理-添加中间表")
@@ -65,10 +68,7 @@ public class StudentInfoController {
 			System.out.println(222);
 			int clazzId = Integer.parseInt(request.getParameter("clazzId"));
 			if (clazzId != 0) {
-				ClazzStu clazzStu = new ClazzStu();
-				clazzStu.setClazzId(clazzId);
-				clazzStu.setStudentRoNo(studentRoNo);
-				clazzStuServiceImpl.insertClazzStu(clazzStu);
+				clazzStuServiceImpl.insertClazzStu(clazzId,studentRoNo);
 			}
 			return "success";
 		} else {
@@ -91,26 +91,15 @@ public class StudentInfoController {
         		break;
         	}
         }
-        System.out.println("结束" + content.substring(0, tem));
         String aa = content.substring(0, tem);
         String bb = content.substring(tem+1);
-        System.out.println(aa);
-        System.out.println(bb);
         int courseId = Integer.parseInt(aa);
         int clazzId = Integer.parseInt(bb);
-        System.out.println("CourseId>>>>>>>>: " + courseId);
-        System.out.println("clazzId>>>>"+clazzId);
 		StudentInfo studentInfo2 = studentInfoServiceImpl.selectStudentInfoByMany(studentRoNo,courseId);
 		if (studentInfo2 == null) {
-			System.out.println("11111111");
 			if (clazzId != 0) {
-				System.out.println("22222222222222");
-				ClazzStu clazzStu = new ClazzStu();
-				clazzStu.setClazzId(clazzId);
-				clazzStu.setStudentRoNo(studentRoNo);
-				System.out.println("33333333333");
-				int tem2 = clazzStuServiceImpl.insertClazzStu(clazzStu);
-				System.out.println("444444444444444");
+				int tem2 = clazzStuServiceImpl.insertClazzStu(clazzId,studentRoNo);
+				System.out.println(tem2);
 				if(tem2 > 0){
 					studentInfoServiceImpl.insertStudentInfo(studentRoNo,courseId);
 				}
@@ -119,7 +108,6 @@ public class StudentInfoController {
 	        String time = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
 	        Message message =  new Message();
 	        Course course = courseServiceImpl.selectCourseById(courseId);
-	        System.out.println("5555555555555555");
 			 message.setMessageSender(teacherMobile);
 			 message.setMessageAccepter(studentRoNo);
 			 message.setMessageTitle(teacher.getTeacherName() + "老师同意你加入课程< " + course.getCourseName() + 

@@ -15,7 +15,7 @@ public interface StudentDao {
 	
 	public void updateStudentOfClazzId(String studentRoNo,int clazzId);
 	
-	public Student selectStudentAndClazzByNo(String studentRoNo);
+	public Student selectStudentAndClazzByNo(String studentRoNo,int courseId);
 	
 	public void updateStudentPassWord(Student student);
 	

@@ -175,7 +175,7 @@ public class StudentController {
 		List<Student> students = new ArrayList<>();
 		List<ClazzStu> clazzStus = clazzStuServiceImpl.selectClazzStuById(clazzId);
 		for(ClazzStu clazzStu: clazzStus){
-			Student student = studentServiceImpl.selectStudentByNo(clazzStu.getStudentRoNo());
+			Student student = studentServiceImpl.selectStudentByNo(clazzStu.getStudent().getStudentRoNo());
 			students.add(student);
 		}
 		int count = clazzServiceImpl.selectCountOfStudentByClazz(clazzId);
@@ -306,16 +306,15 @@ public class StudentController {
 	public Map<String, Object> insertQrTem(HttpServletRequest request, String studentRoNo, String password,
 			int courseId, String qrTime, int validateCode) throws ParseException {
 		System.out.println("进入 ： insertQrTem.do");
+		System.out.println(courseId);
+		System.out.println(studentRoNo);
 		request.getSession().setAttribute("UserId", studentRoNo);
 		Map<String, Object> map = new HashMap<>();
-		List<Student> students = courseServiceImpl.selectStudentByMany(courseId);
+		StudentInfo studentInfo = studentInfoServiceImpl.selectStudentInfoByMany(studentRoNo, courseId);
 		Boolean confirm = false;
-		for (Student student : students) {
-			if (studentRoNo.equals(student.getStudentRoNo())) {
+			if (studentInfo != null) {
 				confirm = true;
-				break;
 			}
-		}
 		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
 		if (confirm == false) {
 			Student student2 = studentServiceImpl.selectStudentByNo(studentRoNo);
@@ -358,15 +357,19 @@ public class StudentController {
 		Map<String, Object> map = new HashMap<>();
 		List<QrTem> qrTems = qrTemServiceImpl.selectQrTemByCourseIdAndTime(courseId, currentTime);
 		List<Student> students = new ArrayList<>();
+		List<ClazzStu> clazzStus = new ArrayList<>();
 		if (qrTems != null && qrTems.size() != 0) {
-			for (QrTem qrTem : qrTems) {
-				Student student = studentServiceImpl.selectStudentAndClazzByNo(qrTem.getStudentRoNo());
-				students.add(student);
+			for (QrTem qrTem : qrTems) { 
+//				Student student = studentServiceImpl.selectStudentAndClazzByNo(qrTem.getStudentRoNo(),courseId);
+				ClazzStu clazzStu = clazzStuServiceImpl.selectClazzStuByCourse(qrTem.getStudentRoNo(), courseId);
+				System.out.println(clazzStu.getStudent().getStudentName());
+				System.out.println(clazzStu.getClazz().getClazzName());
+				clazzStus.add(clazzStu);
 			} 
 		} else {
 			System.out.println("空");
 		}
-		map.put("students", students);
+		map.put("clazzStus", clazzStus);
 		return map;
 	}
 
@@ -479,7 +482,6 @@ public class StudentController {
 		boolean tem = false;
 			if(clazzStuServiceImpl.selectClazzStuByDouble(clazzId, studentRono) == null){
 				tem = true;
-				System.out.println("111111111111");
 		}else {
 			tem = false;
 		}

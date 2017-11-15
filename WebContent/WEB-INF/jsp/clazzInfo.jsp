@@ -148,7 +148,7 @@ function YesConfirm() {
          async: true,
          url: "<%=request.getContextPath()%>/student/getTemStudent.do",
          success: function (data) {
-        	    var dataObj = data.students, //返回的data为json格式的数据
+        	    var dataObj = data.clazzStus, //返回的data为json格式的数据
         	    con =  '\
         	    		<caption>实时签到</caption>\
         				<tr>\
@@ -159,8 +159,8 @@ function YesConfirm() {
         				';
         	    $.each(dataObj, function (index, item) {
         	        con += "<tr>";
-        	        con += "<td>" + item.studentRoNo + "</td>";
-        	        con += "<td>" + item.studentName + "</td>";
+        	        con += "<td>" + item.student.studentRoNo + "</td>";
+        	        con += "<td>" + item.student.studentName + "</td>";
         	        con += "<td>" + item.clazz.clazzName + "</td>";
         	        con += "<tr/>";
         	    });

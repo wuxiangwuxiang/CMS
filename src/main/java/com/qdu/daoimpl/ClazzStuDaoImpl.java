@@ -16,12 +16,7 @@ public class ClazzStuDaoImpl implements ClazzStuDao{
 
 	@Autowired private SqlSessionFactory SqlSessionFactory;
 	
-	@Override
-	public int insertClazzStu(ClazzStu clazzStu) {
-		String statement = "com.qdu.mapping.ClazzStuMapping.insertClazzStu";
-		return SqlSessionFactory.openSession().insert(statement, clazzStu);
-	}
-
+	
 	@Override
 	public List<ClazzStu> selectClazzStuById(int clazzId) {
 		String statement = "com.qdu.mapping.ClazzStuMapping.selectClazzStuById";
@@ -41,6 +36,24 @@ public class ClazzStuDaoImpl implements ClazzStuDao{
 		map.put("clazzId", clazzId);
 		map.put("studentRoNo", studentRoNo);
 		return SqlSessionFactory.openSession().selectOne(statement, map);
+	}
+
+	@Override
+	public int insertClazzStu(int clazzId, String studentRoNo) {
+		Map<String, Object> map = new HashMap<>();
+		String statement = "com.qdu.mapping.ClazzStuMapping.insertClazzStu";
+		map.put("clazzId", clazzId);
+		map.put("studentRoNo", studentRoNo);
+		return SqlSessionFactory.openSession().insert(statement, map);
+	}
+
+	@Override
+	public ClazzStu selectClazzStuByCourse(String studentRoNo, int courseId) {
+		String statement = "com.qdu.mapping.ClazzStuMapping.selectClazzStuByCourse";
+		Map<String, Object> map = new HashMap<>();
+		map.put("studentRoNo", studentRoNo);
+		map.put("courseId", courseId);
+		return SqlSessionFactory.openSession().selectOne(statement,map);
 	}
 
 }

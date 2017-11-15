@@ -17,11 +17,6 @@ public class ClazzStuServiceImpl implements ClazzStuService{
 	@Autowired private ClazzStuDao clazzStuDaoImpl;
 
 	@Override
-	public int insertClazzStu(ClazzStu clazzStu) {
-		return clazzStuDaoImpl.insertClazzStu(clazzStu);
-	}
-
-	@Override
 	public List<ClazzStu> selectClazzStuById(int clazzId) {
 		return clazzStuDaoImpl.selectClazzStuById(clazzId);
 	}
@@ -34,6 +29,16 @@ public class ClazzStuServiceImpl implements ClazzStuService{
 	@Override
 	public ClazzStu selectClazzStuByDouble(int clazzId, String studentRoNo) {
 		return clazzStuDaoImpl.selectClazzStuByDouble(clazzId, studentRoNo);
+	}
+
+	@Override
+	public int insertClazzStu(int clazzId, String studentRoNo) {
+		return clazzStuDaoImpl.insertClazzStu(clazzId, studentRoNo);
+	}
+
+	@Override
+	public ClazzStu selectClazzStuByCourse(String studentRoNo, int courseId) {
+	   return clazzStuDaoImpl.selectClazzStuByCourse(studentRoNo, courseId);
 	}
 
 }

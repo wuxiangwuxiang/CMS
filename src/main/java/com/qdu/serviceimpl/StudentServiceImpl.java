@@ -37,8 +37,8 @@ public class StudentServiceImpl implements StudentService{
 	}
 
 	@Override
-	public Student selectStudentAndClazzByNo(String studentRoNo) {
-		return studentDaoImpl.selectStudentAndClazzByNo(studentRoNo);
+	public Student selectStudentAndClazzByNo(String studentRoNo,int courseId) {
+		return studentDaoImpl.selectStudentAndClazzByNo(studentRoNo,courseId);
 	}
 
 	@Override

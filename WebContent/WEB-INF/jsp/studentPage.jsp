@@ -696,7 +696,7 @@
   <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
 </script>
  <script type="text/html" id="titleTpl">
-     <a href="#" onclick='getMessage({{d.messageId}})' class="layui-table-link">{{d.messageTitle}}</a>
+     <a href="#" class="layui-table-link">{{d.messageTitle}}</a>
    </script>
 		<script>
         layui.use('table', function(){

@@ -43,7 +43,7 @@ function confirmRoNo() {
 		<form action="<%=request.getContextPath()%>/student/insertQrTem.do">
 			<input style="display: none;" id="courseId" type="text" name="courseId" value="<%=request.getParameter("courseId") %>"
 				disabled="disabled"><br /> 
-				<input id="qrTime" type="date" name="qrTime"
+				<input id="qrTime" type="date" name="qrTime" style="display: none;"
 				value="<%=request.getParameter("currentTime") %>" disabled="disabled"><br /> 
 				学号：<input id="confirm" type="text" name="studentRoNo"><br /> 
 				密码：<input id="password" type="password" name="studentPassword"><br />

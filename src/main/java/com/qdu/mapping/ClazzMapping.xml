@@ -6,8 +6,11 @@
 		<id property="clazzId" column="ClazzId" />
 		<result property="clazzName" column="ClazzName" />
 		<result property="currentYear" column="CurrentYear" />
-
-
+        
+        <association property="clazzStu" javaType="com.qdu.pojo.ClazzStu">
+          <id property="clazzStuId" column="ClazzStuId" />
+        </association>
+        
 		<association property="course" javaType="com.qdu.pojo.Course">
 			<id property="courseId" column="CourseId" />
 			<result property="courseName" column="CourseName" />
@@ -74,6 +77,7 @@
 				</collection>
 			</collection>
 		</association>
+		
 	</resultMap>
 
 	<select id="selectClazzByCourse" resultMap="ClazzResult"
