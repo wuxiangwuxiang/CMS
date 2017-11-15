@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Clazz;
 import com.qdu.pojo.Course;
@@ -40,6 +46,7 @@ import com.qdu.util.GlobalVariable;
 import com.qdu.util.JavaEmailSender;
 import com.qdu.util.MD5Util;
 import com.qdu.util.Page;
+import com.qdu.util.ResponseUtil;
 import com.qdu.util.VertifyCodeUtil;
 
 @Controller
@@ -86,16 +93,16 @@ public class StudentController {
 				List<StudentInfo> studentInfos2 = studentInfoServiceImpl.selectStudentInfoList(studentRoNo);
 				map.put("studentInfos2", studentInfos2);
 				
-				Page page = null;
-				int totalCount = messageServiceImpl.selectMessageTotalCount(studentRoNo);
-				page = new Page(totalCount, Integer.parseInt(pageNow));
-				int messageCount = messageServiceImpl.selectMessageCount(studentRoNo);
-				map.put("messageCount", messageCount);
-				List<Message> messages = messageServiceImpl.selectUnreadMessage(studentRoNo,
-						page.getStartPos());
-				map.put("message", messages);
-				map.put("page", page);
-				
+//				Page page = null;
+//				int totalCount = messageServiceImpl.selectMessageTotalCount(studentRoNo);
+//				page = new Page(totalCount, Integer.parseInt(pageNow));
+//				int messageCount = messageServiceImpl.selectMessageCount(studentRoNo);
+//				map.put("messageCount", messageCount);
+//				List<Message> messages = messageServiceImpl.selectUnreadMessage(studentRoNo,
+//						page.getStartPos());
+//				map.put("message", messages);
+//				map.put("page", page);
+//				map.put("totalCount", totalCount);
 				List<StudentInfo> studentInfos = studentInfoServiceImpl.selectCourseByStudentRono(studentRoNo);
 				map.addAttribute("studentInfos", studentInfos);
 				map.addAttribute("student", student2);
@@ -235,13 +242,13 @@ public class StudentController {
 		page = new Page(totalCount, Integer.parseInt(pageNow));
 		int messageCount = messageServiceImpl.selectMessageCount(studentRoNo);
 		map.put("messageCount", messageCount);
-		List<Message> messages = messageServiceImpl.selectUnreadMessage(studentRoNo,
-				page.getStartPos());
+//		List<Message> messages = messageServiceImpl.selectUnreadMessage(studentRoNo,
+//				page.getStartPos());
 		List<LogEntity> logEntities = logEntityServiceImpl.selectStudentLog(studentRoNo);
 		map.put("logEntity", logEntities);
 		List<StudentInfo> studentInfos2 = studentInfoServiceImpl.selectStudentInfoList(studentRoNo);
 		map.put("studentInfos2", studentInfos2);
-		map.put("message", messages);
+//		map.put("message", messages);
 		map.put("page", page);
 		map.put("student", student);
 		map.addAttribute("studentInfos", studentInfos);
@@ -549,5 +556,33 @@ public class StudentController {
 			return map; 
 		} 
 		
+		//查询消息分页
+		@RequestMapping(value ="/getSeperratePage.do")
+		@SystemLog(module = "学生", methods = "日志管理-消息分页")
+		public String getSeperratePage(
+				String messageAcpter,
+				 @RequestParam(value = "page", required = false) String page,
+		         @RequestParam(value = "limit", required = false) String limit,
+		         HttpServletResponse response) throws Exception{
+			int ppp = Integer.parseInt(page);
+			int lll = Integer.parseInt(limit);
+          List<Message> messages = messageServiceImpl.selectUnreadMessage(messageAcpter, lll*(ppp-1), lll);
+         //使用阿里巴巴的fastJson创建JSONObject
+         JSONObject result = new JSONObject();
+         //通过fastJson序列化list为jsonArray
+         String jsonArray = JSON.toJSONString(messages);
+         JSONArray array = JSONArray.parseArray(jsonArray);
+		int totalCount = messageServiceImpl.selectMessageTotalCount(messageAcpter);
 
+         //将序列化结果放入json对象中
+         result.put("data", array);
+         result.put("count", totalCount);
+         result.put("code", 0);
+
+         //使用自定义工具类向response中写入数据
+         ResponseUtil.write(response, result);
+         return null;
+     
+
+		}
 }

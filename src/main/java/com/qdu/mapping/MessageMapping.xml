@@ -28,7 +28,7 @@
 	</select>
 	
 	<select id="selectUnreadMessage" parameterType="HashMap" resultMap="MessageResult">
-	select * from Message where MessageAccepter = #{messageAccepter} Order by MessageId desc limit #{startPos},10
+	select * from Message where MessageAccepter = #{messageAccepter} Order by MessageId desc limit #{startPos},#{count}
 	</select>
 	
 	<select id="selectMessageTotalCount" parameterType="String" resultType="int"> 

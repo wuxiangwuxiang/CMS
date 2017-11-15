@@ -26,10 +26,7 @@ public class MessageServiceImpl implements MessageService{
 		return messageDaoImpl.selectMessageCount(messageAccepter);
 	}
 
-	@Override
-	public List<Message> selectUnreadMessage(String messageAccepter ,int startPos) {
-		return messageDaoImpl.selectUnreadMessage(messageAccepter, startPos);
-	}
+	
 
 	@Override
 	public Message selectMessageById(int messageId) {
@@ -44,6 +41,11 @@ public class MessageServiceImpl implements MessageService{
 	@Override
 	public int selectMessageTotalCount(String messageAccepter) {
 		return messageDaoImpl.selectMessageTotalCount(messageAccepter);
+	}
+
+	@Override
+	public List<Message> selectUnreadMessage(String messageAccepter, int startPos, int count) {
+		return messageDaoImpl.selectUnreadMessage(messageAccepter, startPos, count);
 	}
 
 }

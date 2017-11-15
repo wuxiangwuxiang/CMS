@@ -10,7 +10,7 @@
 		<result property="createTime" column="CreateTime" />
 	</resultMap>
      <select id="selectFileByUserId" parameterType="ArrayList" resultMap="FilePackageResult">
-     select * from FilePackage where UserId = #{userId} order by UserId desc
+     select * from FilePackage where UserId = #{userId} order by FileId desc
      </select>
      
      <insert id="insertFile" parameterType="com.qdu.pojo.FilePackage">
