@@ -29,11 +29,12 @@ public class MessageDaoImpl implements MessageDao{
 	}
 
 	@Override
-	public List<Message> selectUnreadMessage(String messageAccepter ,int startPos) {
+	public List<Message> selectUnreadMessage(String messageAccepter ,int startPos,int count) {
 		String statement = "com.qdu.mapping.MessageMapping.selectUnreadMessage";
 		Map<String, Object> map = new HashMap<>();
 		map.put("messageAccepter", messageAccepter);
 		map.put("startPos", startPos);
+		map.put("count", count);
 		return sessionFactory.openSession().selectList(statement, map);
 	}
 

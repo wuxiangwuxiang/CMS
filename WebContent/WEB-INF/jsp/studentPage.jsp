@@ -2,7 +2,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html> 
+<html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link type="text/css" rel="stylesheet"
@@ -29,25 +29,7 @@
 		 ||${empty student.schoolRecord}||${empty student.birthDay}||${empty student.freeStyle}){
 			 $('#redSignal').show();
 		 }
-	 
-		 //如果pageNow大于1，点击下一页/上一页则显示消息页面
-		 if(${page.pageNow} > 1){
-			 $('#doubleHandle').hide();
-				$('#signal').hide();
-			    $('#studentAddCourse').hide();
-			     $('#courseInfo').hide();
-				 $('#seprateMessage').show();
-				 $('#messageShow').show();
-		 }
-		 //如果是最后一页
-		 if(${page.pageNow} == ${page.totalPageCount}){
-			 $('#doubleHandle').hide();
-				$('#signal').hide();
-			    $('#studentAddCourse').hide();
-			     $('#courseInfo').hide();
-				 $('#seprateMessage').show();
-				 $('#messageShow').show();
-		 }
+	 		 
 		 //每1秒执行一次消息数量的查询
 		 setInterval(gggetMessageCount,1000);
 		 function gggetMessageCount() {
@@ -236,7 +218,7 @@
 	              contentType: "application/json; charset=utf-8",
 	              async: false,
 	              dataType: "json",
-	              url: "<%=request.getContextPath() %>/student/confirmStudentPassWord.do",
+	              url: "<%=request.getContextPath()%>/student/confirmStudentPassWord.do",
 	              success: function (data) {
 	            	  if(data.result == true){
 	            		  result = true;
@@ -550,15 +532,15 @@
 </head>
 <body>
 
-<!-- 更改邮箱成功提示信息 -->
+	<!-- 更改邮箱成功提示信息 -->
 
-	
+
 	<!-- 添加课程成功提示信息 -->
 	<div id="addCourseShow"
 		style="background-color: #393D49; height: 20%; width: 20%; z-index: 20; position: fixed; margin-top: 30%; text-align: center; margin-left: 35%; display: none;">
 		<h3 style="color: white; margin-top: 19%">请求已发送..</h3>
 	</div>
-	
+
 	<!-- 完善个人信息成功提示信息 -->
 	<div id="updatePersonInfoShow"
 		style="background-color: #393D49; height: 20%; width: 20%; z-index: 20; position: fixed; margin-top: 30%; text-align: center; margin-left: 35%; display: none;">
@@ -573,10 +555,15 @@
 					style="color: white; font-size: 25px;">CMS</span></a>
 
 				<ul class="layui-nav">
-					<li class="layui-nav-item"><a id="messageButtton" href="#">消息<span id="TmessageCount"
-							class="layui-badge">${messageCount}</span></a></li>
-					<li class="layui-nav-item"><a id="studentInfoCenter" href="#">个人中心<span id="redSignal" style="display: none;"
-							class="layui-badge-dot"></span></a></li>
+					<li class="layui-nav-item"><a id="messageButtton" href="#">消息<span
+							id="TmessageCount" class="layui-badge">${messageCount}</span></a></li>
+					<li class="layui-nav-item"><a id="studentInfoCenter" href="#">个人中心<span
+							id="redSignal" style="display: none;" class="layui-badge-dot"></span></a></li>
+					<li class="layui-nav-item"
+						style="padding: 0; margin: 0; text-align: right;"><img
+						height="45em" width="40em"
+						src="/ClassManageSys/studentPhoto/${student.studentPhoto}"
+						class="layui-circle"></li>
 					<li class="layui-nav-item"><a href="#">${student.studentName}</a>
 						<dl class="layui-nav-child">
 							<dd>
@@ -586,7 +573,8 @@
 								<a id="safeManage" href="#">安全管理</a>
 							</dd>
 							<dd>
-								<a onclick="exitLogin()" href="<%=request.getContextPath() %>/index.jsp">注销</a>
+								<a onclick="exitLogin()"
+									href="<%=request.getContextPath()%>/index.jsp">注销</a>
 							</dd>
 						</dl></li>
 				</ul>
@@ -594,7 +582,7 @@
 			</div>
 		</div>
 		<!-- 左侧垂直导航 -->
-		<div class="layui-side layui-bg-black" style=" position: absolute;">
+		<div class="layui-side layui-bg-black" style="position: absolute;">
 			<div class="layui-side-scroll">
 				<ul class="layui-nav layui-nav-tree" lay-filter="test">
 					<!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
@@ -627,53 +615,76 @@
 					<li class="layui-nav-item"><a href="#">课堂资料</a></li>
 				</ul>
 			</div>
-		</div> 
+		</div>
 	</div>
 
-		<!-- 内容显示 -->
-		<div class="layui-body site-demo" style="padding-top: 7%;overflow: auto;">
-			<br />
-			
-			<!-- 签到记录 -->
-			
-			<table id="studentWork" border="1" style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%;
-			 display: none;">
-			 <tr>
-			 <th>课程编码</th>
-			 <th>课程名称</th> 
-			 <th>学年</th>
-			 <th>学期</th>  
-			 <th>签到</th>
-			 <th>迟到</th>
-			 <th>早退</th>
-			 <th>旷课</th>
-			 </tr>
-			 <c:choose>
-			<c:when test="${! empty studentInfos}">
-			<c:forEach items="${studentInfos}" var="s">
+	<!-- 内容显示 -->
+	<div class="layui-body site-demo"
+		style="padding-top: 7%; overflow: auto;">
+		<br />
+		<hr class="layui-bg-cyan">
+
+		<!-- 签到记录 -->
+
+		<table id="studentWork" border="1"
+			style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%; display: none;">
 			<tr>
-			<td>${s.course.courseId}</td>
-			<td>${s.course.courseName}</td>
-			<td>${s.course.currentYear}</td>
-			<td>${s.course.schoolTem}</td>
-			<td>${s.signIn}</td>
-			<td>${s.comeLate}</td>
-			<td>${s.leaveEarlier}</td>
-			<td>${s.absenteeism}</td>
+				<th>课程编码</th>
+				<th>课程名称</th>
+				<th>学年</th>
+				<th>学期</th>
+				<th>签到</th>
+				<th>迟到</th>
+				<th>早退</th>
+				<th>旷课</th>
 			</tr>
-			</c:forEach>
-			</c:when>
-			<c:otherwise>
-			<tr>
-			<td colspan="8">(暂无信息)</td>
-			</tr>
-			</c:otherwise>
+			<c:choose>
+				<c:when test="${! empty studentInfos}">
+					<c:forEach items="${studentInfos}" var="s">
+						<tr>
+							<td>${s.course.courseId}</td>
+							<td>${s.course.courseName}</td>
+							<td>${s.course.currentYear}</td>
+							<td>${s.course.schoolTem}</td>
+							<td>${s.signIn}</td>
+							<td>${s.comeLate}</td>
+							<td>${s.leaveEarlier}</td>
+							<td>${s.absenteeism}</td>
+						</tr>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<tr>
+						<td colspan="8">(暂无信息)</td>
+					</tr>
+				</c:otherwise>
 			</c:choose>
-			 </table>			
-			
-			
-			<!-- 显示消息 -->
-			<div class="site-text site-block" id="messageShow"
+		</table>
+
+
+		<!-- 显示消息 -->
+		<div id="messageShow" style="text-align: center;" >
+		<table  class="layui-table"
+			lay-data="{height:415,width:1300, url:'<%=request.getContextPath() %>/student/getSeperratePage.do',
+			 page:true, id:'messageShow1', where:{messageAcpter:'${student.studentRoNo}'}}"
+			lay-filter="test" style="width: 100%;">
+			<thead>
+				<tr>
+					<th lay-data="{field:'messageSender', width:400, sort: true}">发送方</th>
+					<th lay-data="{field:'messageTitle', width:600}">标题</th>
+					<th lay-data="{field:'haveRead', width:300, sort: true}">读取</th>
+				</tr>
+			</thead>
+		</table>
+     </div>
+		<script src="/static/build/layui.js"></script>
+		<script>
+        layui.use('table', function(){
+        var table = layui.table;
+        
+        });
+        </script>
+		<%-- <div class="site-text site-block" id="messageShow"
 				style="padding-left: 10%; display: none;">
 				<table>
 				<c:choose>
@@ -698,8 +709,30 @@
 				</c:choose>
 				</table>
 			</div>
-			<!-- 消息分页 -->
-			 <div id="seprateMessage" style="text-align: center;margin-left: 0; display: none;">  
+			
+			<div id="demo7"></div>
+			
+			 <script type="text/javascript">
+          layui.use(['laypage', 'layer'], function(){
+        	  var laypage = layui.laypage
+        	  ,layer = layui.layer;
+        	  
+        	  //完整功能
+        	  laypage.render({
+        	    elem: 'demo7'
+        	    ,count: 100
+        	    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
+        	    ,jump: function(obj){
+        	      console.log(obj)
+        	    }
+        	  });
+        	  
+        	
+			
+		});
+          </script> --%>
+		<!-- 消息分页 -->
+		<%--  <div id="seprateMessage" style="text-align: center;margin-left: 0; display: none;">  
             <font size="2">第  ${page.pageNow} 页</font> <font size="2">共 ${page.totalPageCount} 页</font>
             <a href="studentLogin.do?pageNow=1&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">首页</a>  
             <c:choose> 
@@ -729,70 +762,86 @@
                     <a href="studentLogin.do?pageNow=${page.totalPageCount}&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">尾页</a>  
                 </c:otherwise>  
             </c:choose>  
-          </div>
-			<!-- 附属详细消息 -->
-			<div id="fushuMessage" style="width: 100%; padding-left: 25%; display: none; margin-top: 5%;">
+          </div> --%>
+		<!-- 附属详细消息 -->
+		<div id="fushuMessage"
+			style="width: 100%; padding-left: 25%; display: none; margin-top: 5%;">
 			<h3 id="messageTitle"></h3>
-			<hr/><br/><br/>
-			<span id="messageSnder"></span><br/><br/><br/><br/>
-			<span id="messageSenderName" style="display: none;"></span>
-			<span id="sendTime"></span><br/><br/><br/><br/>
-			<span id="forMessageContent">内容<br/></span> <textarea id="messageContent" rows="5" cols="40" readonly="readonly"></textarea><br/><br/>
+			<hr />
+			<br />
+			<br /> <span id="messageSnder"></span><br />
+			<br />
+			<br />
+			<br /> <span id="messageSenderName" style="display: none;"></span> <span
+				id="sendTime"></span><br />
+			<br />
+			<br />
+			<br /> <span id="forMessageContent">内容<br /></span>
+			<textarea id="messageContent" rows="5" cols="40" readonly="readonly"></textarea>
+			<br />
+			<br />
 			<div id="insertCourseDiv" style="display: none;">
-			<input type="text" id="MteacherMoile" style="display: none;"/>
-			<input type="text" id="MCourseId" style="display: none;"/>
-			<input id="agree" class="layui-btn" onclick="dontCare()" type="button" value="了解"/>
-			<input style="margin-left: 10%;" id="dontCare" onclick="dontCare()" class="layui-btn layui-btn-primary" type="button" value="忽略"/>
+				<input type="text" id="MteacherMoile" style="display: none;" /> <input
+					type="text" id="MCourseId" style="display: none;" /> <input
+					id="agree" class="layui-btn" onclick="dontCare()" type="button"
+					value="了解" /> <input style="margin-left: 10%;" id="dontCare"
+					onclick="dontCare()" class="layui-btn layui-btn-primary"
+					type="button" value="忽略" />
 			</div>
-			</div>
-			
-			
-				<!-- 学生添加课程 -->
-			<div class="site-text site-block" id="studentAddCourse"
-				style="display: none;">
-				<form class="" action="">
-					<div class="layui-form-item">
-						<label class="layui-form-label">课程编码</label>
-						<div class="layui-input-block">
-							<input id="courseId" type="text" name="courseId" required
-								lay-verify="required" onchange="searchIfExistCourse()" placeholder="请输入课程编码" autocomplete="off"
-								class="layui-input">
-						</div>
-				<p id="listenEmpty" style="color: red;display: none; margin-left: 13%;">*课程为空*</p>
-				<p id="listenId" style="color: red;display: none; margin-left: 13%;">*课程编码请输入数字*</p>
-				<p id="listenIdEmpty" style="color: red;display: none; margin-left: 13%;">*课程编码不可为空*</p>
-				<p id="listenClazzs" style="color: red;display: none; margin-left: 13%;">*暂无班级可供选择*</p>
-					</div>
-					
-					<div class="layui-form-item">
-						<label class="layui-form-label">课程名称</label>
-						<div class="layui-input-block">
-							<input id="courseName" type="text" name="courseName" required
-								lay-verify="required" placeholder="请输入课程名称" autocomplete="off"
-								class="layui-input">
-						</div>
-			  <p id="listenName" style="color: red;display: none; margin-left: 13%;">*课程名称请控制在100字以内*</p>
-					</div>
-					
-						<div id="clazzDiv" style="display: none;">
-						<label class="layui-form-label">选择班级</label>
-							<select id="clazzName" name="clazzName" style="height: 2.3em; width: 20%;">
-							
-							</select>
-							<br/>
-					</div>
-			<p id="listenClss" style="color: red;display: none; margin-left: 13%;">*班级不可为空*</p>
-				
-					<div class="layui-form-item">
-						<div class="layui-input-block">
-							<input id="AddCourseButton" class="layui-btn" onclick="studentAddCourse()"
-								type="button" value="提交申请" />
-							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-						</div>
-					</div>
-				</form>
+		</div>
 
-				<script>
+
+		<!-- 学生添加课程 -->
+		<div class="site-text site-block" id="studentAddCourse"
+			style="display: none;">
+			<form class="" action="">
+				<div class="layui-form-item">
+					<label class="layui-form-label">课程编码</label>
+					<div class="layui-input-block">
+						<input id="courseId" type="text" name="courseId" required
+							lay-verify="required" onchange="searchIfExistCourse()"
+							placeholder="请输入课程编码" autocomplete="off" class="layui-input">
+					</div>
+					<p id="listenEmpty"
+						style="color: red; display: none; margin-left: 13%;">*课程为空*</p>
+					<p id="listenId"
+						style="color: red; display: none; margin-left: 13%;">*课程编码请输入数字*</p>
+					<p id="listenIdEmpty"
+						style="color: red; display: none; margin-left: 13%;">*课程编码不可为空*</p>
+					<p id="listenClazzs"
+						style="color: red; display: none; margin-left: 13%;">*暂无班级可供选择*</p>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">课程名称</label>
+					<div class="layui-input-block">
+						<input id="courseName" type="text" name="courseName" required
+							lay-verify="required" placeholder="请输入课程名称" autocomplete="off"
+							class="layui-input">
+					</div>
+					<p id="listenName"
+						style="color: red; display: none; margin-left: 13%;">*课程名称请控制在100字以内*</p>
+				</div>
+
+				<div id="clazzDiv" style="display: none;">
+					<label class="layui-form-label">选择班级</label> <select id="clazzName"
+						name="clazzName" style="height: 2.3em; width: 20%;">
+
+					</select> <br />
+				</div>
+				<p id="listenClss"
+					style="color: red; display: none; margin-left: 13%;">*班级不可为空*</p>
+
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<input id="AddCourseButton" class="layui-btn"
+							onclick="studentAddCourse()" type="button" value="提交申请" />
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+					</div>
+				</div>
+			</form>
+
+			<script>
 					//Demo
 					layui.use([ 'form', 'laydate' ], function() {
 						var form = layui.form, laydate = layui.laydate;
@@ -804,63 +853,65 @@
 						});
 					});
 				</script>
-			</div>
-			
-			<!-- 课程信息表 -->
-			<table id="courseInfo" border="1" style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%;">
+		</div>
+
+		<!-- 课程信息表 -->
+		<table id="courseInfo" border="1"
+			style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%;">
 			<tr>
-			<th>课程名称</th>
-			<th>类型</th>
-			<th>开课时间</th>
-			<th>结课时间</th>
-			<th>学年</th>
-			<th>学期</th>
-			<th>老师</th>
-			<th>联系方式</th>
-			<th>操作</th>
+				<th>课程名称</th>
+				<th>类型</th>
+				<th>开课时间</th>
+				<th>结课时间</th>
+				<th>学年</th>
+				<th>学期</th>
+				<th>老师</th>
+				<th>联系方式</th>
+				<th>操作</th>
 			</tr>
 			<c:choose>
-			<c:when test="${! empty studentInfos}">
-			<c:forEach items="${studentInfos}" var="s">
-			<tr>
-			<td>${s.course.courseName}</td>
-			<td>${s.course.courseType}</td>
-			<td>${s.course.startTime}</td>
-			<td>${s.course.endTime}</td>
-			<td>${s.course.currentYear}</td>
-			<td>${s.course.schoolTem}</td>
-			<td>${s.course.teacher.teacherName}</td>
-			<td>${s.course.teacher.teacherMobile}</td>
-			<td><a href="#">退出</a></td>
-			<!--  <td colspan="8"></td>-->
-			</tr>
-			</c:forEach>
-			</c:when>
-			<c:otherwise>
-			<tr>
-			<td colspan="9">(暂无课程)</td>
-			</tr>
-			</c:otherwise>
+				<c:when test="${! empty studentInfos}">
+					<c:forEach items="${studentInfos}" var="s">
+						<tr>
+							<td>${s.course.courseName}</td>
+							<td>${s.course.courseType}</td>
+							<td>${s.course.startTime}</td>
+							<td>${s.course.endTime}</td>
+							<td>${s.course.currentYear}</td>
+							<td>${s.course.schoolTem}</td>
+							<td>${s.course.teacher.teacherName}</td>
+							<td>${s.course.teacher.teacherMobile}</td>
+							<td><a href="#">退出</a></td>
+							<!--  <td colspan="8"></td>-->
+						</tr>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<tr>
+						<td colspan="9">(暂无课程)</td>
+					</tr>
+				</c:otherwise>
 			</c:choose>
-			</table>
-			
-			<!-- 学生操作日志表 -->
-			<div id="forStudentLogInfo" class="site-text site-block" style="text-align: center; 
-			height: 3em;margin-top: 0.1%; display: none;">
+		</table>
+
+		<!-- 学生操作日志表 -->
+		<div id="forStudentLogInfo" class="site-text site-block"
+			style="text-align: center; height: 3em; margin-top: 0.1%; display: none;">
 			<form class="layui-form" action="">
-			<div class="layui-form-item" style="width: 80%;
-			 margin-left: 11%;">
-						<label class="layui-form-label">输入日期</label>
-						<div class="layui-input-block">
-							<input id="logDate" type="text" required
-								lay-verify="logDate" placeholder="yyyy-MM-dd" autocomplete="off"
-								class="layui-input" style="width: 30%;float: left;">
-								<input class="layui-btn" lay-submit type="button" onclick="searchStudentLogByTime()" value="查询" style="float: left;"/>
-						</div>
-			</div>
+				<div class="layui-form-item" style="width: 80%; margin-left: 11%;">
+					<label class="layui-form-label">输入日期</label>
+					<div class="layui-input-block">
+						<input id="logDate" type="text" required lay-verify="logDate"
+							placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input"
+							style="width: 30%; float: left;"> <input
+							class="layui-btn" lay-submit type="button"
+							onclick="searchStudentLogByTime()" value="查询"
+							style="float: left;" />
+					</div>
+				</div>
 			</form>
-			</div>
-			<script>
+		</div>
+		<script>
 					//Demo
 					layui.use([ 'form', 'laydate' ], function() {
 						var form = layui.form, laydate = layui.laydate;
@@ -873,176 +924,225 @@
 						});
 					});
 				</script>
-				
-			<table id="studentLogOfTime" border="1" style="display: none;text-align: center; 
-			width: 80%;margin-left: 8.5%;">
-			
-			</table>	
-			
-			<table id="studentLogInfo" border="1" style="text-align: center; width: 80%;
-			 margin-left: 8.5%; display: none;">
+
+		<table id="studentLogOfTime" border="1"
+			style="display: none; text-align: center; width: 80%; margin-left: 8.5%;">
+
+		</table>
+
+		<table id="studentLogInfo" border="1"
+			style="text-align: center; width: 80%; margin-left: 8.5%; display: none;">
 			<tr>
-			<th>学号</th>
-			<th>身份</th>
-			<th>活动</th>
-			<th>Ip</th>
-			<th>时间</th>
-			<th>结果</th>
+				<th>学号</th>
+				<th>身份</th>
+				<th>活动</th>
+				<th>Ip</th>
+				<th>时间</th>
+				<th>结果</th>
 			</tr>
 			<c:choose>
-			<c:when test="${! empty logEntity}">
-			<c:forEach items="${logEntity}" var="s">
-			<tr>
-			<td>${s.userId}</td>
-			<td>${s.module}</td>
-			<td style="text-align: left; padding-left: 10%;">${s.method}</td>
-			<td>${s.ip}</td>
-			<td>${s.date}</td>
-			<td>${s.result}</td>
-			<!--  <td colspan="8"></td>-->
-			</tr>
-			</c:forEach>
-			</c:when>
-			<c:otherwise>
-			<tr>
-			<td colspan="5">(暂无信息)</td>
-			</tr>
-			</c:otherwise>
+				<c:when test="${! empty logEntity}">
+					<c:forEach items="${logEntity}" var="s">
+						<tr>
+							<td>${s.userId}</td>
+							<td>${s.module}</td>
+							<td style="text-align: left; padding-left: 10%;">${s.method}</td>
+							<td>${s.ip}</td>
+							<td>${s.date}</td>
+							<td>${s.result}</td>
+							<!--  <td colspan="8"></td>-->
+						</tr>
+					</c:forEach>
+				</c:when>
+				<c:otherwise>
+					<tr>
+						<td colspan="5">(暂无信息)</td>
+					</tr>
+				</c:otherwise>
 			</c:choose>
-			</table>
-			
-			
-			
-			<!-- 个人中心 -->
-		<div id="studentInfoShow" style="background-color: white; margin-left: 13%; margin-right:20%; width:100%;
-		padding-left: 5%;  padding-top: 2%; padding-bottom: 500px; display: none;">
-		
-		<!-- 更新信息成功显示的Div -->
-		<div id="updateStudentInfoSuccess" class="site-text site-block"
-		style="background-color: #393D49; height: 20%; width: 20%; display:none;
-		 z-index: 20; margin-top: 14%; text-align: center; margin-left: 15%; position: absolute;">
-		<h3 style="color: white; margin-top: 19%">更新信息成功..</h3>
-	   </div>
-		
-		<table style="float:left;width: 40%;text-align: center;" 
-		class="layui-form layui-form-pane">
-		<tr>
-		<td class="layui-form-label">学号</td>
-		<td style="text-align: left;">${student.studentRoNo}</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr>
-		<td class="layui-form-label">手机</td>
-		<td style="text-align: left;">${student.studentMobile}</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr>
-		<td class="layui-form-label">邮箱</td>
-		<td style="text-align: left;">${student.studentEmail}</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr>
-		<td class="layui-form-label">姓名</td>
-		<td style="text-align: left;">${student.studentName}</td>
-		</tr>
-		<tr><td>&nbsp;</td></tr>
-		<tr>
-		<td class="layui-form-label">性别</td>
-		<td style="text-align: left;">${student.studentGender}</td>
-		</tr>
-		<tr id="forCollege" style=""><td>&nbsp;</td></tr>
-		
-		<tr id="collegeTr" style="">
-		<td class="layui-form-label">学院</td>
-		<td style="text-align: left;">${student.college}</td>
-		</tr>
-		
-		<tr id="reCollegeTr" style="display: none;">
-		<td class="layui-form-label">学院</td>
-		<td style="text-align: left;"><input required style="width: 60%;" class="layui-input" type="text" value="${student.college}" id="college" name="college"/></td>
-		</tr>
-		
-		<tr id="forSpecial" style=""><td>&nbsp;</td></tr>
-		
-		<tr id="specialTr" style="">
-		<td class="layui-form-label">专业</td>
-		<td style="text-align: left;">${student.special}</td>
-		</tr>
-		<tr id="reSpecialTr" style="display: none;">
-		<td class="layui-form-label">专业</td>
-		<td style="text-align: left;"><input required style="width: 60%;" class="layui-input" type="text" value="${student.special}" id="special" name="special"/></td>
-		</tr>
-		
-		<tr id="forSavefectButton" style="display: none;"><td>&nbsp;</td></tr>
-		<tr id="savefectButton" style="display: none;"><td colspan="2" style="text-align: left;">
-		<button style="margin-left: 0;" class="layui-btn">保存信息</button></td>
-		</tr>
-		<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
-		<tr><td colspan="2" style="text-align: left;"><button id="perfectButton" style="margin-left: 0;" class="layui-btn">完善信息</button></td></tr>
-		
 		</table>
-		
-		<!-- 补充信息 -->
-		<div class="layui-upload-list" style="width: 50%; heigh:120px; float: left; margin-left: 10px;">
-		  <img class="layui-upload-img" src="/ClassManageSys/studentPhoto/${student.studentPhoto}" style="width: 100px; heigh:120px;margin-left: -100px;" id="imgPre">
-			<p id="demoText"></p>
-		<table style="margin-left: -110px;width: 70%" class="layui-form layui-form-pane">
-		<tr id="forintoSchool" style=""><td>&nbsp;</td></tr>
-		
-		<tr id="intoSchoolYearTr" style="">
-		<td class="layui-form-label" style="text-align: left;">入学时间</td>
-		<td id="innerTime" style="text-align:left; width: 47%;">${student.intoSchoolYear}</td>
-		</tr>
-		<tr id="reIntoSchoolYearTr" style="display: none;">
-		<td class="layui-form-label" valign="2017" style="text-align: left;">入学时间</td>
-		<td style="text-align:left; width: 47%;">
-		<input lay-verify="requirevalidate" required style="width: 60%;" class="layui-input" type="text" value="${student.intoSchoolYear}" id="intoSchoolYear" name="intoSchoolYear"/>
-		</td>
-		</tr>
-		
-		<tr id="forschoolRecord" style=""><td>&nbsp;</td></tr>
-		
-		<tr id="schoolRecordTr" style="text-align: left;">
-		<td class="layui-form-label" style="text-align: left;">当前学历</td>
-		<td style="text-align:left; width: 47%;">${student.schoolRecord}</td>
-		</tr>
-		<tr id="reSchoolRecordTr" style="display: none;">
-		<td class="layui-form-label" style="text-align: left;" required>当前学历</td>
-		<td style="text-align:left; width: 47%;">
-		<select id="schoolRecord">
-		<option value="本科" selected="selected">本科</option>
-		<option value="硕士">硕士</option>
-		<option value="博士">博士</option>
-		<option value="海归">海归</option>
-		</select>
-		</tr>
-		
-		<tr id="forBirthDay" style=""><td>&nbsp;</td></tr>
-		
-		<tr id="birthDayTr" style="">
-		<td class="layui-form-label" style="text-align: left;">出生日期</td>
-		<td style="text-align:left; width: 47%;">${student.birthDay}</td>
-		</tr>
-		<tr id="reBirthDayTr" style="display: none;">
-		<td class="layui-form-label" style="text-align: left;">出生日期</td>
-		<td style="text-align:left; width: 47%;"><input required style="width: 60%;" class="layui-input" type="text" value="${student.birthDay}" id="birthDay" name="birthDay"/></td>
-		</tr>
-		
-		<tr id="forFreeStyle" style=""><td>&nbsp;</td></tr>
-		
-		<tr id="freeStyleTr" style="">
-		<td class="layui-form-label" style="text-align: left;">freeStyle</td>
-		<td style="text-align: left;">${student.freeStyle}</td>
-		</tr>
-		<tr id="reFreeStyleTr" style="display: none;">
-		<td class="layui-form-label" style="text-align: left;">freeStyle</td>
-		<td style="text-align:left; width: 47%;"><input  style="width: 60%;" class="layui-input" type="text" value="${student.freeStyle}" id="freeStyle" name="freeStyle"/></td>
-		</tr>
+
+
+
+		<!-- 个人中心 -->
+		<div id="studentInfoShow"
+			style="background-color: white; margin-left: 13%; margin-right: 20%; width: 100%; padding-left: 5%; padding-top: 2%; padding-bottom: 500px; display: none;">
+
+			<!-- 更新信息成功显示的Div -->
+			<div id="updateStudentInfoSuccess" class="site-text site-block"
+				style="background-color: #393D49; height: 20%; width: 20%; display: none; z-index: 20; margin-top: 14%; text-align: center; margin-left: 15%; position: absolute;">
+				<h3 style="color: white; margin-top: 19%">更新信息成功..</h3>
+			</div>
+
+			<table style="float: left; width: 40%; text-align: center;"
+				class="layui-form layui-form-pane">
+				<tr>
+					<td class="layui-form-label">学号</td>
+					<td style="text-align: left;">${student.studentRoNo}</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="layui-form-label">手机</td>
+					<td style="text-align: left;">${student.studentMobile}</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="layui-form-label">邮箱</td>
+					<td style="text-align: left;">${student.studentEmail}</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="layui-form-label">姓名</td>
+					<td style="text-align: left;">${student.studentName}</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td class="layui-form-label">性别</td>
+					<td style="text-align: left;">${student.studentGender}</td>
+				</tr>
+				<tr id="forCollege" style="">
+					<td>&nbsp;</td>
+				</tr>
+
+				<tr id="collegeTr" style="">
+					<td class="layui-form-label">学院</td>
+					<td style="text-align: left;">${student.college}</td>
+				</tr>
+
+				<tr id="reCollegeTr" style="display: none;">
+					<td class="layui-form-label">学院</td>
+					<td style="text-align: left;"><input required
+						style="width: 60%;" class="layui-input" type="text"
+						value="${student.college}" id="college" name="college" /></td>
+				</tr>
+
+				<tr id="forSpecial" style="">
+					<td>&nbsp;</td>
+				</tr>
+
+				<tr id="specialTr" style="">
+					<td class="layui-form-label">专业</td>
+					<td style="text-align: left;">${student.special}</td>
+				</tr>
+				<tr id="reSpecialTr" style="display: none;">
+					<td class="layui-form-label">专业</td>
+					<td style="text-align: left;"><input required
+						style="width: 60%;" class="layui-input" type="text"
+						value="${student.special}" id="special" name="special" /></td>
+				</tr>
+
+				<tr id="forSavefectButton" style="display: none;">
+					<td>&nbsp;</td>
+				</tr>
+				<tr id="savefectButton" style="display: none;">
+					<td colspan="2" style="text-align: left;">
+						<button style="margin-left: 0;" class="layui-btn">保存信息</button>
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="2" style="text-align: left;"><button
+							id="perfectButton" style="margin-left: 0;" class="layui-btn">完善信息</button></td>
+				</tr>
+
 			</table>
+
+			<!-- 补充信息 -->
+			<div class="layui-upload-list"
+				style="width: 50%; heigh: 120px; float: left; margin-left: 10px;">
+				<img class="layui-upload-img"
+					src="/ClassManageSys/studentPhoto/${student.studentPhoto}"
+					style="width: 100px; heigh: 120px; margin-left: -100px;"
+					id="imgPre">
+				<p id="demoText"></p>
+				<table style="margin-left: -110px; width: 70%"
+					class="layui-form layui-form-pane">
+					<tr id="forintoSchool" style="">
+						<td>&nbsp;</td>
+					</tr>
+
+					<tr id="intoSchoolYearTr" style="">
+						<td class="layui-form-label" style="text-align: left;">入学时间</td>
+						<td id="innerTime" style="text-align: left; width: 47%;">${student.intoSchoolYear}</td>
+					</tr>
+					<tr id="reIntoSchoolYearTr" style="display: none;">
+						<td class="layui-form-label" valign="2017"
+							style="text-align: left;">入学时间</td>
+						<td style="text-align: left; width: 47%;"><input
+							lay-verify="requirevalidate" required style="width: 60%;"
+							class="layui-input" type="text" value="${student.intoSchoolYear}"
+							id="intoSchoolYear" name="intoSchoolYear" /></td>
+					</tr>
+
+					<tr id="forschoolRecord" style="">
+						<td>&nbsp;</td>
+					</tr>
+
+					<tr id="schoolRecordTr" style="text-align: left;">
+						<td class="layui-form-label" style="text-align: left;">当前学历</td>
+						<td style="text-align: left; width: 47%;">${student.schoolRecord}</td>
+					</tr>
+					<tr id="reSchoolRecordTr" style="display: none;">
+						<td class="layui-form-label" style="text-align: left;" required>当前学历</td>
+						<td style="text-align: left; width: 47%;"><select
+							id="schoolRecord">
+								<option value="本科" selected="selected">本科</option>
+								<option value="硕士">硕士</option>
+								<option value="博士">博士</option>
+								<option value="海归">海归</option>
+						</select>
+					</tr>
+
+					<tr id="forBirthDay" style="">
+						<td>&nbsp;</td>
+					</tr>
+
+					<tr id="birthDayTr" style="">
+						<td class="layui-form-label" style="text-align: left;">出生日期</td>
+						<td style="text-align: left; width: 47%;">${student.birthDay}</td>
+					</tr>
+					<tr id="reBirthDayTr" style="display: none;">
+						<td class="layui-form-label" style="text-align: left;">出生日期</td>
+						<td style="text-align: left; width: 47%;"><input required
+							style="width: 60%;" class="layui-input" type="text"
+							value="${student.birthDay}" id="birthDay" name="birthDay" /></td>
+					</tr>
+
+					<tr id="forFreeStyle" style="">
+						<td>&nbsp;</td>
+					</tr>
+
+					<tr id="freeStyleTr" style="">
+						<td class="layui-form-label" style="text-align: left;">freeStyle</td>
+						<td style="text-align: left;">${student.freeStyle}</td>
+					</tr>
+					<tr id="reFreeStyleTr" style="display: none;">
+						<td class="layui-form-label" style="text-align: left;">freeStyle</td>
+						<td style="text-align: left; width: 47%;"><input
+							style="width: 60%;" class="layui-input" type="text"
+							value="${student.freeStyle}" id="freeStyle" name="freeStyle" /></td>
+					</tr>
+				</table>
+			</div>
+
 		</div>
-				
-	</div>
-	<script>
+		<script>
 					//Demo
 					layui.use([ 'form', 'laydate' ], function() {
 						var form = layui.form, laydate = layui.laydate;
@@ -1063,127 +1163,162 @@
 					});
 					});
 				</script>
-			
-			
-			<!-- 安全/密码 -->
-			<div id="signal" style="width: 95%; margin-left: 5%; padding-left:5%; z-index:1;
-			background-color:#cccc00; height: 3%;display: none; font-family: 微软雅黑;">
-			提示：修改邮箱后后请前往原邮箱确认..
-			</div>
+
+
+		<!-- 安全/密码 -->
+		<div id="signal"
+			style="width: 95%; margin-left: 5%; padding-left: 5%; z-index: 1; background-color: #cccc00; height: 3%; display: none; font-family: 微软雅黑;">
+			提示：修改邮箱后后请前往原邮箱确认..</div>
 		<!-- 更改邮箱成功提示信息 -->
-	   <div id="changeMailShow" class="site-text site-block"
-		style="background-color: #393D49; height: 20%; width: 20%; display:none;
-		 z-index: 20; margin-top: 14%; text-align: center; margin-left: 25%; position: absolute;">
-		<h3 style="color: white; margin-top: 19%">更新邮箱成功..</h3>
-	   </div>
-
-			<div class="site-text site-block" id="doubleHandle" style="width: 70%; margin-left: 15%; margin-top: 4%; 
-			display: none;">
-			<a class="layui-btn layui-btn-primary" href="#" id="changeStuPass" style="float:left; height:20%; width: 49%;font-size: 1.5em">更改密码</a>
-			<a class="layui-btn layui-btn-primary" href="#" id="changeStuMail" style="float:left; height:20%; width: 49%;font-size: 1.5em">更换邮箱</a>
-			<br/><br/>
-			<form class="layui-form layui-form-pane" id="safe" action="<%=request.getContextPath()%>/student/updateStudentPassWord.do" style="width: 84%; 
-			margin-left: 5%; padding-left: 17%">
-			<table>
-			<br/>
-			<tr style="width: 100%;">
-			<td><label class="layui-form-label">学号</label></td>
-			<td><input class="layui-input" type="text"  readonly="readonly" name="studentRoNo" value="${student.studentRoNo}" id="studentRoNo" style="width: 25em;"/></td>
-			</tr>
-			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
-			<tr>
-			<td><label class="layui-form-label">原密码</label></td>
-			<td><input class="layui-input" type="password" name="oldPassword" id="studentPassword" style="width: 25em"/></td>
-			<td id="passError" style="color: red; margin-left: 1.8em; display: none;">*密码错误*</td>
-			</tr>
-			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
-			<tr>
-			<td><label class="layui-form-label">新密码</label></td>
-			<td><input class="layui-input" type="password" name="studentPassword" id="newPassword" style="width: 25em"/></td>
-			</tr>
-			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
-			<tr>
-			<td><label class="layui-form-label">确认新密码</label></td>
-			<td><input class="layui-input" type="password" name="rePassword" id="rePassword" style="width: 25em"/></td>
-			<td id="noLike" style="color: red; margin-left: 1.8em; display: none;">*两次密码不一致*</td>
-			</tr>
-			<tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
-			<tr>
-			<td colspan="2"><input class="layui-btn" id="ccchangePass" type="button" value="申请修改" style="width: 70%;margin-left: 15%; "/></td>
-			</tr> 
-			</table>
-			</form>
-			
-			<!-- 修改邮箱 -->
-					<form id="emailsafe" class="layui-form layui-form-pane"
-					action="<%=request.getContextPath()%>/student/updateStudentEmail.do"
-					style="width: 84%; margin-left: 5%; padding-left:17%;
-					 display: none;">
-					<table style="">
-						<br/>
-						<tr style="width: 100%;">
-							<td><label class="layui-form-label">学号</label></td>
-							<td><input class="layui-input" type="text" readonly="readonly"
-								name="studentRoNo" value="${student.studentRoNo}"
-								id="studentRoNo" style="width: 25em;" /></td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
-						<tr>
-							<td><label class="layui-form-label">原邮箱</label></td>
-							<td><input class="layui-input" type="text" id="oldEmail" name="oldEmail" value="${student.studentEmail}"
-								id="studentEmail" style="width: 25em" readonly="readonly" /></td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
-						<tr>
-							<td>
-							<label class="layui-form-label">新邮箱</label></td>
-							<td>
-					               <input class="layui-input" id="mail" type="text" name="studentEmail" required
-						          lay-verify="required|email" autocomplete="off" style="width: 19em"/>
-				            </td>
-						</tr>
-						<tr><td>&nbsp;</td></tr><tr>
-						<tr>
-							<td colspan="2" id="emailTypeError" style="text-align: right; width: 20em; 
-							color: red; display: none; padding-left: 20%;">*格式错误*</td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
-						<tr>
-							<td>&nbsp;</td>
-						</tr>
-						<tr>
-							<td colspan="2"><input class="layui-btn" id="changeStuMailPush" type="button"
-								value="申请修改"
-								style="width: 70%;margin-left: 15%;" /></td>
-						</tr>
-					</table>
-				</form>
-			
-			</div>
-			
-
-		
+		<div id="changeMailShow" class="site-text site-block"
+			style="background-color: #393D49; height: 20%; width: 20%; display: none; z-index: 20; margin-top: 14%; text-align: center; margin-left: 25%; position: absolute;">
+			<h3 style="color: white; margin-top: 19%">更新邮箱成功..</h3>
 		</div>
-		<div style="height: 100px; margin-top:42.6%; background-color: #000011;text-align: center; padding-top: 5px">
-            <div class="navbar-header" style="text-align: center; width: 100%; margin-top:3%; color: white; z-index: 3">
-				
-				<a style="" class="navbar-brand" href="#">copyright by CMS team</a>
-         </div>
-         </div>
-		
-  <script type="text/javascript">
+
+		<div class="site-text site-block" id="doubleHandle"
+			style="width: 70%; margin-left: 15%; margin-top: 4%; display: none;">
+			<a class="layui-btn layui-btn-primary" href="#" id="changeStuPass"
+				style="float: left; height: 20%; width: 49%; font-size: 1.5em">更改密码</a>
+			<a class="layui-btn layui-btn-primary" href="#" id="changeStuMail"
+				style="float: left; height: 20%; width: 49%; font-size: 1.5em">更换邮箱</a>
+			<br />
+			<br />
+			<form class="layui-form layui-form-pane" id="safe"
+				action="<%=request.getContextPath()%>/student/updateStudentPassWord.do"
+				style="width: 84%; margin-left: 5%; padding-left: 17%">
+				<table>
+					<br />
+					<tr style="width: 100%;">
+						<td><label class="layui-form-label">学号</label></td>
+						<td><input class="layui-input" type="text"
+							readonly="readonly" name="studentRoNo"
+							value="${student.studentRoNo}" id="studentRoNo"
+							style="width: 25em;" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><label class="layui-form-label">原密码</label></td>
+						<td><input class="layui-input" type="password"
+							name="oldPassword" id="studentPassword" style="width: 25em" /></td>
+						<td id="passError"
+							style="color: red; margin-left: 1.8em; display: none;">*密码错误*</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><label class="layui-form-label">新密码</label></td>
+						<td><input class="layui-input" type="password"
+							name="studentPassword" id="newPassword" style="width: 25em" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><label class="layui-form-label">确认新密码</label></td>
+						<td><input class="layui-input" type="password"
+							name="rePassword" id="rePassword" style="width: 25em" /></td>
+						<td id="noLike"
+							style="color: red; margin-left: 1.8em; display: none;">*两次密码不一致*</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td colspan="2"><input class="layui-btn" id="ccchangePass"
+							type="button" value="申请修改" style="width: 70%; margin-left: 15%;" /></td>
+					</tr>
+				</table>
+			</form>
+
+			<!-- 修改邮箱 -->
+			<form id="emailsafe" class="layui-form layui-form-pane"
+				action="<%=request.getContextPath()%>/student/updateStudentEmail.do"
+				style="width: 84%; margin-left: 5%; padding-left: 17%; display: none;">
+				<table style="">
+					<br />
+					<tr style="width: 100%;">
+						<td><label class="layui-form-label">学号</label></td>
+						<td><input class="layui-input" type="text"
+							readonly="readonly" name="studentRoNo"
+							value="${student.studentRoNo}" id="studentRoNo"
+							style="width: 25em;" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><label class="layui-form-label">原邮箱</label></td>
+						<td><input class="layui-input" type="text" id="oldEmail"
+							name="oldEmail" value="${student.studentEmail}" id="studentEmail"
+							style="width: 25em" readonly="readonly" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td><label class="layui-form-label">新邮箱</label></td>
+						<td><input class="layui-input" id="mail" type="text"
+							name="studentEmail" required lay-verify="required|email"
+							autocomplete="off" style="width: 19em" /></td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+					<tr>
+						<td colspan="2" id="emailTypeError"
+							style="text-align: right; width: 20em; color: red; display: none; padding-left: 20%;">*格式错误*</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td colspan="2"><input class="layui-btn"
+							id="changeStuMailPush" type="button" value="申请修改"
+							style="width: 70%; margin-left: 15%;" /></td>
+					</tr>
+				</table>
+			</form>
+
+		</div>
+
+
+
+	</div>
+	<div
+		style="height: 100px; margin-top: 42.6%; background-color: #000011; text-align: center; padding-top: 5px">
+		<div class="navbar-header"
+			style="text-align: center; width: 100%; margin-top: 3%; color: white; z-index: 3">
+
+			<a style="" class="navbar-brand" href="#">copyright by CMS team</a>
+		</div>
+	</div>
+
+	<script type="text/javascript">
    //刷新当前页面
 		function yourFunction() {
 		 window.location.reload();
@@ -1256,7 +1391,7 @@
       }
      }
      </script>
-     
+
 	<script>
 		layui.use('element', function() {
 			var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
@@ -1268,6 +1403,6 @@
 			});
 		});
 	</script>
-	
+
 </body>
 </html>

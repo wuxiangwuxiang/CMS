@@ -17,6 +17,7 @@
 	href="<%=request.getContextPath()%>/layui/css/layui.css">
 <script src="<%=request.getContextPath()%>/layui/layui.js "></script>
 <title>教师门户</title>
+
 <script type="text/javascript">
 	 $(document).ready(function () {
 		 
@@ -26,41 +27,8 @@
 			 $('#redSignal').show();
 			 $('#signalNow').show();
 		 }
-		 if(${page.pageNow} > 1){
-			 $('#changeCourseinfo').hide();
-			 $('#doubleHandle').hide();
-			 $('#signal').hide();
-			 $('#courseShow').hide();
-			 $('#courseInfo').hide();
-			 $('#fushuMessage').hide();
-			 $('#teacherInfoShow').hide();
-			 $('#seprateMessage').show();
-			 $('#messageShow').show();
-		 }
-		 //如果pageNow大于1，点击下一页/上一页则显示消息页面
-		 if(${page.pageNow} > 1){
-			 $('#changeCourseinfo').hide();
-			 $('#doubleHandle').hide();
-			 $('#signal').hide();
-			 $('#courseShow').hide();
-			 $('#courseInfo').hide();
-			 $('#fushuMessage').hide();
-			 $('#teacherInfoShow').hide();
-			 $('#seprateMessage').show();
-			 $('#messageShow').show();
-		 }
-		 //如果是最后一页
-		 if(${page.pageNow} == ${page.totalPageCount}){
-			 $('#changeCourseinfo').hide();
-			 $('#doubleHandle').hide();
-			 $('#signal').hide();
-			 $('#courseShow').hide();
-			 $('#courseInfo').hide();
-			 $('#fushuMessage').hide();
-			 $('#teacherInfoShow').hide();
-			 $('#seprateMessage').show();
-			 $('#messageShow').show();
-		 }
+		
+		
 		 //如果消息数量为0
 		 //if(${messageCount} == 0){
 			// var TmessageCount = document.getElementById("TmessageCount")
@@ -95,6 +63,7 @@
 		}
 		 //添加课程
 		 $('#createCourse').click(function() {
+			 $('#messageList').html("添加课程");
 		    $('#changeCourseinfo').hide();
 			$('#doubleHandle').hide();
 			$('#signal').hide();
@@ -110,6 +79,7 @@
 		});
 		 //课程信息
 		 $('#checkCourseShow').click(function() {
+			 $('#messageList').html("课程信息");
 			 $('#seprateMessage').hide();
 			 $('#changeCourseinfo').hide();
 			 $('#doubleHandle').hide();
@@ -162,7 +132,7 @@
 		 $('#false').click(function() {
 			$('#torf').hide();
 		});
-		//点击资料上传
+		/* //点击资料上传
 			$('#dataUpload').click(function q() {
 				 $('#seprateMessage').hide();
 				 $('#changeCourseinfo').hide();
@@ -176,9 +146,10 @@
 				 $('#courseInfo').hide();
 				 $('#fileInfo').hide();
 				 $('#upLoadShow').show();
-			});
+			}); */
 		//个人中心
 		 $('#teacherInfoCenter').click(function name1() {
+			 $('#messageList').html("个人中心");
 			 $('#seprateMessage').hide();
 			 $('#changeCourseinfo').hide();
 			 $('#doubleHandle').hide();
@@ -194,6 +165,7 @@
 		 });
 		 //查看资料
 		 $('#lookatData').click(function name1() {
+			 $('#messageList').html("查看资料");
 			 $('#seprateMessage').hide();
 			 $('#changeCourseinfo').hide();
 			 $('#doubleHandle').hide();
@@ -237,6 +209,7 @@
 		});
 		//点击完善信息
 		 $('#perfectButton').click(function wq() {
+			 $('#messageList').html("完善信息");
 				$('#collegeTr').hide();
 				$('#reCollegeTr').show();
 				$('#specialTr').hide();
@@ -410,6 +383,7 @@
 			 $('#seprateMessage').show();
 			 $('#messageShow').show();
 	}
+	//注销
 	function exitLogin() {
 		 $.ajax({
              type: "GET",
@@ -427,6 +401,59 @@
 			},
 			dataType : "json",
 		});
+	}
+	//ajax获取上传的文件列表
+	function getPrivateData() {
+		$('#messageList').html("文件上传");
+		 $('#seprateMessage').hide();
+		 $('#changeCourseinfo').hide();
+		 $('#doubleHandle').hide();
+		 $('#signal').hide();
+		 $('#courseShow').hide();
+		 $('#messageShow').hide();
+		 $('#fushuMessage').hide();
+		 $('#lookData').hide();
+		 $('#teacherInfoShow').hide();
+		 $('#courseInfo').hide();
+		 $('#fileInfo').hide();
+		 $('#upLoadShow').show();
+		 $.ajax({
+             type: "GET",
+             data: {
+            	 "teacherMobile":$('#teacherMobile').val()
+             },
+             contentType: "application/json; charset=utf-8",
+             async: false,
+             url: "<%=request.getContextPath()%>/teacher/getPrivateData.do",
+			success : function(data) {
+				var dataObj = data.filePackages;
+				 con = "";
+				 $.each(dataObj, function (index, item) {
+					    con += "<tr>";
+	        	        con += "<td style='text-align:center;'>" + item.fileType + "</td>";
+	        	        con += "<td style='text-align:center;'>" + item.createTime + "</td>";
+	        	        con += "<td style='padding-left:5%;'><a href=\'<%=request.getContextPath() %>/file/"+item.fileName+"\'>" + item.fileName + "</a></td>";
+	        	        con += "<tr/>";
+	        	    });
+				 $('#privateData').html(con);
+			},
+			error : function(data) {
+			},
+			dataType : "json",
+		});
+	}
+	function timeoutForFileList() {
+		setTimeout('getPrivateData()',2000);
+	}
+	//鼠标悬浮下载
+	function getData(id) {
+		$('#ab'+id).hide();
+		$('#b'+id).show();
+	}
+	//鼠标离开下载
+	function leaveData(id) {
+		$('#'+id).hide();
+		$('#a'+id).show();
 	}
 </script>
 </head>
@@ -509,7 +536,7 @@
 								<a id="lookatData" href="#">个人资料</a>
 							</dd>
 							<dd>
-								<a id="dataUpload" href="#">课件上传</a>
+								<a id="dataUpload" onclick="getPrivateData()" href="#">课件上传</a>
 							</dd>
 							<dd>
 								<a href="#">待定</a>
@@ -522,67 +549,22 @@
 		</div>
 
 		<!-- 内容显示 -->
-		<div class="layui-body site-demo">
+		<div class="layui-body site-demo"
+		style="padding-top: 3%; overflow: auto;">
 			<br />
 			
-			<!-- 个人资料 -->
-			<div class="layui-form sessiontable" id="lookData"
-				style="margin-top: 5%; display: none;">
-				<table class="layui-table" lay-even style="text-align: center;">
-					<colgroup>
-						<col width="150">
-						<col width="160">
-						<col width="370">
-					</colgroup>
-					<thead>
-						<tr>
-							<th style="text-align: center;">文件类型</th>
-							<th style="text-align: center;">创建时间</th>
-							<th style="text-align: center;">文件名称</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:choose>
-							<c:when test="${! empty filePackages}">
-								<c:forEach items="${filePackages}" var="r">
-									<tr id="abs${r.fileId}">
-										<td>${r.fileType}</td>
-										<td>${r.createTime}</td>
-										<td><a href="#">${r.fileName}</a></td>
-									</tr>
-								</c:forEach>
-							</c:when>
-							<c:otherwise>
-								<tr>
-									<td colspan="3">（空）</td>
-								</tr>
-							</c:otherwise>
-						</c:choose>
-					</tbody>
-				</table>
-
-				<script>
-				layui.use('table', function() {
-					var table = layui.table;
-				});
-			    </script>
-			</div>
-
+			<span id="messageList" style="margin-left: 5%;">消息列表</span>
+			<hr class="layui-bg-cyan">
 			<!-- 上传文件 -->
 			<div id="upLoadShow" class="site-text site-block"
-				style="display: none;">
+				style="display: none; margin-top: 0;">
 				<!-- 单个文件上传不能超过50M -->
 				<span id="MaxUpload" style="color: red;">单个文件不能超过50M</span><br/>
-				文件类型:<select id="fileType">
-				<option value="文档" selected="selected">文档</option>
-				<option value="视频">视频</option>
-				<option value="图片">图片</option>
-				<option value="压缩包">压缩包</option>
-				</select>
+				
 				<div class="layui-upload">
 				<form action="">
 					<button type="button" class="layui-btn layui-btn-normal layui-btn-danger"
-						id="testList">选择多文件</button>
+						id="testList">选择压缩文件</button>
 					<div class="layui-upload-list">
 						<table class="layui-table">
 							<thead>
@@ -596,12 +578,52 @@
 							<tbody id="demoList"></tbody>
 						</table>
 					</div>
-					<button type="button" class="layui-btn" id="testListAction">开始上传</button>
+					<button type="button" onclick="timeoutForFileList()" class="layui-btn" id="testListAction">开始上传</button>
 					</form>
 				</div>
+				
+				<!-- 个人资料 -->
+			<div class="layui-form sessiontable"
+				style=" width: 100%; margin-left: 0">
+				<table class="layui-table" lay-even>
+					<colgroup>
+						<col width="150">
+						<col width="200">
+						<col width="340">
+					</colgroup>
+					<thead>
+						<tr>
+							<th style="text-align: center;">文件类型</th>
+							<th style="text-align: center;">创建时间</th>
+							<th style="text-align: center;">文件名称</th>
+						</tr>
+					</thead>
+					<tbody id="privateData">
+						
+							<!--  <td>${r.fileType}</td>
+							<td>${r.createTime}</td>
+							<td id="ab${r.fileId}"><a id="${r.fileId}" onmouseover="getData(this.id)" href="<%=request.getContextPath() %>/file/${r.fileName}" />${r.fileName}</a></td>
+							<td id="b${r.fileId}" onmouseout="leaveData(this.id)" style="display: none;"><a href="<%=request.getContextPath() %>/file/${r.fileName}" />点击下载</a></td>
+						-->
+						
+					</tbody>
+				</table>
+
+				<script>
+				layui.use('table', function() {
+					var table = layui.table;
+				});
+			    </script>
+			</div>
 			</div>
 
 			<script>
+			var ttem;
+			function giveValue(id) {
+				var a = $('#fileType').val();
+				ttem = a;
+				$('#beGiveValue').val(ttem);
+			}
             layui.use('upload', function(){
              var $ = layui.jquery
              ,upload = layui.upload;
@@ -615,10 +637,11 @@
                ,url: '<%=request.getContextPath()%>/teacher/teacherUpload.do'
                ,size: 51200 //限制文件大小，单位 KB(50M = 51200)
                ,accept: 'file'
-               ,data:{teacherMobile: $('#teacherMobile').val(),fileType:$('#fileType').val()}
+               ,data:{teacherMobile: $('#teacherMobile').val()}
                ,multiple: true
                ,auto: false
                ,bindAction: '#testListAction'
+               ,exts:'zip|rar|7z|pdf|xls|doc|ppt'
                ,choose: function(obj){   
                  var files = obj.pushFile(); //将每次选择的文件追加到文件队列
                  //读取本地文件
@@ -657,6 +680,7 @@
                    tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
                    tds.eq(3).html(''); //清空操作
                    delete files[index]; //删除文件队列已经上传成功的文件
+                   getPrivateData();
                    return;
                  }
                  this.error(index, upload);
@@ -671,10 +695,12 @@
             });
              </script>
 
+            
+            
 
 			<!-- 个人中心 -->
 			<div id="teacherInfoShow"
-				style="background-color: white; margin-left: 13%; margin-right: 20%; width: 100%; padding-left: 5%; padding-top: 8%; padding-bottom: 500px; display: none;">
+				style="background-color: white; margin-left: 13%; margin-right: 20%; width: 100%; padding-left: 5%; padding-bottom: 500px; display: none;">
 
 				<!-- 更新信息成功显示的Div -->
 				<div id="updateTeacherInfoSuccess" class="site-text site-block"
@@ -850,80 +876,39 @@
 					});
 				</script>
 
-			<!-- 显示消息 -->
-			<div class="site-text site-block" id="messageShow"
-				style="padding-left: 2%; display: none;">
-				<table>
-					<c:choose>
-						<c:when test="${! empty message}">
-							<c:forEach items="${message}" var="m">
-								<tr style="margin-top: 3%">
-									<td><img alt="图标cms"
-										src="<%=request.getContextPath()%>/icon/cms3.ico" width="40px"
-										height="40px"></td>
-									<td width="11%">&nbsp;</td>
-									<td><a id="${m.messageId}" onclick="getMessage(this.id)"
-										href="#">${m.messageTitle}</a></td>
-									<td width="12%">&nbsp;</td>
-									<td>${m.sendTime}</td>
-									<td width="12%">&nbsp;</td>
-									<td id="me${m.messageId}">${m.haveRead}</td>
-									<td><input id="mem${m.messageId}" type="text"
-										value="${m.haveRead}" style="display: none;" /></td>
-								</tr>
-								<tr height="10%">
-									<td>&nbsp;</td>
-								</tr>
-							</c:forEach>
-							<br />
-						</c:when>
-					</c:choose>
-				</table>
-			</div>
-			<!-- 消息分页 -->
-			<div id="seprateMessage"
-				style="text-align: center; margin-left: 0; display: none;">
-				<font size="2">第 ${page.pageNow} 页</font> <font size="2">共
-					${page.totalPageCount} 页</font> <a
-					href="teacherLogin.do?pageNow=1&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">首页</a>
-				<c:choose>
-					<c:when test="${page.pageNow - 1 > 0}">
-						<a
-							href="teacherLogin.do?pageNow=${page.pageNow - 1}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">上一页</a>
-					</c:when>
-					<c:when test="${page.pageNow - 1 <= 0}">
-						<a
-							href="teacherLogin.do?pageNow=1&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">上一页</a>
-					</c:when>
-				</c:choose>
-				<c:choose>
-					<c:when test="${page.totalPageCount==0}">
-						<a
-							href="teacherLogin.do?pageNow=${page.pageNow}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">下一页</a>
-					</c:when>
-					<c:when test="${page.pageNow + 1 < page.totalPageCount}">
-						<a
-							href="teacherLogin.do?pageNow=${page.pageNow + 1}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">下一页</a>
-					</c:when>
-					<c:when test="${page.pageNow + 1 >= page.totalPageCount}">
-						<a
-							href="teacherLogin.do?pageNow=${page.totalPageCount}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">下一页</a>
-					</c:when>
-				</c:choose>
-				<c:choose>
-					<c:when test="${page.totalPageCount==0}">
-						<a
-							href="teacherLogin.do?pageNow=${page.pageNow}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">尾页</a>
-					</c:when>
-					<c:otherwise>
-						<a
-							href="teacherLogin.do?pageNow=${page.totalPageCount}&id=${teacher.teacherMobile}&password=${teacher.teacherPassword}">尾页</a>
-					</c:otherwise>
-				</c:choose>
-			</div>
+					<!-- 显示消息 -->
+		<div id="messageShow" style="margin-left: 5%; margin-right: 5%;" >
+		<table  class="layui-table"
+			lay-data="{page:true,height:485,width:1070, url:'<%=request.getContextPath() %>/student/getSeperratePage.do',
+			 id:'test', where:{messageAcpter:'${teacher.teacherMobile}'}}"
+			lay-filter="test" style="width: 100%;">
+			<thead>
+				<tr>
+					<th lay-data="{field:'messageSender', width:200, sort: true}">发送方</th>
+					<th lay-data="{field:'messageTitle', width:500}">标题</th>
+					<th lay-data="{field:'haveRead', width:200, sort: true}">状态</th>
+					<th lay-data="{fixed: 'right', width:160, align:'center', toolbar: '#barDemo'}"></th>
+				</tr>
+			</thead>
+		</table>
+     </div>
+  <script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="detail">查看</a>
+  <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+		<script>
+        layui.use('table', function(){
+        var table = layui.table;
+        table.render({ //其它参数在此省略
+        	 
+        	}); 
+       
+        
+        });
+        </script>
 			<!-- 附属详细消息 -->
 			<div id="fushuMessage"
-				style="width: 100%; padding-left: 25%; display: none; margin-top: 5%;">
+				style="width: 100%; padding-left: 25%; display: none;">
 				<h3 id="messageTitle"></h3>
 				<hr />
 				<br /> <br /> <span id="messageSnder"></span><br /> <br /> <br />
@@ -944,7 +929,7 @@
 
 			<!-- 新建课程 -->
 			<div class="site-text site-block" id="courseShow"
-				style="display: none;">
+				style="display: none; margin-top: 0;">
 				<form class="layui-form" action="">
 					<div class="layui-form-item">
 						<label class="layui-form-label">课程名称</label>
@@ -1047,7 +1032,7 @@
 
 			<!-- 课程信息 -->
 			<div class="layui-form sessiontable" id="courseInfo"
-				style="margin-top: 5%;">
+				style="">
 				<table class="layui-table" lay-even style="text-align: center;">
 					<colgroup>
 						<col width="150">
@@ -1275,12 +1260,12 @@
 
 			<!-- 更改邮箱成功提示信息 -->
 			<div id="changeMailShow" class="site-text site-block"
-				style="background-color: #393D49; height: 20%; width: 20%; display: none; z-index: 20; margin-top: 14%; text-align: center; margin-left: 25%; position: absolute;">
+				style="background-color: #393D49; height: 23%; width: 20%; display: none; z-index: 20; margin-top: 14%; text-align: center; margin-left: 25%; position: absolute;">
 				<h3 style="color: white; margin-top: 19%">更新邮箱成功..</h3>
 			</div>
 
 			<div class="site-text site-block" id="doubleHandle"
-				style="width: 70%; margin-left: 15%; margin-top: 8%; display: none;">
+				style="width: 70%; margin-left: 15%; margin-top: 1%; display: none;">
 				<a class="layui-btn layui-btn-primary" href="#" id="changeTeaPass"
 					style="float: left; height: 20%; width: 49%; font-size: 1.5em">更改密码</a>
 				<a class="layui-btn layui-btn-primary" href="#" id="changeTeaMail"
@@ -1544,6 +1529,7 @@
 	}
 	//点击安全管理
 	$('#safeManage').click(function name1() {
+		$('#messageList').html("安全管理");
 		 $('#courseInfo').hide();
 		 $('#courseShow').hide();
 		 $('#messageShow').hide();

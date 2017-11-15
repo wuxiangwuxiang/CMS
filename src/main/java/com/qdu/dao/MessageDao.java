@@ -10,7 +10,7 @@ public interface MessageDao {
 	
 	public int selectMessageCount(String messageAccepter);
 	
-	public List<Message> selectUnreadMessage(String messageAccepter,int startPos);
+	public List<Message> selectUnreadMessage(String messageAccepter,int startPos,int count);
 	
 	public Message selectMessageById(int messageId);
 	

@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -27,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Course;
 import com.qdu.pojo.FilePackage;
@@ -43,6 +47,7 @@ import com.qdu.serviceimpl.StudentServiceImpl;
 import com.qdu.util.JavaEmailSender;
 import com.qdu.util.MD5Util;
 import com.qdu.util.Page;
+import com.qdu.util.ResponseUtil;
 
 @Controller
 @RequestMapping(value = "/teacher")
@@ -100,9 +105,9 @@ public class TeacherController {
 					map.addAttribute("courses", courses);
 					int messageCount = messageServiceImpl.selectMessageCount(teacher.getTeacherMobile());
 					map.put("messageCount", messageCount);
-					List<Message> messages = messageServiceImpl.selectUnreadMessage(teacher.getTeacherMobile(),
-							page.getStartPos());
-					map.put("message", messages);
+//					List<Message> messages = messageServiceImpl.selectUnreadMessage(teacher.getTeacherMobile(),
+//							page.getStartPos());
+//					map.put("message", messages);
 					map.put("page", page);
 					List<FilePackage> filePackages = filePackageServiceImpl.selectFileByUserId(teacher.getTeacherMobile());
 					map.put("filePackages", filePackages);
@@ -147,8 +152,8 @@ public class TeacherController {
 		map.addAttribute("courses", courses);
 		int messageCount = messageServiceImpl.selectMessageCount(teacherMobile);
 		map.put("messageCount", messageCount);
-		List<Message> messages = messageServiceImpl.selectUnreadMessage(teacherMobile, page.getStartPos());
-		map.put("message", messages);
+//		List<Message> messages = messageServiceImpl.selectUnreadMessage(teacherMobile, page.getStartPos());
+//		map.put("message", messages);
 		return "teacherPage";
 	}
 
@@ -318,15 +323,32 @@ public class TeacherController {
 	}
 
 	// 教师端多文件上传
+	@SystemLog(module = "教师", methods = "日志管理-上传文件")
 	@RequestMapping(value = "/teacherUpload.do")
 	@ResponseBody
 	public Map<String, Object> teacherUpload(@RequestParam("file") MultipartFile file, String teacherMobile,
 			String fileType, HttpServletRequest request) throws IOException, Throwable {
 		Map<String, Object> map = new HashMap<>();
+	        String fileName = file.getOriginalFilename();  
+	        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);  
+	        if(suffix.equals("zip")){
+	        	fileType = "zip";
+	        }else if(suffix.equals("rar")){
+	        	fileType = "rar";
+	        } else if (suffix.equals("7z")) {
+	        	fileType = "7z";
+			}else if(suffix.equals("pdf")){
+				fileType = "pdf";
+			}else if (suffix.equals("xls")) {
+				fileType = "xls";
+			}else if (suffix.equals("doc")) {
+				fileType = "doc";
+			}else if (suffix.equals("ppt")) {
+				fileType = "ppt";
+			}
 		Teacher teacher = teacherServiceImpl.selectTeacherByMobile(teacherMobile);
 		// 定义上传路径
 		String path = request.getSession().getServletContext().getRealPath("/") + "file";
-		System.out.println(path);
 		boolean isFileUpload = ServletFileUpload.isMultipartContent(request);
 		// 如果是文件上传类型
 		if (isFileUpload) {
@@ -337,10 +359,9 @@ public class TeacherController {
 			// 设置文件上传类的编码格式
 			fileUpload.setHeaderEncoding("UTF-8");
 			// 得到文件名
-			String FileName = file.getOriginalFilename();
 			String time = new SimpleDateFormat("YYYY-MM-dd_HH_mm_ss").format(new Date());
 			String time2 = new SimpleDateFormat("YYYY-MM-dd").format(new Date());
-			String newfileName = teacher.getTeacherName() + time + FileName;
+			String newfileName = fileName+"/"+time;
 			FilePackage filePackage = new FilePackage();
 			filePackage.setUserId(teacherMobile);
 			filePackage.setFileName(newfileName);
@@ -367,5 +388,16 @@ public class TeacherController {
 
 		return map;
 	}
+	//获取文件列表
+	@SystemLog(module = "教师", methods = "日志管理-获取文件列表")
+	@RequestMapping(value = "/getPrivateData.do")
+	@ResponseBody
+	public Map<String, Object> getPrivateData(String teacherMobile){
+		Map<String, Object> map = new HashMap<>();
+		List<FilePackage> filePackages = filePackageServiceImpl.selectFileByUserId(teacherMobile);
+		map.put("filePackages", filePackages);
+		return map;
+	}
+	
 
 }
