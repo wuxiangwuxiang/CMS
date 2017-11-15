@@ -51,6 +51,10 @@ public class CourseServiceImpl implements CourseService{
 	public List<Student> selectStudentByMany(int courseId) {
 		return courseDaoImpl.selectStudentByMany(courseId);
 	}
+	@Override
+	public Course selectCourseIdById(int courseId) {
+		return courseDaoImpl.selectCourseIdById(courseId);
+	}
 	
 
 

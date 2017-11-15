@@ -182,7 +182,7 @@ public class CourseController {
 	@ResponseBody
 	public Map<String, Object> searchIfExistCourse(int courseId){
 		Map<String, Object> map = new HashMap<>();
-		Course course = courseServiceImpl.selectCourseById(courseId);
+		Course course = courseServiceImpl.selectCourseIdById(courseId);
 		if(course != null){
 			List<Clazz> clazzs = clazzServiceImpl.selectClazzNameByCourse(courseId);
 			if(clazzs.size() > 0){

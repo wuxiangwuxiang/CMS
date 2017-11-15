@@ -99,39 +99,6 @@
 				<id property="clazzId" column="ClazzId" />
 				<result property="clazzName" column="ClazzName" />
 				<result property="currentYear" column="CurrentYear" />
-
-				<!-- 学生表 -->
-				<collection property="student" ofType="com.qdu.pojo.Student"
-					javaType="ArrayList" column="ClazzId"
-					select="com.qdu.mapping.StudentMapping.selectStudentByClazzId">
-					<id property="studentRoNo" column="StudentRoNo" />
-					<result property="studentPassword" column="StudentPassword" />
-					<result property="studentMobile" column="StudentMobile" />
-					<result property="studentEmail" column="StudentEmail" />
-					<result property="studentName" column="StudentName" />
-					<result property="studentGender" column="StudentGender" />
-					<result property="studentPhoto" column="StudentPhoto" />
-					<result property="college" column="College" />
-					<result property="special" column="Special" />
-					<result property="intoSchoolYear" column="IntoSchoolYear" />
-					<result property="schoolRecord" column="SchoolRecord" />
-					<result property="birthDay" column="BirthDay" />
-					<result property="freeStyle" column="FreeStyle" />
-
-					<association property="teacher" javaType="com.qdu.pojo.Teacher">
-						<id property="teacherMobile" column="TeacherMobile" />
-						<result property="teacherEmail" column="TeacherEmail" />
-						<result property="teacherPassword" column="TeacherPassword" />
-						<result property="teacherName" column="TeacherName" />
-						<result property="teacherGender" column="TeacherGender" />
-						<result property="teacherSubject" column="TeacherSubject" />
-						<result property="college" column="College" />
-						<result property="special" column="Special" />
-						<result property="schoolRecord" column="SchoolRecord" />
-						<result property="birthDay" column="BirthDay" />
-						<result property="freeStyle" column="FreeStyle" />
-					</association>
-				</collection>
 			</collection>
 		</association>
 	</resultMap>

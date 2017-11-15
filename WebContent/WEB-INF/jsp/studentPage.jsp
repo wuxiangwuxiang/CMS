@@ -60,6 +60,7 @@
 			
 		 //该学生课程信息
 		 $('#checkCourseShow').click(function name1() {
+			 $('#messageList').html("课程信息");
 			 $('#doubleHandle').hide();
 			 $('#signal').hide();
 			 $('#studentAddCourse').hide();
@@ -76,6 +77,7 @@
 		});
 		 //个人中心
 		 $('#studentInfoCenter').click(function name1() {
+			 $('#messageList').html("个人中心");
 			 $('#doubleHandle').hide();
 			 $('#signal').hide();
 			 $('#studentAddCourse').hide();
@@ -92,6 +94,7 @@
 		 });
 		 //点击修改信息
 		 $('#updateStudentInfoNow').click(function name1() {
+			 $('#messageList').html("修改信息");
 			 $('#doubleHandle').hide();
 			 $('#signal').hide();
 			 $('#studentAddCourse').hide();
@@ -108,6 +111,7 @@
 		 });
 		 //点击操作日志
 		 $('#studentLog').click(function name() {
+			 $('#messageList').html("操作日志");
 			 $('#doubleHandle').hide();
 			 $('#signal').hide();
 			 $('#studentAddCourse').hide();
@@ -125,6 +129,7 @@
 		 
 		//点击消息
 		  $('#messageButtton').click(function() {
+			  $('#messageList').html("消息列表");
 			$('#doubleHandle').hide();
 			$('#signal').hide();
 		    $('#studentAddCourse').hide();
@@ -141,6 +146,7 @@
 			}); 
 		 //手动添加课程
 		 $('#addCourse').click(function name1() {
+			 $('#messageList').html("添加课程");
 				$('#courseInfo').hide();
 				$('#doubleHandle').hide();
 				$('#signal').hide();
@@ -157,6 +163,7 @@
 			});
 		 //安全管理
 			$('#safeManage').click(function name1() {
+				$('#messageList').html("修改密码");
 				$('#courseInfo').hide();
 				$('#studentAddCourse').hide();
 				$('#doubleHandle').show();
@@ -173,6 +180,7 @@
 			});
 		 //点击签到记录
 			$('#studentWordRecord').click(function wq() {
+				$('#messageList').html("签到记录");
 				$('#courseInfo').hide();
 				$('#studentAddCourse').hide();
 				$('#doubleHandle').hide();
@@ -189,6 +197,7 @@
 			});
 			//点击完善信息
 			$('#perfectButton').click(function wq() {
+				$('#messageList').html("完善信息");
 				$('#collegeTr').hide();
 				$('#reCollegeTr').show();
 				$('#specialTr').hide();
@@ -323,8 +332,8 @@
 	              success: function (data) {
 	            	  if(data.result == true){
 	            		  result = true;
-	            	  }else{
-	            		  
+	            	  }else if(data.result == false){
+	            		  $('#listenClssExit').show();
 	            	  }
 	              },
 	              error: function (data) {
@@ -342,15 +351,18 @@
 			if($('#courseId').val() != null && $('#courseId').val() != ""){
 				if(isNaN($('#courseId').val())){
 					$('#listenIdEmpty').hide();
+					$('#listenClssExit').hide();
 					$('#listenId').show();
 				}else{
 					if(courseName.length >= 100){
 						$('#listenIdEmpty').hide();
 						$('#listenId').hide();
+						$('#listenClssExit').hide();
 						$('#listenName').show();
 					}else{
 						$('#listenIdEmpty').hide();
 						$('#listenId').hide();
+						$('#listenClssExit').hide();
 						$('#listenName').hide();
 						return true;
 					}
@@ -622,10 +634,11 @@
 	<div class="layui-body site-demo"
 		style="padding-top: 7%; overflow: auto;">
 		<br />
+		
+		<span id="messageList" style="margin-left: 5%;">消息列表</span>
 		<hr class="layui-bg-cyan">
 
 		<!-- 签到记录 -->
-
 		<table id="studentWork" border="1"
 			style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%; display: none;">
 			<tr>
@@ -663,106 +676,74 @@
 
 
 		<!-- 显示消息 -->
-		<div id="messageShow" style="text-align: center;" >
+		<div id="messageShow" style="margin-left: 5%; margin-right: 5%;" >
 		<table  class="layui-table"
-			lay-data="{height:415,width:1300, url:'<%=request.getContextPath() %>/student/getSeperratePage.do',
-			 page:true, id:'messageShow1', where:{messageAcpter:'${student.studentRoNo}'}}"
+			lay-data="{page:true,height:485,width:1070, url:'<%=request.getContextPath() %>/student/getSeperratePage.do',
+			 id:'test', where:{messageAcpter:'${student.studentRoNo}'}}"
 			lay-filter="test" style="width: 100%;">
 			<thead>
 				<tr>
-					<th lay-data="{field:'messageSender', width:400, sort: true}">发送方</th>
-					<th lay-data="{field:'messageTitle', width:600}">标题</th>
-					<th lay-data="{field:'haveRead', width:300, sort: true}">读取</th>
+					<th lay-data="{field:'messageSender', width:200, sort: true}">发送方</th>
+					<th lay-data="{field:'messageTitle', width:500,templet: '#titleTpl'}">标题</th>
+					<th lay-data="{field:'haveRead', width:200, sort: true}">状态</th>
+					<th lay-data="{fixed: 'right', width:160, align:'center', toolbar: '#barDemo'}"></th>
 				</tr>
 			</thead>
 		</table>
      </div>
-		<script src="/static/build/layui.js"></script>
+  <script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="detail">查看</a>
+  <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+</script>
+ <script type="text/html" id="titleTpl">
+     <a href="#" onclick='getMessage({{d.messageId}})' class="layui-table-link">{{d.messageTitle}}</a>
+   </script>
 		<script>
         layui.use('table', function(){
         var table = layui.table;
+        table.on('tool(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+           
+            if(layEvent === 'detail'){ //查看
+             getMessage(data.messageId);
+            } else if(layEvent === 'del'){ //删除
+              layer.confirm('真的删除行么', function(index){
+              
+                //向服务端发送删除指令
+          		 $.ajax({
+                     type: "GET",
+                     data: {
+                    	 "messageId":data.messageId
+                     },
+                     contentType: "application/json; charset=utf-8",
+                     async: false,
+                     //url不加空格！！！！！！！！！！！！！！！！！！！！！！！
+                     url: "<%=request.getContextPath()%>/student/deleteMessage.do",
+        			success : function(data) {
+        				if(data.result == true){
+        					 obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+        			            layer.close(index);
+        				}else{
+        					alert("删除失败");
+        				}
+        			},
+        			error : function(data) {
+        				
+        			},
+        			dataType : "json",
+        		});
+              });
+            } 
+            obj.update({
+                haveRead: '已读'
+              });
+          });
+   });
         
-        });
         </script>
-		<%-- <div class="site-text site-block" id="messageShow"
-				style="padding-left: 10%; display: none;">
-				<table>
-				<c:choose>
-				<c:when test="${! empty message}">
-				<c:forEach items="${message}" var="m">
-				<tr style="margin-top: 3%">
-				<td><img alt="图标cms" src="<%=request.getContextPath()%>/icon/cms3.ico" width="40px" height="40px"></td>
-				<td width="12%">&nbsp;</td>
-				<td><a id="${m.messageId}" onclick="getMessage(this.id)" href="#">${m.messageTitle}</a></td>
-				<td width="12%">&nbsp;</td>
-				<td>${m.sendTime}</td>
-				<td width="12%">&nbsp;</td>
-				<td id="me${m.messageId}">${m.haveRead}</td>
-				<td><input id="mem${m.messageId}" type="text" value="${m.haveRead}" style="display: none;"/></td>
-				</tr>
-				<tr height="10%">
-				<td>&nbsp;</td>
-				</tr>
-				</c:forEach>
-				<br/>
-				</c:when>
-				</c:choose>
-				</table>
-			</div>
-			
-			<div id="demo7"></div>
-			
-			 <script type="text/javascript">
-          layui.use(['laypage', 'layer'], function(){
-        	  var laypage = layui.laypage
-        	  ,layer = layui.layer;
-        	  
-        	  //完整功能
-        	  laypage.render({
-        	    elem: 'demo7'
-        	    ,count: 100
-        	    ,layout: ['count', 'prev', 'page', 'next', 'limit', 'skip']
-        	    ,jump: function(obj){
-        	      console.log(obj)
-        	    }
-        	  });
-        	  
-        	
-			
-		});
-          </script> --%>
-		<!-- 消息分页 -->
-		<%--  <div id="seprateMessage" style="text-align: center;margin-left: 0; display: none;">  
-            <font size="2">第  ${page.pageNow} 页</font> <font size="2">共 ${page.totalPageCount} 页</font>
-            <a href="studentLogin.do?pageNow=1&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">首页</a>  
-            <c:choose> 
-                <c:when test="${page.pageNow - 1 > 0}">  
-                    <a href="studentLogin.do?pageNow=${page.pageNow - 1}&studentRoNo=${student.teacherMobile}&password=${student.studentPassword}">上一页</a>  
-                </c:when>  
-                <c:when test="${page.pageNow - 1 <= 0}">  
-                    <a href="studentLogin.do?pageNow=1&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">上一页</a>  
-                </c:when>  
-            </c:choose>  
-            <c:choose>  
-                <c:when test="${page.totalPageCount==0}">  
-                    <a href="studentLogin.do?pageNow=${page.pageNow}&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">下一页</a>  
-                </c:when>  
-                <c:when test="${page.pageNow + 1 < page.totalPageCount}">  
-                    <a href="studentLogin.do?pageNow=${page.pageNow + 1}&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">下一页</a>  
-                </c:when>  
-                <c:when test="${page.pageNow + 1 >= page.totalPageCount}">  
-                    <a href="studentLogin.do?pageNow=${page.totalPageCount}&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">下一页</a>  
-                </c:when>  
-            </c:choose>  
-            <c:choose>  
-              <c:when test="${page.totalPageCount==0}">  
-                    <a href="studentLogin.do?pageNow=${page.pageNow}&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">尾页</a>  
-                </c:when>  
-                <c:otherwise>  
-                    <a href="studentLogin.do?pageNow=${page.totalPageCount}&studentRoNo=${student.studentRoNo}&password=${student.studentPassword}">尾页</a>  
-                </c:otherwise>  
-            </c:choose>  
-          </div> --%>
+		
 		<!-- 附属详细消息 -->
 		<div id="fushuMessage"
 			style="width: 100%; padding-left: 25%; display: none; margin-top: 5%;">
@@ -832,6 +813,8 @@
 				<p id="listenClss"
 					style="color: red; display: none; margin-left: 13%;">*班级不可为空*</p>
 
+                <p id="listenClssExit"
+					style="color: red; display: none; margin-left: 13%;">*您已在该班级*</p>
 				<div class="layui-form-item">
 					<div class="layui-input-block">
 						<input id="AddCourseButton" class="layui-btn"
@@ -857,7 +840,7 @@
 
 		<!-- 课程信息表 -->
 		<table id="courseInfo" border="1"
-			style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%;">
+			style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%; display: none;">
 			<tr>
 				<th>课程名称</th>
 				<th>类型</th>
@@ -1325,11 +1308,13 @@
 	}
    //修改密码
  	$('#changeStuPass').click(function asd() {
+ 		$('#messageList').html("修改密码");
  		$('#emailsafe').hide();
  		$('#safe').show();
  	});
  	//修改邮箱
      $('#changeStuMail').click(function asd() {
+    	 $('#messageList').html("修改邮箱");
      	$('#safe').hide();
  		$('#emailsafe').show();
  	});

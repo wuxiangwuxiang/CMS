@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdu.mapping.ClazzStuMapping">
+	<cache type="com.qdu.cache.RedisCache" />
+	<resultMap type="com.qdu.pojo.ClazzStu" id="ClazzStuResult">
+		<id property="clazzStuId" column="ClazzStuId" />
+		<result property="studentRoNo" column="StudentRoNo" />
+		<result property="clazzId" column="ClazzId" />
+	</resultMap>
+
+	<insert id="insertClazzStu" parameterType="com.qdu.pojo.ClazzStu">
+      insert into 
+      ClazzStu(StudentRoNo,ClazzId) 
+      values(#{studentRoNo},#{clazzId})
+	</insert>
+	
+	<select id="selectClazzStuById" resultMap="ClazzStuResult">
+	  select * from ClazzStu where ClazzId = #{clazzd}
+	</select>
+	
+	<select id="selectClazzStuByDouble" parameterType="HashMap" resultMap="ClazzStuResult">
+	  select * from ClazzStu where ClazzId = #{clazzId} And StudentRoNo = #{studentRoNo}
+	</select>
+	
+	<delete id="deleteClazzStuByClazzId" parameterType="int">
+	  delete from ClazzStu where ClazzId = #{clazzd}
+	</delete>
+
+</mapper>

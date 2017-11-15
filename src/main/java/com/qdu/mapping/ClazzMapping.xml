@@ -74,113 +74,6 @@
 				</collection>
 			</collection>
 		</association>
-
-		<!-- 学生表 -->
-		<collection property="student" ofType="com.qdu.pojo.Student"
-			javaType="ArrayList" column="ClazzId"
-			select="com.qdu.mapping.StudentMapping.selectStudentByClazzId">
-			<id property="studentRoNo" column="StudentRoNo" />
-			<result property="studentPassword" column="StudentPassword" />
-			<result property="studentMobile" column="StudentMobile" />
-			<result property="studentEmail" column="StudentEmail" />
-			<result property="studentName" column="StudentName" />
-			<result property="studentGender" column="StudentGender" />
-			<result property="studentPhoto" column="StudentPhoto" />
-
-			<association property="course" javaType="com.qdu.pojo.Course">
-				<id property="courseId" column="CourseId" />
-				<result property="courseName" column="CourseName" />
-				<result property="courseType" column="CourseType" />
-				<result property="classCapacity" column="ClassCapacity" />
-				<result property="startTime" column="StartTime" />
-				<result property="endTime" column="EndTime" />
-				<result property="currentYear" column="CurrentYear" />
-				<result property="schoolTem" column="SchoolTem" />
-				<result property="qrImg" column="QrImg" />
-
-				<association property="teacher" javaType="com.qdu.pojo.Teacher">
-					<id property="teacherMobile" column="TeacherMobile" />
-					<result property="teacherEmail" column="TeacherEmail" />
-					<result property="teacherName" column="TeacherName" />
-					<result property="teacherGender" column="TeacherGender" />
-					<result property="teacherSubject" column="TeacherSubject" />
-				</association>
-
-				<collection property="studentInfo" ofType="com.qdu.pojo.StudentInfo"
-					javaType="ArrayList" column="CourseName"
-					select="com.qdu.mapping.StudentInfoMapping.selectStudentInfoByCourse">
-					<id property="studentInfoId" column="StudentInfoId" />
-					<result property="signIn" column="SignIn" />
-					<result property="comeLate" column="ComeLate" />
-					<result property="leaveEarlier" column="LeaveEarlier" />
-					<result property="absenteeism" column="Absenteeism" />
-					<collection property="students" ofType="com.qdu.pojo.Student"
-						javaType="ArrayList" column="StudentInfoId"
-						select="com.qdu.mapping.StudentMapping.selectStudentByStudentInfoId">
-						<id property="studentRoNo" column="StudentRoNo" />
-						<result property="studentPassword" column="StudentPassword" />
-						<result property="studentMobile" column="StudentMobile" />
-						<result property="studentEmail" column="StudentEmail" />
-						<result property="studentName" column="StudentName" />
-						<result property="studentGender" column="StudentGender" />
-						<result property="studentPhoto" column="StudentPhoto" />
-						<result property="college" column="College" />
-						<result property="special" column="Special" />
-						<result property="intoSchoolYear" column="IntoSchoolYear" />
-						<result property="schoolRecord" column="SchoolRecord" />
-						<result property="birthDay" column="BirthDay" />
-						<result property="freeStyle" column="FreeStyle" />
-
-						<association property="teacher" javaType="com.qdu.pojo.Teacher">
-							<id property="teacherMobile" column="TeacherMobile" />
-							<result property="teacherEmail" column="TeacherEmail" />
-							<result property="teacherPassword" column="TeacherPassword" />
-							<result property="teacherName" column="TeacherName" />
-							<result property="teacherGender" column="TeacherGender" />
-							<result property="teacherSubject" column="TeacherSubject" />
-						</association>
-					</collection>
-				</collection>
-
-			</association>
-
-			<association property="studentInfo" javaType="com.qdu.pojo.StudentInfo">
-				<id property="studentInfoId" column="StudentInfoId" />
-				<result property="signIn" column="SignIn" />
-				<result property="comeLate" column="ComeLate" />
-				<result property="leaveEarlier" column="LeaveEarlier" />
-				<result property="absenteeism" column="Absenteeism" />
-
-
-				<association property="student" javaType="com.qdu.pojo.Student">
-					<id property="studentRoNo" column="StudentRoNo" />
-					<result property="studentPassword" column="StudentPassword" />
-					<result property="studentMobile" column="StudentMobile" />
-					<result property="studentEmail" column="StudentEmail" />
-					<result property="studentName" column="StudentName" />
-					<result property="studentGender" column="StudentGender" />
-					<result property="studentPhoto" column="StudentPhoto" />
-					<result property="college" column="College" />
-					<result property="special" column="Special" />
-					<result property="intoSchoolYear" column="IntoSchoolYear" />
-					<result property="schoolRecord" column="SchoolRecord" />
-					<result property="birthDay" column="BirthDay" />
-					<result property="freeStyle" column="FreeStyle" />
-				</association>
-
-				<association property="course" javaType="com.qdu.pojo.Course">
-					<id property="courseId" column="CourseId" />
-					<result property="courseName" column="CourseName" />
-					<result property="courseType" column="CourseType" />
-					<result property="classCapacity" column="ClassCapacity" />
-					<result property="startTime" column="StartTime" />
-					<result property="endTime" column="EndTime" />
-					<result property="currentYear" column="CurrentYear" />
-					<result property="schoolTem" column="SchoolTem" />
-					<result property="qrImg" column="QrImg" />
-				</association>
-			</association>
-		</collection>
 	</resultMap>
 
 	<select id="selectClazzByCourse" resultMap="ClazzResult"
@@ -218,9 +111,7 @@
 
 	<select id="selectCountOfStudentByClazz" parameterType="int"
 		resultType="int">
-		select count(*) from Student s,Clazz c where c.ClazzId =
-		#{clazzId}
-		AND s.ClazzId = c.ClazzId
+		select count(*) from ClazzStu where ClazzId = #{clazzId}
 	</select>
 
 	<insert id="insertClazz" parameterType="com.qdu.pojo.Clazz">

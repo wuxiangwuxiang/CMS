@@ -70,12 +70,6 @@
 				</collection>
 			</association>
 		</association>
-
-		<association property="clazz" javaType="com.qdu.pojo.Clazz">
-			<id property="clazzId" column="ClazzId" />
-			<result property="clazzName" column="ClazzName" />
-			<result property="currentYear" column="CurrentYear" />
-		</association>
 	</resultMap>
 
 	<select id="selectStudentByStudentInfoId" resultMap="StudentResult">
@@ -85,33 +79,11 @@
 		where StudentInfoId = #{studentInfoId});
 	</select>
 
-	<select id="selectStudentByClazzId" resultMap="StudentResult">
-		select * from
-		Student s,Clazz c
-		where s.ClazzId = c.ClazzId
-		and c.ClazzId = #{clazzId}
-	</select>
-
-	<!-- 精确查询学生 -->
-	<select id="selectStudentByMany" resultMap="StudentResult">
-		SELECT * FROM Student
-		s JOIN Clazz c JOIN Course cc ON s.ClazzId = c.ClazzId
-		AND c.CourseId =
-		cc.CourseId AND cc.CourseId = #{courseId}
-	</select>
-
 	<select id="selectStudentByNo" resultMap="StudentResult">
 		select * from Student
 		where StudentRoNo = #{studentRoNo}
 	</select>
 
-	<select id="selectStudentAndClazzByNo" parameterType="String"
-		resultMap="StudentResult">
-		select StudentRoNo, StudentName,clazzName from Student
-		s,Clazz c
-		where s.ClazzId = c.ClazzId
-		And s.StudentRoNo = #{studentRoNo}
-	</select>
 
 	<select id="selectStudentByFour" parameterType="HashMap"
 		resultMap="StudentResult">

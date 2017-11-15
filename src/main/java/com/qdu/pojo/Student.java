@@ -16,7 +16,6 @@ public class Student implements Serializable{
 	private String schoolRecord;
 	private String birthDay;
 	private String freeStyle;
-	private Clazz clazz;
 	private StudentInfo studentInfo;
 	public String getStudentRoNo() {
 		return studentRoNo;
@@ -107,11 +106,5 @@ public class Student implements Serializable{
 		this.studentInfo = studentInfo;
 	}
 	
-	public Clazz getClazz() {
-		return clazz;
-	}
-	public void setClazz(Clazz clazz) {
-		this.clazz = clazz;
-	}
 	
 }

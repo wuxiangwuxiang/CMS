@@ -1,6 +1,7 @@
 package com.qdu.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Clazz;
+import com.qdu.pojo.ClazzStu;
 import com.qdu.pojo.Course;
 import com.qdu.pojo.Teacher;
 import com.qdu.service.ClazzService;
+import com.qdu.service.ClazzStuService;
 import com.qdu.service.CourseService;
 
 @Controller
@@ -24,6 +27,7 @@ public class ClazzController {
  
 	@Autowired private ClazzService clazzServiceImpl;
 	@Autowired private CourseService courseServiceImpl;
+	@Autowired private ClazzStuService clazzStuServiceImpl;
 	//添加班级准备
 	@RequestMapping(value = "/forInsertClazz.do")
 	public String forInsertClazz(int courseId,ModelMap map){
@@ -76,7 +80,8 @@ public class ClazzController {
 	@SystemLog(module="教师",methods="日志管理-删除班级")
 	@RequestMapping(value = "/deleteClazzById.do")
 	public @ResponseBody Map<String, Object> deleteClazzById(int clazzId){
-		clazzServiceImpl.updateClazzByCourseId(clazzId);
+		int tem = clazzStuServiceImpl.deleteClazzStuByClazzId(clazzId);
+		int tem2 = clazzServiceImpl.deleteClazzById(clazzId);
 		Map<String, Object> map = new HashMap<>();
 		map.put("message", "删除成功");
 		return map;
