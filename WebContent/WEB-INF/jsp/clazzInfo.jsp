@@ -193,7 +193,7 @@ function submitSignIn() {
 				alert("服务器异常！");
 			},
 		});
-	}
+	}  
 	//获取所有签到记录
 	function getRecord() {
 		$('#scoreTable').toggle();
@@ -323,12 +323,11 @@ function submitSignIn() {
 			<!-- 其他模块 -->
 			<div id="otherModel" style="display: none;">
 				<div
-					style="width: 49%; heigh: 600px; border: solid;; border-color: red; overflow: auto;">
+					style="width: 49%; heigh: 600px; overflow: auto;">
 					<form id="clazzForm" style="display: none">
-						<input type="text" id="courseId" name="courseId"
-							value="${course.courseId}" /><br /> <input type="text"
-							id="preclazzId" name="preclazzId"><br /> 班级名称：<input
-							type="text" id="preclazzName" name="preclazzName"><br />
+						<input type="text" id="courseId" name="courseId" value="${course.courseId}" /><br />
+						 <input type="text" id="preclazzId" name="preclazzId"><br />
+							 班级名称：<input type="text" id="preclazzName" name="preclazzName"><br />
 						<input onclick="saveChange()" type="button" value="提交修改" />
 					</form>
 					<a href="#">发布公告</a><br /> <a href="#">上传资料</a><br />
