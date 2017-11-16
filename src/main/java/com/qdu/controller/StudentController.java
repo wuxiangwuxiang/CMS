@@ -12,6 +12,7 @@ import java.util.Random;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.mbeans.MBeanDumper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -306,8 +307,9 @@ public class StudentController {
 	public Map<String, Object> insertQrTem(HttpServletRequest request, String studentRoNo, String password,
 			int courseId, String qrTime, int validateCode) throws ParseException {
 		System.out.println("进入 ： insertQrTem.do");
-		System.out.println(courseId);
-		System.out.println(studentRoNo);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		String currentTime = sdf.format(date);
 		request.getSession().setAttribute("UserId", studentRoNo);
 		Map<String, Object> map = new HashMap<>();
 		StudentInfo studentInfo = studentInfoServiceImpl.selectStudentInfoByMany(studentRoNo, courseId);
@@ -336,7 +338,7 @@ public class StudentController {
 					QrTem qrTem = new QrTem();
 					qrTem.setCourseId(courseId);
 					qrTem.setStudentRoNo(studentRoNo);
-					qrTem.setQrTime(qrTime);
+					qrTem.setQrTime(currentTime);
 					qrTemServiceImpl.insertQrTem(qrTem);// 插到临时表稍后删除
 					map.put("message", "签到成功！");
 				}
@@ -351,16 +353,16 @@ public class StudentController {
 	@ResponseBody
 	public Map<String, Object> getTemStudent(int courseId) {
 		System.out.println("获取签到列表");
+		System.out.println(courseId);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		String currentTime = sdf.format(date);
 		Map<String, Object> map = new HashMap<>();
 		List<QrTem> qrTems = qrTemServiceImpl.selectQrTemByCourseIdAndTime(courseId, currentTime);
-		List<Student> students = new ArrayList<>();
+		System.out.println(qrTems.size());
 		List<ClazzStu> clazzStus = new ArrayList<>();
 		if (qrTems != null && qrTems.size() != 0) {
 			for (QrTem qrTem : qrTems) { 
-//				Student student = studentServiceImpl.selectStudentAndClazzByNo(qrTem.getStudentRoNo(),courseId);
 				ClazzStu clazzStu = clazzStuServiceImpl.selectClazzStuByCourse(qrTem.getStudentRoNo(), courseId);
 				System.out.println(clazzStu.getStudent().getStudentName());
 				System.out.println(clazzStu.getClazz().getClazzName());
@@ -616,5 +618,39 @@ public class StudentController {
 			}
 			return map;
 		}
+		//通过二维码添加课程
+		@SystemLog(module = "学生", methods = "日志管理-二维码添加课程")
+		@RequestMapping(value = "/confirmAddCourse.do")
+		@ResponseBody
+		public Map<String, Object> confirmAddCourse(String studentRoNo,String studentPassword,
+				int clazzId,int courseId,HttpServletRequest request){
+			request.getSession().setAttribute("UserId", studentRoNo);
+			System.out.println(studentRoNo +":" +studentPassword+":"+clazzId +":" +courseId);
+			Map<String, Object> map = new HashMap<>();
+			Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
+			StudentInfo studentInfo = studentInfoServiceImpl.selectStudentInfoByMany(studentRoNo,courseId);
+				if (student == null) {
+					map.put("message", "学号错误");
+					System.out.println("11111");
+				} else if (!MD5Util.md5(studentPassword, "juin").equals(student.getStudentPassword())){
+					map.put("message", "密码错误");
+					System.out.println("22222222");
+				} else if (studentInfo != null) {
+					map.put("message", "请勿重复加入");
+					System.out.println("333333333");
+				}else{
+					studentInfoServiceImpl.insertStudentInfo(studentRoNo, courseId);
+					clazzStuServiceImpl.insertClazzStu(clazzId,studentRoNo);
+					map.put("result", true);
+					System.out.println("444444444");
+				}
+			return map;
+		}
+		
+		
+		
+		
+		
+		
 		
 }
