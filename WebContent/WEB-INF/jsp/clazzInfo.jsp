@@ -241,10 +241,10 @@ function submitSignIn() {
 								<a id="signShow" href="#">点名签到</a>
 							</dd>
 							<dd>
-								<a id="otherShow" href="#">补签</a>
+								<a id="otherShow" href="#">签到记录 & 补签</a>
 							</dd>
 							<dd>
-								<a href="#">签到记录</a>
+								<a href="#">待定</a>
 							</dd>
 						</dl></li>
 					<li class="layui-nav-item"><a href="#">解决方案</a>
@@ -265,9 +265,17 @@ function submitSignIn() {
 			</div>
 		</div>
 
+
 		<!-- 内容 -->
 		<div class="layui-body site-demo">
-
+			
+			<span class="layui-breadcrumb" lay-separator="|">
+ 				<a href="#">发布公告</a>
+ 				<a href="#">上传资料</a>
+			</span>
+			<br><br><br><br>
+			<span id="" style="margin-left: 5%;color: #c2c2c2; font-style: oblique;">${course.courseName}：考勤签到</span>
+			<hr class="layui-bg-cyan">
 			<!-- 签到content -->
 			<div id="signModel"
 				style="width: 100%; overflow: hidden; height: 100%;">
@@ -286,7 +294,7 @@ function submitSignIn() {
 						<div
 							style=" padding: 10px; width: auto; text-align: center;">
 							<img style="border: solid; border-color: black;" id="qrImg"
-								alt="签到二维码" src="">
+								 src="">
 						</div>
 					</div>
 					<!-- 签到操作 -->
@@ -306,7 +314,7 @@ function submitSignIn() {
 				<!-- 签到状况模块 -->
 				<div style="width: 48%;">
 					<table class="layui-table" width="99%" border="1" id="showStudents"
-						style="margin-top: 10%;">
+						style="margin-top: 10%;margin-left: 15px;">
 
 					</table>
 				</div>
@@ -322,6 +330,8 @@ function submitSignIn() {
 
 			<!-- 其他模块 -->
 			<div id="otherModel" style="display: none;">
+				
+				<!-- 班级信息修改 -->
 				<div
 					style="width: 49%; heigh: 600px; overflow: auto;">
 					<form id="clazzForm" style="display: none">
@@ -330,20 +340,21 @@ function submitSignIn() {
 							 班级名称：<input type="text" id="preclazzName" name="preclazzName"><br />
 						<input onclick="saveChange()" type="button" value="提交修改" />
 					</form>
-					<a href="#">发布公告</a><br /> <a href="#">上传资料</a><br />
 				</div>
 
+				
+				<div style="width: 49%; heigh: 600px; border: solid;; border-color: red;">
 
-				<div
-					style="width: 49%; heigh: 600px; border: solid;; border-color: red;">
-					<h3>课程：${course.courseName}</h3>
-
-					<a href="#">补签</a><br /> <br /> <a href="#" onclick="getRecord()">签到记录</a><br />
-					<br /> <input type="text" id="cccourseId"
-						value="${course.courseId}" style="display: none;" /> <input
-						type="text" id="teacherMobile" value="${teacher.teacherMobile}"
-						style="display: none;" /> <a
-						href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a><br />
+					<a href="#">补签</a>
+					<br /> <br />
+					<a href="#" onclick="getRecord()">签到记录</a>
+					<br /><br />
+					<input type="text" id="cccourseId" value="${course.courseId}" style="display: none;" />
+					<input type="text" id="teacherMobile" value="${teacher.teacherMobile}" style="display: none;" />
+					<a href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a>
+					<br />
+					
+					<!-- 班级表格 -->
 					<table border="1">
 						<tr>
 							<th>班级</th>
@@ -381,6 +392,7 @@ function submitSignIn() {
 					</table>
 					<br /> <br />
 				</div>
+			
 			</div>
 
 			<script>
