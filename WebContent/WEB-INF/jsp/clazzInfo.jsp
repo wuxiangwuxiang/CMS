@@ -265,9 +265,12 @@ function submitSignIn() {
 			</div>
 		</div>
 
+
 		<!-- 内容 -->
 		<div class="layui-body site-demo">
-
+			
+			<span id="messageList" style="margin-left: 5%;">消息列表</span>
+			<hr class="layui-bg-cyan">
 			<!-- 签到content -->
 			<div id="signModel"
 				style="width: 100%; overflow: hidden; height: 100%;">
@@ -286,7 +289,7 @@ function submitSignIn() {
 						<div
 							style=" padding: 10px; width: auto; text-align: center;">
 							<img style="border: solid; border-color: black;" id="qrImg"
-								alt="签到二维码" src="">
+								 src="">
 						</div>
 					</div>
 					<!-- 签到操作 -->
@@ -306,7 +309,7 @@ function submitSignIn() {
 				<!-- 签到状况模块 -->
 				<div style="width: 48%;">
 					<table class="layui-table" width="99%" border="1" id="showStudents"
-						style="margin-top: 10%;">
+						style="margin-top: 10%;margin-left: 15px;">
 
 					</table>
 				</div>
