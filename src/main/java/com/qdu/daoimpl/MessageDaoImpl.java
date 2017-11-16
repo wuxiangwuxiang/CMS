@@ -56,6 +56,12 @@ public class MessageDaoImpl implements MessageDao{
 		return sessionFactory.openSession().selectOne(statement, messageAccepter);
 	}
 
+	@Override
+	public int deleteMessage(int messageId) {
+		String statement = "com.qdu.mapping.MessageMapping.deleteMessage";
+		return sessionFactory.openSession().delete(statement, messageId);
+	}
+
 	
 
 }

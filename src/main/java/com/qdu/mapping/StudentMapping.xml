@@ -16,7 +16,11 @@
 		<result property="schoolRecord" column="SchoolRecord" />
 		<result property="birthDay" column="BirthDay" />
 		<result property="freeStyle" column="FreeStyle" />
-
+        
+        <association property="clazzStu" javaType="com.qdu.pojo.ClazzStu">
+          <id property="clazzStuId" column="ClazzStuId" />
+        </association>
+        
 		<association property="studentInfo" javaType="com.qdu.pojo.StudentInfo">
 			<id property="studentInfoId" column="StudentInfoId" />
 			<result property="signIn" column="SignIn" />
@@ -70,13 +74,9 @@
 				</collection>
 			</association>
 		</association>
-
-		<association property="clazz" javaType="com.qdu.pojo.Clazz">
-			<id property="clazzId" column="ClazzId" />
-			<result property="clazzName" column="ClazzName" />
-			<result property="currentYear" column="CurrentYear" />
-		</association>
+		
 	</resultMap>
+
 
 	<select id="selectStudentByStudentInfoId" resultMap="StudentResult">
 		select *
@@ -84,20 +84,11 @@
 		StudentInfo
 		where StudentInfoId = #{studentInfoId});
 	</select>
-
-	<select id="selectStudentByClazzId" resultMap="StudentResult">
-		select * from
-		Student s,Clazz c
-		where s.ClazzId = c.ClazzId
-		and c.ClazzId = #{clazzId}
-	</select>
-
-	<!-- 精确查询学生 -->
-	<select id="selectStudentByMany" resultMap="StudentResult">
-		SELECT * FROM Student
-		s JOIN Clazz c JOIN Course cc ON s.ClazzId = c.ClazzId
-		AND c.CourseId =
-		cc.CourseId AND cc.CourseId = #{courseId}
+	
+	<select id="selectStudentAndClazzByNo" parameterType="HashMap" resultMap="StudentResult">
+	SELECT * from Student s,Clazz c Where 
+    c.CourseId = #{courseId}
+	And s.StudentRoNo = #{studentRoNo}
 	</select>
 
 	<select id="selectStudentByNo" resultMap="StudentResult">
@@ -105,13 +96,6 @@
 		where StudentRoNo = #{studentRoNo}
 	</select>
 
-	<select id="selectStudentAndClazzByNo" parameterType="String"
-		resultMap="StudentResult">
-		select StudentRoNo, StudentName,clazzName from Student
-		s,Clazz c
-		where s.ClazzId = c.ClazzId
-		And s.StudentRoNo = #{studentRoNo}
-	</select>
 
 	<select id="selectStudentByFour" parameterType="HashMap"
 		resultMap="StudentResult">

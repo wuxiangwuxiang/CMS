@@ -17,5 +17,7 @@ public interface MessageDao {
 	public void uodateMesageHaveread(int messageId);
 	
 	public int selectMessageTotalCount(String messageAccepter);
+	
+	public int deleteMessage(int messageId);
 
 }

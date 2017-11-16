@@ -83,4 +83,10 @@ public class CourseDaoImpl implements CourseDao {
 		SqlSessionFactory.openSession().update(statement, map);
 	}
 
+	@Override
+	public Course selectCourseIdById(int courseId) {
+		String statement = "com.qdu.mapping.CourseMapping.selectCourseIdById";
+		return SqlSessionFactory.openSession().selectOne(statement, courseId);
+	}
+
 }

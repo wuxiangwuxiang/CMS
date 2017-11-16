@@ -398,6 +398,20 @@ public class TeacherController {
 		map.put("filePackages", filePackages);
 		return map;
 	}
+	//删除message
+			@SystemLog(module = "教师", methods = "日志管理-删除消息")
+			@RequestMapping(value = "/deleteMessage.do")
+			@ResponseBody
+			public Map<String, Object> deleteMessage(int messageId){
+				Map<String, Object> map = new HashMap<>();
+				int tem = messageServiceImpl.deleteMessage(messageId);
+				if(tem > 0){
+					map.put("result", true);
+				}else{
+					map.put("result", false);
+				}
+				return map;
+			}
 	
 
 }

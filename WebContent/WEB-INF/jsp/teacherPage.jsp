@@ -110,6 +110,7 @@
 			});
 		 //点击消息
 		  $('#messageButtton').click(function() {
+			  $('#messageList').html("消息列表");
 			 $('#changeCourseinfo').hide();
 			 $('#doubleHandle').hide();
 			 $('#signal').hide();
@@ -295,8 +296,8 @@
 	var tem = ${messageCount}
 	//点击某个消息
 	function getMessage(messageId) {
-		$('#me'+messageId).html("已读");
-		$('#mem'+messageId).val("已读");
+		$('#t'+messageId).html("已读");
+		$('#t'+messageId).val("已读");
 		getMessageByAjax(messageId);
 	}
 	function getMessageByAjax(messageId) {
@@ -314,7 +315,9 @@
 					$('#forMessageContent').hide();
 					$('#messageContent').hide();
 					$('#seprateMessage').hide();
+					$('#courseInfo').hide();
 					$('#insertCourseDiv').show();
+					
 					$('#MstudentRoNo').val(data.mmm.messageSender);
 					$('#MCourseId').val(data.mmm.messageContent);
 				}
@@ -404,7 +407,7 @@
 	}
 	//ajax获取上传的文件列表
 	function getPrivateData() {
-		$('#messageList').html("文件上传");
+		 $('#messageList').html("文件上传");
 		 $('#seprateMessage').hide();
 		 $('#changeCourseinfo').hide();
 		 $('#doubleHandle').hide();
@@ -885,27 +888,66 @@
 			<thead>
 				<tr>
 					<th lay-data="{field:'messageSender', width:200, sort: true}">发送方</th>
-					<th lay-data="{field:'messageTitle', width:500}">标题</th>
-					<th lay-data="{field:'haveRead', width:200, sort: true}">状态</th>
+					<th lay-data="{field:'messageTitle', width:500,templet: '#titleTpl'}">标题</th>
+					<th lay-data="{field:'haveRead', width:200, sort: true,templet: '#NowtitleTpl'}">状态</th>
 					<th lay-data="{fixed: 'right', width:160, align:'center', toolbar: '#barDemo'}"></th>
 				</tr>
 			</thead>
 		</table>
      </div>
-  <script type="text/html" id="barDemo">
-  <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="detail">查看</a>
-  <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
-</script>
-		<script>
+     <script type="text/html" id="titleTpl">
+     <a href="#" class="layui-table-link">{{d.messageTitle}}</a>
+   </script>
+     <script type="text/html" id="barDemo">
+     <a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="detail">查看</a>
+      <a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
+ </script>
+	  <script>
         layui.use('table', function(){
-        var table = layui.table;
-        table.render({ //其它参数在此省略
-        	 
-        	}); 
+        var table = layui.table;  
+        //监听工具条
+        table.on('tool(test)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+        var data = obj.data; //获得当前行数据
+        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+        var tr = obj.tr; //获得当前行 tr 的DOM对象
        
-        
+        if(layEvent === 'detail'){ //查看
+         getMessage(data.messageId);
+        } else if(layEvent === 'del'){ //删除
+          layer.confirm('真的删除行么', function(index){
+           
+            //向服务端发送删除指令
+   		 $.ajax({
+             type: "GET",
+             data: {
+            	 "messageId":data.messageId
+             },
+             contentType: "application/json; charset=utf-8",
+             async: false,
+             //url不加空格！！！！！！！！！！！！！！！！！！！！！！！
+             url: "<%=request.getContextPath()%>/teacher/deleteMessage.do",
+			success : function(data) {
+				if(data.result == true){
+					 obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+			            layer.close(index);
+				}else{
+					alert("删除失败");
+				}
+			},
+			error : function(data) {
+				
+			},
+			dataType : "json",
+		});
+          });
+        } 
+        obj.update({
+            haveRead: '已读'
+          });
+      });
         });
-        </script>
+      </script>
+      
 			<!-- 附属详细消息 -->
 			<div id="fushuMessage"
 				style="width: 100%; padding-left: 25%; display: none;">
@@ -1032,7 +1074,7 @@
 
 			<!-- 课程信息 -->
 			<div class="layui-form sessiontable" id="courseInfo"
-				style="">
+				style="display: none;">
 				<table class="layui-table" lay-even style="text-align: center;">
 					<colgroup>
 						<col width="150">

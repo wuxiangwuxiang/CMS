@@ -1,6 +1,7 @@
 package com.qdu.pojo;
 
 import java.io.Serializable;
+import java.util.List;
  
 public class Student implements Serializable{
 	private String studentRoNo;
@@ -16,8 +17,12 @@ public class Student implements Serializable{
 	private String schoolRecord;
 	private String birthDay;
 	private String freeStyle;
-	private Clazz clazz;
 	private StudentInfo studentInfo;
+	private ClazzStu clazzStu;
+	private List<Clazz> clazzs;
+	
+	
+	
 	public String getStudentRoNo() {
 		return studentRoNo;
 	}
@@ -106,12 +111,18 @@ public class Student implements Serializable{
 	public void setStudentInfo(StudentInfo studentInfo) {
 		this.studentInfo = studentInfo;
 	}
+	public List<Clazz> getClazzs() {
+		return clazzs;
+	}
+	public void setClazzs(List<Clazz> clazzs) {
+		this.clazzs = clazzs;
+	}
+	public ClazzStu getClazzStu() {
+		return clazzStu;
+	}
+	public void setClazzStu(ClazzStu clazzStu) {
+		this.clazzStu = clazzStu;
+	}
 	
-	public Clazz getClazz() {
-		return clazz;
-	}
-	public void setClazz(Clazz clazz) {
-		this.clazz = clazz;
-	}
 	
 }

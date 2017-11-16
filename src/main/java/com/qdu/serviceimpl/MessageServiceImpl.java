@@ -48,4 +48,9 @@ public class MessageServiceImpl implements MessageService{
 		return messageDaoImpl.selectUnreadMessage(messageAccepter, startPos, count);
 	}
 
+	@Override
+	public int deleteMessage(int messageId) {
+		return messageDaoImpl.deleteMessage(messageId);
+	}
+
 }

@@ -22,7 +22,7 @@ public interface ClazzDao {
 	
 	public Clazz selectClazzById(int clazzId);
 	
-	public void deleteClazzById(int clazzId);
+	public int deleteClazzById(int clazzId);
 	
 	public int selectCountOfStudentByClazz(int clazzId);
 	

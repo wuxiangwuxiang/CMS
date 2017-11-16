@@ -27,6 +27,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Clazz;
+import com.qdu.pojo.ClazzStu;
 import com.qdu.pojo.Course;
 import com.qdu.pojo.LogEntity;
 import com.qdu.pojo.Message;
@@ -35,6 +36,7 @@ import com.qdu.pojo.Student;
 import com.qdu.pojo.StudentInfo;
 import com.qdu.pojo.Teacher;
 import com.qdu.service.ClazzService;
+import com.qdu.service.ClazzStuService;
 import com.qdu.service.CourseService;
 import com.qdu.service.LogEntityService;
 import com.qdu.service.MessageService;
@@ -42,6 +44,7 @@ import com.qdu.service.QrTemService;
 import com.qdu.service.StudentInfoService;
 import com.qdu.service.StudentService;
 import com.qdu.service.TeacherService;
+import com.qdu.serviceimpl.StudentServiceImpl;
 import com.qdu.util.GlobalVariable;
 import com.qdu.util.JavaEmailSender;
 import com.qdu.util.MD5Util;
@@ -68,6 +71,8 @@ public class StudentController {
 	private TeacherService teacherServiceImpl;
 	@Autowired 
 	private LogEntityService logEntityServiceImpl;
+	@Autowired 
+	private ClazzStuService clazzStuServiceImpl;
 
 	// 学生登录
 	@RequestMapping(value = "/studentLogin.do")
@@ -167,10 +172,13 @@ public class StudentController {
 	@SystemLog(module = "教师", methods = "日志管理-获取学生列表")
 	@RequestMapping(value = "/selectStudentByClazzId.do", method = RequestMethod.POST)
 	public String selectStudentByClazzId(int clazzId, ModelMap map) {
-		System.out.println(clazzId);
-		List<Student> students = studentServiceImpl.selectStudentByClazzId(clazzId);
+		List<Student> students = new ArrayList<>();
+		List<ClazzStu> clazzStus = clazzStuServiceImpl.selectClazzStuById(clazzId);
+		for(ClazzStu clazzStu: clazzStus){
+			Student student = studentServiceImpl.selectStudentByNo(clazzStu.getStudent().getStudentRoNo());
+			students.add(student);
+		}
 		int count = clazzServiceImpl.selectCountOfStudentByClazz(clazzId);
-		System.out.println(count);
 		Clazz clazz = clazzServiceImpl.selectClazzById(clazzId);
 		map.put("clazz", clazz);
 		map.put("count", count);
@@ -242,13 +250,10 @@ public class StudentController {
 		page = new Page(totalCount, Integer.parseInt(pageNow));
 		int messageCount = messageServiceImpl.selectMessageCount(studentRoNo);
 		map.put("messageCount", messageCount);
-//		List<Message> messages = messageServiceImpl.selectUnreadMessage(studentRoNo,
-//				page.getStartPos());
 		List<LogEntity> logEntities = logEntityServiceImpl.selectStudentLog(studentRoNo);
 		map.put("logEntity", logEntities);
 		List<StudentInfo> studentInfos2 = studentInfoServiceImpl.selectStudentInfoList(studentRoNo);
 		map.put("studentInfos2", studentInfos2);
-//		map.put("message", messages);
 		map.put("page", page);
 		map.put("student", student);
 		map.addAttribute("studentInfos", studentInfos);
@@ -301,16 +306,15 @@ public class StudentController {
 	public Map<String, Object> insertQrTem(HttpServletRequest request, String studentRoNo, String password,
 			int courseId, String qrTime, int validateCode) throws ParseException {
 		System.out.println("进入 ： insertQrTem.do");
+		System.out.println(courseId);
+		System.out.println(studentRoNo);
 		request.getSession().setAttribute("UserId", studentRoNo);
 		Map<String, Object> map = new HashMap<>();
-		List<Student> students = courseServiceImpl.selectStudentByMany(courseId);
+		StudentInfo studentInfo = studentInfoServiceImpl.selectStudentInfoByMany(studentRoNo, courseId);
 		Boolean confirm = false;
-		for (Student student : students) {
-			if (studentRoNo.equals(student.getStudentRoNo())) {
+			if (studentInfo != null) {
 				confirm = true;
-				break;
 			}
-		}
 		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
 		if (confirm == false) {
 			Student student2 = studentServiceImpl.selectStudentByNo(studentRoNo);
@@ -353,15 +357,19 @@ public class StudentController {
 		Map<String, Object> map = new HashMap<>();
 		List<QrTem> qrTems = qrTemServiceImpl.selectQrTemByCourseIdAndTime(courseId, currentTime);
 		List<Student> students = new ArrayList<>();
+		List<ClazzStu> clazzStus = new ArrayList<>();
 		if (qrTems != null && qrTems.size() != 0) {
-			for (QrTem qrTem : qrTems) {
-				Student student = studentServiceImpl.selectStudentAndClazzByNo(qrTem.getStudentRoNo());
-				students.add(student);
+			for (QrTem qrTem : qrTems) { 
+//				Student student = studentServiceImpl.selectStudentAndClazzByNo(qrTem.getStudentRoNo(),courseId);
+				ClazzStu clazzStu = clazzStuServiceImpl.selectClazzStuByCourse(qrTem.getStudentRoNo(), courseId);
+				System.out.println(clazzStu.getStudent().getStudentName());
+				System.out.println(clazzStu.getClazz().getClazzName());
+				clazzStus.add(clazzStu);
 			} 
 		} else {
 			System.out.println("空");
 		}
-		map.put("students", students);
+		map.put("clazzStus", clazzStus);
 		return map;
 	}
 
@@ -465,11 +473,19 @@ public class StudentController {
 	@ResponseBody
 	public Map<String, Object> atudentAddCourse(int clazzId,String studentRono, String courseName, int courseId) {
 		Map<String, Object> map = new HashMap<>();
+		System.out.println("学生添加课程");
 		String time = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
 		Course course = courseServiceImpl.selectCourseById(courseId);
 		Teacher teacher = course.getTeacher();
 		Clazz clazz = clazzServiceImpl.selectClazzById(clazzId);
 		Student student = studentServiceImpl.selectStudentByNo(studentRono);
+		boolean tem = false;
+			if(clazzStuServiceImpl.selectClazzStuByDouble(clazzId, studentRono) == null){
+				tem = true;
+		}else {
+			tem = false;
+		}
+		if(tem == true){
 		Message message = new Message();
 		message.setMessageSender(studentRono);
 		message.setMessageAccepter(teacher.getTeacherMobile());
@@ -481,6 +497,9 @@ public class StudentController {
 		message.setMessageContent(courseId + "c" + clazz.getClazzId());
 		messageServiceImpl.insertMessage(message);
 		map.put("result", true);
+		}else {
+			map.put("result", false);
+		}
 		return map;
 	}
 	// ajax获取消息数量
@@ -582,7 +601,20 @@ public class StudentController {
          //使用自定义工具类向response中写入数据
          ResponseUtil.write(response, result);
          return null;
-     
-
 		}
+		//删除message
+		@SystemLog(module = "学生", methods = "日志管理-删除消息")
+		@RequestMapping(value = "/deleteMessage.do")
+		@ResponseBody
+		public Map<String, Object> deleteMessage(int messageId){
+			Map<String, Object> map = new HashMap<>();
+			int tem = messageServiceImpl.deleteMessage(messageId);
+			if(tem > 0){
+				map.put("result", true);
+			}else{
+				map.put("result", false);
+			}
+			return map;
+		}
+		
 }

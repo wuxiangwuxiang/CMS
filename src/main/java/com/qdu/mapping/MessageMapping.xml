@@ -41,5 +41,9 @@
 	where MessageId = #{messageId}
 	</update>
 	
+	<delete id="deleteMessage" parameterType="int">
+	delete from Message where MessageId = #{messageId}
+	</delete>
+	
 </mapper>
 

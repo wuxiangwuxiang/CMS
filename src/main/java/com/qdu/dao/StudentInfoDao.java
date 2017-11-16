@@ -24,5 +24,6 @@ public interface StudentInfoDao {
     public List<StudentInfo> selectCourseByStudentRono(String studentRoNo);
     
     public List<StudentInfo> selectStudentInfoList(String studentRoNo);
+    
 
 }

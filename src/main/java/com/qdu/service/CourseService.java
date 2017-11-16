@@ -24,5 +24,7 @@ public interface CourseService {
 	public void deleteCourseById(int courseId);
 	
 	public List<Student> selectStudentByMany(int courseId);
+	
+	public Course selectCourseIdById(int courseId);
 
 }

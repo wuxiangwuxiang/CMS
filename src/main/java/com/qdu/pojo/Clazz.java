@@ -11,7 +11,8 @@ public class Clazz implements Serializable{
 	private Teacher teacher;
 	private Course course;
 	private List<Student> student;
-	
+	private List<Student> students;
+	private ClazzStu clazzStu;
 	
 	public Clazz(){
 		
@@ -52,6 +53,18 @@ public class Clazz implements Serializable{
 	public void setStudents(List<Student> students) {
 		this.student = students;
 	}
-
+	public List<Student> getStudent() {
+		return student;
+	}
+	public void setStudent(List<Student> student) {
+		this.student = student;
+	}
+	public ClazzStu getClazzStu() {
+		return clazzStu;
+	}
+	public void setClazzStu(ClazzStu clazzStu) {
+		this.clazzStu = clazzStu;
+	}
+    
 
 }

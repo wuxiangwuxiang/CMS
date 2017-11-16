@@ -16,16 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.qdu.aop.SystemLog;
+import com.qdu.pojo.ClazzStu;
 import com.qdu.pojo.Course;
 import com.qdu.pojo.Message;
 import com.qdu.pojo.Student;
 import com.qdu.pojo.StudentInfo;
 import com.qdu.pojo.Teacher;
+import com.qdu.service.ClazzService;
+import com.qdu.service.ClazzStuService;
 import com.qdu.service.CourseService;
 import com.qdu.service.MessageService;
 import com.qdu.service.StudentInfoService;
 import com.qdu.service.StudentService;
 import com.qdu.service.TeacherService;
+import com.qdu.serviceimpl.ClazzServiceImpl;
 import com.qdu.util.MD5Util;
 
 @Controller 
@@ -42,6 +46,9 @@ public class StudentInfoController {
 	private MessageService messageServiceImpl;
 	@Autowired
 	private CourseService courseServiceImpl;
+	@Autowired
+	private ClazzStuService clazzStuServiceImpl;
+	@Autowired ClazzService clazzServiceImpl;
 
 	// 添加学生——课程 中间表
 	@SystemLog(module = "中间表", methods = "日志管理-添加中间表")
@@ -61,7 +68,7 @@ public class StudentInfoController {
 			System.out.println(222);
 			int clazzId = Integer.parseInt(request.getParameter("clazzId"));
 			if (clazzId != 0) {
-				studentServiceImpl.updateStudentOfClazzId(studentRoNo, clazzId);
+				clazzStuServiceImpl.insertClazzStu(clazzId,studentRoNo);
 			}
 			return "success";
 		} else {
@@ -84,23 +91,20 @@ public class StudentInfoController {
         		break;
         	}
         }
-        System.out.println("结束" + content.substring(0, tem));
         String aa = content.substring(0, tem);
         String bb = content.substring(tem+1);
-        System.out.println(aa);
-        System.out.println(bb);
         int courseId = Integer.parseInt(aa);
         int clazzId = Integer.parseInt(bb);
-        System.out.println("CourseId>>>>>>>>: " + courseId);
-        System.out.println("clazzId>>>>"+clazzId);
 		StudentInfo studentInfo2 = studentInfoServiceImpl.selectStudentInfoByMany(studentRoNo,courseId);
 		if (studentInfo2 == null) {
-			studentInfoServiceImpl.insertStudentInfo(studentRoNo,courseId);
 			if (clazzId != 0) {
-				studentServiceImpl.updateStudentOfClazzId(studentRoNo, clazzId);
+				int tem2 = clazzStuServiceImpl.insertClazzStu(clazzId,studentRoNo);
+				System.out.println(tem2);
+				if(tem2 > 0){
+					studentInfoServiceImpl.insertStudentInfo(studentRoNo,courseId);
+				}
 			}
 			Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
-			Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
 	        String time = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date());
 	        Message message =  new Message();
 	        Course course = courseServiceImpl.selectCourseById(courseId);
