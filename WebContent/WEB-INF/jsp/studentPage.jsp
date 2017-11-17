@@ -638,83 +638,172 @@
 			<hr class="layui-bg-cyan">
 
 			<!-- 课程信息模块 -->
-			<div id="courseInfo" style="display: none;border: solid;border-color: red;">
-				<table border="1"
-					style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%;">
-					<tr>
-						<th>课程名称</th>
-						<th>类型</th>
-						<th>开课时间</th>
-						<th>结课时间</th>
-						<th>学年</th>
-						<th>学期</th>
-						<th>老师</th>
-						<th>联系方式</th>
-						<th>操作</th>
-					</tr>
-					<c:choose>
-						<c:when test="${! empty studentInfos}">
-							<c:forEach items="${studentInfos}" var="s">
+			<div id="courseInfo"
+				style="display: none; margin: 5px 5% auto; padding-top: 10px; padding-left: 20px; padding-right: 20px;">
+				<table lay-filter="courseInfo">
+					<thead>
+						<tr>
+							<th lay-data="{field:'courseName', width:180, sort:true}">课程名称</th>
+							<th lay-data="{field:'courseType', width:150, sort:true}">类型</th>
+							<th lay-data="{field:'startTime', width:200, sort:true}">开课时间</th>
+							<th lay-data="{field:'stopTime', width:200, sort:true}">结课时间</th>
+							<th lay-data="{field:'courseYear', width:150, sort:true}">学年</th>
+							<th lay-data="{field:'courseDate', width:150, sort:true}">学期</th>
+							<th lay-data="{field:'courseTeacher', width:150, sort:true}">老师</th>
+							<th lay-data="{field:'courseTeacherMobile', width:150}">联系方式</th>
+							<th lay-data="{field:'courseOption', width:150}">操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:choose>
+							<c:when test="${! empty studentInfos}">
+								<c:forEach items="${studentInfos}" var="s">
+									<tr>
+										<td>${s.course.courseName}</td>
+										<td>${s.course.courseType}</td>
+										<td>${s.course.startTime}</td>
+										<td>${s.course.endTime}</td>
+										<td>${s.course.currentYear}</td>
+										<td>${s.course.schoolTem}</td>
+										<td>${s.course.teacher.teacherName}</td>
+										<td>${s.course.teacher.teacherMobile}</td>
+										<td><a href="#">退出</a></td>
+										<!--  <td colspan="8"></td>-->
+									</tr>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
 								<tr>
-									<td>${s.course.courseName}</td>
-									<td>${s.course.courseType}</td>
-									<td>${s.course.startTime}</td>
-									<td>${s.course.endTime}</td>
-									<td>${s.course.currentYear}</td>
-									<td>${s.course.schoolTem}</td>
-									<td>${s.course.teacher.teacherName}</td>
-									<td>${s.course.teacher.teacherMobile}</td>
-									<td><a href="#">退出</a></td>
-									<!--  <td colspan="8"></td>-->
+									<td colspan="9">(暂无课程)</td>
 								</tr>
-							</c:forEach>
-						</c:when>
-						<c:otherwise>
-							<tr>
-								<td colspan="9">(暂无课程)</td>
-							</tr>
-						</c:otherwise>
-					</c:choose>
+							</c:otherwise>
+						</c:choose>
+					</tbody>
 				</table>
+			</div>
+			<script>
+			layui.use([ 'element', 'layer' ,'table'], function() {
+				var element = layui.element, $ = layui.jquery,table = layui.table;
+				//转换静态表格
+				table.init('courseInfo', {
+				  //设置高度
+				  //支持所有基础参数
+				});
+				table.init('signRecord',{
+					
+				});
+			});
+			</script>
+
+
+			<!-- 学生添加课程模块 -->
+			<div class="site-text site-block" id="studentAddCourse"
+				style="display: none;">
+				<form class="" action="">
+					<div class="layui-form-item">
+						<label class="layui-form-label">课程编码</label>
+						<div class="layui-input-block">
+							<input id="courseId" type="text" name="courseId" required
+								lay-verify="required" onchange="searchIfExistCourse()"
+								placeholder="请输入课程编码" autocomplete="off" class="layui-input">
+						</div>
+						<p id="listenEmpty"
+							style="color: red; display: none; margin-left: 13%;">*课程为空*</p>
+						<p id="listenId"
+							style="color: red; display: none; margin-left: 13%;">*课程编码请输入数字*</p>
+						<p id="listenIdEmpty"
+							style="color: red; display: none; margin-left: 13%;">*课程编码不可为空*</p>
+						<p id="listenClazzs"
+							style="color: red; display: none; margin-left: 13%;">*暂无班级可供选择*</p>
+					</div>
+
+					<div class="layui-form-item">
+						<label class="layui-form-label">课程名称</label>
+						<div class="layui-input-block">
+							<input id="courseName" type="text" name="courseName" required
+								lay-verify="required" placeholder="请输入课程名称" autocomplete="off"
+								class="layui-input">
+						</div>
+						<p id="listenName"
+							style="color: red; display: none; margin-left: 13%;">*课程名称请控制在100字以内*</p>
+					</div>
+
+					<div id="clazzDiv" style="display: none;">
+						<label class="layui-form-label">选择班级</label> <select
+							id="clazzName" name="clazzName"
+							style="height: 2.3em; width: 20%;">
+
+						</select> <br />
+					</div>
+					<p id="listenClss"
+						style="color: red; display: none; margin-left: 13%;">*班级不可为空*</p>
+
+					<p id="listenClssExit"
+						style="color: red; display: none; margin-left: 13%;">*您已在该班级*</p>
+					<div class="layui-form-item">
+						<div class="layui-input-block">
+							<input id="AddCourseButton" class="layui-btn"
+								onclick="studentAddCourse()" type="button" value="提交申请" />
+							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						</div>
+					</div>
+				</form>
+
+				<script>
+					//Demo
+					layui.use([ 'form'], function() {
+						var form = layui.form;
+
+						//监听提交
+						form.on('submit(formDemo)', function(data) {
+							layer.msg(JSON.stringify(data.field));
+							return false;
+						});
+					});
+				</script>
 			</div>
 
 
 			<!-- 签到记录 -->
-			<table id="studentWork" border="1"
-				style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%; display: none;">
-				<tr>
-					<th>课程编码</th>
-					<th>课程名称</th>
-					<th>学年</th>
-					<th>学期</th>
-					<th>签到</th>
-					<th>迟到</th>
-					<th>早退</th>
-					<th>旷课</th>
-				</tr>
-				<c:choose>
-					<c:when test="${! empty studentInfos}">
-						<c:forEach items="${studentInfos}" var="s">
-							<tr>
-								<td>${s.course.courseId}</td>
-								<td>${s.course.courseName}</td>
-								<td>${s.course.currentYear}</td>
-								<td>${s.course.schoolTem}</td>
-								<td>${s.signIn}</td>
-								<td>${s.comeLate}</td>
-								<td>${s.leaveEarlier}</td>
-								<td>${s.absenteeism}</td>
-							</tr>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
+			<div id="studentWork" style="display: none;">
+				<table lay-filter="signRecord" style="text-align: center;">
+					<thead>
 						<tr>
-							<td colspan="8">(暂无信息)</td>
+							<th lay-data="{field:'stuCourseID', width:180}">课程编码</th>
+							<th lay-data="{field:'stuCourseName', width:180, sort:true}">课程名称</th>
+							<th lay-data="{field:'stuCourseYear', width:180, sort:true}">学年</th>
+							<th lay-data="{field:'stuCourseDate', width:180, sort:true}">学期</th>
+							<th lay-data="{field:'stuCourseSign', width:180, sort:true}">签到</th>
+							<th lay-data="{field:'stuCourseLate', width:180, sort:true}">迟到</th>
+							<th lay-data="{field:'stuCourseEarly', width:180, sort:true}">早退</th>
+							<th lay-data="{field:'stuCourseAbsenteeism', width:180, sort:true}">旷课</th>
 						</tr>
-					</c:otherwise>
-				</c:choose>
-			</table>
-
+					</thead>
+					<tbody>
+						<c:choose>
+							<c:when test="${! empty studentInfos}">
+								<c:forEach items="${studentInfos}" var="s">
+									<tr>
+										<td>${s.course.courseId}</td>
+										<td>${s.course.courseName}</td>
+										<td>${s.course.currentYear}</td>
+										<td>${s.course.schoolTem}</td>
+										<td>${s.signIn}</td>
+										<td>${s.comeLate}</td>
+										<td>${s.leaveEarlier}</td>
+										<td>${s.absenteeism}</td>
+									</tr>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td colspan="8">(暂无信息)</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+					</tbody>
+				</table>
+			</div>
 
 			<!-- 显示消息 -->
 			<div id="messageShow" style="margin-left: 5%; margin-right: 5%;">
@@ -805,72 +894,7 @@
 			</div>
 
 
-			<!-- 学生添加课程 -->
-			<div class="site-text site-block" id="studentAddCourse"
-				style="display: none;">
-				<form class="" action="">
-					<div class="layui-form-item">
-						<label class="layui-form-label">课程编码</label>
-						<div class="layui-input-block">
-							<input id="courseId" type="text" name="courseId" required
-								lay-verify="required" onchange="searchIfExistCourse()"
-								placeholder="请输入课程编码" autocomplete="off" class="layui-input">
-						</div>
-						<p id="listenEmpty"
-							style="color: red; display: none; margin-left: 13%;">*课程为空*</p>
-						<p id="listenId"
-							style="color: red; display: none; margin-left: 13%;">*课程编码请输入数字*</p>
-						<p id="listenIdEmpty"
-							style="color: red; display: none; margin-left: 13%;">*课程编码不可为空*</p>
-						<p id="listenClazzs"
-							style="color: red; display: none; margin-left: 13%;">*暂无班级可供选择*</p>
-					</div>
 
-					<div class="layui-form-item">
-						<label class="layui-form-label">课程名称</label>
-						<div class="layui-input-block">
-							<input id="courseName" type="text" name="courseName" required
-								lay-verify="required" placeholder="请输入课程名称" autocomplete="off"
-								class="layui-input">
-						</div>
-						<p id="listenName"
-							style="color: red; display: none; margin-left: 13%;">*课程名称请控制在100字以内*</p>
-					</div>
-
-					<div id="clazzDiv" style="display: none;">
-						<label class="layui-form-label">选择班级</label> <select
-							id="clazzName" name="clazzName"
-							style="height: 2.3em; width: 20%;">
-
-						</select> <br />
-					</div>
-					<p id="listenClss"
-						style="color: red; display: none; margin-left: 13%;">*班级不可为空*</p>
-
-					<p id="listenClssExit"
-						style="color: red; display: none; margin-left: 13%;">*您已在该班级*</p>
-					<div class="layui-form-item">
-						<div class="layui-input-block">
-							<input id="AddCourseButton" class="layui-btn"
-								onclick="studentAddCourse()" type="button" value="提交申请" />
-							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-						</div>
-					</div>
-				</form>
-
-				<script>
-					//Demo
-					layui.use([ 'form', 'laydate' ], function() {
-						var form = layui.form, laydate = layui.laydate;
-
-						//监听提交
-						form.on('submit(formDemo)', function(data) {
-							layer.msg(JSON.stringify(data.field));
-							return false;
-						});
-					});
-				</script>
-			</div>
 
 			<!-- 学生操作日志表 -->
 			<div id="forStudentLogInfo" class="site-text site-block"
