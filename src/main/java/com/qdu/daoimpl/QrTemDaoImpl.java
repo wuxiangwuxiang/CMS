@@ -52,4 +52,10 @@ public class QrTemDaoImpl implements QrTemDao{
 		return sqlSessionFactory.openSession().selectOne(statement, map);
 	}
 
+	@Override
+	public int deleteQrTemByCourseId(int courseId) {
+		String statement = "com.qdu.mapping.QrTemMapping.deleteQrTemByCourseId";
+		return sqlSessionFactory.openSession().delete(statement, courseId);
+	}
+
 }

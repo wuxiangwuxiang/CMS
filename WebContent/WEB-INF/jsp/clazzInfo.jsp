@@ -8,7 +8,7 @@
 <link type="text/css" rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/teacherPage.css">
 <link rel="shortcut icon" type="image/x-icon"
-	href="<%=request.getContextPath()%>/icon/天网.ico" media="screen" />
+	href="<%=request.getContextPath()%>/icon/cms2.ico" media="screen" />
 
 <script type="text/javascript"
 	src="<%=request.getContextPath()%>/js/jquery-3.2.1.min.js"></script>
@@ -100,7 +100,7 @@ var maxtime = 10;
 function CountDown(){  
 		if(maxtime>=0){   
 			 seconds = maxtime;  
-			 msg = "签到码还有"+seconds+"秒刷新";  
+			 msg = "签到码还有<span style='color:red; font-size:1.5em;'>"+seconds+"</span>秒刷新";  
 			 document.all["timer"].innerHTML=msg;   
 			 --maxtime;  
 		}else{  
@@ -110,6 +110,8 @@ function CountDown(){
 //timer = setInterval("CountDown()",1000); 	
 //显示签到二维码
 function showQrImg() {
+	$('#getAllInfo').hide();
+	$('#qrHref').attr("disabled","disabled");
 	 $.ajax({
          type: "GET",
          data: {
@@ -148,16 +150,16 @@ function YesConfirm() {
          async: true,
          url: "<%=request.getContextPath()%>/student/getTemStudent.do",
          success: function (data) {
-        	    var dataObj = data.clazzStus, //返回的data为json格式的数据
+        	    var dataObj = data.clazzStuss, //返回的data为json格式的数据
         	    con =  '\
-        	    		<caption>实时签到</caption>\
+        	    		<caption>当前签到进度</caption>\
         				<tr>\
         					<th>学号</th>\
         					<th>姓名</th>\
         					<th>班级</th>\
         				</tr>\
         				';
-        	    $.each(dataObj, function (index, item) {
+        	    $.each(dataObj, function (index, item) {  
         	        con += "<tr>";
         	        con += "<td>" + item.student.studentRoNo + "</td>";
         	        con += "<td>" + item.student.studentName + "</td>";
@@ -166,6 +168,7 @@ function YesConfirm() {
         	    });
         	        //可以在控制台打印一下看看，这是拼起来的标签和数据
         	        //把内容入到这个div中即完成
+        	        $('#showStudents').show();
         	    $("#showStudents").html(con);
          },
          error: function (data) { 
@@ -188,6 +191,7 @@ function submitSignIn() {
 			success : function(data) {
 				alert(data.message);
 				window.location.reload();
+				$('#getAllInfo').show();
 			},
 			error : function(data) {
 				alert("服务器异常！");
@@ -195,7 +199,6 @@ function submitSignIn() {
 		});
 	}  
 	//获取所有签到记录
-
 </script>
 </head>
 <body>
@@ -207,22 +210,7 @@ function submitSignIn() {
 					style="color: white; font-size: 25px;">CMS</span></a>
 
 				<ul class="layui-nav">
-					<li class="layui-nav-item"><a href="">控制台<span
-							class="layui-badge">9</span></a></li>
-					<li class="layui-nav-item"><a href="">个人中心<span
-							class="layui-badge-dot"></span></a></li>
-					<li class="layui-nav-item"><a href="#">${teacher.teacherName}老师</a>
-						<dl class="layui-nav-child">
-							<dd>
-								<a href="javascript:;">修改信息</a>
-							</dd>
-							<dd>
-								<a href="javascript:;">安全管理</a>
-							</dd>
-							<dd>
-								<a href="javascript:;">注销</a>
-							</dd>
-						</dl></li>
+					<li class="layui-nav-item"><a href="">签到Module</a></li>
 				</ul>
 			</div>
 		</div>
@@ -239,7 +227,7 @@ function submitSignIn() {
 								<a id="signShow" href="#">点名签到</a>
 							</dd>
 							<dd>
-								<a id="otherShow" href="#">签到记录 & 补签</a>
+								<a id="otherShow" href="#">签到记录</a>
 							</dd>
 							<dd>
 								<a href="#">待定</a>
@@ -279,7 +267,7 @@ function submitSignIn() {
 				style="width: 100%; overflow: hidden; height: 100%;">
 				<!-- 签到模块 -->
 				<div
-					style=" width: 49%; float: right;margin-top: 7%;">
+					style=" width: 49%; float: right;margin-top: 3%; ">
 					<!-- 二维码模块 -->
 					<div
 						style="width: 98%; height: 20%;text-align: center;">
@@ -290,7 +278,7 @@ function submitSignIn() {
 						</div>
 						<!-- 签到二维码 -->
 						<div
-							style=" padding: 10px; width: auto; text-align: center;">
+							style=" padding: 10px; width: auto; text-align: center;margin-top: 10px;">
 							<img style="border: solid; border-color: black;" id="qrImg"
 								 src="">
 						</div>
@@ -301,7 +289,7 @@ function submitSignIn() {
 							style="display: none;" /> <br /> <a id="qrHref"
 							class="layui-btn layui-btn-normal" onclick="showQrImg()" href="#">开始签到</a>
 						<a class="layui-btn layui-btn-danger" href="#"
-							onclick="submitSignIn()">提交签到表</a><br /> <br />
+							onclick="submitSignIn()">提交签到</a><br /> <br />
 					</div>
 				</div>
 				<!-- 垂直分界线 -->
@@ -310,11 +298,42 @@ function submitSignIn() {
 					<hr style="width: 2px; height: 100%; background-color: #c2c2c2;"></hr>
 				</div>
 				<!-- 签到状况模块 -->
-				<div style="width: 48%;">
+				<div style="width: 46%; text-align: center;">
+				<!-- 实时签到表 -->
 					<table class="layui-table" width="99%" border="1" id="showStudents"
-						style="margin-top: 10%;margin-left: 15px;">
-
+						style="margin-top: 10%;margin-left: 15px; display: none;">
 					</table>
+				<table id="getAllInfo" style="width: 99%;" class="layui-table">
+					<caption>本学期签到汇总</caption>
+					<thead>
+						<tr>
+							<th lay-data="{field:'userId', width:125}">学号</th>
+							<th lay-data="{field:'userClass', width:70}">班级</th>
+							<th lay-data="{field:'username', width:80}">姓名</th>
+							<th lay-data="{field:'sign', width:70, sort:true}">签到</th>
+							<th lay-data="{field:'late', width:70, sort:true}">迟到</th>
+							<th lay-data="{field:'leaveEarly', width:65, sort:true}">早退</th>
+							<th lay-data="{field:'absenteeism', sort:true, width:70}">旷课</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:choose>
+							<c:when test="${! empty clazzStus}">
+								<c:forEach items="${clazzStus}" var="c">
+									<tr>
+										<td>${c.student.studentRoNo}</td>
+										<td>${c.clazz.clazzName}</td> 
+										<td>${c.student.studentName}</td>
+										<td>${c.student.studentInfo.signIn}</td>
+										<td>${c.student.studentInfo.comeLate}</td>
+										<td>${c.student.studentInfo.leaveEarlier}</td>
+										<td>${c.student.studentInfo.absenteeism}</td>
+									</tr>
+								</c:forEach>
+							</c:when>
+						</c:choose>
+					</tbody>
+				</table>
 				</div>
 			</div>
 			
@@ -404,7 +423,7 @@ function submitSignIn() {
 			<br />
 
 			<!-- 签到记录表 -->
-			<div style="border: solid;border-color: yellow;padding:30px 100px;">
+			<div style="border: solid;border-color: yellow;padding:30px 100px;display: none;">
 				<table lay-filter="recordTable"	>
 					<caption>本学期签到汇总</caption>
 					<thead>
@@ -424,7 +443,7 @@ function submitSignIn() {
 								<c:forEach items="${studentInfo}" var="s">
 									<tr>
 										<td>${s.student.studentRoNo}</td>
-<!-- 										<td>班级怎么获取</td> -->
+										<td>${s.student.clazzStu.clazz.clazzName}</td> 
 										<td>${s.student.studentName}</td>
 										<td>${s.signIn}</td>
 										<td>${s.comeLate}</td>

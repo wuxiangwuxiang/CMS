@@ -56,4 +56,10 @@ public class ClazzStuDaoImpl implements ClazzStuDao{
 		return SqlSessionFactory.openSession().selectOne(statement,map);
 	}
 
+	@Override
+	public List<ClazzStu> selectClazzStuListByCourse(int courseId) {
+		String statement = "com.qdu.mapping.ClazzStuMapping.selectClazzStuListByCourse";
+		return SqlSessionFactory.openSession().selectList(statement, courseId);
+	}
+
 }

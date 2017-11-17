@@ -41,4 +41,9 @@ public class ClazzStuServiceImpl implements ClazzStuService{
 	   return clazzStuDaoImpl.selectClazzStuByCourse(studentRoNo, courseId);
 	}
 
+	@Override
+	public List<ClazzStu> selectClazzStuListByCourse(int courseId) {
+		return clazzStuDaoImpl.selectClazzStuListByCourse(courseId);
+	}
+
 }

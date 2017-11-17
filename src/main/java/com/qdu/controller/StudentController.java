@@ -98,17 +98,6 @@ public class StudentController {
 				
 				List<StudentInfo> studentInfos2 = studentInfoServiceImpl.selectStudentInfoList(studentRoNo);
 				map.put("studentInfos2", studentInfos2);
-				
-//				Page page = null;
-//				int totalCount = messageServiceImpl.selectMessageTotalCount(studentRoNo);
-//				page = new Page(totalCount, Integer.parseInt(pageNow));
-//				int messageCount = messageServiceImpl.selectMessageCount(studentRoNo);
-//				map.put("messageCount", messageCount);
-//				List<Message> messages = messageServiceImpl.selectUnreadMessage(studentRoNo,
-//						page.getStartPos());
-//				map.put("message", messages);
-//				map.put("page", page);
-//				map.put("totalCount", totalCount);
 				List<StudentInfo> studentInfos = studentInfoServiceImpl.selectCourseByStudentRono(studentRoNo);
 				map.addAttribute("studentInfos", studentInfos);
 				map.addAttribute("student", student2);
@@ -371,7 +360,8 @@ public class StudentController {
 		} else {
 			System.out.println("空");
 		}
-		map.put("clazzStus", clazzStus);
+		map.put("clazzStuss", clazzStus);
+		System.out.println("333333");
 		return map;
 	}
 
