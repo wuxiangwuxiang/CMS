@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,13 +17,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Clazz;
+import com.qdu.pojo.ClazzStu;
 import com.qdu.pojo.Course;
 import com.qdu.pojo.StudentInfo;
 import com.qdu.pojo.Teacher;
 import com.qdu.qr.SignInQr;
 import com.qdu.qr.testQR;
 import com.qdu.service.ClazzService;
+import com.qdu.service.ClazzStuService;
 import com.qdu.service.CourseService;
+import com.qdu.service.QrTemService;
 import com.qdu.service.StudentInfoService;
 import com.qdu.service.TeacherService;
 
@@ -37,6 +42,10 @@ public class CourseController {
 	ClazzService clazzServiceImpl;
 	@Autowired
 	StudentInfoService studentInfoServiceImpl;
+	@Resource
+	private ClazzStuService clazzStuServiceImpl;
+	@Autowired
+	private QrTemService qrTemServiceImpl;
 
 	// 教师添加课程
 	@SystemLog(module="教师",methods="日志管理-添加课程")
@@ -64,7 +73,7 @@ public class CourseController {
 		Course course2 = courseServiceImpl.selectIdFromCourse(courseName, teacherMobile);
 		int courseId = course2.getCourseId();
 		System.out.println("courseId: " + courseId);
-		String text = "http://192.168.11.229:8080/ClassManageSys/qr.jsp?teacherMobile=" + teacherMobile + "&courseId="
+		String text = "http://192.168.137.134:8080/ClassManageSys/qr.jsp?teacherMobile=" + teacherMobile + "&courseId="
 				+ courseId + "&courseName=" + courseName.replaceAll("\\+", "%2B") + "&teacherName=" + teacherName
 				+ "&currentTime=" + current + "&tem=" + tem;
 		testQR tQr = new testQR(text, courseName, teacherName);
@@ -99,6 +108,8 @@ public class CourseController {
 		Course course = courseServiceImpl.selectCourseById(courseId);
 		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
 		List<StudentInfo> studentInfos = studentInfoServiceImpl.selectInfoFromInfoAndStudent(courseId);
+		List<ClazzStu> clazzStus = clazzStuServiceImpl.selectClazzStuListByCourse(courseId);
+		map.put("clazzStus", clazzStus);
 		map.put("studentInfo", studentInfos);
 		map.put("course", course);
 		map.put("teacher", teacher);
@@ -125,7 +136,7 @@ public class CourseController {
 			Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
 			String teacherName = teacher.getTeacherName();
 			String current = currentYear +"";
-			String text = "http://192.168.11.229:8080/ClassManageSys/qr.jsp?teacherMobile=" + teacherMobile + "&courseId="
+			String text = "http://192.168.137.134:8080/ClassManageSys/qr.jsp?teacherMobile=" + teacherMobile + "&courseId="
 					+ courseId + "&courseName=" + courseName.replaceAll("\\+", "%2B") + "&teacherName=" + teacherName
 					+ "&currentTime=" + current + "&tem=" + schoolTem;
 			testQR tQr = new testQR(text, courseName, teacherName);
@@ -156,6 +167,7 @@ public class CourseController {
 	@RequestMapping(value = "/getQrImg.do")
 	@ResponseBody
 	public Map<String, Object> getQrImg(int courseId,String teacherMobile,HttpServletRequest request) throws Exception{
+		qrTemServiceImpl.deleteQrTemByCourseId(courseId);
 		Course course = courseServiceImpl.selectCourseById(courseId);
 		Teacher teacher = teacherServiceImpl.selectTeacherByEmail(teacherMobile);
 		String teacherName = teacher.getTeacherName();
@@ -165,7 +177,7 @@ public class CourseController {
 		Date date = new Date();
 		String currentTime = sdf.format(date);
 		System.out.println(currentTime);
-		String text = "http://192.168.11.229:8080/ClassManageSys/newSignIn.jsp?teacherName=" + teacherName + "&courseId="
+		String text = "http://192.168.137.134:8080/ClassManageSys/newSignIn.jsp?teacherName=" + teacherName + "&courseId="
 				+ courseId + "&courseName=" + course.getCourseName().replaceAll("\\+", "%2B") 
 				+ "&currentTime=" + currentTime;
 		 String time = new SimpleDateFormat("YYYY-MM-dd-HH-mm-ss").format(new Date());

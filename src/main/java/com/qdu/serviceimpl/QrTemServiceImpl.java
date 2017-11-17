@@ -42,4 +42,9 @@ public class QrTemServiceImpl implements QrTemService{
 		return qrTemDaoImpl.selectQrTemByStuNoAndCourseId(studentRoNo, courseId);
 	}
 
+	@Override
+	public int deleteQrTemByCourseId(int courseId) {
+		return qrTemDaoImpl.deleteQrTemByCourseId(courseId);
+	}
+
 }

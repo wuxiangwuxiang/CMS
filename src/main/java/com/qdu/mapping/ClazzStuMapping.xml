@@ -20,6 +20,13 @@
 			<result property="schoolRecord" column="SchoolRecord" />
 			<result property="birthDay" column="BirthDay" />
 			<result property="freeStyle" column="FreeStyle" />
+			<association property="studentInfo" javaType="com.qdu.pojo.StudentInfo">
+			<id property="studentInfoId" column="StudentInfoId" />
+			<result property="signIn" column="SignIn" />
+			<result property="comeLate" column="ComeLate" />
+			<result property="leaveEarlier" column="LeaveEarlier" />
+			<result property="absenteeism" column="Absenteeism" />
+		</association>
 		</association>
 
 		<association property="clazz" javaType="com.qdu.pojo.Clazz">
@@ -40,6 +47,14 @@
 		l.studentRoNo = s.StudentRoNo
 		AND l.ClazzId = c.ClazzId
 		And s.StudentRoNo = #{studentRoNo}
+		AND c.CourseId = #{courseId}
+	</select>
+	
+	<select id="selectClazzStuListByCourse" resultMap="ClazzStuResult">
+	SELECT * from ClazzStu l, Student s,Clazz c,StudentInfo o Where
+		l.studentRoNo = s.StudentRoNo
+		AND l.ClazzId = c.ClazzId
+       AND s.StudentRoNo = o.StudentRoNo
 		AND c.CourseId = #{courseId}
 	</select>
 
