@@ -206,8 +206,7 @@ setTimeout("fresh()",50)
 					style="width: 30%; higth: 100%; margin-top: 170px; background-color: rgba(0, 0, 0, 0.7); position: fixed; margin-left: 320px; display: none;">
 					<a href="#" id="sss" class="alogin"
 						style="float: left; text-decoration: none; color: white; font-size: 28px; background-color: rgba(0, 0, 0, 1);">学生登录</a>
-					<a href="#" id="ttt" class="alogin
-						style="float: left; text-decoration: none; color: white; font-size: 28px;">教师登录</a>
+					<a href="#" id="ttt" class="alogin" style="float: left; text-decoration: none; color: white; font-size: 28px;">教师登录</a>
 					<form id="studentForm"
 						action="<%=request.getContextPath()%>/student/studentLogin.do"
 						method="post" style="text-align: center; font-size: 20px;">

@@ -73,7 +73,7 @@
 			 $('#studentLogInfo').hide();
 			 $("#studentLogOfTime").hide();
 			 $('#studentWork').hide();
-			$('#courseInfo').show();
+			 $('#courseInfo').show();
 		});
 		 //个人中心
 		 $('#studentInfoCenter').click(function name1() {
@@ -129,10 +129,10 @@
 		 
 		//点击消息
 		  $('#messageButtton').click(function() {
-			  $('#messageList').html("消息列表");
-			$('#doubleHandle').hide();
-			$('#signal').hide();
-		    $('#studentAddCourse').hide();
+			 $('#messageList').html("消息列表");
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
+		     $('#studentAddCourse').hide();
 		     $('#courseInfo').hide();
 		     $('#insertCourseDiv').hide();
 		     $('#fushuMessage').hide();
@@ -143,6 +143,7 @@
 			 $("#studentLogOfTime").hide();
 			 $('#studentWork').hide();
 			 $('#messageShow').show();
+
 			}); 
 		 //手动添加课程
 		 $('#addCourse').click(function name1() {
@@ -631,9 +632,52 @@
 
 		<!-- 内容显示 -->
 		<div class="layui-body site-demo"
-			style="padding-top: 7%; overflow: auto;">
-			<span id="messageList" style="margin-left: 5%;">消息列表</span>
+			style="padding-top: 4%; overflow: auto;">
+			<span id="messageList"
+				style="margin-left: 5%; color: #c2c2c2; font-style: oblique;">消息列表</span>
 			<hr class="layui-bg-cyan">
+
+			<!-- 课程信息模块 -->
+			<div id="courseInfo" style="display: none;border: solid;border-color: red;">
+				<table border="1"
+					style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%;">
+					<tr>
+						<th>课程名称</th>
+						<th>类型</th>
+						<th>开课时间</th>
+						<th>结课时间</th>
+						<th>学年</th>
+						<th>学期</th>
+						<th>老师</th>
+						<th>联系方式</th>
+						<th>操作</th>
+					</tr>
+					<c:choose>
+						<c:when test="${! empty studentInfos}">
+							<c:forEach items="${studentInfos}" var="s">
+								<tr>
+									<td>${s.course.courseName}</td>
+									<td>${s.course.courseType}</td>
+									<td>${s.course.startTime}</td>
+									<td>${s.course.endTime}</td>
+									<td>${s.course.currentYear}</td>
+									<td>${s.course.schoolTem}</td>
+									<td>${s.course.teacher.teacherName}</td>
+									<td>${s.course.teacher.teacherMobile}</td>
+									<td><a href="#">退出</a></td>
+									<!--  <td colspan="8"></td>-->
+								</tr>
+							</c:forEach>
+						</c:when>
+						<c:otherwise>
+							<tr>
+								<td colspan="9">(暂无课程)</td>
+							</tr>
+						</c:otherwise>
+					</c:choose>
+				</table>
+			</div>
+
 
 			<!-- 签到记录 -->
 			<table id="studentWork" border="1"
@@ -693,10 +737,10 @@
 			<script type="text/html" id="barDemo">
   			<a class="layui-btn layui-btn-primary layui-btn-mini" lay-event="detail">查看</a>
   			<a class="layui-btn layui-btn-danger layui-btn-mini" lay-event="del">删除</a>
-		</script>
+			</script>
 			<script type="text/html" id="titleTpl">
      		<a href="#" class="layui-table-link">{{d.messageTitle}}</a>
-   		</script>
+   			</script>
 			<script>
         	layui.use('table', function(){
         		var table = layui.table;
@@ -737,7 +781,7 @@
 					});
 				});
 			});        
-		</script>
+			</script>
 
 			<!-- 附属详细消息 -->
 			<div id="fushuMessage"
@@ -827,45 +871,6 @@
 					});
 				</script>
 			</div>
-
-			<!-- 课程信息表 -->
-			<table id="courseInfo" border="1"
-				style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%; display: none;">
-				<tr>
-					<th>课程名称</th>
-					<th>类型</th>
-					<th>开课时间</th>
-					<th>结课时间</th>
-					<th>学年</th>
-					<th>学期</th>
-					<th>老师</th>
-					<th>联系方式</th>
-					<th>操作</th>
-				</tr>
-				<c:choose>
-					<c:when test="${! empty studentInfos}">
-						<c:forEach items="${studentInfos}" var="s">
-							<tr>
-								<td>${s.course.courseName}</td>
-								<td>${s.course.courseType}</td>
-								<td>${s.course.startTime}</td>
-								<td>${s.course.endTime}</td>
-								<td>${s.course.currentYear}</td>
-								<td>${s.course.schoolTem}</td>
-								<td>${s.course.teacher.teacherName}</td>
-								<td>${s.course.teacher.teacherMobile}</td>
-								<td><a href="#">退出</a></td>
-								<!--  <td colspan="8"></td>-->
-							</tr>
-						</c:forEach>
-					</c:when>
-					<c:otherwise>
-						<tr>
-							<td colspan="9">(暂无课程)</td>
-						</tr>
-					</c:otherwise>
-				</c:choose>
-			</table>
 
 			<!-- 学生操作日志表 -->
 			<div id="forStudentLogInfo" class="site-text site-block"
