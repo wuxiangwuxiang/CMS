@@ -195,9 +195,7 @@ function submitSignIn() {
 		});
 	}  
 	//获取所有签到记录
-	function getRecord() {
-		$('#scoreTable').toggle();
-	}
+
 </script>
 </head>
 <body>
@@ -346,9 +344,7 @@ function submitSignIn() {
 				<div style="width: 49%; heigh: 600px; border: solid;; border-color: red;">
 
 					<a href="#">补签</a>
-					<br /> <br />
-					<a href="#" onclick="getRecord()">签到记录</a>
-					<br /><br />
+					<br />
 					<input type="text" id="cccourseId" value="${course.courseId}" style="display: none;" />
 					<input type="text" id="teacherMobile" value="${teacher.teacherMobile}" style="display: none;" />
 					<a href="<%=request.getContextPath()%>/clazz/forAddClazz.do?courseId=${course.courseId}">+添加班级</a>
@@ -407,32 +403,38 @@ function submitSignIn() {
 
 			<br />
 
-
-			<div>
-				<table id="scoreTable" border="1" style="display: none;">
+			<!-- 签到记录表 -->
+			<div style="border: solid;border-color: yellow;padding:30px 100px;">
+				<table lay-filter="recordTable"	>
 					<caption>本学期签到汇总</caption>
-					<tr>
-						<th>学号</th>
-						<th>姓名</th>
-						<th>签到</th>
-						<th>迟到</th>
-						<th>早退</th>
-						<th>旷课</th>
-					</tr>
-					<c:choose>
-						<c:when test="${! empty studentInfo}">
-							<c:forEach items="${studentInfo}" var="s">
-								<tr>
-									<td>${s.student.studentRoNo}</td>
-									<td>${s.student.studentName}</td>
-									<td>${s.signIn}</td>
-									<td>${s.comeLate}</td>
-									<td>${s.leaveEarlier}</td>
-									<td>${s.absenteeism}</td>
-								</tr>
-							</c:forEach>
-						</c:when>
-					</c:choose>
+					<thead>
+						<tr>
+							<th lay-data="{field:'userId', width:200}">学号</th>
+							<th lay-data="{field:'userClass', width:200}">班级</th>
+							<th lay-data="{field:'username', width:200}">姓名</th>
+							<th lay-data="{field:'sign', width:150, sort:true}">签到</th>
+							<th lay-data="{field:'late', width:150, sort:true}">迟到</th>
+							<th lay-data="{field:'leaveEarly', width:150, sort:true}">早退</th>
+							<th lay-data="{field:'absenteeism', sort:true, width:200}">旷课</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:choose>
+							<c:when test="${! empty studentInfo}">
+								<c:forEach items="${studentInfo}" var="s">
+									<tr>
+										<td>${s.student.studentRoNo}</td>
+<!-- 										<td>班级怎么获取</td> -->
+										<td>${s.student.studentName}</td>
+										<td>${s.signIn}</td>
+										<td>${s.comeLate}</td>
+										<td>${s.leaveEarlier}</td>
+										<td>${s.absenteeism}</td>
+									</tr>
+								</c:forEach>
+							</c:when>
+						</c:choose>
+					</tbody>
 				</table>
 			</div>
 
@@ -441,14 +443,22 @@ function submitSignIn() {
 
 	</div>
 
+
+ 
 	<script>
-		layui.use([ 'element', 'layer' ], function() {
-			var element = layui.element, $ = layui.jquery;
+		layui.use([ 'element', 'layer' ,'table'], function() {
+			var element = layui.element, $ = layui.jquery,table = layui.table;
 			//监听导航点击
 			element.on('nav(demo)', function(elem) {
 				//console.log(elem)
 				layer.msg(elem.text());
 			});
+			//转换静态表格
+			table.init('recordTable', {
+			  //设置高度
+			  //支持所有基础参数
+			});
+			
 		});
 	</script>
 
