@@ -217,12 +217,12 @@ setTimeout("fresh()",50)
 							type="password" disabled="disabled" /><br /> <br />
 							 <a href="<%=request.getContextPath()%>/student/getStudentPasswordBack.do"
 							style="margin-left: 300px" target="_blank">忘记密码>></a><br/><br /> 
-							 <input id="stu" class="btn btn-primary btn-lg" style="width: 130px; float: left;margin-left: 15%;" type="button"
-							value="登录" /> 
-							<a id="stu" href="<%=request.getContextPath()%>/student/addStudent.do"
-							target="_blank"
-							class="btn btn-primary btn-lg" style="width: 130px;float: left; margin-left: 5%;" 
-							> 注册</a>
+							<div style="text-align: center;">
+							 	<input id="stu" class="btn btn-primary btn-lg" style="width: 130px;" type="button"
+								value="登录" /> 
+								<a id="stu" href="<%=request.getContextPath()%>/student/addStudent.do"
+								target="_blank" class="btn btn-primary btn-lg" style="width: 130px;"> 注册</a>
+							</div>
 							<br><br>
 							
 					</form>
