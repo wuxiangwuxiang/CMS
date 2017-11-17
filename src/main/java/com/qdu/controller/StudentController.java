@@ -337,7 +337,6 @@ public class StudentController {
 	}
 
 	// 获取签到成功的学生列表
-	@SystemLog(module = "教师", methods = "日志管理-获取签到列表")
 	@RequestMapping(value = "/getTemStudent.do")
 	@ResponseBody
 	public Map<String, Object> getTemStudent(int courseId) {

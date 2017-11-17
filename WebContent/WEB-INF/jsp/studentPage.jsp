@@ -143,7 +143,10 @@
 			 $("#studentLogOfTime").hide();
 			 $('#studentWork').hide();
 			 $('#messageShow').show();
-
+			 layui.use('table', function(){
+				  var table = layui.table;
+				  table.reload('test', {});
+			 });
 			}); 
 		 //手动添加课程
 		 $('#addCourse').click(function name1() {
@@ -634,11 +637,11 @@
 		<div class="layui-body site-demo"
 			style="padding-top: 4%; overflow: auto;">
 			<span id="messageList"
-				style="margin-left: 5%; color: #c2c2c2; font-style: oblique;">消息列表</span>
+				style="margin-left: 5%; color: #c2c2c2; font-style: oblique;">课程信息</span>
 			<hr class="layui-bg-cyan">
 
 			<!-- 课程信息模块 -->
-			<div id="courseInfo" style="display: none;border: solid;border-color: red;">
+			<div id="courseInfo" style="border: solid;border-color: red;">
 				<table border="1"
 					style="text-align: center; width: 80%; margin-left: 8.5%; margin-top: 3%;">
 					<tr>
@@ -717,10 +720,10 @@
 
 
 			<!-- 显示消息 -->
-			<div id="messageShow" style="margin-left: 5%; margin-right: 5%;">
+			<div id="messageShow" style="margin-left: 5%; margin-right: 5%;display: none;">
 				<table class="layui-table"
 					lay-data="{page:true,height:485,width:1070, url:'<%=request.getContextPath() %>/student/getSeperratePage.do',
-			 id:'test', where:{messageAcpter:'${student.studentRoNo}'}}"
+			 id:'test', where:{messageAcpter:'${student.studentRoNo}'}, limit:10}"
 					lay-filter="test" style="width: 100%;">
 					<thead>
 						<tr>
