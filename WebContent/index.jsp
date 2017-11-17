@@ -187,15 +187,15 @@ setTimeout("fresh()",50)
 
 
 	<div style="width: 100%; height: 1000px">
+		<!-- 头部 -->
 		<nav class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
+			<!-- 头部logo -->
 			<div class="navbar-header">
+			
 				<button type="button" class="navbar-toggle collapsed"
 					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
 					aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
 				</button>
 				<a class="navbar-brand" href="#">CMS</a>
 			</div>
@@ -206,7 +206,7 @@ setTimeout("fresh()",50)
 					style="width: 30%; higth: 100%; margin-top: 170px; background-color: rgba(0, 0, 0, 0.7); position: fixed; margin-left: 320px; display: none;">
 					<a href="#" id="sss" class="alogin"
 						style="float: left; text-decoration: none; color: white; font-size: 28px; background-color: rgba(0, 0, 0, 1);">学生登录</a>
-					<a href="#" id="ttt" class="alogin"
+					<a href="#" id="ttt" class="alogin
 						style="float: left; text-decoration: none; color: white; font-size: 28px;">教师登录</a>
 					<form id="studentForm"
 						action="<%=request.getContextPath()%>/student/studentLogin.do"
@@ -267,10 +267,9 @@ setTimeout("fresh()",50)
             <div class="navbar-header" style="text-align: center;width: 100%;margin-top:2%;">
 				
 				<a style="margin-left: 40%;" class="navbar-brand" href="#">copyright by CMS team</a>
-         </div>
-
-
-
+        	</div>
+		</div>
+	
 	</div>
 
 </body>
