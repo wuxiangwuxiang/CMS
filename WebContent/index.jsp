@@ -18,7 +18,7 @@ if(location.href.indexOf("?reload=true")<0){
     location.href+="?reload=true";  
    }  
 }  
-setTimeout("fresh()",50)
+setTimeout("fresh()",1)
 	$(document).ready(function() {
 		$('#lll').click(function() {
 			$('#loginForm').toggle();

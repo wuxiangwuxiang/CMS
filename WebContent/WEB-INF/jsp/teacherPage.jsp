@@ -123,6 +123,10 @@
 			 $('#upLoadShow').hide();
 			 $('#seprateMessage').show();
 			 $('#messageShow').show();
+			 layui.use('table', function(){
+				  var table = layui.table;
+				  table.reload('test', {});
+			 });
 			});
 		 //点击二维码叉号
 		 $('#esc').click(function() {
@@ -264,7 +268,7 @@
              data: {
                  "teacherMobile":$('#teacherMobile').val(),
                  "courseName": $('#courseName').val(),
-		         "courseType": $('#courseType').val(),
+		         "courseType": $('input[name="courseType"]').filter(':checked').val(),
 		         "classCapacity": $('#classCapacity').val(),
 		         "startTime": $('#startTime').val(),
 		         "endTime": $('#endTime').val(),
@@ -556,7 +560,7 @@
 		style="padding-top: 3%; overflow: auto;">
 			<br />
 			
-			<span id="messageList" style="margin-left: 5%;">消息列表</span>
+			<span id="messageList" style="margin-left: 5%;">课程信息</span>
 			<hr class="layui-bg-cyan">
 			<!-- 上传文件 -->
 			<div id="upLoadShow" class="site-text site-block"
@@ -880,11 +884,11 @@
 				</script>
 
 					<!-- 显示消息 -->
-		<div id="messageShow" style="margin-left: 5%; margin-right: 5%;" >
+		<div id="messageShow" style="margin-left: 5%; margin-right: 5%; display: none;" >
 		<table  class="layui-table"
 			lay-data="{page:true,height:485,width:1070, url:'<%=request.getContextPath() %>/student/getSeperratePage.do',
-			 id:'test', where:{messageAcpter:'${teacher.teacherMobile}'}}"
-			lay-filter="test" style="width: 100%;">
+			 id:'test', where:{messageAcpter:'${teacher.teacherMobile}'}, limit:10}"
+			lay-filter="test">
 			<thead>
 				<tr>
 					<th lay-data="{field:'messageSender', width:200, sort: true}">发送方</th>
@@ -972,7 +976,7 @@
 			<!-- 新建课程 -->
 			<div class="site-text site-block" id="courseShow"
 				style="display: none; margin-top: 0;">
-				<form class="layui-form" action="">
+				<form action="">
 					<div class="layui-form-item">
 						<label class="layui-form-label">课程名称</label>
 						<div class="layui-input-block">
@@ -985,9 +989,11 @@
 						value="${teacher.teacherMobile}" style="display: none;" />
 					<div class="layui-form-item">
 						<label class="layui-form-label">课程类型</label>
-						<div class="layui-input-block">
-							<input id="courseType" type="radio" name="courseType" value="必修"
-								title="必修" checked> <input id="courseType" type="radio"
+						<div style="padding-top: 10px;">
+							&nbsp;&nbsp;
+							必修&nbsp;<input id="courseType" type="radio" name="courseType" value="必修"
+								title="必修" checked> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							选修&nbsp;<input id="courseType" type="radio"
 								name="courseType" value="选修" title="选修">
 						</div>
 					</div>
@@ -1028,22 +1034,20 @@
 					</div>
 					<div class="layui-form-item">
 						<label class="layui-form-label">当前学期</label>
-						<div class="layui-input-block">
-							<select id="schoolTem" name="schoolTem" lay-verify="required">
+						<div style="padding-top: 6px;">
+							<select id="schoolTem" name="schoolTem" lay-verify="required" style="height: 2em;">
 								<option value=""></option>
 								<option value="春季">春季学期</option>
 								<option value="夏季">夏季学期</option>
-								<option value="秋季">秋季学期</option>
+								<option value="秋季" selected="selected">秋季学期</option>
 								<option value="冬季">冬季学期</option>
 							</select>
 						</div>
 					</div>
 					<div class="layui-form-item">
-						<div class="layui-input-block">
-							<input id="subButton" class="layui-btn" onclick="addCourse()"
+							<input id="subButton" class="layui-btn" onclick="addCourse()" style="margin-left: 5%;"
 								type="button" value="提交" />
-							<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-						</div>
+							<button type="reset" style="margin-left: 5%;" class="layui-btn layui-btn-primary">重置</button>
 					</div>
 				</form>
 
@@ -1074,7 +1078,7 @@
 
 			<!-- 课程信息 -->
 			<div class="layui-form sessiontable" id="courseInfo"
-				style="display: none;">
+				style="">
 				<table class="layui-table" lay-even style="text-align: center;">
 					<colgroup>
 						<col width="150">

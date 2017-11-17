@@ -143,7 +143,6 @@
 			 $("#studentLogOfTime").hide();
 			 $('#studentWork').hide();
 			 $('#messageShow').show();
-
 			}); 
 		 //手动添加课程
 		 $('#addCourse').click(function name1() {
@@ -753,7 +752,6 @@
 					//Demo
 					layui.use([ 'form'], function() {
 						var form = layui.form;
-
 						//监听提交
 						form.on('submit(formDemo)', function(data) {
 							layer.msg(JSON.stringify(data.field));
@@ -1156,7 +1154,6 @@
 							type : 'year',
 							value: '2017'
 						});
-
 					});
 					layui.use('form', function() {
 						var form = layui.form;
@@ -1402,7 +1399,6 @@
 	<script>
 		layui.use('element', function() {
 			var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-
 			//监听导航点击
 			element.on('nav(demo)', function(elem) {
 				//console.log(elem)
