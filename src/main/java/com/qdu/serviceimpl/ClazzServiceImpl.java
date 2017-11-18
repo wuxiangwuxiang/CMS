@@ -19,8 +19,8 @@ public class ClazzServiceImpl implements ClazzService{
 	@Autowired 
 	private ClazzDao clazzDaoImpl;
 	@Override
-	public void insertClazz(Clazz clazz) {
-		clazzDaoImpl.insertClazz(clazz);
+	public int insertClazz(Clazz clazz) {
+		return clazzDaoImpl.insertClazz(clazz);
 	}
 	@Override
 	public Clazz selectClazzByAll(String clazzName, String teacherMobile, int currentYear) {

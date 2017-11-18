@@ -7,7 +7,7 @@ import com.qdu.pojo.Student;
 
 public interface ClazzService {
  
-	public void insertClazz(Clazz clazz);
+	public int insertClazz(Clazz clazz);
 	
 	public Clazz selectClazzByAll(String clazzName, String teacherMobile, int currentYear);
 	

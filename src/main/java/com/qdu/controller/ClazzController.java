@@ -1,10 +1,13 @@
 package com.qdu.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,13 +52,23 @@ public class ClazzController {
 	}
 	//添加课程
 	@SystemLog(module="教师",methods="日志管理-添加课程")
-	@RequestMapping(value = "/addClazz.do",method = RequestMethod.POST)
-	public String addClazz(Clazz clazz,ModelMap map,HttpServletRequest request){
-		clazzServiceImpl.insertClazz(clazz);
-		int courseId = Integer.parseInt(request.getParameter("course.courseId"));
-		Course course = courseServiceImpl.selectCourseById(courseId);
-		map.put("course", course);
-		return "clazzInfo";
+	@RequestMapping(value = "/addClazz.do")
+	@ResponseBody
+	public Map<String, Object> addClazz(String clazzName,
+			@DateTimeFormat(pattern = "yyyy") Date currentYear,HttpServletRequest request){
+		Map<String, Object> map = new HashMap<>();
+		Clazz clazz = new Clazz();
+		clazz.setClazzName(clazzName);
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy");   
+		clazz.setCurrentYear(Integer.parseInt(sdf.format(currentYear)));
+		int tem = clazzServiceImpl.insertClazz(clazz);
+		if(tem > 0){
+			map.put("result", true);
+		}else {
+			map.put("result", false);
+		}
+		
+		return map;
 	}
 	//修改班级信息
 	@SystemLog(module="教师",methods="日志管理-修改班级")

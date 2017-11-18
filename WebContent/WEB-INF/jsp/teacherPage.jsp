@@ -734,7 +734,7 @@
 			
 			
 			
-			<!-- 上传文件 -->
+			<%-- <!-- 上传文件 -->
 			<div id="upLoadShow" class="site-text site-block"
 				style="display: none; margin-top: 0;">
 				<!-- 单个文件上传不能超过50M -->
@@ -867,7 +867,7 @@
              });
             });
              </script>
-
+ --%>
             
             
 

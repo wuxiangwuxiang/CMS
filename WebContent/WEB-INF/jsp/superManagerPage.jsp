@@ -32,7 +32,7 @@
 		<td colspan="3">${s.method}</td>
 		<td>${s.date}</td>
 		<td>${s.reponseTime}</td>
-		<td style="width: 40px; overflow: auto;">${s.commite}</td>
+		<td style="width: 40px; overflow: auto;">${s.result}</td>
 		</tr>
 		</c:forEach>
 		</c:when>

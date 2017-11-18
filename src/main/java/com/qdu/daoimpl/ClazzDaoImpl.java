@@ -19,9 +19,9 @@ public class ClazzDaoImpl implements ClazzDao{
 	private SqlSessionFactory sqlSessionFactory;
 
 	@Override
-	public void insertClazz(Clazz clazz) {
+	public int insertClazz(Clazz clazz) {
 		String statement = "com.qdu.mapping.ClazzMapping.insertClazz";
-		sqlSessionFactory.openSession().insert(statement, clazz);
+		return sqlSessionFactory.openSession().insert(statement, clazz);
 	}
 
 	@Override

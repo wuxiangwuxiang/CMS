@@ -56,7 +56,7 @@ public class LogEntityController {
 		 if(repageNow != null){
 			 pageNow = repageNow;
 		 }
-			page = new Page(totalCount, Integer.parseInt(pageNow));
+			page = new Page(totalCount, 1);
 			logEntities = logEntityServiceImpl.selectLog(page.getStartPos());
 			map.put("page", page);
 			map.put("logEntities", logEntities);
