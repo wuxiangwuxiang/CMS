@@ -75,6 +75,9 @@
 		    $('#upLoadShow').hide();
 		    $('#fileInfo').hide();
 		    $('#lookData').hide();
+		    $('#forTeacherLogInfo').hide();
+			$('#teacherLogInfo').hide();
+			$("#teacherLogOfTime").hide();
 			$('#courseShow').show();
 		});
 		 //课程信息
@@ -88,6 +91,9 @@
 			 $('#messageShow').hide();
 			 $('#fushuMessage').hide();
 			 $('#upLoadShow').hide();
+			 $('#forTeacherLogInfo').hide();
+				$('#teacherLogInfo').hide();
+				$("#teacherLogOfTime").hide();
 			 $('#lookData').hide();
 			 $('#fileInfo').hide();
 			 $('#teacherInfoShow').hide();
@@ -95,6 +101,7 @@
 			});
 		 //首页
 		  $('#checkCourseShow2').click(function() {
+			  $('#messageList').html("课程信息");
 			 $('#seprateMessage').hide();
 			 $('#changeCourseinfo').hide();
 			 $('#doubleHandle').hide();
@@ -104,6 +111,9 @@
 			 $('#fushuMessage').hide();
 			 $('#lookData').hide();
 			 $('#fileInfo').hide();
+			 $('#forTeacherLogInfo').hide();
+				$('#teacherLogInfo').hide();
+				$("#teacherLogOfTime").hide();
 			 $('#teacherInfoShow').hide();
 			 $('#upLoadShow').hide();
 			 $('#courseInfo').show();
@@ -121,6 +131,9 @@
 			 $('#lookData').hide();
 			 $('#fileInfo').hide();
 			 $('#upLoadShow').hide();
+			 $('#forTeacherLogInfo').hide();
+				$('#teacherLogInfo').hide();
+				$("#teacherLogOfTime").hide();
 			 $('#seprateMessage').show();
 			 $('#messageShow').show();
 			 layui.use('table', function(){
@@ -162,6 +175,9 @@
 			 $('#courseShow').hide();
 			 $('#messageShow').hide();
 			 $('#fushuMessage').hide();
+			 $('#forTeacherLogInfo').hide();
+			 $("#teacherLogOfTime").hide();
+			 $('#teacherLogInfo').hide();
 			 $('#lookData').hide();
 			 $('#fileInfo').hide();
 			 $('#courseInfo').hide();
@@ -180,6 +196,9 @@
 			 $('#fushuMessage').hide();
 			 $('#fileInfo').hide();
 			 $('#courseInfo').hide();
+			 $('#forTeacherLogInfo').hide();
+				$('#teacherLogInfo').hide();
+				$("#teacherLogOfTime").hide();
 			 $('#upLoadShow').hide();
 			 $('#teacherInfoShow').hide();
 			 $('#lookData').show();
@@ -196,6 +215,9 @@
 			 $('#upLoadShow').hide();
 			 $('#lookData').hide();
 			 $('#courseInfo').hide();
+			 $('#forTeacherLogInfo').hide();
+				$('#teacherLogInfo').hide();
+				$("#teacherLogOfTime").hide();
 			 $('#collegeTr').hide();
 				$('#reCollegeTr').show();
 				$('#specialTr').hide();
@@ -212,6 +234,24 @@
 				$('#savefectButton').show();
 			 $('#teacherInfoShow').show();
 		});
+		//点击操作日志
+		 $('#teacherLog').click(function name() {
+			 $('#messageList').html("操作日志");
+			 $('#seprateMessage').hide();
+			 $('#changeCourseinfo').hide();
+			 $('#doubleHandle').hide();
+			 $('#signal').hide();
+			 $('#courseShow').hide();
+			 $('#messageShow').hide();
+			 $('#fushuMessage').hide();
+			 $('#fileInfo').hide();
+			 $('#courseInfo').hide();
+			 $('#upLoadShow').hide();
+			 $('#teacherInfoShow').hide();
+			 $('#lookData').hide();
+			 $('#forTeacherLogInfo').show();
+			 $('#teacherLogInfo').show();
+		});
 		//点击完善信息
 		 $('#perfectButton').click(function wq() {
 			 $('#messageList').html("完善信息");
@@ -220,6 +260,7 @@
 				$('#specialTr').hide();
 				$('#reSpecialTr').show();
 				$('#schoolRecordTr').hide();
+				$("#teacherLogOfTime").hide();
 				$('#reSchoolRecordTr').show();
 				$('#birthDayTr').hide();
 				$('#reBirthDayTr').show();
@@ -422,7 +463,9 @@
 		 $('#lookData').hide();
 		 $('#teacherInfoShow').hide();
 		 $('#courseInfo').hide();
+		 $('#forTeacherLogInfo').hide();
 		 $('#fileInfo').hide();
+		 $("#teacherLogOfTime").hide();
 		 $('#upLoadShow').show();
 		 $.ajax({
              type: "GET",
@@ -462,6 +505,54 @@
 		$('#'+id).hide();
 		$('#a'+id).show();
 	}
+	//教师根据时间查询操作日志
+	function searchTeacherLogByTime() {
+		if($('#logDate').val() != "" || $('#CoreKey').val() != ""){
+		 $.ajax({
+	         type: "GET",
+	         data: {
+	        	 "logDate": $('#logDate').val(),
+	        	 "coreKey":$('#CoreKey').val(),
+	        	 "studentRono":$('#teacherMobile').val()
+	         },
+	         contentType: "application/json; charset=utf-8",
+	         dataType: "json",
+	         async: true,
+	         url: "<%=request.getContextPath()%>/student/searchStudentLogByTime.do",
+	         success: function (data) {
+	        	 $('#teacherLogInfo').hide();
+	        	    var dataObj = data.logEntities, //返回的data为json格式的数据
+	        	    con =  '\
+	        				<tr>\
+	        					<th>账号</th>\
+	        					<th>活动</th>\
+	        					<th>Ip</th>\
+	        					<th>时间</th>\
+	        					<th>结果</th>\
+	        				</tr>\
+	        				';
+	        	    $.each(dataObj, function (index, item) {
+	        	        con += "<tr>";
+	        	        con += "<td>" + item.userId + "</td>";
+	        	        con += "<td>" + item.method + "</td>";
+	        	        con += "<td>" + item.ip + "</td>";
+	        	        con += "<td>" + item.date + "</td>";
+	        	        con += "<td>" + item.result + "</td>";
+	        	        con += "<tr/>";
+	        	    });
+	        	        //可以在控制台打印一下看看，这是拼起来的标签和数据
+	        	        //把内容入到这个div中即完成
+	        	    $("#teacherLogOfTime").html(con);
+	        	    $("#teacherLogOfTime").show();
+	         },
+	         error: function (data) {
+	             alert("暂时无法获取");
+	         },
+	     });
+		}else{
+			alert("请至少输入一项吧大侠？");
+		}
+	}
 </script>
 </head>
 <body>
@@ -497,10 +588,13 @@
 					style="color: white; font-size: 25px;">CMS</span></a>
 
 				<ul class="layui-nav">
-					<li class="layui-nav-item"><a id="checkCourseShow2" href="#">首页</a></li>
-					<li class="layui-nav-item"><a id="messageButtton" href="#">消息<span
+					<li class="layui-nav-item"><a id="checkCourseShow2" href="#">
+					<i class="layui-icon bbbbb" style="font-size: 20px; color: #d2d2d2">&#xe68e;</i></a></li>
+					<li class="layui-nav-item"><a id="messageButtton" href="#">
+					<i class="layui-icon bbbbb" style="font-size: 20px; color: #d2d2d2">&#xe63a;</i><span
 							id="TmessageCount" class="layui-badge">${messageCount}</span></a></li>
-					<li class="layui-nav-item"><a id="teacherInfoCenter" href="#">个人中心<span
+					<li class="layui-nav-item"><a id="teacherInfoCenter" href="#">
+					<i class="layui-icon bbbbb" style="font-size: 20px; color: #d2d2d2">&#xe612;</i><span
 							id="redSignal" style="display: none;" class="layui-badge-dot"></span></a></li>
 					<li class="layui-nav-item"><a href="#">${teacher.teacherName}老师</a>
 						<dl class="layui-nav-child">
@@ -525,7 +619,7 @@
 				<ul class="layui-nav layui-nav-tree" lay-filter="test">
 					<!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
 					<li class="layui-nav-item layui-nav-itemed"><a
-						href="javascript:;">课程</a>
+						href="javascript:;">课程相关</a>
 						<dl class="layui-nav-child">
 							<dd>
 								<a id="checkCourseShow" href="#">课程信息</a>
@@ -533,24 +627,24 @@
 							<dd>
 								<a id="createCourse" href="#">新建课程</a>
 							</dd>
-							<dd>
+							<!-- <dd>
 								<a href="">跳转</a>
-							</dd>
+							</dd> -->
 						</dl></li>
 					<li class="layui-nav-item"><a href="#">查看资料</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a id="lookatData" href="#">个人资料</a>
+								<a id="lookatData" href="#">资料仓库</a>
 							</dd>
 							<dd>
 								<a id="dataUpload" onclick="getPrivateData()" href="#">课件上传</a>
 							</dd>
-							<dd>
+							<!-- <dd>
 								<a href="#">待定</a>
-							</dd>
+							</dd> -->
 						</dl></li>
 					<li class="layui-nav-item"><a href="#">个人博客</a></li>
-					<li class="layui-nav-item"><a href="#">操作日志</a></li>
+					<li class="layui-nav-item"><a id="teacherLog" href="#">操作日志</a></li>
 				</ul>
 			</div>
 		</div>
@@ -562,11 +656,89 @@
 			
 			<span id="messageList" style="margin-left: 5%;">课程信息</span>
 			<hr class="layui-bg-cyan">
+			
+			<!-- 教师操作日志表 -->
+			<div id="forTeacherLogInfo" class="site-text site-block"
+				style="text-align: center; height: 3em; margin-top: 0.1%; display: none;">
+				<form class="layui-form" action="">
+					<div class="layui-form-item" style="width: 80%; margin-left: 7%;">
+						<div style="height: 100%; float: left;">
+							<label class="layui-form-label" style="">输入日期</label>
+							<div class="layui-input-block" style="">
+								<input id="logDate" type="text" lay-verify="logDate"
+									placeholder="yyyy-MM-dd" autocomplete="on" class="layui-input"
+									style="width: 60%; float: left;">
+							</div>
+						</div>
+						<div style="height: 100%; width: 49%; float: left;">
+							<label class="layui-form-label" style="">输入关键字</label>
+							<div class="layui-input-block" style="">
+								<input id="CoreKey" type="text" lay-verify="CoreKey"
+									placeholder="如  '登录'" autocomplete="off" class="layui-input"
+									style="width: 60%; float: left;"> <input
+									class="layui-btn" lay-submit type="button"
+									onclick="searchTeacherLogByTime()" value="查询"
+									style="float: left;" />
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<script>
+					//Demo
+					layui.use([ 'form', 'laydate' ], function() {
+						var form = layui.form, laydate = layui.laydate;
+						laydate.render({
+							elem : '#logDate'
+						});
+						
+						form.verify({
+							logDate:[/\S/,'日期不可为空']
+						});
+					});
+			</script>
+			
+			<table id="teacherLogOfTime" border="1"
+				style="display: none; text-align: center; width: 80%; margin-left: 9.5%;">
+			</table>
+
+			<table id="teacherLogInfo" border="1"
+				style="text-align: center; width: 80%; margin-left: 9.5%; display: none;">
+				<tr>
+					<th>账号</th>
+					<th>活动</th>
+					<th>Ip</th>
+					<th>时间</th>
+					<th>结果</th>
+				</tr>
+				<c:choose>
+					<c:when test="${! empty logEntity}">
+						<c:forEach items="${logEntity}" var="s">
+							<tr>
+								<td>${s.userId}</td>
+								<td style="text-align: left; padding-left: 10%;">${s.method}</td>
+								<td>${s.ip}</td>
+								<td>${s.date}</td>
+								<td>${s.result}</td>
+								<!--  <td colspan="8"></td>-->
+							</tr>
+						</c:forEach>
+					</c:when>
+					<c:otherwise>
+						<tr>
+							<td colspan="5">(暂无信息)</td>
+						</tr>
+					</c:otherwise>
+				</c:choose>
+			</table>
+			
+			
+			
 			<!-- 上传文件 -->
 			<div id="upLoadShow" class="site-text site-block"
 				style="display: none; margin-top: 0;">
 				<!-- 单个文件上传不能超过50M -->
-				<span id="MaxUpload" style="color: red;">单个文件不能超过50M</span><br/>
+				<span id="MaxUpload" style="color: red;">单个文件不能超过51200k</span><br/>
 				
 				<div class="layui-upload">
 				<form action="">
@@ -601,17 +773,11 @@
 					<thead>
 						<tr>
 							<th style="text-align: center;">文件类型</th>
-							<th style="text-align: center;">创建时间</th>
+							<th style="text-align: center;">上传时间</th>
 							<th style="text-align: center;">文件名称</th>
 						</tr>
 					</thead>
 					<tbody id="privateData">
-						
-							<!--  <td>${r.fileType}</td>
-							<td>${r.createTime}</td>
-							<td id="ab${r.fileId}"><a id="${r.fileId}" onmouseover="getData(this.id)" href="<%=request.getContextPath() %>/file/${r.fileName}" />${r.fileName}</a></td>
-							<td id="b${r.fileId}" onmouseout="leaveData(this.id)" style="display: none;"><a href="<%=request.getContextPath() %>/file/${r.fileName}" />点击下载</a></td>
-						-->
 						
 					</tbody>
 				</table>
@@ -648,7 +814,7 @@
                ,multiple: true
                ,auto: false
                ,bindAction: '#testListAction'
-               ,exts:'zip|rar|7z|pdf|xls|doc|ppt'
+               ,exts:'zip|rar|7z|pdf|xls|doc|ppt|docx'
                ,choose: function(obj){   
                  var files = obj.pushFile(); //将每次选择的文件追加到文件队列
                  //读取本地文件
@@ -1128,7 +1294,7 @@
 													</c:forEach>
 												</c:when>
 												<c:otherwise>
-													<a>（空）</a>
+													<a style="color: red;">（空）</a>
 												</c:otherwise>
 											</c:choose></td>
 										<td style="text-align: center;"><a
@@ -1581,7 +1747,10 @@
 		 $('#messageShow').hide();
 		 $('#fushuMessage').hide();
 		 $('#seprateMessage').hide();
+		 $('#forTeacherLogInfo').hide();
 		 $('#teacherInfoShow').hide();
+		 $("#teacherLogOfTime").hide();
+		 $('#upLoadShow').hide();
 		$('#doubleHandle').show();
 		$('#signal').show();
 	});

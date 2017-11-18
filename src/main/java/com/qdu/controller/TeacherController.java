@@ -34,12 +34,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.qdu.aop.SystemLog;
 import com.qdu.pojo.Course;
 import com.qdu.pojo.FilePackage;
+import com.qdu.pojo.LogEntity;
 import com.qdu.pojo.Message;
 import com.qdu.pojo.Student;
 import com.qdu.pojo.Teacher;
 import com.qdu.service.ClazzService;
 import com.qdu.service.CourseService;
 import com.qdu.service.FilePackageService;
+import com.qdu.service.LogEntityService;
 import com.qdu.service.MessageService;
 import com.qdu.service.StudentService;
 import com.qdu.service.TeacherService;
@@ -65,6 +67,8 @@ public class TeacherController {
 	private StudentService studentServiceImpl;
 	@Autowired
 	private FilePackageService filePackageServiceImpl;
+	@Autowired
+	private LogEntityService logEntityServiceImpl;
 
 	// 教师登录准备
 	@RequestMapping(value = "/forTeacherLogin.do")
@@ -105,9 +109,8 @@ public class TeacherController {
 					map.addAttribute("courses", courses);
 					int messageCount = messageServiceImpl.selectMessageCount(teacher.getTeacherMobile());
 					map.put("messageCount", messageCount);
-//					List<Message> messages = messageServiceImpl.selectUnreadMessage(teacher.getTeacherMobile(),
-//							page.getStartPos());
-//					map.put("message", messages);
+					List<LogEntity> logEntities = logEntityServiceImpl.selectStudentLog(id);
+					map.put("logEntity", logEntities);
 					map.put("page", page);
 					List<FilePackage> filePackages = filePackageServiceImpl.selectFileByUserId(teacher.getTeacherMobile());
 					map.put("filePackages", filePackages);
@@ -345,6 +348,8 @@ public class TeacherController {
 				fileType = "doc";
 			}else if (suffix.equals("ppt")) {
 				fileType = "ppt";
+			}else if (suffix.equals("docx")) {
+				fileType = "docx";
 			}
 		Teacher teacher = teacherServiceImpl.selectTeacherByMobile(teacherMobile);
 		// 定义上传路径

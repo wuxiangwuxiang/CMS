@@ -227,7 +227,7 @@ public class StudentController {
 	}
 
 	// 注册后跳转到首页
-	@SystemLog(module = "学生", methods = "日志管理-学生注册成功跳转到首页")
+	@SystemLog(module = "学生", methods = "日志管理-跳转到首页")
 	@RequestMapping(value = "/exchangeStudent.do")
 	public String exchangeStudent(String studentRoNo,String pageNow, ModelMap map, HttpServletRequest request) {
 		Student student = studentServiceImpl.selectStudentByNo(studentRoNo);
@@ -559,9 +559,9 @@ public class StudentController {
 		@SystemLog(module = "学生", methods = "日志管理-通过时间查询日志")
 		@RequestMapping(value = "/searchStudentLogByTime.do")
 		@ResponseBody
-		public Map<String, Object> searchStudentLogByTime(String logDate,String studentRono){
+		public Map<String, Object> searchStudentLogByTime(String coreKey,String logDate,String studentRono){
 			Map<String, Object> map = new HashMap<>();
-			List<LogEntity> logEntities = logEntityServiceImpl.selectStudentLogByTime(studentRono, logDate);
+			List<LogEntity> logEntities = logEntityServiceImpl.selectStudentLogByTime(studentRono, logDate,coreKey);
 			map.put("logEntities", logEntities);
 			return map; 
 		} 

@@ -48,11 +48,12 @@ public class LogEntityDaoImpl implements LogEntityDao{
 	}
 
 	@Override
-	public List<LogEntity> selectStudentLogByTime(String userId, String dateTime) {
+	public List<LogEntity> selectStudentLogByTime(String userId, String dateTime,String coreKey) {
 		String statement = "com.qdu.mapping.LogEntityMapping.selectStudentLogByTime";
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", userId);
 		map.put("dateTime", dateTime);
+		map.put("coreKey", coreKey);
 		return sessionFactory.openSession().selectList(statement, map);
 	}
 

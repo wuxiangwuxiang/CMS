@@ -32,7 +32,7 @@
 	</select>
 	
 	<select id="selectStudentLogByTime" parameterType="HashMap" resultMap="LogEntityResult">
-	select * FROM Logentity WHERE UserId = #{userId} And DateTime = #{dateTime} ORDER BY LogId DESC
+	select * FROM Logentity WHERE UserId = #{userId} And DateTime = #{dateTime} And Method like CONCAT('%',#{coreKey},'%')  ORDER BY LogId DESC
 	</select>
 
     <insert id="insertLogEntity" parameterType="com.qdu.pojo.LogEntity">

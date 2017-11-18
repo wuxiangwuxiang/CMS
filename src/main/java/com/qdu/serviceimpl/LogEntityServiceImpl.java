@@ -43,8 +43,8 @@ public class LogEntityServiceImpl implements LogEntityService{
 	}
 
 	@Override
-	public List<LogEntity> selectStudentLogByTime(String userId, String dateTime) {
-		return logEntityDaoImpl.selectStudentLogByTime(userId, dateTime);
+	public List<LogEntity> selectStudentLogByTime(String userId, String dateTime,String coreKey) {
+		return logEntityDaoImpl.selectStudentLogByTime(userId, dateTime,coreKey);
 	}
 
 }

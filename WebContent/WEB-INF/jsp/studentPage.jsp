@@ -25,9 +25,10 @@
 		 }
 	 
 		 //首先检查学生个人信息是否完善
-		 if(${empty student.college} ||${empty student.special}||${empty student.intoSchoolYear}
+		 if(${empty student.college} || ${empty student.special}||${empty student.intoSchoolYear}
 		 ||${empty student.schoolRecord}||${empty student.birthDay}||${empty student.freeStyle}){
 			 $('#redSignal').show();
+			 $('#signalNow').show();
 		 }
 	 		 
 		 //每1秒执行一次消息数量的查询
@@ -100,6 +101,7 @@
 			 $('#studentAddCourse').hide();
 			 $('#seprateMessage').hide();
 			 $('#messageShow').hide();
+			 $('#signalNow').hide();
 			 $('#insertCourseDiv').hide();
 			 $('#fushuMessage').hide();
 			 $('#courseInfo').hide();
@@ -143,6 +145,10 @@
 			 $("#studentLogOfTime").hide();
 			 $('#studentWork').hide();
 			 $('#messageShow').show();
+			 layui.use('table', function(){
+				  var table = layui.table;
+				  table.reload('test', {});
+			 });
 			}); 
 		 //手动添加课程
 		 $('#addCourse').click(function name1() {
@@ -206,6 +212,7 @@
 				$('#reIntoSchoolYearTr').show();
 				$('#schoolRecordTr').hide();
 				$('#reSchoolRecordTr').show();
+				$('#signalNow').hide();
 				$('#birthDayTr').hide();
 				$('#reBirthDayTr').show();
 				$('#forSavefectButton').show();
@@ -427,11 +434,12 @@
        }
 		//根据时间查询操作日志
 		function searchStudentLogByTime() {
-			if($('#logDate').val() != "" && $('#logDate').val()){
+			if($('#logDate').val() != "" || $('#CoreKey').val() != ""){
 			 $.ajax({
 		         type: "GET",
 		         data: {
 		        	 "logDate": $('#logDate').val(),
+		        	 "coreKey":$('#CoreKey').val(),
 		        	 "studentRono":$('#studentRoNo').val()
 		         },
 		         contentType: "application/json; charset=utf-8",
@@ -444,7 +452,6 @@
 		        	    con =  '\
 		        				<tr>\
 		        					<th>学号</th>\
-		        					<th>身份</th>\
 		        					<th>活动</th>\
 		        					<th>Ip</th>\
 		        					<th>时间</th>\
@@ -454,7 +461,6 @@
 		        	    $.each(dataObj, function (index, item) {
 		        	        con += "<tr>";
 		        	        con += "<td>" + item.userId + "</td>";
-		        	        con += "<td>" + item.module + "</td>";
 		        	        con += "<td>" + item.method + "</td>";
 		        	        con += "<td>" + item.ip + "</td>";
 		        	        con += "<td>" + item.date + "</td>";
@@ -470,6 +476,8 @@
 		             alert("暂时无法获取");
 		         },
 		     });
+			}else{
+				alert("请至少输入一项吧大侠？");
 			}
 		}
 		//验证课程有效性
@@ -541,6 +549,7 @@
 			});
 		}
 </script>
+
 </head>
 <body>
 
@@ -567,15 +576,17 @@
 					style="color: white; font-size: 25px;">CMS</span></a>
 
 				<ul class="layui-nav">
-					<li class="layui-nav-item"><a id="messageButtton" href="#">消息<span
-							id="TmessageCount" class="layui-badge">${messageCount}</span></a></li>
-					<li class="layui-nav-item"><a id="studentInfoCenter" href="#">个人中心<span
+					<li class="layui-nav-item"><a id="messageButtton" href="#">
+					<i class="layui-icon bbbbb" style="font-size: 20px; color: #d2d2d2">&#xe63a;</i> <span
+							id="TmessageCount" class="layui-badge" style="margin-left: 43%;">${messageCount}</span></a></li>
+					<li class="layui-nav-item"><a id="studentInfoCenter" href="#">
+					<i class="layui-icon bbbbb" style="font-size: 20px; color: #d2d2d2">&#xe612;</i><span
 							id="redSignal" style="display: none;" class="layui-badge-dot"></span></a></li>
-					<li class="layui-nav-item"
+					<%-- <li class="layui-nav-item"
 						style="padding: 0; margin: 0; text-align: right;"><img
 						height="45em" width="40em"
 						src="/ClassManageSys/studentPhoto/${student.studentPhoto}"
-						class="layui-circle"></li>
+						class="layui-circle"></li> --%>
 					<li class="layui-nav-item"><a href="#">${student.studentName}</a>
 						<dl class="layui-nav-child">
 							<dd>
@@ -633,24 +644,24 @@
 		<div class="layui-body site-demo"
 			style="padding-top: 4%; overflow: auto;">
 			<span id="messageList"
-				style="margin-left: 5%; color: #c2c2c2; font-style: oblique;">消息列表</span>
+				style="margin-left: 5%; color: #c2c2c2; font-style: oblique;">课程信息</span>
 			<hr class="layui-bg-cyan">
 
 			<!-- 课程信息模块 -->
 			<div id="courseInfo"
-				style="display: none; margin: 5px 5% auto; padding-top: 10px; padding-left: 20px; padding-right: 20px;">
+				style="margin: 5px 5% auto; padding-top: 10px; padding-left: 20px; padding-right: 20px;">
 				<table lay-filter="courseInfo">
 					<thead>
 						<tr>
-							<th lay-data="{field:'courseName', width:180, sort:true}">课程名称</th>
-							<th lay-data="{field:'courseType', width:150, sort:true}">类型</th>
-							<th lay-data="{field:'startTime', width:200, sort:true}">开课时间</th>
-							<th lay-data="{field:'stopTime', width:200, sort:true}">结课时间</th>
-							<th lay-data="{field:'courseYear', width:150, sort:true}">学年</th>
-							<th lay-data="{field:'courseDate', width:150, sort:true}">学期</th>
-							<th lay-data="{field:'courseTeacher', width:150, sort:true}">老师</th>
-							<th lay-data="{field:'courseTeacherMobile', width:150}">联系方式</th>
-							<th lay-data="{field:'courseOption', width:150}">操作</th>
+							<th lay-data="{field:'courseName', width:100, sort:true}">课程名称</th>
+							<th lay-data="{field:'courseType', width:100, sort:true}">类型</th>
+							<th lay-data="{field:'startTime', width:130, sort:true}">开课时间</th>
+							<th lay-data="{field:'stopTime', width:130, sort:true}">结课时间</th>
+							<th lay-data="{field:'courseYear', width:100, sort:true}">学年</th>
+							<th lay-data="{field:'courseDate', width:100, sort:true}">学期</th>
+							<th lay-data="{field:'courseTeacher', width:100, sort:true}">老师</th>
+							<th lay-data="{field:'courseTeacherMobile', width:123}">联系方式</th>
+							<th lay-data="{field:'courseOption', width:100}">操作</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -767,14 +778,15 @@
 				<table lay-filter="signRecord" style="text-align: center;">
 					<thead>
 						<tr>
-							<th lay-data="{field:'stuCourseID', width:180}">课程编码</th>
-							<th lay-data="{field:'stuCourseName', width:180, sort:true}">课程名称</th>
-							<th lay-data="{field:'stuCourseYear', width:180, sort:true}">学年</th>
-							<th lay-data="{field:'stuCourseDate', width:180, sort:true}">学期</th>
-							<th lay-data="{field:'stuCourseSign', width:180, sort:true}">签到</th>
-							<th lay-data="{field:'stuCourseLate', width:180, sort:true}">迟到</th>
-							<th lay-data="{field:'stuCourseEarly', width:180, sort:true}">早退</th>
-							<th lay-data="{field:'stuCourseAbsenteeism', width:180, sort:true}">旷课</th>
+							<th lay-data="{field:'stuCourseID', width:120}">课程编码</th>
+							<th lay-data="{field:'stuCourseName', width:130, sort:true}">课程名称</th>
+							<th lay-data="{field:'stuCourseYear', width:130, sort:true}">学年</th>
+							<th lay-data="{field:'stuCourseDate', width:130, sort:true}">学期</th>
+							<th lay-data="{field:'stuCourseSign', width:120, sort:true}">签到</th>
+							<th lay-data="{field:'stuCourseLate', width:120, sort:true}">迟到</th>
+							<th lay-data="{field:'stuCourseEarly', width:120, sort:true}">早退</th>
+							<th
+								lay-data="{field:'stuCourseAbsenteeism', width:120, sort:true}">旷课</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -804,17 +816,19 @@
 			</div>
 
 			<!-- 显示消息 -->
-			<div id="messageShow" style="margin-left: 5%; margin-right: 5%;">
+			<div id="messageShow"
+				style="margin-left: 5%; margin-right: 5%; display: none;">
 				<table class="layui-table"
 					lay-data="{page:true,height:485,width:1070, url:'<%=request.getContextPath() %>/student/getSeperratePage.do',
-			 id:'test', where:{messageAcpter:'${student.studentRoNo}'}}"
+			 id:'test', where:{messageAcpter:'${student.studentRoNo}'}, limit:10}"
 					lay-filter="test" style="width: 100%;">
 					<thead>
 						<tr>
 							<th lay-data="{field:'messageSender', width:200, sort: true}">发送方</th>
 							<th
 								lay-data="{field:'messageTitle', width:500,templet: '#titleTpl'}">标题</th>
-							<th lay-data="{field:'haveRead', width:200, sort: true}">状态</th>
+							<th
+								lay-data="{field:'haveRead', width:200, sort: true,templet: '#status'}">状态</th>
 							<th
 								lay-data="{fixed: 'right', width:160, align:'center', toolbar: '#barDemo'}"></th>
 						</tr>
@@ -898,15 +912,25 @@
 			<div id="forStudentLogInfo" class="site-text site-block"
 				style="text-align: center; height: 3em; margin-top: 0.1%; display: none;">
 				<form class="layui-form" action="">
-					<div class="layui-form-item" style="width: 80%; margin-left: 11%;">
-						<label class="layui-form-label">输入日期</label>
-						<div class="layui-input-block">
-							<input id="logDate" type="text" required lay-verify="logDate"
-								placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input"
-								style="width: 30%; float: left;"> <input
-								class="layui-btn" lay-submit type="button"
-								onclick="searchStudentLogByTime()" value="查询"
-								style="float: left;" />
+					<div class="layui-form-item" style="width: 80%; margin-left: 7%;">
+						<div style="height: 100%; float: left;">
+							<label class="layui-form-label" style="">输入日期</label>
+							<div class="layui-input-block" style="">
+								<input id="logDate" type="text" lay-verify="logDate"
+									placeholder="yyyy-MM-dd" autocomplete="on" class="layui-input"
+									style="width: 60%; float: left;">
+							</div>
+						</div>
+						<div style="height: 100%; width: 49%; float: left;">
+							<label class="layui-form-label" style="">输入关键字</label>
+							<div class="layui-input-block" style="">
+								<input id="CoreKey" type="text" lay-verify="CoreKey"
+									placeholder="如  '登录'" autocomplete="off" class="layui-input"
+									style="width: 60%; float: left;"> <input
+									class="layui-btn" lay-submit type="button"
+									onclick="searchStudentLogByTime()" value="查询"
+									style="float: left;" />
+							</div>
 						</div>
 					</div>
 				</form>
@@ -926,14 +950,13 @@
 			</script>
 
 			<table id="studentLogOfTime" border="1"
-				style="display: none; text-align: center; width: 80%; margin-left: 8.5%;">
+				style="display: none; text-align: center; width: 80%; margin-left: 9.5%;">
 			</table>
 
 			<table id="studentLogInfo" border="1"
-				style="text-align: center; width: 80%; margin-left: 8.5%; display: none;">
+				style="text-align: center; width: 80%; margin-left: 9.5%; display: none;">
 				<tr>
 					<th>学号</th>
-					<th>身份</th>
 					<th>活动</th>
 					<th>Ip</th>
 					<th>时间</th>
@@ -944,7 +967,6 @@
 						<c:forEach items="${logEntity}" var="s">
 							<tr>
 								<td>${s.userId}</td>
-								<td>${s.module}</td>
 								<td style="text-align: left; padding-left: 10%;">${s.method}</td>
 								<td>${s.ip}</td>
 								<td>${s.date}</td>
@@ -1057,7 +1079,10 @@
 					</tr>
 					<tr>
 						<td colspan="2" style="text-align: left;"><button
-								id="perfectButton" style="margin-left: 0;" class="layui-btn">完善信息</button></td>
+								id="perfectButton" style="margin-left: 0;" class="layui-btn">完善信息</button>
+							<span id="signalNow"
+							style="color: red; margin-left: 20%; display: none;">*请尽快完善信息*</span>
+						</td>
 					</tr>
 
 				</table>
